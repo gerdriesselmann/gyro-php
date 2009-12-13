@@ -1,0 +1,24 @@
+<?php
+/**
+ * Use modules from contributions
+ */
+#Load::add_module_base_dir(GYRO_ROOT_DIR . '../contributions/');
+
+/**
+ * Enable some modules in testmode only
+ */ 
+if (Config::has_feature(Config::TESTMODE)) {
+	Load::enable_module('simpletest');
+	#Load::enable_module('phpinfo');
+}
+
+/**
+ * Example how to invoke modules
+ */
+Load::enable_module('console');
+Load::enable_module('systemupdate');
+// Static main page creates your main index page from template 
+// /app/view/templates/default/index.tpl.php
+Load::enable_module('staticmainpage');
+#Load::enable_module('usermanagement');
+#Load::enable_module('gsitemap');

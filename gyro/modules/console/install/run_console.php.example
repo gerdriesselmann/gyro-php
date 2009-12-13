@@ -1,0 +1,69 @@
+#!/usr/bin/php
+<?php
+/**
+ * Run an action from console
+ * 
+ * Invoke like this:
+ * 
+ * run_console.php path/to/action parameters method 
+ * 
+ * Example:
+ * run_console.php item/2/show page=2 
+ * This equivalents invoking the URL /item/2/show?page=2
+ *
+ * run_console.php item/2/update name=new POST 
+ * This equivalents posting name=new to the URL /item/2/update
+ */
+try {
+	define('APP_START_SESSION', false);
+	define('APP_FORCE_FULL_DOMAINNAME', false);
+	require_once dirname(__FILE__) . '/constants.php';
+	require_once APP_GYRO_PATH . 'core/start.php';
+	
+	Load::components('console');
+	$action = Console::init();
+	$class_instantiater = new ControllerDefaultClassInstantiater();
+	// Construct a Pagedata and set a note request comes from commandline 
+	$page_data = new ConsolePageData(new NoCacheCacheManager(), $_GET, $_POST);
+
+	// Log in as System user. Comment in if usermanagement module is loaded 
+	// and you want this feature 
+	# Users::login_as_system();
+	
+	$router = new ConsoleRouter($action, $class_instantiater);
+	$router->initialize($page_data);
+	
+	$route = $router->route();
+	$route->initialize($page_data);
+	
+	$renderer = $route->get_renderer($page_data);
+	$renderer->render(true);
+	
+	$exitcode = 0;
+	switch ($page_data->status_code) {
+		case CONTROLLER_ACCESS_DENIED:
+			$exitcode = 43;
+			break;
+		case CONTROLLER_NOT_FOUND:
+			$exitcode = 44;
+			break;
+		case CONTROLLER_INTERNAL_ERROR:
+			$exitcode = 50;
+			break;
+		case CONTROLLER_REDIRECT:
+			$exitcode = 31;
+			break;			
+		case CONTROLLER_OK:
+			break;
+		default:
+			$exitcode = 100;
+			exit;
+	}
+	if ($exitcode == 0 && $page_data->status && $page_data->status->is_error()) {
+		$exitcode = 1;
+	}
+	exit($exitcode);
+}
+catch (Exception $ex) {
+	die($ex->getMessage());
+}

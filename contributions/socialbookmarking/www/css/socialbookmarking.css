@@ -1,0 +1,28 @@
+.socialbookmarking li {
+	list-style-type: none !important;
+	list-style-position: outside !important;
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.socialbookmarking li img {
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	float: none !important;
+}
+
+.socialbookmarking li a {
+	display: inline !important;
+	margin: 0 !important;
+	padding: 0.25em !important;
+}
+
+.socialbookmarking li.first a {
+	padding-left: 0 !important;
+}
+
+.socialbookmarking li.last a {
+	padding-right: 0 !important;
+}
