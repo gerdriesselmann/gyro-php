@@ -1,0 +1,27 @@
+# downtime....
+# RewriteRule ^(.*)$ downtime.php [L,QSA]
+
+AddDefaultCharset utf-8
+Options -Multiviews
+Options -Indexes
+
+### BEGIN OPTIONS ###
+
+### END OPTIONS  ###
+
+RewriteEngine On
+RewriteBase /
+
+### BEGIN REWRITE ###
+
+### END REWRITE   ###
+
+RewriteCond $1 !^favicon.ico|^css|^js
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
+
+# On nginx, the rule would be this:
+# if (!-e $request_filename) {
+#   rewrite ^/(.*)$ /index.php?path=$1 last;
+# }

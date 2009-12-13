@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Contains general configuration settings
+ *
+ * @author Gerd Riesselmann
+ */
+
+/**
+ * Test related. Set either to true (debug) or false (release) 
+ */
+define('APP_TESTMODE', true);
+
+/**
+ * Allow https?
+ *
+ * IF set to true, all https://-routes will get translated to http  
+ */
+define('APP_ENABLE_HTTPS', true);
+
+/**
+ * The domain of the app, excluding 'http://'.
+ */
+define('APP_URL_DOMAIN', 'fill in!');
+
+/**
+ * DB Constants
+ */
+define('APP_DB_TYPE', 'mysql');
+define('APP_DB_NAME', 'fill in!');
+define('APP_DB_USER', 'fill in!');
+define('APP_DB_PWD', 'fill in!');
+
+/**
+ * Mail related
+ */
+define('APP_MAIL_SENDER', 'fill in!');
+define('APP_MAIL_ADMIN', 'fill in!');
+define('APP_MAIL_SUPPORT', 'fill in!');
+

@@ -1,0 +1,32 @@
+<?php
+/**
+ * The main page
+ *
+ * @author Gerd Riesselmann
+ */
+
+try {
+	require_once dirname(__FILE__) . '/../constants.php';
+	require_once APP_GYRO_PATH . 'core/start.php';
+
+	$class_instantiater = new ControllerDefaultClassInstantiater();
+	$cache_manager = new SuccessCacheManager();
+	$page_data = new PageData($cache_manager, $_GET, $_POST);
+	
+	$router = new RouterBase($class_instantiater);
+	$router->initialize($page_data);
+	
+	$route = $router->route();
+	$route->initialize($page_data);
+	
+	$renderer = $route->get_renderer($page_data);
+	$renderer->render(true);
+}
+catch (Exception $ex) {
+	ob_clean();
+	Common::send_status_code(503); // Service unavailable
+	@error_log($ex->getMessage());
+	if (Config::has_feature(Config::TESTMODE)) {
+		print $ex->getMessage();
+	}
+}
