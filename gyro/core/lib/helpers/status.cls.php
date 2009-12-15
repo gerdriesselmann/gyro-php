@@ -121,7 +121,7 @@ class Status {
 	 * Messages are added and this status becomes an error if either this or 
 	 * the merged status are errors
 	 *
-	 * @param mixed Either Status or PEAR_Error
+	 * @param $other Either Status, Exception, PEAR_Error or a string
 	 */
 	public function merge($other) {
 		if ($other instanceof Status) {
