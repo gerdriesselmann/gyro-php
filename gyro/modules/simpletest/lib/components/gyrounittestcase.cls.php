@@ -13,7 +13,7 @@ class GyroUnitTestCase extends UnitTestCase {
 	function assertStatusSuccess($status, $message = '%s') {
         $this->assertStatus($status, $message);
         if ($status instanceof Status) {
-        	$this->assertTrue($status->is_ok(), sprintf($message, $status->message));
+        	$this->assertTrue($status->is_ok(), sprintf($message, 'Status success check'));
         }        
     }	
 
