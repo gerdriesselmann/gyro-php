@@ -54,5 +54,7 @@ class ChangeemailConfirmationHandler extends ConfirmationHandlerBase  {
 		else {
 			$ret->append(tr('Unkown User set on email change confirmation', 'users'));	
 		}
+		
+		return $ret;
 	}			
 }
