@@ -61,5 +61,7 @@ class CreateaccountConfirmationHandler extends ConfirmationHandlerBase {
 		else {
 			$ret->append(tr('Unkown User set on register confirmation', 'users'));	
 		}
+		
+		return $ret;
 	}		
 }
