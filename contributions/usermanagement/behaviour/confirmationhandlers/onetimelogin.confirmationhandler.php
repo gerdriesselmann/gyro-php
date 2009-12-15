@@ -60,6 +60,8 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 		else {
 			$ret->append(tr('Unkown User set on one time login confirmation', 'users'));	
 		}
+		
+		return $ret;
 	}		
 	
 }
