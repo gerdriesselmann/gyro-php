@@ -17,8 +17,8 @@
 	if (!empty($page_data->breadcrumb)){ print $page_data->breadcrumb; } 
 	
 	// Error and success messages
-	if ($status && $status->message) {
-		print ($status->is_error()) ? html::error($status->message) : html::info($status->message);
+	if ($status) {
+		$status->display();
 	}
 
 	// Page content
