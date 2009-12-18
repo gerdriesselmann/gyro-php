@@ -5,6 +5,7 @@
 	<meta name="language" content="<?=Locale::get_language()?>" />
 
 	<?php
+	// ##Installed by CSS.YAML## Don't remove this! 
 	print WidgetJCSS::output($page_data, WidgetJCSS::ALL);
 	?>
 </head>
