@@ -151,11 +151,25 @@ class WidgetJCSS implements IWidget {
 					break;
 				default:
 					foreach($css_files as $f) {
-						$page_data->head->add_conditional_css_file($type, $f, true);
+						$page_data->head->add_conditional_css_file(
+							$this->translate_conditional_css_type($type), 
+							$f, 
+							true
+						);
 					}
 					break;					
 			}
 		}
+	}
+	
+	/**
+	 * Translate JCSSManager conditional CSS types to HeadData conditional CSS types
+	 * 
+	 * @param $type A string type
+	 * @return string
+	 */
+	protected function translate_conditional_css_type($type) {
+		return substr($type, 4);
 	}
 	
 	/**
