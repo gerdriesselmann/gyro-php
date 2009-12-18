@@ -36,7 +36,7 @@ class CreateConfirmationsCommand extends CommandChain {
 			$ret->merge($handler->created());
 		}
 		
-		$this->set_result($confirmation);
+		//$this->set_result($confirmation);
 		return $ret;
 	}	
 } 
