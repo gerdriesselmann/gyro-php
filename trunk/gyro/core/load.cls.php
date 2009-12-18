@@ -280,13 +280,14 @@ class Load {
 	 * Include files on all directories 
 	 *
 	 * @param mixed $fiels Either filename array of filenames
+	 * @param $order Either ORDER_OVERLOAD or ORDER_DECORATORS
 	 * @return bool True on success
 	 */
-	public static function files($files) {
+	public static function files($files, $order = self::ORDER_OVERLOAD) {
 		$files = self::to_array($files);
 		$ret = true;
 		foreach($files as $file) {
-			$ret = $ret && self::do_include_file($file, false);	
+			$ret = $ret && self::do_include_file($file, false, $order);	
 		}
 		return $ret;
 	}
@@ -313,9 +314,9 @@ class Load {
 	 * @param bool $include_first_only IF true, function returns on first file found
 	 * @return bool True, if something was found, false otherwise
 	 */
-	private static function do_include_file($file, $include_first_only = false) {
+	private static function do_include_file($file, $include_first_only = false, $order = self::ORDER_OVERLOAD) {
 		$found = false;
-		$basedirs = self::get_base_directories();
+		$basedirs = self::get_base_directories($order);
 		foreach($basedirs as $basedir) {
 			$path = $basedir . $file;
 			if (file_exists($path)) {
@@ -328,7 +329,7 @@ class Load {
 		}
 		return $found;
 	}
-	
+		
 	/**
 	 * Perform including
 	 *
