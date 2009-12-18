@@ -119,6 +119,6 @@ if (Config::has_feature(Config::START_SESSION)) {
 	Session::start_existing();
 }
 
-Load::files('start.inc.php');
+Load::files('start.inc.php', Load::ORDER_DECORATORS);
 
 AccessControl::load();
