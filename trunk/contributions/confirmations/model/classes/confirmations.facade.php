@@ -33,11 +33,7 @@ class Confirmations {
 		$confirmation->code = $code;
 		$confirmation->id = $id;
 		if ($confirmation->find(IDataObject::AUTOFETCH)) {
-			Load::directories('behaviour/confirmationhandlers');
-			$cls = String::to_upper(String::plain_ascii($confirmation->action, ''), 1) . 'ConfirmationHandler';
-			if (class_exists($cls)) {
-				return new $cls($confirmation);
-			}
+			return $confirmation->create_handler();
 		}
 		// Default implementation handles missing confirmation...
 		return new ConfirmationHandlerBase(false);				
