@@ -36,7 +36,7 @@ class DAOConfirmations extends DataObjectBase
 	 */
 	public function create_handler() {
 		Load::directories('behaviour/confirmationhandlers');
-		$cls = String::to_upper(String::plain_ascii($this->action, ''), 1) . 'ConfirmationHandler';
+		$cls = Load::filename_to_classname($this->action, 'ConfirmationHandler');
 		if (class_exists($cls)) {
 			return new $cls($this);
 		}
