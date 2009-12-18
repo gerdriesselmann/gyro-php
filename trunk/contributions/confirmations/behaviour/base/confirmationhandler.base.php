@@ -72,7 +72,10 @@ class ConfirmationHandlerBase implements IConfirmationHandler {
 	 */
 	public function created() {
 		$confirmation = $this->confirmation;
-		return $this->do_created($confirmation);	
+		if ($confirmation) {
+			return $this->do_created($confirmation);
+		}
+		return new Status('Confirmation missing in creation. Wrong Confirmation Handler name?'); 	
 	}
 
 	/**
