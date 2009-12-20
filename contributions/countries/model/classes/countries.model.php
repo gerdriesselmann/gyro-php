@@ -2,7 +2,7 @@
 /**
  * Model class for cuntries
  */
-class DAOCountries extends DataObjectBase implements ISelfDescribing {
+class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;
     public $id_continent;
     public $name;
@@ -27,6 +27,15 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing {
             )
         );
     }
+    
+    /**
+     * Returns continent of this country
+     * 
+     * @return DAOContinents
+     */
+    public function get_continent() {
+    	return Countries::get_continent($this->id_continent);
+    }
 
 	// ************************************
 	// ISelfDescribing
@@ -48,5 +57,27 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing {
 	 */
 	public function get_description() {
 		return '';
+	}
+	
+	// *************************************
+	// IHierarchic
+	// *************************************
+	 	
+	/**
+	 * Get parent for this item 
+	 * 
+	 * @return IHierarchic Parent item or null
+	 */
+	public function get_parent() {
+		return $this->get_continent();
+	}
+	
+	/**
+	 * Get childs for this item 
+	 * 
+	 * @return array Array of IHierarchic items
+	 */
+	public function get_childs() {
+		return array();
 	}
 }

@@ -1,4 +1,5 @@
 <?php
+Load::models('continents', 'countriesgroups', 'countries2countriesgroups');
 /**
  * Facade class for countries
  */
@@ -25,18 +26,51 @@ class Countries {
     public static function get($country_code) {
         return DB::get_item('countries', 'id', $country_code);
     }
+
+    /**
+	 * Create adapter 
+	 * 
+	 * @return DAOCountries
+     */
+    public static function create_adapter() {
+		return new DAOCountries();
+    } 
+    
     
     /**
+	 * Create adapter for countries in continent
+	 * 
+	 * @return DAOCountries
+     */
+    public static function create_continent_adapter($id_continent) {
+		$dao = self::create_adapter();
+		$dao->id_continent = $id_continent;
+		return $dao;	    	
+    } 
+
+    /**
 	 * Create an adapter that loads translated names
+	 * 
+	 * @return DAOCountries
      */
     public static function create_localized_sort_adapter($lang) {
     	$dao = new DAOCountries();
-    	$trans = new DAOCountriestranslations();
-    	$dao->join($trans);
-    	$dao->sort('countriestranslations.name');
+    	self::localize_adapter($dao);
     	return $dao;
     }
-
+    
+    /**
+	 * Join given adapter with translations
+	 * 
+	 * @param $adapter DAOCountries
+	 * @return void
+     */
+    public static function localize_adapter(DAOCountries $adapter) {
+    	$trans = new DAOCountriestranslations();
+    	$adapter->join($trans);
+    	$adapter->sort('countriestranslations.name');
+    }
+    
     /**
      * Returns array of all countries with code as key and name as value
      *
@@ -51,6 +85,30 @@ class Countries {
             $ret[$dao->id] = $dao->get_title();
         }
         return $ret;
+    }
+    
+    /**
+     * Returns continents as associative array with id as key and translated name as value  
+     * 
+     * @return array
+     */
+    public static function get_continents() {
+    	$ret = array();
+    	$dao = new DAOContinents();
+    	$dao->find();
+    	while($dao->fetch()) {
+    		$ret[$dao->id] = $dao->get_title();
+    	}
+    	return $ret;
+    }
+    
+    /**
+	 * Returns continent with given ID
+	 * 
+	 * @return DAOContinents
+     */
+    public static function get_continent($id) {
+    	return DB::get_item('continents', 'id', $id); 
     }
     
 }

@@ -4,7 +4,7 @@ function countries_load_translations($languages) {
 		'Africa' => array(
 			'de' => 'Afrika'
 		),
-		'Antarctica' => array(
+		'Antartica' => array(
 			'de' => 'Antarktis'
 		),
 		'Asia' => array(
