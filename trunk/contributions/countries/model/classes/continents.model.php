@@ -2,7 +2,7 @@
 /**
  * Model class for continetns
  */
-class DAOContinents extends DataObjectBase implements ISelfDescribing {
+class DAOContinents extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;
     public $name;
 
@@ -20,6 +20,15 @@ class DAOContinents extends DataObjectBase implements ISelfDescribing {
             ),
             'id'
         );
+    }
+    
+    /**
+     * Return countries - lcoalized
+     */
+    public function get_countries() {
+    	$adapter = Countries::create_continent_adapter($this->id);
+    	Countries::localize_adapter($adapter);
+    	return $adapter->execute();
     }
 
 	// ************************************
@@ -42,5 +51,27 @@ class DAOContinents extends DataObjectBase implements ISelfDescribing {
 	 */
 	public function get_description() {
 		return '';
+	}
+	
+	// *************************************
+	// IHierarchic
+	// *************************************
+	 	
+	/**
+	 * Get parent for this item 
+	 * 
+	 * @return IHierarchic Parent item or null
+	 */
+	public function get_parent() {
+		return false;
+	}
+	
+	/**
+	 * Get childs for this item 
+	 * 
+	 * @return array Array of IHierarchic items
+	 */
+	public function get_childs() {
+		return $this->get_countries();
 	}
 }
