@@ -190,7 +190,7 @@ function users_load_translations($languages) {
 			'de' => 'Hallo! Sie sind nun eingeloggt.'
 		),
 		'Please enter your username and password and click <strong>Login</strong>.' => array(
-			'de' => 'Bitte geben Sie Ihren Benutzernamenund Ihr Passwort ein und drücken dann auf <strong>Anmelden</strong>.'
+			'de' => 'Bitte geben Sie Ihren Benutzernamen und Ihr Passwort ein und drücken dann auf <strong>Anmelden</strong>.'
 		),
 		'Forgot password?' => array(
 			'de' => 'Passwort vergessen?'
@@ -212,7 +212,25 @@ function users_load_translations($languages) {
 		),
 		'Welcome! You are now logged in.' => array(
 			'de' => 'Willkommen! Sie sind nun eingeloggt.'
-		)		
+		),
+		'Application Management' => array(
+			'de' => 'Administration'
+		),
+		'Your links' => array(
+			'de' => 'Persönliche Einstellungen'
+		),
+		'List unconfirmed users' => array(
+			'de' => 'Unbestätigte Benutzer auflisten'
+		),
+		'List all users' => array(
+			'de' => 'Alle Benutzer auflisten'
+		),
+		'Edit your account' => array(
+			'de' => 'Benutzerdaten ändern'
+		),
+		'Welcome %name' => array(
+			'de' => 'Willkommen, %name!'
+		)
 	);
 }
 ?>
