@@ -53,9 +53,9 @@ class Countries {
 	 * 
 	 * @return DAOCountries
      */
-    public static function create_localized_sort_adapter($lang) {
+    public static function create_localized_sort_adapter($lang = false) {
     	$dao = new DAOCountries();
-    	self::localize_adapter($dao);
+    	self::localize_adapter($dao, $lang);
     	return $dao;
     }
     
@@ -65,8 +65,12 @@ class Countries {
 	 * @param $adapter DAOCountries
 	 * @return void
      */
-    public static function localize_adapter(DAOCountries $adapter) {
+    public static function localize_adapter(DAOCountries $adapter, $lang = false) {
+    	if (empty($lang)) {
+    		$lang = GyroLocale::get_language();
+    	}
     	$trans = new DAOCountriestranslations();
+    	$trans->lang = $lang;
     	$adapter->join($trans);
     	$adapter->sort('countriestranslations.name');
     }
