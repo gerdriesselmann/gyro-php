@@ -7,7 +7,7 @@ UPDATE countriestranslations SET name = 'Polen' WHERE lang = 'de' AND id_country
 UPDATE countriestranslations SET name = 'St. Kitts und Nevis' WHERE lang = 'de' AND id_country = 'KN';
 UPDATE countriestranslations SET name = 'Vereinigte Staten (USA)' WHERE lang = 'de' AND id_country = 'US';
 UPDATE countriestranslations SET name = 'Belarus' WHERE lang = 'de' AND id_country = 'BY';
-UPDATE countriestranslations SET name = 'Großbritannien' WHERE lang = 'de' AND id_country = 'GB';
+UPDATE countriestranslations SET name = 'GroÃŸbritannien' WHERE lang = 'de' AND id_country = 'GB';
 
 UPDATE countriestranslations SET name = 'Amerikanisch-Ozeanien' WHERE lang = 'de' AND id_country = 'UM';
 UPDATE countriestranslations SET name = 'Amerikanisch-Samoa' WHERE lang = 'de' AND id_country = 'AS';
@@ -15,20 +15,20 @@ UPDATE countriestranslations SET name = 'Antarktis' WHERE lang = 'de' AND id_cou
 UPDATE countriestranslations SET name = 'Bouvetinsel' WHERE lang = 'de' AND id_country = 'BV';
 UPDATE countriestranslations SET name = 'Britisches Territorium im Indischen Ozean' WHERE lang = 'de' AND id_country = 'IO';
 UPDATE countriestranslations SET name = 'Cookinseln' WHERE lang = 'de' AND id_country = 'CK';
-UPDATE countriestranslations SET name = 'Französisch-Guayana' WHERE lang = 'de' AND id_country = 'GF';
-UPDATE countriestranslations SET name = 'Französisch-Polynesien' WHERE lang = 'de' AND id_country = 'PF';
-UPDATE countriestranslations SET name = 'Französische Süd- und Arktisgebiete' WHERE lang = 'de' AND id_country = 'TF';
+UPDATE countriestranslations SET name = 'FranzÃ¶sisch-Guayana' WHERE lang = 'de' AND id_country = 'GF';
+UPDATE countriestranslations SET name = 'FranzÃ¶sisch-Polynesien' WHERE lang = 'de' AND id_country = 'PF';
+UPDATE countriestranslations SET name = 'FranzÃ¶sische SÃ¼d- und Arktisgebiete' WHERE lang = 'de' AND id_country = 'TF';
 UPDATE countriestranslations SET name = 'Heard und McDonaldinseln' WHERE lang = 'de' AND id_country = 'HM';
 UPDATE countriestranslations SET name = 'Kaimaninseln' WHERE lang = 'de' AND id_country = 'KY';
 UPDATE countriestranslations SET name = 'Kokosinseln' WHERE lang = 'de' AND id_country = 'CC';
-UPDATE countriestranslations SET name = 'Nördliche Marianen' WHERE lang = 'de' AND id_country = 'MP';
+UPDATE countriestranslations SET name = 'NÃ¶rdliche Marianen' WHERE lang = 'de' AND id_country = 'MP';
 UPDATE countriestranslations SET name = 'Norfolkinsel' WHERE lang = 'de' AND id_country = 'NF';
-UPDATE countriestranslations SET name = 'Palästinensische Gebiete' WHERE lang = 'de' AND id_country = 'PS';
+UPDATE countriestranslations SET name = 'PalÃ¤stinensische Gebiete' WHERE lang = 'de' AND id_country = 'PS';
 UPDATE countriestranslations SET name = 'Pitcairninseln' WHERE lang = 'de' AND id_country = 'PN';
-UPDATE countriestranslations SET name = 'Südgeorgien und die Südlichen Sandwichinseln' WHERE lang = 'de' AND id_country = 'GS';
+UPDATE countriestranslations SET name = 'SÃ¼dgeorgien und die SÃ¼dlichen Sandwichinseln' WHERE lang = 'de' AND id_country = 'GS';
 UPDATE countriestranslations SET name = 'Turks- und Caicosinseln' WHERE lang = 'de' AND id_country = 'TC';
 UPDATE countriestranslations SET name = 'Weihnachtsinsel' WHERE lang = 'de' AND id_country = 'CX';
-UPDATE countriestranslations SET name = 'Åland' WHERE lang = 'de' AND id_country = 'AX';
+UPDATE countriestranslations SET name = 'Ã…land' WHERE lang = 'de' AND id_country = 'AX';
 UPDATE countriestranslations SET name = 'Macao' WHERE lang = 'de' AND id_country = 'MO';
 UPDATE countriestranslations SET name = 'St. Helena' WHERE lang = 'de' AND id_country = 'SH';
 UPDATE countriestranslations SET name = 'St. Pierre und Miquelon' WHERE lang = 'de' AND id_country = 'PM';
