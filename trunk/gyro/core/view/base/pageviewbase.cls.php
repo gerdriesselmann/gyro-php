@@ -138,7 +138,7 @@ class PageViewBase extends ViewBase {
 	 * Read content from cache object
 	 *
 	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
-	 * @param $cache DAOCache instance
+	 * @param $cache ICacheItem instance
 	 * @return mixed
 	 */
 	protected function do_render_cache($cache, $policy) {
@@ -148,11 +148,11 @@ class PageViewBase extends ViewBase {
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
 				header($header);
 			}
-			$this->send_cache_headers($cache->creationdate, $cache->expirationdate);
+			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate());
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			if ($this->page_data->successful()) {
 				// Send 304, if applicable, but only if site has 200 OK 
-				Common::check_not_modified($cache->creationdate); // exits if not modified
+				Common::check_not_modified($cache->get_creationdate()); // exits if not modified
 			}
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
 			$ret = $cache->get_content_plain();

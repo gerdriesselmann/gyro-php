@@ -11,7 +11,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Cached content
 	 *
-	 * @var DAOCache
+	 * @var ICacheItem
 	 */
 	protected $cached_content = null;
 	/**
@@ -106,7 +106,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Reads the cache
 	 *
-	 * @return DAOCache
+	 * @return ICacheItem
 	 */
 	protected function get_cache_object() {
 		if (is_null($this->cached_content)) {
@@ -279,7 +279,7 @@ class ViewBase implements IView, ICache {
 	 * Retrieve ressource from cache
 	 *
 	 * @param $cache_key Either a string or an array
-	 * @return DAOCache
+	 * @return ICacheItem
 	 */
 	protected function read_cache($cache_key) {
 		return Cache::read($cache_key);
@@ -289,7 +289,7 @@ class ViewBase implements IView, ICache {
 	 * Read content from cache object
 	 *
 	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
-	 * @param $cache DAOCache instance
+	 * @param $cache ICacheItem instance
 	 * @return mixed
 	 */
 	protected function do_render_cache($cache, $policy) {

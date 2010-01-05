@@ -7,7 +7,7 @@
  * @author Gerd Riesselmann
  * @ingroup Model
  */
-class DAOCache extends DataObjectBase {
+class DAOCache extends DataObjectBase implements ICacheItem {
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
 	public $key0;                            // string(250)
 	public $key1;                            // string(250)
@@ -16,7 +16,7 @@ class DAOCache extends DataObjectBase {
 	public $data;
 	public $creationdate; 					// TIMESTAMP
 	public $expirationdate;                  // DATETIME
-	
+
 	/**
 	 * Set cache keys
 	 * 
@@ -44,7 +44,30 @@ class DAOCache extends DataObjectBase {
 			}
 		}
 	}
+
+	/**
+	 * Return creation date 
+	 * 
+	 * @return datetime
+	 */
+	public function get_creationdate() {
+		return $this->creationdate;
+	}	
 	
+	/**
+	 * Return expiration date 
+	 * 
+	 * @return datetime
+	 */
+	public function get_expirationdate() {
+		return $this->expirationdate;
+	}
+	
+	/**
+	 * Return data associated with this item
+	 * 
+	 * @return mixed
+	 */
 	public function get_data() {
 		return $this->data;
 	}
