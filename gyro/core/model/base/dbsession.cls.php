@@ -1,5 +1,5 @@
 <?php
-Load::models(array('sessions', 'users'));
+Load::models(array('sessions'));
 
 /**
  * Redirect session to write to DB
