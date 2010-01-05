@@ -12,7 +12,7 @@
  * @section Notes Additional notes
  *
  * This module requires either memcache or memcached extension to be installed and 
- * configured properly. Check especially xcache.var_size in xcache config! 
+ * configured properly.
  */
 require_once dirname(__FILE__) . '/cache.memcache.impl.php';
 Cache::set_implementation(new CacheMemcacheImpl());
