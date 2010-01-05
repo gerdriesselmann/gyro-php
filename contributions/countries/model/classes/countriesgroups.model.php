@@ -1,6 +1,15 @@
 <?php
 /**
- * Model class for cuntries
+ * Model class for country groups
+ * 
+ * The ID space of countriesgroups is divided into three segments:
+ * 
+ * \li 1-99: Reserved for use by this module
+ * \li 100-999: Reserved for use by other contributions. 
+ * \li 1000-: May be used by applications. Autoincrement pointer is set to 1000, so your application can insert groups without setting a fixed ID 
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class DAOCountriesgroups extends DataObjectBase implements ISelfDescribing {
     public $id;

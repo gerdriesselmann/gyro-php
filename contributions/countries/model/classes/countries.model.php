@@ -1,6 +1,9 @@
 <?php
 /**
- * Model class for cuntries
+ * Model class for countries
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;

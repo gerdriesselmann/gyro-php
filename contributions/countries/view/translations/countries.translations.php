@@ -1,4 +1,12 @@
 <?php
+/**
+ * Load translation for countries
+ * 
+ * This is an example of how to use DB based translations
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
+ */
 function countries_load_translations($languages) {
 	$ret = array(
 		'Africa' => array(
@@ -61,4 +69,3 @@ function countries_load_translations($languages) {
 	$ret = array_merge($ret, $countries);
 	return $ret;
 }
-?>

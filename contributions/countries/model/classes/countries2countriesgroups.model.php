@@ -1,6 +1,9 @@
 <?php
 /**
- * Model class for cuntries
+ * Model class for assigning countries to groups
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class DAOCountries2countriesgroups extends DataObjectBase {
     public $id_country;
@@ -14,22 +17,22 @@ class DAOCountries2countriesgroups extends DataObjectBase {
     protected function create_table_object() {
         return new DBTable(
 			'countries2countriesgroups',
-            array(
-            	new DBFieldText('id_country', 2, null, DBField::NOT_NULL),
+			array(
+				new DBFieldText('id_country', 2, null, DBField::NOT_NULL),
 				new DBFieldInt('id_group', null, DBFieldInt::UNSIGNED | DBField::NOT_NULL),
 			),
 			array('id_country', 'id_group'),
 			array(
-	            new DBRelation(
-	            	'countries',
-	            	new DBFieldRelation('id_country', 'id')
-	            ),
 				new DBRelation(
-            		'countriesgroups',
-            		new DBFieldRelation('id_group', 'id')
-            	)
+					'countries',
+					new DBFieldRelation('id_country', 'id')
+				),
+				new DBRelation(
+					'countriesgroups',
+					new DBFieldRelation('id_group', 'id')
+				)
 			)
-        );
+		);
     }
 
 	// ************************************

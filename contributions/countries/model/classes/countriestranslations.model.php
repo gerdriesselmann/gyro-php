@@ -1,6 +1,9 @@
 <?php
 /**
- * Model class for cuntries
+ * Model class for translation of country names
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class DAOCountriestranslations extends DataObjectBase {
     public $id;

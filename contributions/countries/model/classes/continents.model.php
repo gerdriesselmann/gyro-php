@@ -1,6 +1,9 @@
 <?php
 /**
  * Model class for continetns
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class DAOContinents extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;
