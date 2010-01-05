@@ -6,39 +6,56 @@
  * @ingroup Model
  */ 
 class Cache {
-	private static $cache_item = null;
-
 	/**
-	 * Returns true, if item is chaced 
+	 * Cache item persister implementation
+	 * 
+	 * @var ICachePersister
+	 */
+	private static $implementation;
+	
+	/**
+	 * Get implementation
+	 * 
+	 * @return ICachePersister
+	 */
+	private static function get_implementation() {
+		if (empty(self::$implementation)) {
+			require_once dirname(__FILE__) . '/cache.db.impl.php';
+ 			self::set_implementation(new CacheDBImpl());
+		}
+		return self::$implementation;
+	}
+	
+	/**
+	 * Set persistance implementation
+	 * 
+	 * @param ICachePersister $impl
+	 */
+	public static function set_implementation(ICachePersister $impl) {
+		self::$implementation = $impl;
+	}
+	
+	/**
+	 * Returns true, if item is cached
+	 *  
+	 * @param $cache_keys mixed A set of key params, may be an array or a string
+	 * @return bool 
 	 */
 	public static function is_cached($cache_keys) {
 		// Allow diableing of cache
 		if (Config::has_feature(Config::DISABLE_CACHE)) {
-			self::$cache_item = false;
 			return false;			
 		}
-
-		$dao = new DAOCache();
-		$dao->add_where('content_gzip', DBWhere::OP_NOT_NULL);
-		$dao->set_keys(self::extract_keys($cache_keys));
-		$dao->add_where('expirationdate', '>', DBFieldDateTime::NOW);
 		
-		if ($dao->find(DAOCache::AUTOFETCH)) {
-			self::$cache_item = $dao;
-			return true; 
-		}
-		else {
-			self::$cache_item = false;
-			return false;
-		}
+		$impl = self::get_implementation();
+		return $impl->is_cached($cache_keys);
 	}
 
 	/**
 	 * Read from cache
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string
-	 * @param bool If true, both Content and Gziped Content must be available
-	 * @return DAOCache The cache as array with members "content" and "data", false if cache is not found
+	 * @return ICacheItem False if cache is not found
 	 */
 	public static function read($cache_keys) {
 		// Allow diableing of cache
@@ -46,52 +63,28 @@ class Cache {
 			return false;			
 		}
 
-		$dao = new DAOCache();
-		$dao->add_where('content_gzip', DBWhere::OP_NOT_NULL);
-		$dao->set_keys(self::extract_keys($cache_keys));
-		$dao->add_where('expirationdate', '>', DBFieldDateTime::NOW);
-		
-		if ($dao->find(DAOCache::AUTOFETCH)) {
-			return $dao; 
-		}
-		else {
-			return false;
-		}
+		$impl = self::get_implementation();
+		return $impl->read($cache_keys);
 	}
 	
 	/**
 	 * Store content in cache
 	 * 
-	 * @param Mixed A set of key params, may be an array or a string
-	 * @param string The cache
+	 * @param mixed $cache_keys A set of key params, may be an array or a string
+	 * @param string $content The cache
+	 * @param int $cache_life_time Cache life time in seconds
+	 * @param mixed $data Any data assoziated with this item
+	 * @param bool $is_compressed True, if $content is already gzip compressed 
 	 */
 	public static function store($cache_keys, $content, $cache_life_time, $data = '', $is_compressed = false) {
 		// Allow diableing of cache
 		if (Config::has_feature(Config::DISABLE_CACHE)) {
 			return;			
 		}
-
+		
 		try {
-			// Clear old items
-			self::remove_expired();
-			$dao = new DAOCache();
-			$dao->set_keys(self::extract_keys($cache_keys));
-			$update = $dao->find(DAOCache::AUTOFETCH);
-			
-			if ($is_compressed) {
-				$dao->set_content_compressed($content);
-			}
-			else {
-				$dao->set_content_plain($content);
-			}
-			$dao->data = $data;
-			$dao->expirationdate = time() + $cache_life_time;
-			if ($update) {
-				$dao->update();
-			}
-			else {
-				$dao->insert();
-			}
+			$impl = self::get_implementation();
+			$impl->store($cache_keys, $content, $cache_life_time, $data, $is_compressed);
 		}
 		catch (Exception $ex) {
 			// If inserting into cache fails, just resume application!
@@ -109,72 +102,17 @@ class Cache {
 		if (Config::has_feature(Config::DISABLE_CACHE)) {
 			return;			
 		}
-
-		if (empty($cache_keys)) {
-			self::do_clear_all();
-		}
-		else if ($cache_keys instanceof ICachable) {
-			self::do_clear_cachable($cache_keys);
-			foreach($cache_keys->get_dependend_cachables() as $dependance) {
-				self::do_clear_cachable($dependance);
-			}
-		}
-		else {
-			self::do_clear($cache_keys);
-		}
-	}
-	
-	/**
-	 * Clear chache for given ICachable 
-	 */
-	private static function do_clear_cachable($cachable) {
-		$keys = $cachable->get_all_cache_ids();
-		foreach($keys as $key) {
-			self::do_clear($key);
-		}		
-	}
-	
-	/**
-	 * Clear all cache
-	 */
-	private static function do_clear_all() {
-		$dao = new DAOCache();
-		$dao->add_where('1 = 1');
-		$dao->delete(DAOCache::WHERE_ONLY);	
-	}
-	
-	/**
-	 * Clear cache for given cache key(s)
-	 */
-	private static function do_clear($cache_keys) {
-		$keys = self::extract_keys($cache_keys);
-		$dao = new DAOCache();
-		$dao->set_keys($keys, true);
-		$dao->delete(DAOCache::WHERE_ONLY);	
-	}
-	
-	/**
-	 * Transform the given param into an array of keys
-	 * 
-	 * @param Mixed A set of key params, may be an array or a string
-	 */
-	private static function extract_keys($cache_keys) {
-		if (is_array($cache_keys)) {
-			return array_values($cache_keys);
-		}
-		else if (is_string($cache_keys) || is_numeric($cache_keys)) {
-			return array($cache_keys);
-		}
-		return array();		
+		
+		$impl = self::get_implementation();
+		$impl->clear($cache_keys);
 	}
 
 	/**
 	 * Removes expired cache entries
 	 */
 	public static function remove_expired() {
-		$dao = new DAOCache();
-		$dao->add_where('expirationdate', '<', DBFieldDateTime::NOW);
-		$dao->delete(DAOCache::WHERE_ONLY);
+		$impl = self::get_implementation();
+		$impl->remove_expired();
 	}
 }
 
