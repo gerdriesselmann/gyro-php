@@ -2,6 +2,9 @@
 Load::models('continents', 'countriesgroups', 'countries2countriesgroups');
 /**
  * Facade class for countries
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Countries
  */
 class Countries {
 	const GROUP_TYPE_NONE = 'NONE';
@@ -9,6 +12,11 @@ class Countries {
 	const GROUP_TYPE_GEOGRAPHICAL = 'GEOGRAPHICAL';
 	const GROUP_TYPE_CULTURAL = 'CULTURAL';
 	
+	/**
+	 * Return possible types for country groups
+	 * 
+	 * @return array
+	 */
 	public static function get_group_types() {
 		return array(
 			self::GROUP_TYPE_NONE => tr(self::GROUP_TYPE_NONE, 'countries'),
