@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Wrapper around memcache/memcached
  * 
  * @author Gerd Riesselmann
