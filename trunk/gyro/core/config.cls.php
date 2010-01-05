@@ -28,6 +28,10 @@ class Config {
 	const START_SESSION = 'START_SESSION';
 	const FORCE_FULL_DOMAINNAME = 'FORCE_FULL_DOMAINNAME';
 	/**
+	 * True to use DB based session. 
+	 */
+	const SESSION_USE_DB = 'SESSION_USE_DB';
+	/**
 	 * Template engine
 	 */
 	const DEFAULT_TEMPLATE_ENGINE = 'DEFAULT_TEMPLATE_ENGINE';
