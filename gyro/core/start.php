@@ -109,10 +109,10 @@ Load::directories('view/base');
 // Load behaviour base classes
 Load::directories('behaviour/base');
 
-/**
- * Set 
- */
-$sessionHandler = new DBSession();
+if (Config::has_feature(Config::SESSION_USE_DB)) {
+	// Switch session to use DB (default)
+	$sessionHandler = new DBSession();
+}
 if (Config::has_feature(Config::START_SESSION)) {
 	Session::start();
 } else {
