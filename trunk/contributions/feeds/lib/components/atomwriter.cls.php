@@ -1,12 +1,4 @@
 <?php
-// $Id: atomwriter.cls.php,v 1.2 2005/11/06 22:13:15 gr Exp $
-
-/**
- * Build Atom file, targeted by FeedWriter class
- *
- * @author Gerd Riesselmann http://www.gerd-riesselmann.net
- */
-
 /*
 Copyright (C) 2005 Gerd Riesselmann
 
@@ -23,80 +15,141 @@ GNU General Public License for more details.
 http://www.gnu.org/licenses/gpl.html
 */
 
-require_once dirname(__FILE__) . "/feedwriter.cls.php";
+require_once dirname(__FILE__) . "/feedwriter/feedwriter.cls.php";
 
-class AtomWriter extends FeedWriter
-{
-	function sendHeader()
-	{
-		header("Content-Type: application/atom+xml");
-		//header("Content-Type: text/xml");
-	}
-
-	function printItem(&$item)
-	{
-	?>
-	<entry xml:base="<?php print $item->baseURL; ?>">
-		<title><?php print $item->title; ?></title>
-		<link rel="alternate" type="text/html" href="<?php print $item->link; ?>" />
-		<author><name><?php print (empty($item->authorName)) ? t("Unknown") : $item->authorName; ?></name></author>
-		<id><?php print $item->guid . "/"; ?></id>
-		<updated><?php $this->_outputDate($item->lastUpdate); ?></updated>
-		<published><?php $this->_outputDate($item->pubDate); ?></published>
-		<summary type="text"><?php print $this->clear($item->description); ?></summary>
-		<content type="html"><![CDATA[<?php print $item->content; ?>]]></content>
-		<?php
-		foreach($item->categories as $cat)
-		{
-			$cat->validate();
-			?>
-			<category scheme="<?php print $cat->domain; ?>" term="<?print $cat->title; ?>" />
-			<?php
-		}
-		?>
-		<?php
-		foreach($item->enclosures as $enc)
-		{
-			$enc->validate();
-			?>
-			<content type="<?php print $enc->type; ?>" src="<?php print $enc->url; ?>" />
-			<?php
-		}
-		?>				
-	</entry>
-	<?php
-	}
-
-	function printTitle(&$title)
-	{
-	print '<?xml version="1.0" encoding="'. $title->encoding . '"?>';
-	?>
-	<feed xmlns="http://www.w3.org/2005/Atom"
-  		xmlns:dc="http://purl.org/dc/elements/1.1/"
-  		xml:lang="<?php print $title->language; ?>">
-		<title><?php print $title->title ?></title>
-		<id><?php print $title->link . "/"; ?></id>
-		<link rel="alternate" type="text/html" href="<?php print $title->link; ?>" />
-		<link rel="self" type="application/atom+xml" href="<?php print $title->thisURL; ?>" />
-		<subtitle><?php print $title->description; ?></subtitle>
-		<updated><?php $this->_outputDate($title->lastUpdated); ?></updated>
-		<generator><?php print $title->generator; ?></generator>
-	<?php
-	}
-
-	function printEnd()
-	{
-	?>
-	</feed>
-	<?php
-	}
+/**
+ * Build Atom file, targeted by FeedWriter class
+ *
+ * @author Gerd Riesselmann http://www.gerd-riesselmann.net
+ * @ingroup Feeds
+ * 
+ * Based upon http://www.gerd-riesselmann.net/archives/2005/05/a-braindead-simple-php-feed-writer-class
+ * but rewritten to fit Gyro style
+ */
+class AtomWriter extends FeedWriter {
+	/**
+	 * Last modificationdate of items
+	 * 
+	 * @var datetime
+	 */
+	private $last_mod_date = 0;
 	
-	function _outputDate($date)
-	{
-		$out = date("Y-m-d\TH:i:s", $date);
-		$greenwich = date("O", $date);
-		$out .= substr($greenwich, 0, 3) . ":" . substr($greenwich, -2, 2);
-		print $out;
+	/**
+	 * Return mime type of feed
+	 * 
+	 * @return string
+	 */
+	public function get_mime_type() {
+		return 'application/atom+xml';
+	}	
+
+	/**
+	 * Render an item
+	 * 
+	 * @param FeedWriterItem $item
+	 * @return string
+	 */
+	protected function render_item(FeedWriterItem $item) {
+		$tags = array();
+		
+		// We misuse html class to generate tags :)
+		$tags[] = html::tag('title', $this->escape($item->title));
+		$tags[] = html::tag_selfclosing('link', array('href' => $item->link));
+		$tags[] = html::tag('id', $this->escape($item->guid));
+		$tags[] = html::tag('summary', $this->strip_html($item->description));
+		
+		$updated = $item->last_update ? $item->last_update : $item->pubdate;
+		$tags[] = html::tag('updated', GyroDate::iso_date($updated));
+		$tags[] = html::tag('published', GyroDate::iso_date($item->pubdate));
+		if ($updated > $this->last_mod_date) {
+			$this->last_mod_date = $updated;
+		}
+		
+		// Author
+		$author_tags = array();
+		if ($item->author_name) {
+			$author_tags[] = html::tag('name', $this->escape($item->author_name));
+		}
+		if ($item->author_email) {
+			$author_tags[] = html::tag('email', $this->escape($item->author_email));
+		}
+		if (count($author_tags)) {
+			$tags[] = html::tag('author', implode("\n", $author_tags));
+		}
+		
+		// HTML content
+		$content = $this->relative_to_absolute($item->content, $item->baseurl);
+		$content = String::escape($content, String::XML);
+		$tags[] = html::tag('content', $content, array('type' => 'html'));
+		
+		// Categories
+		foreach($item->categories as $cat) {
+			$tags[] = html::tag_selfclosing('category', array('scheme' => $cat->domain, 'term' => $cat->title));
+		}
+
+		// Enclosures
+		foreach($item->enclosures as $enc) {
+			$tags[] = html::tag_selfclosing('content', array('type' => $enc->type, 'src' => $enc->url));
+		}
+		
+		return html::tag('entry', implode("\n", $tags));
+	}
+
+	/**
+     * Render feed title section
+     * 
+     * @param FeedWriterTitle $title
+     * @return string
+	 */
+	protected function render_title(FeedWriterTitle $title) {
+		// We misuse html class to generate tags :)
+		$tags = array();
+		$tags[] = html::tag('title', $this->escape($title->title));
+		$tags[] = html::tag('subtitle', $this->strip_html($title->description));
+		$tags[] = html::tag('id', $this->escape($title->link));
+		$tags[] = html::tag_selfclosing('link', array('rel' => 'alternate', 'type' => 'text/html', 'href' => $title->link));
+		// This is recommend
+		if ($title->selfurl) {
+			$tags[] = html::tag_selfclosing('link', array('href' => $title->selfurl, 'rel' => 'self', 'type' => $this->get_mime_type()));
+		}
+		
+		if ($title->last_updated) {
+			$tags[] = html::tag('updated', GyroDate::iso_date($title->last_updated));
+		}
+		else {
+			$tags[] = html::tag('updated', GyroDate::iso_date($this->last_mod_date));
+		}
+		
+		$tags[] = html::tag('generator', $this->escape($title->generator));
+		$tags[] = html::tag('rights', $this->escape('Copyright ' . $title->copyright));
+		$tags[] = html::tag('author', html::tag('name', $this->escape($title->editor)));
+		
+		if (!empty($title->imageurl)) {
+			$tags[] = html::tag('logo', $this->escape($title->imageurl));
+		}
+		
+		$ret = '<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="' . $this->escape($title->language) . '">';
+		$ret .= "\n";
+		$ret .= implode("\n", $tags);
+		return $ret;
+		
+	}
+
+	/**
+     * Render feed closing
+     * 
+     * @param string $title
+     * @param string $items
+     * @return string
+	 */
+	protected function render_end($title, $items) {
+		$ret = '<?xml version="1.0" encoding="' . GyroLocale::get_charset() . '"?>';
+		$ret .= "\n";
+		$ret .= $title;
+		$ret .= "\n";
+		$ret .= $items;
+		$ret .= "\n";
+		$ret .= '</feed>';
+		return $ret;
 	}
 }
-?>
