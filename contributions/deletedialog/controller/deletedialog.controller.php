@@ -1,7 +1,9 @@
 <?php
 /**
  * This controller catches delete commands
- *
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup DeleteDialog
  */
 class DeleteDialogController extends ControllerBase {
 	/**
