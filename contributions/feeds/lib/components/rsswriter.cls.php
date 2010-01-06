@@ -20,7 +20,11 @@ require_once dirname(__FILE__) . "/feedwriter/feedwriter.cls.php";
 /**
  * Build RSS file, targeted by FeedWriter class
  *
- * @author Gerd Riesselmann http://www.gerd-riesselmann.net
+ * @author Gerd Riesselmann 
+ * @ingroup Feeds
+ * 
+ * Based upon http://www.gerd-riesselmann.net/archives/2005/05/a-braindead-simple-php-feed-writer-class
+ * but rewritten to fit Gyro style
  */
 class RSSWriter extends FeedWriter {	
 	/**
@@ -132,7 +136,7 @@ class RSSWriter extends FeedWriter {
      * @param string $items
      * @return string
 	 */
-	function render_end($title, $items) {
+	protected function render_end($title, $items) {
 		$channel = html::tag('channel', $title . $items);
 		$rss = html::tag(
 			'rss',

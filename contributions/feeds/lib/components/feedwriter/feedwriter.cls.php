@@ -1,10 +1,4 @@
 <?php
-/**
- * Feed Writer base class
- *
- * @author Gerd Riesselmann http://www.gerd-riesselmann.net
- */
-
 /*
 Copyright (C) 2005 Gerd Riesselmann
 
@@ -24,6 +18,9 @@ http://www.gnu.org/licenses/gpl.html
 
 /**
  * Simple Date Structure holding feed data
+ *
+ * @author Gerd Riesselmann
+ * @ingroup Feeds
  */
 class FeedWriterTitle {
 	public $title = '';
@@ -53,6 +50,9 @@ class FeedWriterTitle {
 
 /**
  * Simple Date Structure holding feed item data
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Feeds
  */
 class FeedWriterItem {
 	public $description = '';
@@ -72,6 +72,9 @@ class FeedWriterItem {
 
 /**
  *  Data Structure holding a category
+ *  
+ * @author Gerd Riesselmann
+ * @ingroup Feeds
  */
 class FeedWriterCategory {
 	public $domain = '';
@@ -85,6 +88,9 @@ class FeedWriterCategory {
 
 /**
  * Date Structure for enclosures
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Feeds
  */
 class FeedWriterEnclosures {
 	public $url = '';
@@ -92,6 +98,14 @@ class FeedWriterEnclosures {
 	public $type = '';
 }
 
+/**
+ * Basic Feedwriter, extended by IRenderer to fit Gyro style
+ * 
+ * @see http://www.gerd-riesselmann.net/archives/2005/05/a-braindead-simple-php-feed-writer-class
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Feeds
+ */
 class FeedWriter implements IRenderer {
 	protected $items;
 	/**
@@ -126,13 +140,15 @@ class FeedWriter implements IRenderer {
 	 * @return string The rendered content
 	 */
 	public function render($policy = self::NONE) {
-		$title = $this->render_title($this->title);
-
 		$items = '';
 		foreach($this->items as $item) {
 			$items .= $this->render_item($item);
 		}
 		
+		// Render title after items, so data collected from items can be used 
+		// in title 
+		$title = $this->render_title($this->title);
+
 		$ret = $this->render_end($title, $items);		
 		return $ret;
 	}
