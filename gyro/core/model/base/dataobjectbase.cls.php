@@ -496,12 +496,14 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * Join another table to this
 	 *
 	 * @param IDBTable $other
-	 * @param array $conditions Array of DBJoinCondition. When ommited Gyro will figure out join conditions by itself 
+	 * @param array $conditions Array of DBJoinCondition. When ommited Gyro will figure out join conditions by itself
+	 * @param string $type One of DBQueryJoined::INNER, DBQueryJoined::LEFT, or DBQueryJoined::RIGHT  
 	 */
-	public function join(IDBTable $other, $conditions = array()) {
+	public function join(IDBTable $other, $conditions = array(), $type = DBQueryJoined::INNER) {
 		$this->joins[] = array(
 			'table' => $other,
-			'conditions' => Arr::force($conditions, false)
+			'conditions' => Arr::force($conditions, false),
+			'type' => $type
 		);	 
 	}
 	
@@ -909,6 +911,7 @@ class DataObjectBase implements IDataObject, IActionSource {
     		$joined_table = $join['table'];
     		$conditions = $join['conditions'];
     		$joined_query = $query->add_join($joined_table);
+    		$joined_query->set_join_type(Arr::get_item($join, 'type', DBQueryJoined::INNER));
     		if (count($conditions) > 0) {
     			$joined_query->set_policy(DBQuery::NONE);
     			foreach($conditions as $cond) {
