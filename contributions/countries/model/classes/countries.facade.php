@@ -78,8 +78,14 @@ class Countries {
     		$lang = GyroLocale::get_language();
     	}
     	$trans = new DAOCountriestranslations();
-    	$trans->lang = $lang;
-    	$adapter->join($trans);
+    	$adapter->join(
+    		$trans, 
+    		array(
+    			new DBJoinCondition($trans, 'id_country', $adapter, 'id'),
+    			new DBWhere($trans, 'lang', '=', 'en')
+    		), 
+    		DBQueryJoined::LEFT
+    	);
     	$adapter->sort('countriestranslations.name');
     }
     
