@@ -380,15 +380,15 @@ class Url {
 			// no String::xxxx wrappers. They perform notably faster.
 			foreach($tlds as $tld) {
 				$l_tld_check = strlen($tld) + 1; // +1 is for the '.' we will add later on
-				// A valid domain name is x.[TLD], so if a possible TLF must be at least 2 chars less
-				// in length than the host. We added already +1, so we need another +1 here 
-				if ($l_tld_check + 1 >= $l_host) {
+				// A valid domain name is x.[TLD], so the host must be at least by one
+				// char longer than the ".[TLD]"  
+				if ($l_tld_check >= $l_host) {
 					// Impossible match...
 					continue;
 				} 
 				
 				// The below is equal to (String::ends_with($host, '.' . $tld))
-				if (substr($host, $l_host - $l_tld_check, $l_tld_check) === '.' . $tld) {
+				if (substr($host, -$l_tld_check, $l_tld_check) === '.' . $tld) {
 					$ret['tld'] = $tld;
 					$tmp = explode('.', $tld);
 					$count_data = count($ret['data']);
