@@ -20,9 +20,14 @@ Config::set_value_from_constant(Config::ITEMS_PER_PAGE, 'APP_ITEMS_PER_PAGE', 10
 /**
  * Gyro Version
  * 
- * Define APP_VERSION_MAX to a value > 0.3 to use new features of version 0.4 and above
+ * Define APP_VERSION_MAX to older Gyro version to keep compatability 
+ * 
+ * Notable breakpoints are:
+ * 
+ *  - 0.3: Will include all Config constants as defines, too. E.g. APP_ITEMS_PER_PAGE will be always
+ *         defined. 
  */
-Config::set_value_from_constant(Config::VERSION_MAX, 'APP_VERSION_MAX', 0.3);
+Config::set_value_from_constant(Config::VERSION_MAX, 'APP_VERSION_MAX', 10.0);
 /**
  * Set debug related constants, if not already defined.
  */
