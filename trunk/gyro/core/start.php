@@ -61,10 +61,6 @@ if (Config::has_feature(Config::THROW_ON_WARNING)) {
 	set_error_handler('___errhandler', E_WARNING);
 }
 
-if (Config::get_value(Config::VERSION_MAX) < 0.4) {
-	// PDF moved from Core to a module in 0.4
-	Load::enable_module('pdf');
-}
 if (file_exists(APP_INCLUDE_ABSPATH . 'modules.php')) {
 	// Enable Modules
 	include_once APP_INCLUDE_ABSPATH . 'modules.php';
