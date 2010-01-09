@@ -99,8 +99,18 @@ class DBDriverSphinx implements IDBDriver {
 	 * @return string
 	 */
 	public function escape($value) {
-		$this->connect();
-		return $this->client->EscapeString(Cast::string($value));
+		// Handcraft escaping for extended query syntax
+		// TODO Maybe we should even leave it untouched within double quotes?
+		$from = array ( '\\', '@', '&', '/');
+		$to   = array ( '\\\\', '\@', '\&', '\/');
+		$ret = str_replace($from, $to, $value);
+		
+		// This code escapes extended search operators like !, -, | etc.
+		// That's definitely too much! 
+		//$this->connect();
+		//$ret = $this->client->EscapeString(Cast::string($value));
+		
+		return $ret; 
 	}
 	
 	/**
