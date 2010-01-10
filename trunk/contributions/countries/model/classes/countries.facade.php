@@ -82,7 +82,7 @@ class Countries {
     		$trans, 
     		array(
     			new DBJoinCondition($trans, 'id_country', $adapter, 'id'),
-    			new DBWhere($trans, 'lang', '=', 'en')
+    			new DBWhere($trans, 'lang', '=', $lang)
     		), 
     		DBQueryJoined::LEFT
     	);
