@@ -113,7 +113,8 @@ class FormHandler {
  			$this->error($status);
  		}
  		else {
- 			$this->success(empty($status->message) ? $success_message : $status->message);
+ 			$msg = ($status->is_empty()) ? $success_message : $status->message;
+ 			$this->success($msg);
  		}
  	}
  	
