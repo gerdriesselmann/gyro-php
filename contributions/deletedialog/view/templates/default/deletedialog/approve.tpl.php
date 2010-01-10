@@ -7,7 +7,7 @@ if ($instance instanceof ISelfDescribing) {
 $title = tr('Delete instance »%inst«', 'deletedialog', array('%inst' => $inst_title));
 $page_data->head->title = $title;
 
-print WidgetBreadcrumb::output(
+$page_data->breadcrumb = WidgetBreadcrumb::output(
 	array(
 		$instance,
 		tr('Delete', 'deletedialog')
