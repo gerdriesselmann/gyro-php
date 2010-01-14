@@ -53,7 +53,7 @@ class DBDriverSphinx implements IDBDriver {
 	public function initialize($dbname, $user = '', $password = '', $host = 'localhost') {
 		$host_and_port = explode(':', $host);
 		if (count($host_and_port) < 2) {
-			$host_and_port[] = 3312; // Sphinx default port
+			$host_and_port[] = 9312; // Sphinx default port
 		}
 		$this->connect_params = array(
 			'host' => $host_and_port[0],

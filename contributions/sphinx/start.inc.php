@@ -28,7 +28,8 @@
  * 
  * In your config, define these constants:
  * 
- * @li APP_SPHINX_DB_HOST: both host and port of your sphinx daemon, e.g. "localhost:3312"
+ * @li APP_SPHINX_DB_HOST: both host and (optional) port of your sphinx daemon. If you ommit the port, Sphinx default port 9312 
+ *     is used. This constant is optional, default value is "localhost"
  * @li APP_SPHINX_DB_NAME: A string that gets prefixed to all index names
  * @li APP_SPHINX_INDEXER_INVOKE: Path and optional arguments to the sphinx indexer, e.g '/usr/local/bin/indexer -c /path/to/sphinx.conf');
  * @li APP_SPHINX_MAX_MATCHES: Value of the max_matches config option (optional, 1,000 by default)
@@ -73,4 +74,5 @@ if (!class_exists('SphinxClient')) {
 	require_once dirname(__FILE__) . '/3rdparty/sphinx/sphinxapi.php';
 }
 if (!defined('APP_SPHINX_MAX_MATCHES')) define ('APP_SPHINX_MAX_MATCHES', 1000);
+if (!defined('APP_SPHINX_DB_HOST')) define ('APP_SPHINX_DB_HOST', 'localhost');
 DB::create_connection('sphinx', 'sphinx', APP_SPHINX_DB_NAME, false, false, APP_SPHINX_DB_HOST);
