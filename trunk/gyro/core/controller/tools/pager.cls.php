@@ -57,7 +57,11 @@ class Pager implements IDBQueryModifier {
 		}		
 
 		if ($page > $page_total) {
-			$page = $page_total;
+			// Oops, not that much items
+			// Redirect to last page
+			$url = $this->adapter->get_url_for_page($page_total);
+			$url->redirect(Url::TEMPORARY);
+			exit;
 		}
 		
 		$this->pager_data['page'] = $page;
@@ -108,7 +112,8 @@ class Pager implements IDBQueryModifier {
 	 * Compute url for page
 	 */
 	protected function get_url_for_page($page) {
-		return $this->adapter->get_url_for_page($page);
+		$url = $this->adapter->get_url_for_page($page);
+		return $url->build(Url::RELATIVE);
 	}
 
 	/**
@@ -168,7 +173,7 @@ class PagerDefaultAdapter implements IPagerAdapter {
 	public function get_url_for_page($page) {
 		$url = Url::current();
 		self::apply_to_url($url, $page, $this->parameter);
-		return $url->build(Url::RELATIVE);
+		return $url;
 	}
 
 	/**
