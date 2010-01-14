@@ -2,7 +2,7 @@
 /**
  * @defgroup Sphinx
  * 
- * Database driver for the Sphinx full text search engine (http://www.sphinxsearch.com/)
+ * Database driver for the Sphinx full text search engine (http://www.sphinxsearch.com/).
  * 
  * @section Usage
  * 
@@ -60,6 +60,12 @@
  *   );
  * }
  * @endcode
+ * 
+ * @section Notes Additional notes
+ * 
+ * This module is build against version 0.9.9 of Sphinx. You may download it here: http://www.sphinxsearch.com/downloads.html
+ * 
+ * Sphinx is publicly distributed under GNU General Public License (GPL), version 2.
  */
 
 if (!class_exists('SphinxClient')) {
