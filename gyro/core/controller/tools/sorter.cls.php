@@ -60,7 +60,7 @@ class Sorter implements IDBQueryModifier {
 		else {
 			if ($column_obj && $column_obj->get_is_single_direction()) {
 				// Oops, we have a sort on a non-sortable column. Redirect
-				Url::create($this->adapter->get_url_for_sort($column_key, ''))->redirect();
+				$this->adapter->get_url_for_sort($column_key, '')->redirect();
 				exit;				
 			}
 		}
@@ -122,14 +122,26 @@ class Sorter implements IDBQueryModifier {
 		$ret = array(
 			'column' => $column,
 			'title' => $data->get_title(),
-			'link' => $this->adapter->get_url_for_sort($column_key, $order_param_value),
+			'link' => $this->get_url_for_sort($column_key, $order_param_value),
 			'sort_title' => $data->get_order_title($order),
 		);
 		if (!$data->get_is_single_direction()) {
-			$ret['other_sort_link'] = $this->adapter->get_url_for_sort($column_key, $data->get_opposite_order($order));
+			$ret['other_sort_link'] = $this->get_url_for_sort($column_key, $data->get_opposite_order($order));
 			$ret['other_sort_title'] = $data->get_order_title($data->get_opposite_order($order));
 		}		
 		return $ret;
+	}
+	
+	/**
+	 * Return link to invoke sorting on given column with given order (relative)
+	 *
+	 * @param string $column
+	 * @param string $order
+	 * @return string
+	 */
+	private function get_url_for_sort($column, $order) {
+		$url = $this->adapter->get_url_for_sort($column, $order);
+		return $url->build(Url::RELATIVE);
 	}
 	
 	/**
@@ -191,12 +203,12 @@ class SorterDefaultAdapter implements ISorterAdapter {
 	 *
 	 * @param string $column
 	 * @param string $order
-	 * @return string
+	 * @return Url
 	 */
 	public function get_url_for_sort($column, $order) {
 		$url = Url::current();
 		self::apply_to_url($url, $column, $order, $this->param_column, $this->param_order);
-		return $url->build(Url::RELATIVE);
+		return $url;
 	}
 
 	/**
