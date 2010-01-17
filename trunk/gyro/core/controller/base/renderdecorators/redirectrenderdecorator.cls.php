@@ -43,11 +43,14 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 	 * @return void
 	 */
 	public function initialize($page_data) {
-		$url = Url::current();
 		$target = $this->target_path;
-		$source_path = $url->get_path();
-		
-		$this->build_redirect_url($url, $target, $source_path);
+		$source_path = Url::current()->get_path();
+		$full_target = $this->build_redirect_url($target, $source_path);
+				
+		$url = Url::create($full_target);
+		if (!$url->is_valid()) {
+			$url = Url::current()->clear_query()->set_path($full_target);
+		}
 		$url->redirect(Url::PERMANENT);
 		exit;
 	}
@@ -55,7 +58,7 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 	/**
 	 * Change URL to point ot new location
 	 */
-	protected function build_redirect_url(Url $url, $target_path, $source_path) {
+	protected function build_redirect_url($target_path, $source_path) {
 		// Replace back references
 		// $0
 		$target_path = str_replace('{$0}', $source_path, $target_path);
@@ -68,7 +71,6 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 		}
 		// remove not referenced back reference
 		$target_path = preg_replace('|\{\$\d\}|', '', $target_path);
-		
-		$url->clear_query()->set_path($target_path);
+		return $target_path;
 	}
 }
