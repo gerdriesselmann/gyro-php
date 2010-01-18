@@ -14,7 +14,7 @@ define('APP_TESTMODE', true);
 /**
  * Allow https?
  *
- * IF set to true, all https://-routes will get translated to http  
+ * If set to false, all https://-routes will get translated to http  
  */
 define('APP_ENABLE_HTTPS', true);
 
