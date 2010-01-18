@@ -33,7 +33,7 @@ mkdir tmp/view
 mkdir tmp/view/templates_c
 chmod -R 777 tmp
 # Copy files
-cp $2/install/config.php.example app/modules.php
+cp $2/install/config.php.example app/config.php.example
 cp $2/install/constants.php.example app/constants.php
 cp $2/install/modules.php.example app/modules.php
 cp $2/install/htaccess.example app/www/.htaccess
