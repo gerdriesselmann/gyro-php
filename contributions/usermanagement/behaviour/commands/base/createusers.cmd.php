@@ -1,10 +1,10 @@
 <?php
 /**
- * Created on 13.03.2007
- *
+ * Create a user command to be overloaded
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 class CreateUsersBaseCommand extends CommandChain {		
 	/**
 	 * Execute this command

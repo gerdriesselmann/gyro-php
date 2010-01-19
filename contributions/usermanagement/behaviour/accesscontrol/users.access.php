@@ -1,6 +1,9 @@
 <?php
 /**
  * User Access Control for Users
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class UsersAccessControl extends AccessControlBase {
 	/**
@@ -39,8 +42,6 @@ class UsersAccessControl extends AccessControlBase {
 	
 	/**
 	 * Overloadable. Check if action on object is allowed for no user
-	 *
-	 * User is always valid
 	 * 
 	 * @param string $action The action to perform (edit, delete, ....)  
 	 * @param mixed $item Item to perform the action on (may be a DataObject, e.g.)

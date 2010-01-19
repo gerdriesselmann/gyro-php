@@ -1,10 +1,10 @@
 <?php
 /**
- * Created on 13.03.2007
- *
+ * Update a user
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
- 
 class UpdateUsersCommand extends CommandChain {
 	/**
 	 * Execute this command

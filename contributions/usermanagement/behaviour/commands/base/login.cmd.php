@@ -1,10 +1,10 @@
 <?php
 /**
- * Created on 11.04.2007
- *
+ * Login command to be overloaded
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 class LoginUsersBaseCommand extends CommandChain {
 	/**
 	 * Returns title of command.

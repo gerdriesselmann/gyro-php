@@ -1,9 +1,11 @@
 <?php
-
 /**
- * Cache manager that caches if user is not logged in
+ * Cache manager that caches only if user is not logged in
  * 
  * Returns url as cache key
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class AnonymousCacheManager extends SuccessCacheManager {
 	/**

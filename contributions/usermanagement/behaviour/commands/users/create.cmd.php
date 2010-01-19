@@ -1,11 +1,11 @@
 <?php
-/**
- * Created on 13.03.2007
- *
- * @author Gerd Riesselmann
- */
-
 Load::commands('base/createusers');
 
+/**
+ * Create a user
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class CreateUsersCommand extends CreateUsersBaseCommand {		
 } 

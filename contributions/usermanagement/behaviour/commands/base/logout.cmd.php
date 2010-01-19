@@ -1,6 +1,9 @@
 <?php
 /**
+ * Logout command to be overloaded
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class LogoutUsersBaseCommand extends CommandComposite {
 	/**

@@ -1,6 +1,9 @@
 <?php
 /**
  * Confirm account creation
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class CreateaccountConfirmationHandler extends ConfirmationHandlerBase {
 	/**

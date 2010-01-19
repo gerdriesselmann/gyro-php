@@ -3,6 +3,9 @@ Load::models(array('userroles', 'users2userroles'));
 
 /**
  * Table Definition for users
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing  {
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
@@ -28,7 +31,7 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 	
 	// now define your table structure.
 	// key is column name, value is type
-	function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'users',
 			array(

@@ -1,7 +1,9 @@
 <?php
 /**
  * Catch view events to extend rendering
- *
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class UsersViewEventSink implements IEventSink {
 	/**

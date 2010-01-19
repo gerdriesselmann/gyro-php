@@ -1,4 +1,10 @@
 <?php
+/**
+ * Default dashboard for all users
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class DefaultDashboard extends DashboardBase {
 	/**
 	 * Return template file name for dashboard

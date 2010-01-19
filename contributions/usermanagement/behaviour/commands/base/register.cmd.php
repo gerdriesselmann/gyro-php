@@ -1,10 +1,10 @@
 <?php
 /**
- * Created on 13.03.2007
- *
+ * Register command to be overloaded
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 class RegisterUsersBaseCommand extends CommandChain {		
 	/**
 	 * Returns title of command.

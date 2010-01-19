@@ -1,11 +1,11 @@
 <?php
-/**
- * Created on 11.04.2007
- *
- * @author Gerd Riesselmann
- */
-
 Load::commands('base/logout');
 
+/**
+ * Logout
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class LogoutUsersCommand extends LogoutUsersBaseCommand {
 }

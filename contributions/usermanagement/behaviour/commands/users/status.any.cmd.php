@@ -1,17 +1,13 @@
 <?php
-/**
- * Created on 07.03.2007
- *
- * @author Gerd Riesselmann
- */
-
 Load::commands('generics/status.any');
 
 /**
  * Command to set status
  * 
- * Expects new status as param
- *
+ * Notifies user of change by sending a mail
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class StatusAnyUsersCommand extends StatusAnyCommand {
  	/**
