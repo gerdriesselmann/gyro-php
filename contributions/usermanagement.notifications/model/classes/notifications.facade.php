@@ -60,11 +60,74 @@ class Notifications {
 	 * @param mixed $created
 	 * @return Status
 	 */
-	public static function create($user, $params, &$created) {
+	public static function create(DAOUsers $user, $params, &$created) {
 		$params['id_user'] = $user->id;
 		$cmd = CommandsFactory::create_command('notifications', 'create', $params);
 		$ret = $cmd->execute();
 		$created = $cmd->get_result();
 		return $ret;
+	}
+	
+	/**
+	 * Notify a user by sending a message
+	 * 
+	 * @param DAOUsers $user
+	 * @param string $message
+	 * @param string $title If title is empty a title will be computed from message
+	 * @return Status
+	 */
+	public static function notify_single_user(DAOUsers $user, $message, $title = '') {
+		$params = array(
+			'title' => self::compute_title($message, $title),
+			'message' => $message
+		);
+		$cmd = CommandsFactory::create_command($user, 'notify', $params);
+		return $cmd->execute();
+	}
+	
+	/**
+	 * Notify a couple of user by sending a message
+	 * 
+	 * @param array $arr_users Array of DAOUsers
+	 * @param string $message
+	 * @param string $title If title is empty a title will be computed from message
+	 * @return Status
+	 */
+	public static function notify_some_users($arr_users, $message, $title = '') {
+		$ret = new Status();
+		$title = self::compute_title($message, $title);
+		foreach($arr_users as $user) {
+			$ret->merge(self::notify_single_user($user, $message, $title));
+			if ($ret->is_error()) {
+				break;
+			}	
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Notify all users by sending a message
+	 * 
+	 * @param string $message
+	 * @param string $title If title is empty a title will be computed from message
+	 * @return Status
+	 */
+	public static function notify_all_users($message, $title = '') {
+		$params = array(
+			'title' => self::compute_title($message, $title),
+			'message' => $message
+		);		
+		$cmd = CommandsFactory::create_command('users', 'notifyall', $params);
+		return $cmd->execute();		
+	}
+	
+	/**
+	 * If title is empty return begin of message as title
+	 */
+	private static function compute_title($message, $title) {
+		if (empty($title)) {
+			$title = String::substr_word($message, 0, 150) . '...';
+		}
+		return $title;
 	}
 }
