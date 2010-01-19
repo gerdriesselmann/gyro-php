@@ -1,14 +1,11 @@
 <?php
-/**
- * Created on 11.04.2007
- *
- * @author Gerd Riesselmann
- */
-
 Load::commands('base/loginknown');
 
 /**
  * Login known user
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class LoginknownUsersCommand extends LoginknownUsersBaseCommand  {
 }

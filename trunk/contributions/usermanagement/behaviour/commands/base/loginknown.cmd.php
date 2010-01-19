@@ -1,12 +1,9 @@
 <?php
 /**
- * Created on 11.04.2007
- *
+ * Login known user command to be overloaded
+ * 
  * @author Gerd Riesselmann
- */
-
-/**
- * Login known user
+ * @ingroup Usermanagement
  */
 class LoginknownUsersBaseCommand extends CommandChain {
 	/**

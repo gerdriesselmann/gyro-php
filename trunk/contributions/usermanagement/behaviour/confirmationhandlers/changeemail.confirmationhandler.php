@@ -1,6 +1,9 @@
 <?php
 /**
  * Confirm email change
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class ChangeemailConfirmationHandler extends ConfirmationHandlerBase  {
 	/**

@@ -1,6 +1,9 @@
 <?php
 /**
  * Table Definition for permanentlogins
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class DAOPermanentlogins extends DataObjectBase {
 	public $code;                            // string(50)  not_null primary_key
@@ -8,7 +11,7 @@ class DAOPermanentlogins extends DataObjectBase {
 	public $expirationdate;                  // datetime(19)  binary
 	
 	
-	function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'permanentlogins',
 			array(

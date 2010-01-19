@@ -1,6 +1,9 @@
 <?php
 /**
  * Helper functions around permant logins
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class PermanentLogins {
 	const COOKIE_NAME = 'C128';
@@ -37,5 +40,4 @@ class PermanentLogins {
 		$cmd = CommandsFactory::create_command('permanentlogins', 'end', false);
 		$cmd->execute();		
 	}
-	
 }

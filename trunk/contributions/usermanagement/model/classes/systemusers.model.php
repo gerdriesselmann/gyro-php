@@ -1,8 +1,13 @@
 <?php
 /**
- * Table Definition for users
+ * A fake user class to use as system user
+ * 
+ * There is no SYSTEM role in DB, since SYSTEM is not a real user.
+ * Therefore this class is used
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 class DAOSystemUsers extends DAOUsers {
 	public function __construct() {
 		parent::__construct();

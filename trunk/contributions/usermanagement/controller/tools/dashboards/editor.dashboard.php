@@ -1,4 +1,10 @@
 <?php
+/**
+ * Default dashboard for editor
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class EditorDashboard extends DashboardBase {
 	/**
 	 * Returns the title of the dashboard

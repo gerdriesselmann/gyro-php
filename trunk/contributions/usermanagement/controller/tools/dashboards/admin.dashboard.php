@@ -1,4 +1,10 @@
 <?php
+/**
+ * Default dashboard implementation for admins
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class AdminDashboard extends DashboardBase {
 	/**
 	 * Returns the title of the dashboard

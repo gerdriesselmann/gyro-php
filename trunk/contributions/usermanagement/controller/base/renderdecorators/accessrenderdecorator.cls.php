@@ -14,6 +14,9 @@
  * case the user is redirected to the login page.
  * 
  * This render decorates disables caching on the given route.
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class AccessRenderDecorator extends RenderDecoratorBase {
 	/**

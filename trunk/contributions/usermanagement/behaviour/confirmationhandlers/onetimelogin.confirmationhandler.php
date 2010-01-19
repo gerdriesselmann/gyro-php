@@ -1,6 +1,9 @@
 <?php
 /**
  * Confirm onetime login (lost password)
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 	/**

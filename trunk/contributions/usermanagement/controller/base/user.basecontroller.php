@@ -1,15 +1,13 @@
 <?php
-/*
- * Created on 12.03.2006
- *
- * To change the template for this generated file go to
- * Window - Preferences - PHPeclipse - PHP - Code Templates
- */
-
-
 /**
  * Basic user controller, offers log in, logout etc
- *
+ * 
+ * @attention You must subclass this to enable user management.
+ * 
+ * Overload get_features_policy() to enable or disable featured
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class UserBaseController extends ControllerBase {
 	const ALLOW_REGISTER = 1;

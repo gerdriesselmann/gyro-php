@@ -9,7 +9,7 @@ class DAOUsers2userroles extends DataObjectBase {
 
 	// now define your table structure.
 	// key is column name, value is type
-	function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'users2userroles',
 			array(

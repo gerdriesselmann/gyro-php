@@ -1,12 +1,9 @@
 <?php
 /**
- * Created on 15.12.2006
- *
- * @author Gerd Riesselmann
- */
- 
-/**
  * Interface for Dashboard implementations
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 interface IDashboard {
 	/**

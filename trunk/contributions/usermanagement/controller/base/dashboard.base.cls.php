@@ -1,4 +1,10 @@
 <?php
+/**
+ * Dashboard base class
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class DashboardBase implements IDashboard {
 	/**
 	 * USer

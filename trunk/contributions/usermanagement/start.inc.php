@@ -1,7 +1,4 @@
 <?php
-// You must enable status module with code like this:
-// Load::enable_module('status');
-
 if (!defined('USER_ROLE_USER')) define('USER_ROLE_USER', 'user');
 if (!defined('USER_ROLE_EDITOR')) define('USER_ROLE_EDITOR', 'editor');
 if (!defined('USER_ROLE_ADMIN')) define('USER_ROLE_ADMIN', 'admin');
@@ -25,7 +22,7 @@ if (!defined('APP_DEFAULT_PAGE_ADMIN')) define('APP_DEFAULT_PAGE_ADMIN', APP_DEF
 
 
 /**
- * Defines how routing should act if an anonmous user hits a page that requires login
+ * Defines how routing should act if an anonymous user hits a page that requires login
  * 
  * Allowed are:
  * 
@@ -41,3 +38,10 @@ EventSource::Instance()->register(new UsersViewEventSink());
 
 Load::models('users');
 Users::initialize();
+
+/**
+ * @defgroup Usermanagement
+ *
+ * A complete user management implementation
+ */
+ 

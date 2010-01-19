@@ -1,12 +1,9 @@
 <?php
 /**
- * Created on 14.11.2006
- *
+ * Helpers for user role retrieval
+ * 
  * @author Gerd Riesselmann
- */
-
-/**
- * Usermanagement Business Logic
+ * @ingroup Usermanagement
  */
 class UserRoles {
 	/**

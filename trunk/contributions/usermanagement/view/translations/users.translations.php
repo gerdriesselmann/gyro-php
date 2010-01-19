@@ -1,10 +1,10 @@
 <?php
 /**
- * Created on 11.01.2007
- *
+ * Users translations
+ * 
  * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 function users_load_translations($languages) {
 	return array(
 		'E-mail' => array(

@@ -1,26 +1,17 @@
 <?php
-/**
- * Created on 14.11.2006
- *
- * @author Gerd Riesselmann
- */
-
 Load::models('permanentlogins');
 
 /**
  * Usermanagement Business Logic
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class Users {
 	const STATUS_ACTIVE = 'ACTIVE';
 	const STATUS_DELETED = 'DELETED';
 	const STATUS_DISABLED = 'DISABLED';
 	const STATUS_UNCONFIRMED = 'UNCONFIRMED';
-	
-	
-	/**
-	 * The current logged in user
-	 */
-	private static $current_user = null; 
 	
 	/**
 	 * Returns the user logged in or null, if no user is logged in
@@ -71,13 +62,14 @@ class Users {
 	 * @return DAOUsers
 	 */
 	public static function get($id) {
-		if ($id <= 0) {
-			return false;
-		}
-
 		return DB::get_item('users', 'id', $id); 
 	} 
 	
+	/**
+	 * Return all possible status
+	 * 
+	 * @return array
+	 */
 	public static function get_statuses() {
 		return array(
 			self::STATUS_ACTIVE => tr(self::STATUS_ACTIVE, 'users'),
@@ -98,10 +90,10 @@ class Users {
 	/**
 	 * Login given user. 
 	 * 
-	 * @param string User's username
-	 * @param string User's password
+	 * @param array $params Associative array with login information
+	 * @param bool $permanent If TRUE, user get's permanently logged in
 	 * 
-	 * @return Status Error
+	 * @return Status
 	 */
 	public static function login($params, $permanent) {
 		$params['permanent'] = $permanent;
@@ -117,7 +109,7 @@ class Users {
 	}
 	
 	/**
-	 * Performs actual login
+	 * Performs actual login for a given user
 	 * 
 	 * @return Boolean True on success, false otherwise 
 	 */
@@ -129,6 +121,10 @@ class Users {
 	
 	/**
 	 * Creates an account
+	 * 
+	 * @param array $params Associative array with account's properties
+	 * @param DAOUsers $result User created
+	 * @return Status
 	 */
 	public static function create($params, &$result) {
 		$cmd = CommandsFactory::create_command('users', 'create', $params);
@@ -139,6 +135,12 @@ class Users {
 
 	/**
 	 * Registers a new User
+	 * 
+	 * @param string $username
+	 * @param string $password
+	 * @param string $email
+	 * @param DAOUsers $result User created
+	 * @return Status
 	 */
 	public static function register($username, $password, $email, &$result) {
 		$params = array(
@@ -154,8 +156,10 @@ class Users {
 	
 	/**
 	 * Edit account data of current user
+	 * 
+	 * @return Status
 	 */
-	public static function update($user, $params) {
+	public static function update(DAOUsers $user, $params) {
 		$cmd = CommandsFactory::create_command($user, 'update', $params);
 		$err = $cmd->execute();
 		
@@ -171,6 +175,8 @@ class Users {
 	
 	/**
 	 * Prepare DAO instance for retrieving all user
+	 * 
+	 * @return DAOUsers
 	 */
 	public static function create_all_user_adapter() {
 		$users = new DAOUsers();	
@@ -179,6 +185,8 @@ class Users {
 	
 	/**
 	 * Return number of unconfirmed users
+	 * 
+	 * @return int
 	 */
 	public static function count_unconfirmed() {
 		$users = new DAOUsers();
@@ -188,6 +196,8 @@ class Users {
 	
 	/**
 	 * Get user roles
+	 * 
+	 * @return array Associative array with role id as key and role name as value
 	 */
 	public static function get_user_roles() {
 		$ret = array();
@@ -214,7 +224,7 @@ class Users {
 	}
 	
 	/**
-	 * Check if there is a permanent login to process
+	 * Check if there is a permanent login to process. If so, log in according user
 	 */
 	private static function check_permanent_login() {
 		$permanent = PermanentLogins::get_current();
@@ -262,6 +272,12 @@ class Users {
 		return $ret;
 	}
 	
+	/**
+	 * Resend registration mail 
+	 *
+	 * @param string $email
+	 * @return Status
+	 */
 	public static function resend_registration_mail($email) {
 		$user = new DAOUsers();
 		$user->email = $email;

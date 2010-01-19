@@ -1,6 +1,9 @@
 <?php
 /**
- * Create a permanent login
+ * End a permanent login
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
 class EndPermanentloginsCommand extends CommandComposite {
 	/**

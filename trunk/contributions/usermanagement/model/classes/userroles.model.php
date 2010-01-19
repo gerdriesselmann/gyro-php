@@ -1,15 +1,17 @@
 <?php
 /**
- * Table Definition for users
+ * Table Definition for userroles
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
  */
-
 class DAOUserroles extends DataObjectBase {
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
 	public $name;
 
 	// now define your table structure.
 	// key is column name, value is type
-	function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'userroles',
 			array(
