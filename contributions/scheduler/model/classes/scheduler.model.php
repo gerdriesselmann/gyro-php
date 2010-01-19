@@ -20,7 +20,7 @@ class DAOScheduler extends DataObjectBase implements IStatusHolder {
 	 *
 	 * @return DBTable Object
 	 */
-	public function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'scheduler',
 			array(
