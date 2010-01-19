@@ -16,7 +16,7 @@ class DAOBinaries extends DataObjectBase {
 	/**
 	 * Create table description
 	 */
-	public function create_table_object() {
+	protected function create_table_object() {
 		return new DBTable(
 			'binaries',
 			array(
