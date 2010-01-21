@@ -27,13 +27,13 @@ class NotificationsController extends ControllerBase {
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'notifications/my', $page_data);
 		Load::tools('pager', 'filter');
 		
-		$pager = new Pager($page_data, $adapter->count(), Config::get_value(Config::ITEMS_PER_PAGE));
-		$pager->apply($adapter);
-		$pager->prepare_view($view);
-		
 		$filter = new Filter($page_data, $adapter->get_filters());
 		$filter->apply($adapter);
 		$filter->prepare_view($view);
+		
+		$pager = new Pager($page_data, $adapter->count(), Config::get_value(Config::ITEMS_PER_PAGE));
+		$pager->apply($adapter);
+		$pager->prepare_view($view);
 		
 		$view->assign('notifications', $adapter->execute());
 		$view->render();
