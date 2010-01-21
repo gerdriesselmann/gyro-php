@@ -62,6 +62,7 @@ class Notifications {
 	 */
 	public static function create(DAOUsers $user, $params, &$created) {
 		$params['id_user'] = $user->id;
+		$params['title'] = self::compute_title(Arr::get_item($params, 'message', ''), Arr::get_item($params, 'title', ''));
 		$cmd = CommandsFactory::create_command('notifications', 'create', $params);
 		$ret = $cmd->execute();
 		$created = $cmd->get_result();
@@ -126,7 +127,7 @@ class Notifications {
 	 */
 	private static function compute_title($message, $title) {
 		if (empty($title)) {
-			$title = String::substr_word($message, 0, 150) . '...';
+			$title = String::substr_word(String::clear_html($message), 0, 150) . '...';
 		}
 		return $title;
 	}
