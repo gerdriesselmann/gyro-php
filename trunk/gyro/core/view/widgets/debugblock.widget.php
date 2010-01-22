@@ -38,23 +38,50 @@ class WidgetDebugBlock implements IWidget {
 			$out .= html::h('Debug Block', 2);
 			$out .= html::li($li);
 						
+			// Query Logs
 			if (count(DB::$query_log)) {
 				$out .= html::h('Queries', 3);
-				$li = array();
+				
+				$table = '';
 				foreach(DB::$query_log as $query) {
 					$cls = $query['success'] ? 'query ok' : 'query error';
-					$text  = String::escape($query['query']);
-					$text .= ' - ';
-					$text .= html::b(String::number($query['seconds'], 4) . ' sec');
-					if ($query['message']) {
-						$text .= ' - ';
-						$text .=  html::span(String::escape($query['message']), $cls);
+					$time_append = '';
+					if ($query['seconds'] > Config::get_value(Config::DB_SLOW_QUERY_THRESHOLD)) {
+						$cls .= ' slow';
+						$time_append = '<br />Slow!';
 					}
-					$li[] = $text;				
+					$table .= html::tr(
+						array(
+							html::td(html::b(String::number($query['seconds'], 4) . '&nbsp;sec') . $time_append),
+							html::td(String::escape($query['query'])),							
+						),
+						array('class' => $cls)
+					);
+					if ($query['message']) {
+						$table .= html::tr(html::td(String::escape($query['message']), array('colspan' => 2)));
+					}
 				}
-				$out .= html::li($li, 'queries');
+				$out .= html::tag('table', $table, array('summary' => 'Lsit of all issued DB queries'));
 			}
 					
+			// Template logs
+			if (count(TemplatePathResolver::$resolved_paths)) {
+				$out .= html::h('Templates', 3);
+				
+				$table = ''; 
+				foreach(TemplatePathResolver::$resolved_paths as $resource => $file) {
+					$cls = $file ? 'template ok' : 'template error';
+					$table .= html::tr(
+						array(
+							html::td(String::escape($resource)),
+							html::td(String::escape($file)),
+						),
+						array('class' => $cls)
+					);
+				}
+				$out .= html::tag('table', $table, array('summary' => 'Mapping of template ressources to files'));
+			}
+
 			$out = html::div($out, 'debug_block');
 		}
 		return $out;	
