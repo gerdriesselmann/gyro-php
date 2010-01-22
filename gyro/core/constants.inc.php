@@ -150,3 +150,8 @@ Config::set_value_from_constant(Config::URL_DEFAULT_PAGE, 'APP_DEFAULT_PAGE', 'h
  * The query parameter to hold the path orginally invoked
  */
 Config::set_value_from_constant(Config::QUERY_PARAM_PATH_INVOKED, 'APP_QUERY_PARAM_PATH_INVOKED', 'path');
+
+/**
+ * DB Slow Query threshold
+ */
+Config::set_value_from_constant(Config::DB_SLOW_QUERY_THRESHOLD, 'APP_DB_SLOW_QUERY_THRESHOLD', 0.0100);
