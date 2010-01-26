@@ -10,12 +10,17 @@
  * On install, the module copies JQuery UI Javascript and CSS files folders below web root.
  * 
  * To define the version of JQueryUI to use, you must specify a version to use by defining
- * the constant APP_JQUERYUI_VERSION. By now, since only version 1.7 is supported, this value 
- * has to be 1.7:
+ * the constant APP_JQUERYUI_VERSION. Valid values are  "1.7" for JQueryUI 1.7.2,
+ * and "1.8" for JQueryUI 1.8b1. Default is "1.7":
  * 
  * @code
- * define('APP_JQUERYUI_VERSION', '1.7');
+ * define('APP_JQUERYUI_VERSION', '1.8');
  * @endcode
+ * 
+ * @attention 
+ *   Note that javascript files get prefixed by "jquery." since version 1.8. For example 
+ *   "ui.accordion" became "jquery.ui.accordion". When updating from 1.7 to a higher version,
+ *   make sure to delete the old files. 
  * 
  * To enable components, you may call JQueryUI::enable_components() and pass either an array 
  * or a single component:
@@ -24,6 +29,9 @@
  * JQueryUI::enable_components(JQueryUI::WIDGET_DATEPICKER);
  * JQueryUI::enable_components(array(JQueryUI::WIDGET_DATEPICKER, JQueryUI::WIDGET_PROGRESSBAR));
  * @endcode
+ * 
+ * This module resolves any dependencies for the components selected, so no need to worry about 
+ * that.
  * 
  * To include components on each page and to have them compressed by JCSSManager, its best to 
  * include according code in the file start.inc.php in your app directory.
