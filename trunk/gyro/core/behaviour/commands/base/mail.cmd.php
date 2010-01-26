@@ -14,7 +14,7 @@ class MailBaseCommand extends CommandBase {
 	protected $template_args = false;
 	/** Subject of mail	 */
 	protected $subject;
-	/** User to send mail to or an emailaddress */
+	/** Email address */
 	protected $email = '';
 	
 	/** Error obejct */
@@ -24,7 +24,7 @@ class MailBaseCommand extends CommandBase {
 	 * Constructor
 	 * 
 	 * @param String Subject of Mail
-	 * @param dao_User User to send mail to
+	 * @param String Mail address
 	 * @param String Template name
 	 * @param Array Associative array of template arguments
 	 */
@@ -47,7 +47,7 @@ class MailBaseCommand extends CommandBase {
 	/**
 	 * Send Mail
 	 * 
-	 * IMplements a template method and calls functions for subject, from, and template 
+	 * Implements a template method and calls functions for subject, from, and template 
 	 */
 	public function execute() {
 		$to = $this->get_to();
@@ -67,7 +67,7 @@ class MailBaseCommand extends CommandBase {
 		
 		if ($this->err->is_ok()) {
 			$mail = new MailMessage($subject, $message, $to);
-			foreach((array)$attachments as $a) {
+			foreach(Arr::force($attachments, false) as $a) {
 				$mail->add_attachment($a);
 			}
 			
@@ -100,7 +100,7 @@ class MailBaseCommand extends CommandBase {
 			foreach(Arr::force($this->template_args) as $name => $value) {
 				$view->assign($name, $value);
 			}	
-			$view->assign('to', $this->email);
+			$view->assign('to', $this->get_to());
 			return $view->render();
 		} 
 		else {
