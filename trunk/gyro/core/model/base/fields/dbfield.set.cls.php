@@ -75,4 +75,46 @@ class DBFieldSet extends DBFieldEnum {
 		return $ret;
 	}
 	
+	// ---------------------------------------------------
+	// Helper functions for clients 
+	// ---------------------------------------------------
+
+	/**
+	 * Set value on given set
+	 * 
+	 * @param array $set The set to modify
+	 * @param string $value The value to set
+	 */
+	public static function set_set_value(&$set, $value) {
+		if (!self::set_has_value($set, $value)) {
+			$set[] = $value;
+		}
+	}
+
+	/**
+	 * Clear value on given set
+	 * 
+	 * @param array $set The set to modify
+	 * @param string $value The value to set
+	 */
+	public static function set_clear_value(&$set, $value) {
+		$new_set = array();
+		foreach($set as $v) {
+			if ($v !== $value) {
+				$new_set[] = $v;
+			}
+		} 
+		$set = $new_set;
+	}
+
+	/**
+	 * Returns wether value is in given set or not
+	 * 
+	 * @param array $set The set to modify
+	 * @param string $value The value to set
+	 * @return bool
+	 */
+	public static function set_has_value($set, $value) {
+		return in_array($value, $set);
+	}
 }
