@@ -12,7 +12,7 @@
  * if compression is enabled.
  * 
  * To define the version of JQuery to use, you must specify a version to use by defining
- * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, and "1.4" for JQuery 1.4. 
+ * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, and "1.4" for JQuery 1.4.1. 
  * The default is "1.3".
  * 
  * @code
