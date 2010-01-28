@@ -1,5 +1,5 @@
 /*
- * jQuery UI Button 1.8b1
+ * jQuery UI Button 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -34,7 +34,8 @@ $.widget( "ui.button", {
 		var self = this,
 			options = this.options,
 			toggleButton = this.type === "checkbox" || this.type === "radio",
-			hoverClass = "ui-state-hover" + ( !toggleButton ? " ui-state-active" : "" );
+			hoverClass = "ui-state-hover" + ( !toggleButton ? " ui-state-active" : "" ),
+			focusClass = "ui-state-focus";
 
 		if ( options.label === null ) {
 			options.label = this.buttonElement.html();
@@ -57,6 +58,13 @@ $.widget( "ui.button", {
 					return;
 				}
 				$( this ).removeClass( hoverClass );
+			})
+			.bind( "focus.button", function() {
+				// no need to check disabled, focus won't be triggered anyway
+				$( this ).addClass( focusClass );
+			})
+			.bind( "blur.button", function() {
+				$( this ).removeClass( focusClass );
 			});
 
 		if ( this.type === "checkbox") {
@@ -120,7 +128,23 @@ $.widget( "ui.button", {
 						return;
 					}
 					$( this ).removeClass( "ui-state-active" );
+				})
+				.bind( "keydown.button", function(event) {
+					if ( event.keyCode == $.ui.keyCode.SPACE || event.keyCode == $.ui.keyCode.ENTER ) {
+						$( this ).addClass( "ui-state-active" );
+					}
+				})
+				.bind( "keyup.button", function() {
+					$( this ).removeClass( "ui-state-active" );
 				});
+			if (this.buttonElement.is("a")) {
+				this.buttonElement.keyup(function(event) {
+					if (event.keyCode == $.ui.keyCode.SPACE) {
+						// TODO pass through original event correctly (just as 2nd argument doesn't work)
+						$(this).trigger("click");
+					}
+				})
+			}
 		}
 
 		this._resetButton();

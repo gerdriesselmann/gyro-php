@@ -1,5 +1,5 @@
 /*!
- * jQuery UI 1.8b1
+ * jQuery UI 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -13,7 +13,7 @@ var isFF2 = $.browser.mozilla && (parseFloat($.browser.version) < 1.9);
 
 //Helper functions and ui object
 $.ui = {
-	version: "1.8b1",
+	version: "1.8rc1",
 
 	// $.ui.plugin is deprecated.  Use the proxy pattern instead.
 	plugin: {
@@ -100,37 +100,6 @@ $.ui = {
 		UP: 38
 	}
 };
-
-// WAI-ARIA normalization
-if (isFF2) {
-	var attr = $.attr,
-		removeAttr = $.fn.removeAttr,
-		ariaNS = "http://www.w3.org/2005/07/aaa",
-		ariaState = /^aria-/,
-		ariaRole = /^wairole:/;
-
-	$.attr = function(elem, name, value) {
-		var set = value !== undefined;
-
-		return (name == 'role'
-			? (set
-				? attr.call(this, elem, name, "wairole:" + value)
-				: (attr.apply(this, arguments) || "").replace(ariaRole, ""))
-			: (ariaState.test(name)
-				? (set
-					? elem.setAttributeNS(ariaNS,
-						name.replace(ariaState, "aaa:"), value)
-					: attr.call(this, elem, name.replace(ariaState, "aaa:")))
-				: attr.apply(this, arguments)));
-	};
-
-	$.fn.removeAttr = function(name) {
-		return (ariaState.test(name)
-			? this.each(function() {
-				this.removeAttributeNS(ariaNS, name.replace(ariaState, ""));
-			}) : removeAttr.call(this, name));
-	};
-}
 
 //jQuery plugins
 $.fn.extend({

@@ -1,5 +1,5 @@
 /*
- * jQuery UI Autocomplete 1.8b1
+ * jQuery UI Autocomplete 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -21,7 +21,7 @@ $.widget( "ui.autocomplete", {
 	_create: function() {
 		var self = this;
 		this.element
-			.addClass( "ui-autocomplete ui-widget ui-widget-content ui-corner-all" )
+			.addClass( "ui-autocomplete" )
 			.attr( "autocomplete", "off" )
 			// TODO verify these actually work as intended
 			.attr({
