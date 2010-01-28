@@ -16,6 +16,7 @@ class ProcessSchedulerBaseCommand extends CommandChain {
 		else {
 			$ret->merge($this->on_success($task, $err_task));
 		}
+		$this->append(CommandsFactory::create_command($task, 'reschedule', $err_task));
 		return $ret;
 	} 
 	
@@ -71,9 +72,6 @@ class ProcessSchedulerBaseCommand extends CommandChain {
 			)
 		);
 		$this->append($cmd_admin);
-
-		$this->append(CommandsFactory::create_command($task, 'reschedule', $err));
-		
 		return $ret;
 	}
 
@@ -86,7 +84,6 @@ class ProcessSchedulerBaseCommand extends CommandChain {
 	 */
 	protected function on_success($task, $err) {
 		$ret = new Status();
-		$this->append(CommandsFactory::create_command($task, 'reschedule', $err));
 		return $ret;
 	}
 }
