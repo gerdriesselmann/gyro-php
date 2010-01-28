@@ -1,5 +1,5 @@
 /*
- * jQuery UI Datepicker 1.8b1
+ * jQuery UI Datepicker 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -14,7 +14,7 @@
 
 (function($) { // hide the namespace
 
-$.extend($.ui, { datepicker: { version: "1.8b1" } });
+$.extend($.ui, { datepicker: { version: "1.8rc1" } });
 
 var PROP_NAME = 'datepicker';
 var dpuuid = new Date().getTime();
@@ -644,10 +644,10 @@ $.extend(Datepicker.prototype, {
 			if ($.effects && $.effects[showAnim])
 				inst.dpDiv.show(showAnim, $.datepicker._get(inst, 'showOptions'), duration, postProcess);
 			else
-				inst.dpDiv[showAnim || 'show']((showAnim ? duration : ''), postProcess);
+				inst.dpDiv[showAnim || 'show']((showAnim ? duration : null), postProcess);
 			if (!showAnim)
 				postProcess();
-			if (inst.input[0].type != 'hidden')
+			if (inst.input.is(':visible') && !inst.input.is(':disabled'))
 				inst.input[0].focus();
 			$.datepicker._curInst = inst;
 		}
@@ -691,7 +691,8 @@ $.extend(Datepicker.prototype, {
 			'Class']('ui-datepicker-multi');
 		inst.dpDiv[(this._get(inst, 'isRTL') ? 'add' : 'remove') +
 			'Class']('ui-datepicker-rtl');
-		if (inst.input && inst.input[0].type != 'hidden' && inst == $.datepicker._curInst)
+		if (inst == $.datepicker._curInst && inst.input &&
+				inst.input.is(':visible') && !inst.input.is(':disabled'))
 			$(inst.input[0]).focus();
 	},
 
@@ -730,8 +731,10 @@ $.extend(Datepicker.prototype, {
 
 	/* Find an object's position on the screen. */
 	_findPos: function(obj) {
+		var inst = this._getInst(obj);
+		var isRTL = this._get(inst, 'isRTL');
         while (obj && (obj.type == 'hidden' || obj.nodeType != 1)) {
-            obj = obj.nextSibling;
+            obj = obj[isRTL ? 'previousSibling' : 'nextSibling'];
         }
         var position = $(obj).offset();
 	    return [position.left, position.top];
@@ -754,7 +757,7 @@ $.extend(Datepicker.prototype, {
 				inst.dpDiv.hide(showAnim, $.datepicker._get(inst, 'showOptions'), duration, postProcess);
 			else
 				inst.dpDiv[(showAnim == 'slideDown' ? 'slideUp' :
-					(showAnim == 'fadeIn' ? 'fadeOut' : 'hide'))]((showAnim ? duration : ''), postProcess);
+					(showAnim == 'fadeIn' ? 'fadeOut' : 'hide'))]((showAnim ? duration : null), postProcess);
 			if (!showAnim)
 				postProcess();
 			var onClose = this._get(inst, 'onClose');
@@ -1712,7 +1715,7 @@ $.fn.datepicker = function(options){
 $.datepicker = new Datepicker(); // singleton instance
 $.datepicker.initialized = false;
 $.datepicker.uuid = new Date().getTime();
-$.datepicker.version = "1.8b1";
+$.datepicker.version = "1.8rc1";
 
 // Workaround for #4055
 // Add another global to avoid noConflict issues with inline event handlers

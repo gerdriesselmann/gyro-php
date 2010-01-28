@@ -1,5 +1,5 @@
 /*
- * jQuery UI Dialog 1.8b1
+ * jQuery UI Dialog 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -136,6 +136,13 @@ $.widget("ui.dialog", {
 				.attr('id', titleId)
 				.html(title)
 				.prependTo(uiDialogTitlebar);
+
+		//handling of deprecated beforeclose (vs beforeClose) option
+		//Ticket #4669 http://dev.jqueryui.com/ticket/4669
+		//TODO: remove in 1.9pre
+		if ($.isFunction(options.beforeclose) && !$.isFunction(options.beforeClose)) {
+			options.beforeClose = options.beforeclose;
+		}
 
 		uiDialogTitlebar.find("*").add(uiDialogTitlebar).disableSelection();
 
@@ -345,6 +352,9 @@ $.widget("ui.dialog", {
 		handles = (handles === undefined ? this.options.resizable : handles);
 		var self = this,
 			options = self.options,
+			// .ui-resizable has position: relative defined in the stylesheet
+			// but dialogs have to use absolute or fixed positioning
+			position = self.uiDialog.css('position'),
 			resizeHandles = typeof handles == 'string'
 				? handles
 				: 'n,e,s,w,se,sw,ne,nw';
@@ -373,6 +383,7 @@ $.widget("ui.dialog", {
 				$.ui.dialog.overlay.resize();
 			}
 		})
+		.css('position', position)
 		.find('.ui-resizable-se').addClass('ui-icon ui-icon-grip-diagonal-se');
 	},
 
@@ -451,6 +462,12 @@ $.widget("ui.dialog", {
 			resize = false;
 		
 		switch (key) {
+			//handling of deprecated beforeclose (vs beforeClose) option
+			//Ticket #4669 http://dev.jqueryui.com/ticket/4669
+			//TODO: remove in 1.9pre
+			case "beforeclose":
+				key = "beforeClose";
+				break;
 			case "buttons":
 				self._createButtons(value);
 				break;
@@ -555,7 +572,7 @@ $.widget("ui.dialog", {
 });
 
 $.extend($.ui.dialog, {
-	version: "1.8b1",
+	version: "1.8rc1",
 
 	uuid: 0,
 	maxZ: 0,

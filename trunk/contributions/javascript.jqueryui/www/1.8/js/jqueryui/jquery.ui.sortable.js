@@ -1,5 +1,5 @@
 /*
- * jQuery UI Sortable 1.8b1
+ * jQuery UI Sortable 1.8rc1
  *
  * Copyright (c) 2010 AUTHORS.txt (http://jqueryui.com/about)
  * Dual licensed under the MIT (MIT-LICENSE.txt)
@@ -1045,7 +1045,7 @@ $.widget("ui.sortable", $.ui.mouse, {
 });
 
 $.extend($.ui.sortable, {
-	version: "1.8b1",
+	version: "1.8rc1",
 	eventPrefix: "sort"
 });
 
