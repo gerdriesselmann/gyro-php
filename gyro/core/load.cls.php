@@ -199,11 +199,11 @@ class Load {
 	 * @param $dir Absolute path to directory
 	 */
 	public static function add_module_base_dir($dir) {
-		if (substr($dir, -1, 1) != '/') {
-			$dir .= '/'; 
-		}		
-		self::$module_base_dirs[] = $dir;
-	}
+//		if (substr($dir, -1, 1) != '/') {
+//			$dir .= '/'; 
+//		}		
+		self::$module_base_dirs[] = realpath($dir) . '/';		
+	}	
 	
 	/**
 	 * Adds module path to internal path repository 
