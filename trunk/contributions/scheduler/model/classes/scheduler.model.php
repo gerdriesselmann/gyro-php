@@ -3,7 +3,7 @@
  * DAO Class for Scheduler
  *
  */
-class DAOScheduler extends DataObjectBase implements IStatusHolder {
+class DAOScheduler extends DataObjectBase implements IStatusHolder, ISelfDescribing {
 	public $id;
 	public $scheduledate;
 	public $reschedule_error;
@@ -103,6 +103,28 @@ class DAOScheduler extends DataObjectBase implements IStatusHolder {
 	public function is_deleted() {
 		return false;
 	}
+	
+	// ---------------------------------------
+	// ISelfDescribing
+	// ---------------------------------------
+	
+	/**
+	 * Get title for this class
+	 * 
+	 * @return string
+	 */
+	public function get_title() {
+		return $this->name;
+	}
+
+	/**
+	 * Get description for this instance
+	 *  
+	 * @return string 
+	 */
+	public function get_description() {
+		return '';
+	}	
 	
 	//-------------------
 	// Data Object Base
