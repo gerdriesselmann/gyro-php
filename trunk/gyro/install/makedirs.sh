@@ -2,35 +2,35 @@
 # Call: makedirs-sh application-dir gyro-dir  
 mkdir -p $1
 cd $1
-mkdir app
-mkdir app/behaviour
-mkdir app/behaviour/base
-mkdir app/behaviour/commands
-mkdir app/controller
-mkdir app/controller/base
-mkdir app/controller/tools
-mkdir app/lib
-mkdir app/lib/components
-mkdir app/lib/helpers
-mkdir app/lib/interfaces
-mkdir app/model
-mkdir app/model/base
-mkdir app/model/classes
-mkdir app/view
-mkdir app/view/base
-mkdir app/view/widgets
-mkdir app/view/translations
-mkdir app/view/templates
-mkdir app/view/templates/default
-mkdir app/www
-mkdir app/www/js
-mkdir app/www/css
-mkdir app/www/images
-mkdir data
-mkdir tmp
-mkdir tmp/log
-mkdir tmp/view
-mkdir tmp/view/templates_c
+mkdir -p app
+mkdir -p app/behaviour
+mkdir -p app/behaviour/base
+mkdir -p app/behaviour/commands
+mkdir -p app/controller
+mkdir -p app/controller/base
+mkdir -p app/controller/tools
+mkdir -p app/lib
+mkdir -p app/lib/components
+mkdir -p app/lib/helpers
+mkdir -p app/lib/interfaces
+mkdir -p app/model
+mkdir -p app/model/base
+mkdir -p app/model/classes
+mkdir -p app/view
+mkdir -p app/view/base
+mkdir -p app/view/widgets
+mkdir -p app/view/translations
+mkdir -p app/view/templates
+mkdir -p app/view/templates/default
+mkdir -p app/www
+mkdir -p app/www/js
+mkdir -p app/www/css
+mkdir -p app/www/images
+mkdir -p data
+mkdir -p tmp
+mkdir -p tmp/log
+mkdir -p tmp/view
+mkdir -p tmp/view/templates_c
 chmod -R 777 tmp
 # Copy files
 cp $2/install/config.php.example app/config.php.example
