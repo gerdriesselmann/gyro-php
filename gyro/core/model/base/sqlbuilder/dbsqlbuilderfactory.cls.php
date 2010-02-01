@@ -15,6 +15,8 @@ class DBSqlBuilderFactory {
 	const WHEREGROUP = 7;
 	const REPLACE = 8;
 	
+	private static $builders = array();
+	
 	/**
 	 * Create appropiate SQL builder
 	 *
@@ -26,38 +28,47 @@ class DBSqlBuilderFactory {
 	public static function create_builder($type, $query, $params = null) {
 		$driver = DB::get_connection($query->get_table()->get_table_driver());
 		$db = $driver->get_driver_name();
-		$cls = false;
-		switch ($type) {
-			case self::SELECT:
-				$cls ='DBSqlBuilderSelect';
-				break;
-			case self::INSERT:
-				$cls = 'DBSqlBuilderInsert';
-				break;
-			case self::UPDATE:
-				$cls = 'DBSqlBuilderUpdate';
-				break;
-			case self::DELETE:
-				$cls = 'DBSqlBuilderDelete';
-				break;
-			case self::COUNT:
-				$cls = 'DBSqlBuilderCount';
-				break;
-			case self::WHERE:
-				$cls = 'DBSqlBuilderWhere';
-				break;
-			case self::WHEREGROUP:
-				$cls = 'DBSqlBuilderWhereGroup';
-				break;
-			case self::REPLACE:
-				$cls = 'DbSqlBuilderReplace';
-				break;
-		}
-		if ($cls === false) {
-			throw new Exception(tr('Unknown SQL Builder Type: %s', 'core', array('%s' => $type)));
-		}
+		$key = $db . '%%' . $type;
+		if (!isset(self::$builders[$key])) {
+			$part = false;
+			switch ($type) {
+				case self::SELECT:
+					$part ='Select';
+					break;
+				case self::INSERT:
+					$part = 'Insert';
+					break;
+				case self::UPDATE:
+					$part = 'Update';
+					break;
+				case self::DELETE:
+					$part = 'Delete';
+					break;
+				case self::COUNT:
+					$part = 'Count';
+					break;
+				case self::WHERE:
+					$part = 'Where';
+					break;
+				case self::WHEREGROUP:
+					$part = 'WhereGroup';
+					break;
+				case self::REPLACE:
+					$part = 'Replace';
+					break;
+			}
+			if ($part === false) {
+				throw new Exception(tr('Unknown SQL Builder Type: %s', 'core', array('%s' => $type)));
+			}
 		
-		$cls .= String::to_upper($db, 1);
+			$lower_part = strtolower($part);
+			$file = "model/drivers/$db/sqlbuilder/dbsqlbuilder.$lower_part.$db.cls.php";
+			$base_file = "model/base/sqlbuilder/dbsqlbuilder.$lower_part.cls.php";
+			$cls = 'DBSqlBuilder' . $part . ucfirst($db); // $db is ASCII
+			Load::first_file($base_file, $file);
+			self::$builders[$key] = $cls;
+		}
+		$cls = self::$builders[$key];
 		return new $cls($query, $params);
 	}
 }
