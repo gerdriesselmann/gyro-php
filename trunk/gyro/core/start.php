@@ -95,7 +95,7 @@ Load::directories('model/base');
 Load::directories('model/base/fields');
 Load::directories('model/base/constraints');
 Load::directories('model/base/queries');
-Load::directories('model/base/sqlbuilder');
+Load::first_file('model/base/sqlbuilder/dbsqlbuilderfactory.cls.php');
 DB::initialize();
 
 // Routing 
