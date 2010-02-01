@@ -41,6 +41,9 @@ class Cast {
 	 * Static. Converts given expression to string
 	 */
 	public static function string($value) {
+		if (is_string($value)) {
+			return $value;
+		}
 		if (is_array($value)) {
 			return '';
 		}
