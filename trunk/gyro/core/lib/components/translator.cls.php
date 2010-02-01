@@ -76,7 +76,7 @@ class Translator {
 		}
 		
 		if ($ret === false) {
-			if (Config::has_feature(Config::TESTMODE)) {
+			if (Config::has_feature(Config::LOG_TRANSLATIONS)) {
 				$data = array(
 					'groupname' => implode('|', $groupname),
 					'groups' => implode('|', $arr_groupnames),
@@ -153,4 +153,3 @@ class Translator {
 function tr($text, $group = '', $params = NULL) {
 	return Translator::Instance()->translate($text, $group, $params);
 }
-?>
