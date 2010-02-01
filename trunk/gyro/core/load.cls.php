@@ -63,7 +63,7 @@ class Load {
 		$cls = '';
 		$fragments = explode('.', $filename);
 		foreach($fragments as $f) {
-			$cls .= String::to_upper($f, 1);
+			$cls .= ucfirst($f); // $f is ASCII!
 		}
 
 		return $cls;
@@ -299,7 +299,7 @@ class Load {
 	 * @return bool True, if all files where found, false otherwise
 	 */
 	public static function first_file($files) {
-		$files = self::to_array($files);
+		$files = self::to_array(func_get_args());
 		$ret = true;
 		foreach($files as $file) {
 			$ret = $ret && self::do_include_file($file, true);	
