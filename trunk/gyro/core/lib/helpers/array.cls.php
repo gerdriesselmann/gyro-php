@@ -10,10 +10,8 @@ class Arr {
 	 * Return value for key, if available, else return default value
 	 */
 	public static function get_item($arr, $key, $default) {
-		if (is_array($arr)) {
-			if (isset($arr[$key])) {
-				return $arr[$key];
-			}
+		if (isset($arr[$key])) {
+			return $arr[$key];
 		}
 		return $default;	
 	}
@@ -193,10 +191,11 @@ class Arr {
 		if (is_array($value)) {
 			return $value;
 		}
-		else if (!$allow_empty && empty($value)) {
-			return array();
+		$ret = array();
+		if ($allow_empty || !empty($value)) {
+			$ret[] = $value;
 		}
-		return array($value);
+		return $ret;
 	}
 	
 	/**
