@@ -22,6 +22,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
 
 # On nginx, the rule would be this:
-# if (!-e $request_filename) {
-#   rewrite ^/(.*)$ /index.php?path=$1 last;
+# location / {
+#    root   {app_core_dir}/app/www;
+#    # Example: /var/www/gyro-php.org/app/www
+#    index  index.php;
+#
+#    if (!-e $request_filename) {
+#        rewrite  ^/(.*)$  /index.php?path=$1  last;
+#       break;
+#    }
 # }
