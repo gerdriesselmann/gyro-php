@@ -23,48 +23,75 @@ class CommandsFactory {
 	 * @return ICommand
 	 */
 	public static function create_command($obj, $cmd_name, $params) {
-		$cmd = false;
-		if ($obj === '') {
-			$obj = 'app';
+		$inst_name = self::get_instance_name($obj);
+		
+		$key = 'cmdfac#' . $inst_name . '#' . $cmd_name;
+		$cls = RuntimeCache::get($key, null);		
+		if (is_null($cls)) {
+			$cls = self::get_command_class($inst_name, $cmd_name);
+			RuntimeCache::set($key, $cls);
 		}
-		$inst_name = '';
-		$cmd_file_name = $cmd_name . '.cmd.php';
 		
-		$cmd_class_name_fragment = Load::filename_to_classname($cmd_name);
+		if ($cls) {
+			return new $cls($obj, $params);
+		}
 		
+		return false;
+	}
+
+	/**
+	 * Get string for instance requesting command
+	 */	
+	private static function get_instance_name($obj) {
+		if ($obj === '') {
+			return 'app';
+		}
 		if ($obj instanceof IActionSource) {
 			// Load instance specific
-			$inst_name = $obj->get_action_source_name();
+			return $obj->get_action_source_name();
 		} 
-		else if (is_string($obj)) {
-			$inst_name = $obj;			
-		}
-		
-		if (!empty($inst_name)) {
-			$file = $inst_name . '/' . $cmd_file_name;
-			$class = $cmd_class_name_fragment . String::to_upper($inst_name, 1) . 'Command';
-			
-			//var_dump($file, $class);
-			$cmd = self::do_create_command($obj, $params, $file, $class);
-		}
-		
-		if ($cmd == false) {
-			// Load generic
-			$file = 'generics/' . $cmd_file_name;
-			$class = $cmd_class_name_fragment . 'Command';
-			$cmd = self::do_create_command($obj, $params, $file, $class);
-		}
-		
-		return $cmd;
-	}
-	
-	private static function do_create_command($obj, $params, $filename, $classname) {
-		if (Load::first_file('behaviour/commands/' . $filename)) {
-			if (class_exists($classname)) {
-				return new $classname($obj, $params);
-			}
+		if (is_string($obj)) {
+			return $obj;			
 		}
 		return false;
 	}
+	
+	/**
+	 * Try to determine the commands class name
+	 */
+	private static function get_command_class($inst_name, $cmd_name) {
+		$cmd_file_name = $cmd_name . '.cmd.php';		
+		$cmd_class_name_fragment = Load::filename_to_classname($cmd_name);
+		
+		$ret = false;
+		if (!empty($inst_name)) {
+			$file = $inst_name . '/' . $cmd_file_name;
+			$class = $cmd_class_name_fragment . ucfirst($inst_name) . 'Command';
+			$ret = self::do_find_command($file, $class);
+		}
+		
+		if ($ret === false) {
+			// Load generic
+			$file = 'generics/' . $cmd_file_name;
+			$class = $cmd_class_name_fragment . 'Command';
+			$ret = self::do_find_command($file, $class);
+		}
+		
+		return $ret;		
+	}
+	
+	/**
+	 * Find given Command using file and class
+	 */
+	private static function do_find_command($filename, $classname) {
+		$ret = false;
+		$ok = class_exists($classname); 
+		if (!$ok) {
+			Load::first_file('behaviour/commands/' . $filename);
+		}			
+		if ($ok || class_exists($classname)) {
+			$ret = $classname;
+		}
+		return $ret;
+	}
 } 
-?>
