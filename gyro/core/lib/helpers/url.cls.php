@@ -289,7 +289,8 @@ class Url {
 	 * Return host (e.g. "www.example.com")
 	 */
 	public function get_host() {
-		return String::to_lower(Arr::get_item($this->data, 'host', ''));
+		// to_lower() removed, since it is already done in setter
+		return Arr::get_item($this->data, 'host', ''); 
 	}
 	
 	/**
