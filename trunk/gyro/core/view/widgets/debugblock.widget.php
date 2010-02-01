@@ -16,13 +16,13 @@ class WidgetDebugBlock implements IWidget {
 		if (Config::has_feature(Config::TESTMODE)) {
 		   	$endtime = microtime(true);
 			$modules = Load::get_loaded_modules();
-		   	$debugs = array(
+			$debugs = array(
 		  		'Memory' => String::number(memory_get_usage()/1024, 2) . ' KB',
 		  		'Memory Peak' => String::number(memory_get_peak_usage()/1024, 2) . ' KB',
-		  		'Execution time' => String::number($endtime - APP_START_MICROTIME, 2) . ' sec',
-		   		'DB connect time' => String::number(DB::$db_connect_time, 4) . ' sec',
-		  		'DB-Queries execution time' => String::number(DB::$queries_total_time, 4) . ' sec',
-				'PHP-Version' => phpversion(),
+		  		'Execution time' => $this->duration($endtime - APP_START_MICROTIME),
+		   		'DB-Queries execution time' => $this->duration(DB::$queries_total_time),
+				'DB connect time' => $this->duration(DB::$db_connect_time),
+		  		'PHP-Version' => phpversion(),
 				'Generated' => GyroDate::local_date(time()),
 		   		'Modules' => (count($modules) > 0) ? implode(', ', $modules) : '-' 
 	  		);
@@ -45,14 +45,17 @@ class WidgetDebugBlock implements IWidget {
 				$table = '';
 				foreach(DB::$query_log as $query) {
 					$cls = $query['success'] ? 'query ok' : 'query error';
-					$time_append = '';
+					$query_time = array(
+						$this->sec($query['seconds']),
+						$this->msec($query['seconds'])
+					);
 					if ($query['seconds'] > Config::get_value(Config::DB_SLOW_QUERY_THRESHOLD)) {
 						$cls .= ' slow';
-						$time_append = '<br />Slow!';
+						$query_time[] = 'Slow!';
 					}
 					$table .= html::tr(
 						array(
-							html::td(html::b(String::number($query['seconds'], 4) . '&nbsp;sec') . $time_append),
+							html::td(html::b(implode('<br />', $query_time))),
 							html::td(String::escape($query['query'])),							
 						),
 						array('class' => $cls)
@@ -85,5 +88,17 @@ class WidgetDebugBlock implements IWidget {
 			$out = html::div($out, 'debug_block');
 		}
 		return $out;	
+	}
+	
+	protected function sec($sec) {
+		return String::number($sec, 4) . '&nbsp;sec';
+	}
+
+	protected function msec($sec) {
+		return String::number($sec * 1000, 2) . '&nbsp;msec';
+	}
+	
+	protected function duration($sec) {
+		return $this->sec($sec) . ' - ' . $this->msec($sec);
 	}
 }
