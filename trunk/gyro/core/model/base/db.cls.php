@@ -52,8 +52,8 @@ class DB {
 	public static function create_connection($connection_name, $driver, $db_name, $db_user, $db_pwd, $db_host) {
 		//define database configuration values
 		Load::directories('model/drivers/' . $driver);
-		Load::directories('model/drivers/' . $driver . '/sqlbuilder');
-		$drivername = 'DBDriver' . String::to_upper($driver, 1);
+		//Load::directories('model/drivers/' . $driver . '/sqlbuilder');
+		$drivername = 'DBDriver' . ucfirst($driver); // Driver must be ASCII
 		$db = new $drivername();
 		$db->initialize($db_name, $db_user, $db_pwd, $db_host);
 		self::$connections[$connection_name] = $db;
@@ -68,7 +68,7 @@ class DB {
 	 */
 	public static function create($model) {
 		Load::models($model); // throws on error
-		$classname = 'DAO' . String::to_upper($model, 1);
+		$classname = 'DAO' . ucfirst($model); // Model must be ASCII
 		if (class_exists($classname)) {
 			return new $classname();
 		}
