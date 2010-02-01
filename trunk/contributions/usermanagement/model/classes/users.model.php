@@ -7,7 +7,7 @@ Load::models(array('userroles', 'users2userroles'));
  * @author Gerd Riesselmann
  * @ingroup Usermanagement
  */
-class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing  {
+class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribing, ITimeStamped  {
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
 	public $name;
 	public $password;                        // string(50)  
@@ -16,18 +16,6 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 	public $creationdate;                    // datetime(19)  binary
 	public $modificationdate;                // timestamp  binary
 
-	/**
-	 * All role names in a flat array
-	 *
-	 * @var array
-	 */
-	protected $cached_role_names = null;
-	/**
-	 * All roles
-	 *
-	 * @var array
-	 */
-	protected $cached_roles = null;
 	
 	// now define your table structure.
 	// key is column name, value is type
@@ -48,13 +36,22 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 	}
 	
 	/**
-	 * Return roels of this user
+	 * Return roles of this user
 	 *
 	 * @return array
 	 */
 	public function get_roles() {
-		return UserRoles::get_for_user($this->id);
+		return $this->get_from_cache('userroles', 'do_get_roles');
 	}
+	
+	/**
+	 * Return roles of this user (worker)
+	 *
+	 * @return array
+	 */
+	protected function do_get_roles($params) {
+		return UserRoles::get_for_user($this->id);
+	}	
 	
  	/**
 	 * Return array of allowed status for table description
@@ -146,6 +143,28 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 		return $this->status == Users::STATUS_DISABLED;
 	}
 
+	// -------------------------------------
+	// interface ITimeStamped 
+	// -------------------------------------
+	
+	/**
+	 * Return creation date and time
+	 *
+	 * @return timestamp
+	 */
+	public function get_creation_date() {
+		return $this->creationdate;
+	}
+
+	/**
+	 * Return modification date and time
+	 *
+	 * @return timestamp
+	 */
+	public function get_modification_date() {
+		return $this->modificationdate;
+	}
+	
 	// **************************************
 	// Access Check Functions
 	// **************************************
@@ -157,13 +176,15 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 	 * @return bool
 	 */
 	public function has_role($role) {
+		$ret = false;
 		$my_roles = $this->get_role_names();
 		foreach(Arr::force($role) as $check) {
-			if (in_array($check, $my_roles)) {
-				return true;
+			if (array_key_exists($check, $my_roles)) {
+				$ret = true;
+				break;
 			}
 		}
-		return false;
+		return $ret;
 	}
 	
 	/**
@@ -172,21 +193,23 @@ class DAOUsers extends DataObjectBase implements IStatusHolder, ISelfDescribing 
 	 * @return array
 	 */
 	public function get_role_names() {
-		if (is_null($this->cached_role_names)) {
-			$this->cached_role_names = array();
-			$link = new DAOUsers2userroles();
-			$link->id_user = $this->id;
-			
-			$dao = new DAOUserroles();
-			$dao->join($link);
-			$dao->find();
-			
-			while($dao->fetch()) {
-				$this->cached_role_names[trim($dao->name)] = trim($dao->name);
-			}
-		}
-		return $this->cached_role_names;
+		return $this->get_from_cache('userrolenames', 'do_get_role_names');
 	}
+
+	/**
+	 * Returns array of role names
+	 * 
+	 * @return array
+	 */
+	protected function do_get_role_names($params) {
+		$ret = array();
+		foreach($this->get_roles() as $role) {
+			$t = trim($role->name);
+			$ret[$t] = $t;
+		}
+		return $ret;
+	}
+	
 	
 	/**
 	 * Confirm user (set status to ACTIVE) 
