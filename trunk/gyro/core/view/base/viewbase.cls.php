@@ -260,7 +260,7 @@ class ViewBase implements IView, ICache {
 	protected function create_template_engine($engine) {
 		Load::directories('view/templateengines/' . $engine);
 		require_once dirname(__FILE__) . '/templatepathresolver.cls.php';
-		$cls = 'TemplateEngine' . String::to_upper($engine, 1);
+		$cls = 'TemplateEngine' . ucfirst($engine); // $engine is supposed to be ASCII
 		return new $cls();
 	}
 	
