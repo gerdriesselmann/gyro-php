@@ -3,13 +3,6 @@ define("STRING_SANITIZE_NONE", 0);
 define("STRING_SANITIZE_DB", 1);
 define("STRING_SANITIZE_HTML", 2);
 
-if (function_exists('mb_detect_encoding')) {
-	define('STRING_MB_AVAILABLE', true);
-}
-else {
-	define('STRING_MB_AVAILABLE', false);
-}
-
 /**
  * Wraps string functions, calls mb_ functions, if available
  * 
@@ -19,6 +12,8 @@ else {
 class String {
 	const HTML = 'html';
 	const XML = 'xml';
+	
+	public static $impl;
 	
 	/**
 	 * Static. Preprocesses a string to strip of HTML and quotes. Avoids injection attacks
@@ -62,13 +57,7 @@ class String {
 	 * @return string 
 	 */
 	public static function convert($value) {
-		$ret = $value;
-		if (STRING_MB_AVAILABLE) {
-			if (!mb_check_encoding($value, GyroLocale::get_charset())) {
-				$ret = mb_convert_encoding($value, GyroLocale::get_charset());
-			}
-		}
-		return $ret;
+		return self::$impl->convert($value);
 	}
 	
 	/**
@@ -208,12 +197,7 @@ class String {
 			return self::to_lower(self::substr($val, 0, $count)) . self::substr($val, $count);
 		}
 		else {
-			if (STRING_MB_AVAILABLE) {
-				return mb_strtolower($val, GyroLocale::get_charset());
-			}
-			else {
-				return strtolower($val);
-			}
+			return self::$impl->to_lower($val);
 		}
 	}
 
@@ -230,12 +214,7 @@ class String {
 			return self::to_upper(self::substr($val, 0, $count)) . self::substr($val, $count);
 		}
 		else {
-			if (STRING_MB_AVAILABLE) {
-				return mb_strtoupper($val, GyroLocale::get_charset());
-			}
-			else {
-				return strtoupper($val);
-			}
+			return self::$impl->to_upper($val);
 		}
 	}
 
@@ -243,42 +222,19 @@ class String {
 	 * Character set aware strlen()
 	 */
 	public static function length($val) {
-		if (STRING_MB_AVAILABLE) {
-			return mb_strlen($val, GyroLocale::get_charset());
-		}
-		else {
-			return strlen($val);
-		}
+		return self::$impl->length($val);
 	}
 
 	public static function strpos($haystack, $needle, $offset = NULL) {
-		if (STRING_MB_AVAILABLE) {
-			return mb_strpos($haystack, $needle, $offset, GyroLocale::get_charset());
-		}
-		else {
-			return strpos($haystack, $needle, $offset);
-		}
+		return self::$impl->strpos($haystack, $needle, $offset);
 	}
 
 	public static function stripos($haystack, $needle, $offset = NULL) {
-		if (STRING_MB_AVAILABLE) {
-			return mb_stripos($haystack, $needle, $offset, GyroLocale::get_charset());
-		}
-		else {
-			return stripos($haystack, $needle, $offset);
-		}
+		return self::$impl->stripos($haystack, $needle, $offset);
 	}
 
 	public static function strrpos($haystack, $needle) {
-		if ($haystack == '') {
-			return false;
-		}
-		if (STRING_MB_AVAILABLE) {
-			return mb_strrpos($haystack, $needle, GyroLocale::get_charset());
-		}
-		else {
-			return strrpos($haystack, $needle);
-		}
+		return self::$impl->strrpos($haystack, $needle);
 	}
 	
 	public static function contains($haystack, $needle) {
@@ -371,15 +327,7 @@ class String {
 	 * Character set aware substr
 	 */
 	public static function substr($val, $start = 0, $length = NULL) {
-		if ($length === NULL) {
-			$length = self::length($val);
-		}
-		if (STRING_MB_AVAILABLE) {
-			return mb_substr($val, $start, $length, GyroLocale::get_charset());
-		}
-		else {
-			return substr($val, $start, $length);
-		}
+		return self::$impl->substr($val, $start, $length);
 	}
 
 	public static function substr_word($val, $start, $max_length) {
@@ -410,6 +358,8 @@ class String {
 
 	/**
 	 * Returns true if haystack starts with needlse
+	 * 
+	 * @attention If needle is en empty string, this function returns false! 
 	 */
 	public static function starts_with($haystack, $needle) {
 		if ($needle !== '') {
@@ -451,7 +401,7 @@ class String {
 		$ret = html_entity_decode($ret, ENT_QUOTES, GyroLocale::get_charset());
 		$ret = strip_tags($ret);
 		if ($removewhitespace) {
-			$ret = String::to_lower($ret);
+			$ret = self::$impl->to_lower($ret);
 			$replace = array(
 				'ä' => 'ae', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'å' => 'a', 'æ' => 'ae',
 				'ç' => 'c', 'ć' => 'c', 'ĉ' => 'c', 'č' => 'c',
@@ -578,4 +528,11 @@ class String {
 	}
 }
 
-?>
+if (function_exists('mb_detect_encoding')) {
+	require_once dirname(__FILE__) . '/string_impl/string.mbstring.cls.php';
+	String::$impl = new StringMBString();	
+}
+else {
+	require_once dirname(__FILE__) . '/string_impl/string.php.cls.php';
+	String::$impl = new StringPHP();		
+}
