@@ -175,7 +175,7 @@ class RescheduleSchedulerBaseCommand extends CommandChain {
 		
 		$policy = strtolower($policy);
 		$file = 'behaviour/scheduler/' . $policy . '.rescheduler.php';
-		$cls = 'Rescheduler' . String::to_upper($policy, 1);
+		$cls = 'Rescheduler' . ucfirst($policy);
 		Load::first_file($file);
 		$rescheduler = new $cls();
 
