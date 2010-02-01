@@ -7,14 +7,19 @@
  */
 class TemplatePathResolver {
 	public static $resolved_paths = array();
+	private static $template_paths = array();
 	
 	public static function resolve($resource, $required_file_extension = 'tpl.php') {
-		$ret = self::find_template($resource, $required_file_extension);
-		// Not found
-		if ($ret === false) {
-			throw new Exception("Template file $resource not found");
+		$key = $resource;
+		if (!isset(self::$resolved_paths[$key])) {
+			$ret = self::find_template($resource, $required_file_extension);
+			// Not found
+			if ($ret === false) {
+				throw new Exception("Template file $resource not found");
+			}
+			self::$resolved_paths[$key] = $ret;
 		}
-		return $ret;
+		return self::$resolved_paths[$key];
 	}
 
 	public static function exists($resource, $required_file_extension = 'tpl.php') {
@@ -25,12 +30,10 @@ class TemplatePathResolver {
 	private static function find_template($resource, $required_file_extension = 'tpl.php') {
 		if (substr($resource, 0, 1) == '/') {
 			// absolute path
-			self::$resolved_paths[$resource] = $resource;
 			return $resource;
 		}
 		if (strpos($resource, ':') !== false && strpos($resource, '::') === false) {
-			// some kind of protocol..
-			self::$resolved_paths[$resource] = $resource;
+			// some kind of protocol like http:// or such
 			return $resource;
 		}
 		$resource_to_find = $resource;
@@ -44,28 +47,34 @@ class TemplatePathResolver {
 		foreach($paths as $path) {
 			$path .= $resource_to_find;
 			if (file_exists($path)) {
-				self::$resolved_paths[$resource] = $path;
 				return $path;
 			}
 		}
 		if (file_exists($resource_to_find)) {
-			self::$resolved_paths[$resource] = $resource_to_find;
 			return $resource_to_find;
 		}
 		
 		// Not found
-		self::$resolved_paths[$resource] = $false;
 		return false;		
 	}
 	
 	public static function get_template_paths() {
-		$lang = String::to_lower(GyroLocale::get_language());	
-		$dirs = Load::get_base_directories();
-		$ret = array();
-		foreach($dirs as $dir) {
-			$ret[] = $dir . 'view/templates/' . $lang . '/';
-			$ret[] = $dir . 'view/templates/default/';
+		$lang = strtolower(GyroLocale::get_language());
+		if (empty(self::$template_paths[$lang])) {			
+			$dirs = Load::get_base_directories(Load::ORDER_OVERLOAD);
+			$ret = array();
+			foreach($dirs as $dir) {
+				$test = $dir . 'view/templates/' . $lang . '/';
+				if (file_exists($test)) {
+					$ret[] = $test;
+				}
+				$test = $dir . 'view/templates/default/';
+				if (file_exists($test)) {
+					$ret[] = $test;
+				}
+			}
+			self::$template_paths[$lang] = $ret;
 		}
-		return $ret; 
+		return self::$template_paths[$lang];
 	}
 }
