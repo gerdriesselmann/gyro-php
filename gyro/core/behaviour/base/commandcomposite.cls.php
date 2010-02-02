@@ -2,9 +2,11 @@
 require_once dirname(__FILE__) . '/commandbase.cls.php';
  
 /**
- * The comnmand composite executes a set of commands
+ * The command composite executes a set of commands
  * 
- * Use the command to exeucute a set of independend commands
+ * Comamnds you append are executed in a tree-like manor.
+ * 
+ * This command wraps a database transaction around the execution of all commands
  * 
  * @author Gerd Riesselmann
  * @ingroup Behaviour
@@ -31,7 +33,6 @@ class CommandComposite extends CommandBase {
 			}
 		}
 	}
-
 
 	/**
 	 * Returns TRUE, if all commands in the chain can be executed by given user
@@ -124,4 +125,3 @@ class CommandComposite extends CommandBase {
 		parent::undo();
 	}	
 }
-?>
