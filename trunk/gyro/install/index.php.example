@@ -9,10 +9,24 @@ try {
 	require_once dirname(__FILE__) . '/../constants.php';
 	require_once APP_GYRO_PATH . 'core/start.php';
 
-	$class_instantiater = new ControllerDefaultClassInstantiater();
 	$cache_manager = new SuccessCacheManager();
 	$page_data = new PageData($cache_manager, $_GET, $_POST);
 	
+	/*
+	// This will try to serve the page from cache now instead at the end
+	// of the routing process. This usually is around 10% faster.  
+	// However, this will only work if all pages have the same caching policy,
+	// defined by $cache_manager a couple of lines above. It additionally is
+	// OK, if some pages are not cached at all (having a cache policy of 
+	// NoCacheCacheManager).
+	// Note using this is effectivly a code duplication with all of its drawbacks.
+	// This code only reads the cache, it does not write.
+	Load::components('upfrontcache');
+	// Exits if page is in cache
+	UpfrontCache::serve_from_cache($page_data);
+	*/	
+	
+	$class_instantiater = new ControllerDefaultClassInstantiater();
 	$router = new RouterBase($class_instantiater);
 	$router->initialize($page_data);
 	
