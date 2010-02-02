@@ -6,6 +6,9 @@
  * @ingroup Lib
  */
 class UpfrontCache {
+	/**
+	 * Try to find page in cache. If so serves it and exits.
+	 */
 	public static function serve_from_cache(PageData $page_data) {
 		$view = ViewFactory::create_view(IViewFactory::PAGE, $page_data->page_template, $page_data);
 		if ($view->is_cached()) {
