@@ -2,7 +2,10 @@
 require_once dirname(__FILE__) . '/commandbase.cls.php';
  
 /**
- * The Transaction Command starts a database transaction before execution
+ * The Transaction Command starts a database transaction before execution 
+ * and commits on success or rollbacks on error.  
+ *
+ * Overload function do_execute() to implement behaviour. 
  * 
  * @author Gerd Riesselmann
  * @ingroup Behaviour
@@ -34,6 +37,8 @@ class CommandTransactional extends CommandBase {
 		
 	/**
 	 * Does executing
+	 *
+	 * @return Status
 	 */
 	protected function do_execute() {
 		return new Status();

@@ -4,7 +4,9 @@ require_once dirname(__FILE__) . '/commandbase.cls.php';
 /**
  * The command chain executes commands that form a hierarchy
  * 
- * Use this base class if the next command in hierarchy depends on the results of the previous command
+ * Every command you append is put at the end of the chain 
+ *
+ * This command wraps a database transaction around the execution of all commands
  * 
  * @author Gerd Riesselmann
  * @ingroup Behaviour

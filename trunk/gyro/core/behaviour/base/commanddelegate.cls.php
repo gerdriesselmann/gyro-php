@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/commandbase.cls.php';
  
 /**
- * The comnmand delegate delegates all request to another command
+ * The command delegate delegates all request to another command
  * 
  * Use the command to wrap another
  *  
