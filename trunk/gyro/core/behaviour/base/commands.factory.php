@@ -1,6 +1,6 @@
 <?php
 /**
- * The commands factory instanciates commands, following the rul for overloading commands.
+ * The commands factory instanciates commands, following the rules for overloading commands.
  * 
  * Commands are overloaded by placing correctly named class files in according directories.
  * 
@@ -20,7 +20,7 @@ class CommandsFactory {
 	/**
 	 * Return the strategy to change status of given object to $new_status 
 	 * 
-	 * @return ICommand
+	 * @return ICommand Returns the command or FALSE, if no command was found
 	 */
 	public static function create_command($obj, $cmd_name, $params) {
 		$inst_name = self::get_instance_name($obj);
@@ -60,19 +60,18 @@ class CommandsFactory {
 	 * Try to determine the commands class name
 	 */
 	private static function get_command_class($inst_name, $cmd_name) {
-		$cmd_file_name = $cmd_name . '.cmd.php';		
 		$cmd_class_name_fragment = Load::filename_to_classname($cmd_name);
 		
 		$ret = false;
 		if (!empty($inst_name)) {
-			$file = $inst_name . '/' . $cmd_file_name;
+			$file = $inst_name . '/' . $cmd_name;
 			$class = $cmd_class_name_fragment . ucfirst($inst_name) . 'Command';
 			$ret = self::do_find_command($file, $class);
 		}
 		
 		if ($ret === false) {
 			// Load generic
-			$file = 'generics/' . $cmd_file_name;
+			$file = 'generics/' . $cmd_name;
 			$class = $cmd_class_name_fragment . 'Command';
 			$ret = self::do_find_command($file, $class);
 		}
@@ -87,7 +86,7 @@ class CommandsFactory {
 		$ret = false;
 		$ok = class_exists($classname); 
 		if (!$ok) {
-			Load::first_file('behaviour/commands/' . $filename);
+			Load::classes_in_directory('behaviour/commands/', $filename, 'cmd', false);
 		}			
 		if ($ok || class_exists($classname)) {
 			$ret = $classname;
