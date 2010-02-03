@@ -1,4 +1,7 @@
 <?php
+Load::first_file('model/base/sqlbuilder/dbsqlbuilder.insert.cls.php');
+Load::first_file('model/drivers/mysql/sqlbuilder/dbsqlbuilder.insert.mysql.cls.php');
+
 /**
  * Implementation of Replace for MySQL. 
  * 
