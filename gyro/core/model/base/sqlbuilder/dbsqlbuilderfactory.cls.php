@@ -62,10 +62,9 @@ class DBSqlBuilderFactory {
 			}
 		
 			$lower_part = strtolower($part);
-			$file = "model/drivers/$db/sqlbuilder/dbsqlbuilder.$lower_part.$db.cls.php";
-			$base_file = "model/base/sqlbuilder/dbsqlbuilder.$lower_part.cls.php";
+			Load::classes_in_directory("model/base/sqlbuilder/", "dbsqlbuilder.$lower_part", 'cls');
+			Load::classes_in_directory("model/drivers/$db/sqlbuilder/", "dbsqlbuilder.$lower_part.$db", 'cls');
 			$cls = 'DBSqlBuilder' . $part . ucfirst($db); // $db is ASCII
-			Load::first_file($base_file, $file);
 			self::$builders[$key] = $cls;
 		}
 		$cls = self::$builders[$key];
