@@ -1,6 +1,7 @@
 <?php
-Load::first_file('model/base/sqlbuilder/dbsqlbuilder.insert.cls.php');
-Load::first_file('model/drivers/mysql/sqlbuilder/dbsqlbuilder.insert.mysql.cls.php');
+// This is a somewhat complex way of saying "include", due to possible overloading of builders  
+Load::classes_in_directory("model/base/sqlbuilder/", "dbsqlbuilder.insert", 'cls');
+Load::classes_in_directory("model/drivers/mysql/sqlbuilder/", "dbsqlbuilder.insert.mysql", 'cls');
 
 /**
  * Implementation of Replace for MySQL. 
