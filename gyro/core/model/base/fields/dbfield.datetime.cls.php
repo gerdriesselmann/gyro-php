@@ -47,14 +47,15 @@ class DBFieldDateTime extends DBField {
 	 * @return string
 	 */
 	public function format_where($value) {
-		if (is_null($value)) {
-			return parent::format($value);
+		if (empty($value)) {
+			// Treat false, 0, and '' as null, too
+			return parent::format(null);
 		}
 		else if ($value == self::NOW) {
 			return $this->get_db_now_constant();
 		} 
 		else {
-			return $this->format_date_value(GyroDate::datetime($value));;
+			return $this->format_date_value(GyroDate::datetime($value));
 		}
 	}	
 	
