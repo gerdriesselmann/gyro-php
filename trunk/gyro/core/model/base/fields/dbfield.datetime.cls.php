@@ -35,6 +35,11 @@ class DBFieldDateTime extends DBField {
 		if ($this->has_policy(self::TIMESTAMP)) {
 			return 'DEFAULT';	 
 		}
+		
+		// Treat '', falso and 0 ans NULL in updates and inserts
+		if (empty($value)) {
+			return parent::format(null);
+		}
 		else {
 			return $this->format_where($value);
 		}
@@ -47,15 +52,14 @@ class DBFieldDateTime extends DBField {
 	 * @return string
 	 */
 	public function format_where($value) {
-		if (empty($value)) {
-			// Treat false, 0, and '' as null, too
-			return parent::format(null);
+		if (is_null($value)) {
+			return parent::format($value);
 		}
 		else if ($value == self::NOW) {
 			return $this->get_db_now_constant();
 		} 
 		else {
-			return $this->format_date_value(GyroDate::datetime($value));
+			return $this->format_date_value(GyroDate::datetime($value));;
 		}
 	}	
 	
