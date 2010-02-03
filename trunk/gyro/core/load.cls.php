@@ -201,8 +201,8 @@ class Load {
 	public static function add_module_base_dir($dir) {
 //		if (substr($dir, -1, 1) != '/') {
 //			$dir .= '/'; 
-//		}		
-		self::$module_base_dirs[] = realpath($dir) . '/';		
+//		}
+		self::$module_base_dirs[] = rtrim(realpath($dir), '/') . '/';		
 	}	
 	
 	/**
