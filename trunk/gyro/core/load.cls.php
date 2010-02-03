@@ -160,8 +160,8 @@ class Load {
 	/**
 	 * Returns array of files from app, core and modules
 	 *
-	 * @param unknown_type $directory
-	 * @param unknown_type $pattern
+	 * @param string $directory
+	 * @param string $pattern
 	 */
 	public static function get_files_from_directory($directory, $pattern = '*.php') {
 		$basedirs = self::get_base_directories_subdirs($directory, self::ORDER_DECORATORS);
@@ -189,8 +189,8 @@ class Load {
 	 * @throws Exception if command could not be loaded
 	 */
 	public static function commands($commands) {
-		$arr_cmds = self::to_array(func_get_args());
-		self::do_load('behaviour/commands', $arr_cmds, 'cmd');
+		$args = func_get_args();
+		self::do_load('behaviour/commands', $args, 'cmd');
 	}
 	
 	/**
@@ -329,7 +329,22 @@ class Load {
 		}
 		return $found;
 	}
-		
+	
+	/**
+	 * Load a class from given directory respecting overloading
+	 * 
+	 * @param string $directory Subdirectory of component
+	 * @param mixed $classes Either name of class to load or array of names
+	 * @param string $extension File extension of class files, e.g. 'cls' will include files of name *.cls.php
+	 * 
+	 * @return void
+	 * 
+	 * @throws Exception if class is not found
+	 */
+	public static function classes_in_directory($directory, $classes, $extension = 'cls', $required = true) {
+		return self::do_load($directory, $classes, $extension, $required);
+	}
+	
 	/**
 	 * Perform including
 	 *
@@ -343,6 +358,7 @@ class Load {
 		$extension = '.' . $extension . '.php';
 		$basedirs = self::get_base_directories_subdirs($directory);
 		$classes = self::to_array($classes);
+		$ret = false;
 		foreach($classes as $class) {
 			// Build relative path
 			$class_path = strtolower($class) . $extension;
@@ -359,6 +375,7 @@ class Load {
 					self::mark_loaded($directory, $class_path, $path);
 					include_once $path;
 					$found = true;
+					$ret = true;
 					break;
 				}
 			}
@@ -368,6 +385,7 @@ class Load {
 				throw new Exception($msg);
 			}
 		}
+		return $ret;
 	}
 	
 	/**
