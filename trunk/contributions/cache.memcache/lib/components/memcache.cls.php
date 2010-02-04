@@ -108,7 +108,6 @@ class GyroMemcache  {
 	 * @return int New Value or FALSE if $key does not exists
 	 */
 	public static function increment($key, $by = 1) {
-		var_dump($key, $by);
 		return self::$delegate->increment($key, $by);
 	}
 
