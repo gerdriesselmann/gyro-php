@@ -164,34 +164,40 @@ class CacheMemcacheImpl implements ICachePersister {
 	/**
 	 * Clear cache for given cache key(s)
 	 */
-	private function do_clear($cache_keys) {
-		// See http://code.google.com/p/memcached/wiki/FAQ#Deleting%5Fby%5FNamespace
-		// for how this trick works
-		$ns = $this->get_keys_namespaces($cache_keys);
-		foreach($ns as $n) {
-			GyroMemcache::increment($n);
+	protected function do_clear($cache_keys) {
+		// We have do do a clear on 
+		// - App Key
+		// - Cache Keys
+		// - *
+		// This means we increment namespace of last key
+		// But first, strip of empty keys from the end of the array
+		$cleaned = $this->preprocess_keys($cache_keys, false);
+		$ns = $this->get_keys_namespaces($cleaned);
+		$n = array_pop($ns);
+		if ($n) {
+			// See http://code.google.com/p/memcached/wiki/FAQ#Deleting%5Fby%5FNamespace
+			// for how this trick works
+			GyroMemcache::increment($n, 1);
 		}
 	}
-	
+		
 	/**
 	 * Transform the given param into a key string
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string
 	 */
-	private function flatten_keys($cache_keys) {
-		$cache_keys = Arr::force($cache_keys, true);
+	protected function flatten_keys($cache_keys) {
+		$cache_keys = $this->preprocess_keys($cache_keys);
 		$ns_keys = $this->get_keys_namespaces($cache_keys);
 		
-		$ns = array_shift($ns_keys);
-		$ret = 'g$c_' . $this->get_namespace_value($ns);
+		$tmp = array();
 		foreach($cache_keys as $key) {
-			$ns = array_shift($ns_keys);
-			$ret .= '_g$c_' . $key . '_' . $this->get_namespace_value($ns);
+			$tmp[] = $key . ':=' . $this->get_namespace_value(array_shift($ns_keys));
 		}
 		
-		return $ret;		
+		return implode('_', $tmp);		
 	}
-	
+		
 	/**
 	 * Return array of namespaces for keys
 	 * 
@@ -200,14 +206,43 @@ class CacheMemcacheImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @return array
 	 */
-	private function get_keys_namespaces($cache_keys) {
-		$ns_key = 'g$ns_cache_ns';
-		$ret = array($ns_key);
+	protected function get_keys_namespaces($cache_keys) {
+		$ret = array();
 		foreach(Arr::force($cache_keys, true) as $key) {
-			$ns_key .= '_g$ns_' . $key;
+			$ns_key .= 'g$ns' . $key;
 			$ret[] = $ns_key;
 		}
 		return $ret;
+	}
+
+	/**
+	 * Strip empty keys from end of $cache_keys 
+	 */
+	protected function preprocess_keys($cache_keys, $strip_empty = true) {
+		$cleaned = array($this->get_app_key());
+		if ($strip_empty) {
+			foreach(Arr::force($cache_keys, false) as $key) {
+				if ($key || $key == '0') {
+					$cleaned[] = $key;
+				} 
+				else {
+					break;
+				}
+			}		
+		}
+		else {
+			$cleaned = array_merge($cleaned, Arr::force($cache_keys, true));
+		}
+		return $cleaned;
+	}
+		
+	/**
+	 * Return key to make the current app unique
+	 * 
+	 * @return string
+	 */
+	private function get_app_key() {
+		return Config::get_url(Config::URL_DOMAIN);
 	}
 
 	/**
