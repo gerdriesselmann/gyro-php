@@ -23,14 +23,14 @@ class XCacheSession {
 	/**
 	 * Open a session
 	 */ 
-	function open($save_path, $session_name) {
+	public function open($save_path, $session_name) {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	function close() {
+	public function close() {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
@@ -46,12 +46,12 @@ class XCacheSession {
 	/**
 	 * Load session data from xcache
 	 */
-	function read($key) {
+	public function read($key) {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
 		register_shutdown_function('session_write_close');
-		$key = 'g$s_' . $key;
+		$key = $this->create_key($key);
 		if (xcache_isset($key)) {
 			return xcache_get($key);
 		}
@@ -61,9 +61,9 @@ class XCacheSession {
 	/**
 	 * Write session data to XCache
 	 */
-	function write($key, $value) {
+	public function write($key, $value) {
 		try {
-			xcache_set('g$s_' . $key, $value, get_cfg_var('session.gc_maxlifetime'));
+			xcache_set($this->create_key($key), $value, get_cfg_var('session.gc_maxlifetime'));
 			return true;
 		}
 		catch(Exception $ex) {
@@ -74,15 +74,19 @@ class XCacheSession {
 	/**
 	 * Delete a session
 	 */
-	function destroy($key) {
-		xcache_unset('g$s_' . $key);
+	public function destroy($key) {
+		xcache_unset($this->create_key($key));
 	}
 	
 	/**
 	 * Delete outdated sessions
 	 */
-	function gc($lifetime) {
+	public function gc($lifetime) {
 		// XCache does this for us
 		return true;
 	}
+	
+	protected function create_key($key) {
+		return 'g$s' . Config::get_url(Config::URL_DOMAIN) . '_' . $key;
+	} 
 }
