@@ -27,14 +27,14 @@ class MemcacheSession {
 	/**
 	 * Open a session
 	 */ 
-	function open($save_path, $session_name) {
+	public function open($save_path, $session_name) {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	function close() {
+	public function close() {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
@@ -50,12 +50,12 @@ class MemcacheSession {
 	/**
 	 * Load session data from xcache
 	 */
-	function read($key) {
+	public function read($key) {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
 		register_shutdown_function('session_write_close');
-		$key = 'g$s_' . $key;
+		$key = $this->create_key($key);
 		
 		$ret = GyroMemcache::get($key);
 		if ($ret === false) {
@@ -67,9 +67,9 @@ class MemcacheSession {
 	/**
 	 * Write session data to XCache
 	 */
-	function write($key, $value) {
+	public function write($key, $value) {
 		try {
-			GyroMemcache::set('g$s_' . $key, $value, get_cfg_var('session.gc_maxlifetime'));
+			GyroMemcache::set($this->create_key($key), $value, get_cfg_var('session.gc_maxlifetime'));
 			return true;
 		}
 		catch(Exception $ex) {
@@ -80,15 +80,19 @@ class MemcacheSession {
 	/**
 	 * Delete a session
 	 */
-	function destroy($key) {
-		GyroMemcache::delete('g$s_' . $key);
+	public function destroy($key) {
+		GyroMemcache::delete($this->create_key($key));
 	}
 	
 	/**
 	 * Delete outdated sessions
 	 */
-	function gc($lifetime) {
+	public function gc($lifetime) {
 		// Memcache does this for us
 		return true;
 	}
+	
+	protected function create_key($key) {
+		return 'g$s' . Config::get_url(Config::URL_DOMAIN) . '_' . $key;
+	} 	
 }
