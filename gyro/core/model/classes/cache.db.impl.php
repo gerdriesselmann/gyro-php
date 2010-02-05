@@ -18,11 +18,11 @@ class CacheDBImpl implements ICachePersister {
 		$dao->add_where('expirationdate', '>', DBFieldDateTime::NOW);
 		
 		if ($dao->find(DAOCache::AUTOFETCH)) {
-			$this->$cache_item = $dao;
+			$this->cache_item = $dao;
 			return true; 
 		}
 		else {
-			$this->$cache_item = false;
+			$this->cache_item = false;
 			return false;
 		}
 	}
