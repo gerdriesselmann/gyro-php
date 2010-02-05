@@ -11,7 +11,7 @@ class XCacheCacheItem implements ICacheItem {
 	 * 
 	 * @var Associative array 
 	 */
-	private $item_data;
+	protected $item_data;
 	
 	/**
 	 * Constructor
@@ -147,7 +147,7 @@ class CacheXCacheImpl implements ICachePersister {
 	/**
 	 * Clear chache for given ICachable 
 	 */
-	private function do_clear_cachable($cachable) {
+	protected function do_clear_cachable($cachable) {
 		$keys = $cachable->get_all_cache_ids();
 		foreach($keys as $key) {
 			$this->do_clear($key);
@@ -157,32 +157,57 @@ class CacheXCacheImpl implements ICachePersister {
 	/**
 	 * Clear all cache
 	 */
-	private function do_clear_all() {
-		xcache_unset_by_prefix('g$c_');
+	protected function do_clear_all() {
+		xcache_unset_by_prefix($this->get_app_key());
 	}
 	
 	/**
 	 * Clear cache for given cache key(s)
 	 */
-	private function do_clear($cache_keys) {
+	protected function do_clear($cache_keys) {
 		$key = $this->flatten_keys($cache_keys);
 		xcache_unset($key);
-		xcache_unset_by_prefix($key);
+		xcache_unset_by_prefix($key . '_g$c');
 	}
-	
+
+	/**
+	 * Return key to make the current app unique
+	 * 
+	 * @return string
+	 */
+	protected function get_app_key() {
+		return 'g$c' . Config::get_url(Config::URL_DOMAIN) . '';
+	}
+
+	/**
+	 * Strip empty keys from end of $cache_keys 
+	 */
+	protected function preprocess_keys($cache_keys, $strip_empty = true) {
+		$cleaned = array($this->get_app_key());
+		if ($strip_empty) {
+			foreach(Arr::force($cache_keys, false) as $key) {
+				if ($key || $key == '0') {
+					$cleaned[] = $key;
+				} 
+				else {
+					break;
+				}
+			}		
+		}
+		else {
+			$cleaned = array_merge($cleaned, Arr::force($cache_keys, true));
+		}
+		return $cleaned;
+	}
+		
 	/**
 	 * Transform the given param into a key string
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string
 	 */
-	private function flatten_keys($cache_keys) {
-		$ret = 'g$c_';
-		if (is_array($cache_keys)) {
-			$ret .= implode('_g$c_', $cache_keys);
-		}
-		else if (is_string($cache_keys) || is_numeric($cache_keys)) {
-			$ret .= $cache_keys;
-		}
+	protected function flatten_keys($cache_keys) {
+		$cache_keys = $this->preprocess_keys($cache_keys);
+		$ret .= implode('_g$c', $cache_keys);
 		return $ret;		
 	}
 
