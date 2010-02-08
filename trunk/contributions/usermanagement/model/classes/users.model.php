@@ -27,7 +27,7 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 				new DBFieldText('name', 100, null, DBFieldText::NOT_NULL),
 				new DBFieldText('email', 100, null, DBFieldText::NOT_NULL),
 				new DBFieldText('password', 50),
-				new DBFieldEnum('status', $this->get_allowed_status(), Users::STATUS_UNCONFIRMED, DBFieldEnum::NOT_NULL),
+				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBFieldEnum::NOT_NULL),
 				new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::NOT_NULL),
 				new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW,  DBFieldDateTime::TIMESTAMP | DBFieldDateTime::NOT_NULL)
 			),
