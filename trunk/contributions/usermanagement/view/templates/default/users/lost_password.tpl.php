@@ -21,7 +21,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(
  	<p>
  	<?php
  	print tr(
- 		'Please enter your e-mail address and klick <strong>Submit</strong> afterwards.',
+ 		'Please enter your e-mail address and click <strong>Submit</strong> afterwards.',
  		'users'
  	); 
  	?>
