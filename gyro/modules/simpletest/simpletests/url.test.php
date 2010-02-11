@@ -48,7 +48,7 @@ class UrlTest extends GyroUnitTestCase {
 		$expect = str_replace('dir/file.ext', 'ext/file.dir', TEST_URL);
 		$this->assertEqual($expect, $this->url->set_path('ext/file.dir')->build());
 		
-		$expect = str_replace('/dir/file.ext', '', TEST_URL);
+		$expect = str_replace('dir/file.ext', '', TEST_URL);
 		$this->assertEqual($expect, $this->url->set_path('')->build());
 	}
 	
@@ -102,6 +102,10 @@ class UrlTest extends GyroUnitTestCase {
 	
 	function test_host_to_lower() {
 		$url = Url::create('http://www.domain.INFO/Some/Path');
+		$this->assertEqual('www.domain.info', $url->get_host());
+		$this->assertEqual('http://www.domain.info/Some/Path', $url->build());
+		
+		$url->set_host('www.domain.INFO');
 		$this->assertEqual('www.domain.info', $url->get_host());
 		$this->assertEqual('http://www.domain.info/Some/Path', $url->build());
 	}
