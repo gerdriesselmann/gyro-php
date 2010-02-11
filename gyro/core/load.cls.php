@@ -395,6 +395,7 @@ class Load {
 		$key = $subdirectory . '#' . $order;
 		$ret = Arr::get_item(self::$base_dir_subdir_cache, $key, false);
 		if ($ret === false) {
+			$ret = array();
 			$basedirs = self::get_base_directories($order); 
 			foreach($basedirs as $basedir) {
 				$path = $basedir . $subdirectory . '/';
