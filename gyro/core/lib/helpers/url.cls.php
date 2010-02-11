@@ -51,61 +51,80 @@ class Url {
 		return $ret;
 	}
 
+	/**
+	 * Parse URL into Urls 
+	 */
 	protected function parse($url) {
 		$url = trim($url);
+		$data = array();
 		if (!empty($url)) {
-			$this->data = $this->do_parse_url($url);
-			
-			// transform query into associative array
-			$query = Arr::get_item($this->data, 'query', '');
-			$this->data['query'] = array();
-
-			/*
-			// GR: What is disadvantage of this code? 
-			// - Will understand arrays, this class however won't (get_query_params(), get_query_param()) - which maybe is a bug of Url class. 
-			// - "my value=something" wil become array['my_value' => 'something'], note the underscore
-			// - Does not respect setting of arg_seperator.input
-			//
-			// Left here for testing purposes, though
-			$temp = array();
-			parse_str($query, $temp);
-			foreach($temp as $key => $value) {
-				$pname = String::convert(urldecode($key));
-				$pvalue = String::convert(urldecode($value));
-				if (!empty($pname)) {
-					$this->data['query'][$pname] = $pvalue;
-				}
+			$data = $this->do_parse_url($url);
+		}
+		
+		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
+		$this->set_host(Arr::get_item($data, 'host', ''));
+		$this->set_port(Arr::get_item($data, 'port', ''));
+		$this->set_path(Arr::get_item($data, 'path', ''));
+		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
+		$this->set_query(Arr::get_item($data, 'query', ''));
+	}
+	
+	/**
+	 * Split a query into items and return them as associative array
+	 * 
+	 * @param string $query
+	 * @return string
+	 */
+	protected function parse_query($query) {
+		$ret = array();
+		
+		// Input separator may be a list of chars!
+		$sep = ini_get('arg_separator.input');
+		$l = String::length($sep);
+		if ($l > 1) {
+			// We have a list, take first char as separator and replace all others with it 
+			$all_seps = $sep;
+			$sep = String::substr($all_seps, 0, 1);			
+			for ($i = 1; $i < $l; $i++) {
+				$query = str_replace(String::substr($all_seps,$i, 1), $sep, $query);
 			}
-			return;
-			*/
-			
-			// Input separator may be a list of chars!
-			$sep = ini_get('arg_separator.input');
-			$l = String::length($sep);
-			if ($l > 1) {
-				// We have a list, take first char as separator and replace all others with it 
-				$all_seps = $sep;
-				$sep = String::substr($all_seps, 0, 1);			
-				for ($i = 1; $i < $l; $i++) {
-					$query = str_replace(String::substr($all_seps,$i, 1), $sep, $query);
+		}
+		
+		// Now split query and process it
+		$arrItems = explode($sep, $query);
+		foreach($arrItems as $query_item) {
+			$arr = explode('=', $query_item, 2);
+			$pname = String::convert(urldecode($arr[0]));
+			$pvalue = (count($arr) > 1) ? String::convert(urldecode($arr[1])) : '';
+			if (!empty($pname)) {
+				if (substr($pname, -2) == '[]') {
+					$ret[$pname][] = $pvalue;
 				}
-			}
-			// print $sep;
-			$arrItems = explode($sep, $query);
-			foreach($arrItems as $query_item) {
-				$arr = explode('=', $query_item, 2);
-				$pname = String::convert(urldecode($arr[0]));
-				$pvalue = (count($arr) > 1) ? String::convert(urldecode($arr[1])) : '';
-				if (!empty($pname)) {
-					if (substr($pname, -2) == '[]') {
-						$this->data['query'][$pname][] = $pvalue;
-					}
-					else {
-						$this->data['query'][$pname] = $pvalue;
-					}
+				else {
+					$ret[$pname] = $pvalue;
 				}
 			}
 		}
+		
+		return $ret;
+		
+		// GR: What is disadvantage of this code? 
+		// - Will understand arrays, this class however won't (get_query_params(), get_query_param()) - which maybe is a bug of Url class. 
+		// - "my value=something" wil become array['my_value' => 'something'], note the underscore
+		// - Does not respect setting of arg_seperator.input
+		//
+		// Left here as reminder, though
+		// $ret = array();
+		// $temp = array();
+		// parse_str($query, $temp);
+		// foreach($temp as $key => $value) {
+		// 	$pname = String::convert(urldecode($key));
+		// 	$pvalue = String::convert(urldecode($value));
+		// 	if (!empty($pname)) {
+		// 		$ret[$pname] = $pvalue;
+		// 	}
+		// }
+		// return $ret;
 	}
 	
 	/**
@@ -126,7 +145,7 @@ class Url {
 	 * Returns true if the URL is empty
 	 */
 	public function is_empty() {
-		return count($this->data) == 0;
+		return $this->data['host'] === '';
 	}
 	
 	/**
@@ -189,7 +208,7 @@ class Url {
 	 * @return Url Reference to self  
 	 */
 	public function set_path($path) {
-		$this->data['path'] = '/' . ltrim($path, '/');
+		$this->data['path'] = ltrim($path, '/');
 		return $this;
 	}
 	
@@ -197,7 +216,18 @@ class Url {
 	 * Return the path only
 	 */
 	public function get_path() {
-		return ltrim(Arr::get_item($this->data, 'path', ''), '/');				
+		return $this->data['path'];				
+	}
+	
+	/**
+	 * Set query as string
+	 * 
+	 * @param string $query
+	 * @return Url
+	 */
+	public function set_query($query) {
+		$this->data['query'] = $this->parse_query($query);
+		return $this;
 	}
 	
 	/**
@@ -240,22 +270,22 @@ class Url {
 	 * Return query paramter
 	 */
 	public function get_query_param($name, $default = false, $encode = Url::NO_ENCODE_PARAMS) {
-		$ret = Arr::get_item($this->get_query_params(Url::NO_ENCODE_PARAMS), $name, $default);
+		$ret = Arr::get_item($this->data['query'], $name, $default);
 		if ($encode == Url::ENCODE_PARAMS) {
 			if (is_array($ret)) {
-				array_walk_recursive($ret, array($this, 'array_walk_urlencode'));
+				array_walk_recursive($ret, array($this, 'callback_urlencode'));
 			}
 			else {
-				$this->array_walk_urlencode($ret);
+				$this->callback_urlencode($ret);
 			}
 		}
 		return $ret;		
 	}
 	
 	/**
-	 * Callback to urlencode values
+	 * Callback to urlencode values - does not actually walk
 	 */
-	protected function array_walk_urlencode(&$value, $key = false) {
+	protected function callback_urlencode(&$value, $key = false) {
 		$value = urlencode($value);
 	}
 
@@ -265,7 +295,7 @@ class Url {
 	public function get_query_params($encode = Url::NO_ENCODE_PARAMS) {
 		$ret = Arr::get_item($this->data, 'query', array());
 		if ($encode == Url::ENCODE_PARAMS) {
-			array_walk_recursive($ret, array($this, 'array_walk_urlencode'));
+			array_walk_recursive($ret, array($this, 'callback_urlencode'));
 		}
 		return $ret;
 	}
@@ -274,7 +304,7 @@ class Url {
 	 * Return scheme (http, ftp etc)
 	 */
 	public function get_scheme() {
-		return Arr::get_item($this->data, 'scheme', 'http');
+		return $this->data['scheme'];
 	}
 
 	/**
@@ -290,7 +320,7 @@ class Url {
 	 */
 	public function get_host() {
 		// to_lower() removed, since it is already done in setter
-		return Arr::get_item($this->data, 'host', ''); 
+		return $this->data['host']; 
 	}
 	
 	/**
@@ -418,14 +448,14 @@ class Url {
 	}
 	
 	public function get_port() {
-		return Arr::get_item($this->data, 'port', '');
+		return $this->data['port'];
 	}
 	
 	/**
 	 * Return fragment (stuff after "#")
 	 */
 	public function get_fragment() {
-		return Arr::get_item($this->data, 'fragment', '');
+		return $this->data['fragment'];
 	}
 
 	/**
@@ -481,14 +511,8 @@ class Url {
 			}
 		}
 		
-		$path = $this->get_path();
-		if (!empty($path)) {
-			$path = '/' . $path;
-		}
-		else if ($mode == Url::RELATIVE) {
-			$out .= '/';
-		}
-		$out .= $path;
+		$out .= '/';
+		$out .= $this->get_path();
 				 
 		$query = $this->get_query($encoding);
 		if (!empty($query)) {
