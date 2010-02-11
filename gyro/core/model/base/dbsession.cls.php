@@ -107,7 +107,7 @@ class DBSession {
 		try {
 			$sess = new DAOSessions();
 			$sess->add_where('modificationdate', '<', time() - $lifetime);	
-			$sess->delete(true);
+			$sess->delete(DataObjectBase::WHERE_ONLY);
 		}
 		catch (Exception $ex) {}
 		
