@@ -56,4 +56,27 @@ class DBFilter implements IDBQueryModifier {
 	public function set_is_default($bool) {
 		$this->is_default = $bool;
 	}
+	
+	/**
+	 * Preporocess value depending on operator
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $value
+	 * @param string $operator
+	 * @return string
+	 */
+	protected function preprocess_value($value, $operator) {
+		$ret = $value;
+		switch ($operator) {
+			case DBWhere::OP_LIKE:
+				if ($value !== '') {
+					$ret = '%' . $value . '%';
+				}
+				break;
+		}
+		return $ret;
+	}
+	
+	
 }
