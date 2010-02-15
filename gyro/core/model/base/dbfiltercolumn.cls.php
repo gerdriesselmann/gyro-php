@@ -1,12 +1,20 @@
 <?php
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_EQUAL', '=');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_LIKE', 'LIKE');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_GREATER', '>');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_GREATER_OR_EQUAL', '>=');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_LESS', '<');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_LESS_OR_EQUAL', '<=');
+/** @deprecated Use DBWhere-Constants instead */
 define ('FILTER_OPERATOR_NOT', '<>');
-define ('FILTER_OPERATOR_NOT_NULL', 'NOT NULL');
+/** @deprecated Use DBWhere-Constants instead */
+define ('FILTER_OPERATOR_NOT_NULL', 'IS NOT NULL');
 
 define('FILTER_COLUMN_TYPE_TEXT', 'text');
 define('FILTER_COLUMN_TYPE_CURRENCY', 'currency');
@@ -44,7 +52,7 @@ class DBFilterColumn extends DBFilter {
 	 * @param string title
 	 * @param enum type of column
 	 */
-	public function __construct($column, $value, $title, $operator = FILTER_OPERATOR_EQUAL) {
+	public function __construct($column, $value, $title, $operator = '=') {
 		$this->column = $column;
 		$this->value = $value;
 		$this->operator = $operator;
@@ -65,19 +73,8 @@ class DBFilterColumn extends DBFilter {
 		if (empty($column)) {
 			return;
 		}
-
-		switch ($this->operator) {
-			case FILTER_OPERATOR_LIKE:
-				if ($this->value !== '') {
-					$query->add_where($column, DBWhere::OP_LIKE, '%' . $this->value . '%');
-				}
-				break;
-			case FILTER_OPERATOR_NOT_NULL:
-				$query->add_where($column, DBWhere::OP_NOT_NULL);
-				break;
-			default:
-				$query->add_where($column, $this->operator, $this->value);
-				break;
-		}
+		
+		$value = $this->preprocess_value($this->value, $this->operator);
+		$query->add_where($column, $this->operator, $value);
 	}
 }
