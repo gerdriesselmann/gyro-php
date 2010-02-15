@@ -1,9 +1,12 @@
 <?php
 $page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
-$page_data->head->title = tr('Become a member', 'users');
-?>
+$title = tr('Become a member', 'users');
+$page_data->head->title = $title;
+$page_data->breadcrumb = WidgetBreadcrumb::output(
+	$title
+);?>
 
-<h1><?=tr('Become a member', 'users');?></h1>
+<h1><?=$title;?></h1>
 
 <p><?php print tr('Fill in the fields and click <strong>Register</strong> to become a member. You will get an e-mail with a confirmation link afterwards.', 'users'); ?></p>
 
