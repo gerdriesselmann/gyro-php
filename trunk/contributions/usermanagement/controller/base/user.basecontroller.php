@@ -536,7 +536,7 @@ class UserBaseController extends ControllerBase {
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/list', $page_data);
  		$users = Users::create_all_user_adapter();
  		
- 		Load::tools(array('sorter', 'filter', 'filtertext', 'pager'));
+ 		Load::tools(array('sorter', 'filter', 'filterusername', 'pager'));
 		$sorter = new Sorter($page_data, $users->get_sortable_columns(), $users->get_sort_default_column());
 		$sorter->apply($users);
  		$sorter->prepare_view($view);
@@ -545,7 +545,7 @@ class UserBaseController extends ControllerBase {
 		$filter->apply($users);
  		$filter->prepare_view($view);
 
-		$filtertext = new FilterText($page_data, 'name', 'name', FILTER_OPERATOR_LIKE);
+		$filtertext = new FilterUsername($page_data);
 		$filtertext->apply($users);
  		$filtertext->prepare_view($view);
 		
