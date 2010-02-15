@@ -2,6 +2,8 @@
 /**
  * Validate a user before create, update etc 
  * 
+ * @since 0.5.1
+ * 
  * @author Gerd Riesselmann
  * @ingroup Usermanagement
  */
