@@ -21,7 +21,7 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 				if (Users::do_login($user)) {
 					$msg = new Message(tr('You have been automatically logged in. You now can change your password.', 'users'));
 					$msg->persist();
-					$redirect = APP_DEFAULT_PAGE_USER;
+					$redirect = ActionMapper::get_url('edit_self', $user); // APP_DEFAULT_PAGE_USER;
 					Url::create($redirect)->redirect();
 					exit;					
 				}
