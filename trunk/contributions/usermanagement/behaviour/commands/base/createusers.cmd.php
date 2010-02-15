@@ -14,9 +14,9 @@ class CreateUsersBaseCommand extends CommandChain {
 		
 		$params = $this->preprocess_params($this->get_params());
 		
-		// Validate 
-		$ret->merge($this->validate_email(Arr::get_item($params, 'email', '')));
-		$ret->merge($this->validate_username(Arr::get_item($params, 'name', '')));
+		// Validate
+		$cmd_validate = CommandsFactory::create_command('users', 'validate', $params);
+		$ret->merge($cmd_validate->execute()); 
 		
 		// Insert
 		if ($ret->is_ok()) {
@@ -103,45 +103,4 @@ class CreateUsersBaseCommand extends CommandChain {
 		
 		return $params;
 	}
-	
-	/**
-	 * Validate the email address given. 
-	 * 
-	 * Note that this is an extended check, e.g. to exclude some domains or check for unqueness  
-	 *
-	 * @param string $email
-	 * @return Status
-	 */
-	protected function validate_email($email) {
-		$ret = new Status();
-		$user = new DAOUsers();
-		$user->add_where('status', '!=', Users::STATUS_DELETED);
-		$user->email = $email;
-		$c = $user->count();
-		if ($c > 0) {
-			$ret->append(tr('An user with this email address already exists', 'users'));
-		}
-		return $ret;
-	}
-
-	/**
-	 * Validate the user name 
-	 * 
-	 * Note that this is an extended check, e.g. to exclude some chars or check for unqueness  
-	 *
-	 * @param string $name
-	 * @return Status
-	 */
-	protected function validate_username($name) {
-		$ret = new Status();
-		$user = new DAOUsers();
-		$user->add_where('status', '!=', Users::STATUS_DELETED);
-		$user->name = $name;
-		$c = $user->count();
-		if ($c > 0) {
-			$ret->append(tr('An user with this username already exists', 'users'));
-		}
-		return $ret;
-	}
-	
 } 
