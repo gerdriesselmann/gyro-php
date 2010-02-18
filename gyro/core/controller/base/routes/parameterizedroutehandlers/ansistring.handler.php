@@ -2,6 +2,8 @@
 /**
  * Handle ansi string (the "sp" type)
  * 
+ * @since 0.5.1
+ * 
  * @author Gerd Riesselmann
  * @ingroup Controller
  */
