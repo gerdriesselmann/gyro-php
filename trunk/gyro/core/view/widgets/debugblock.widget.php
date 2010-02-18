@@ -85,6 +85,19 @@ class WidgetDebugBlock implements IWidget {
 				$out .= html::tag('table', $table, array('summary' => 'Mapping of template ressources to files'));
 			}
 
+			// Translation logs
+			if (count(Translator::Instance()->groups)) {
+				$out .= html::h('Translations', 3);
+				
+				$li = array(); 
+				foreach(Translator::Instance()->groups as $key => $group) {
+					if (count($group)) {
+						$li[] = String::escape($key);
+					}
+				}
+				$out .= html::li($li, 'translations');
+			}
+			
 			$out = html::div($out, 'debug_block');
 		}
 		return $out;	
