@@ -6,8 +6,7 @@
  */
 
 class ArrayTest extends GyroUnitTestCase {
-	
-	function test_implode() {
+	public function test_implode() {
 		$arr = array(
 			'one' => '1',
 			'two' => '2'
@@ -24,7 +23,31 @@ class ArrayTest extends GyroUnitTestCase {
 		$this->assertEqual('0=one&1=two', Arr::implode('&', $arr));
 	}	
 	
-	function test_get_item() {
+	public function test_implode_tail() {
+		$arr = array();
+		$this->assertEqual('', Arr::implode_tail('&', '+', $arr));
+
+		$arr = array('one');
+		$this->assertEqual('one', Arr::implode_tail('&', '+', $arr));
+		
+		$arr = array('one', 'two');
+		$this->assertEqual('one+two', Arr::implode_tail('&', '+', $arr));
+		
+		$arr = array('one', 'two', 'three');
+		$this->assertEqual('one&two+three', Arr::implode_tail('&', '+', $arr));
+
+		// Possible empty check failures
+		$arr = array(0);
+		$this->assertEqual('0', Arr::implode_tail('&', '+', $arr));
+
+		$arr = array(0, 0);
+		$this->assertEqual('0+0', Arr::implode_tail('&', '+', $arr));
+
+		$arr = array(0, 0, 0);
+		$this->assertEqual('0&0+0', Arr::implode_tail('&', '+', $arr));
+	} 
+	
+	public function test_get_item() {
 		$arr = array(
 			'one' => 1
 		);
@@ -42,7 +65,7 @@ class ArrayTest extends GyroUnitTestCase {
 		$this->assertEqual('no way', Arr::get_item($arr, 1, 'no way'));
 	}
 
-	function test_clean() {
+	public function test_clean() {
 		$arr = array(
 			'one' => 1,
 			'two' => 2
