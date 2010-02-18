@@ -185,6 +185,28 @@ class String {
 	}
 	
 	/**
+	 * Return string depending on value of $num
+	 * 
+	 * If $num is 1, $singuar is returned
+	 * If $num is not 1, $plural is returned
+	 * If $num is 0, and $none is not FALSE, $none is returned, else $plural is returned
+	 *  
+	 * @since 0.5.1
+	 * 
+	 * @return string
+	 */
+	public static function singular_plural($num, $singular, $plural, $none = false) {
+		switch ($num) {
+			case 1:
+				return $singular;
+			case 0:
+				return ($none !== false) ? $none : $plural;
+			default: 
+				return $plural;
+		}
+	}
+	
+	/**
 	 * Character set aware strtolower()
 	 * 
 	 * @param String Value to convert into lowercase
