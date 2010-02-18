@@ -20,14 +20,14 @@
  * $view->render();
  * @endcode
  * 
- * @attention 
- *   Mime views are never cached, no matter what cache policy is set on PageData!
+ * Mime views are normally cached, like any other content.
  * 
  * @author Gerd Riesselmann
  * @ingroup Mime
  */
 class MimeView extends ContentViewBase {
 	const MIMETYPE = 'mimetype';
+	const EXPIRES = 'expires';
 
 	/**
 	 * Contructor takes a name and the page data
@@ -36,6 +36,7 @@ class MimeView extends ContentViewBase {
 		parent::__construct($template, $page_data);
 		$page_data->page_template = 'emptypage';
 		$this->assign(self::MIMETYPE, 'application/octet-stream');
+		$this->assign(self::EXPIRES, 0);
 	}
 	
 	/**
@@ -59,17 +60,31 @@ class MimeView extends ContentViewBase {
 		
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
 			$mimetype = $this->retrieve(self::MIMETYPE);
-			header('Cache-Control: maxage=3600'); //Fix for IE in SSL 
-			header('Pragma: public');
+			Common::header('Cache-Control', 'maxage=3600', true); //Fix for IE in SSL 
+			Common::header('Pragma', 'public', true);
 			// This leads to trouuble in IE and Safari
 			// Possibly a gzip-issue?
 			//header('Content-Length: ') . strlen($rendered_content);			
-			header('Content-Type: ' . $mimetype);
+			Common::header('Content-Type', $mimetype, true);
+			
+			// Expires Header
+			$ex = $this->retrieve(self::EXPIRES);
+			if ($ex) {
+				if ($ex < GyroDate::ONE_DAY * 3650) {
+					// $ex is a duration
+					$ex = time() + $ex;
+				}
+				Common::header('Expires', GyroDate::http_date($ex), true);
+			}
 		}
 	}	
 	
 	public function display_file($file) {
 		if (file_exists($file)) {
+			$modification = filemtime($file);
+			if ($modification) {
+				Common::header('Last-Modified', GyroDate::http_date($modification), true);
+			}
 			$this->assign('data', file_get_contents($file));
 			$mime_type = 'application/octect-stream';
 			if (function_exists('finfo_open')) {
