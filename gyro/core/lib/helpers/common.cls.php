@@ -81,6 +81,90 @@ class Common {
 	} 		
 	
 	/**
+	 * Send a header
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $name Name of header or complete header (if $value is false)
+	 * @param string $value Value of header
+	 * @param bool If FALSE, header will not be send, if header with same name was already sent
+	 */
+	public static function header($name, $value = false, $override = true) {
+		$header = '';
+		if ($value === false) {
+			$tmp = self::split_header($name);
+			$header = $name;
+			$name = array_shift($tmp);
+			$value = array_shift($tmp);
+		}
+		else {
+			$header = $name . ': ' . $value;
+		}
+		if ($override || !self::is_header_sent($name)) {
+			header($header);
+		}
+	}
+
+	/**
+	 * Split header into array with name as first element, and value as second
+	 *  
+	 * @since 0.5.1
+	 * 
+	 * @return array
+	 */
+	public static function split_header($header) {
+		$ret = explode(':', $header, 2);
+		if (count($ret) == 1) {
+			$ret = explode(' ', $header, 2);
+		}
+		if (count($ret) == 1) {
+			$ret[] = '';
+		}
+		array_walk($ret, 'trim');
+		return $ret;
+	}
+	
+	/**
+	 * Returns TRUE, if header with given name was alreday sent
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $name
+	 * @return bool
+	 */
+	public static function is_header_sent($name) {
+		$ret = false;
+		
+		$name = strtolower($name) . ':';
+		$l = strlen($name);
+		foreach(headers_list() as $header) {
+			$header = strtolower($header);
+			if (substr($header, 0, $l) == $name) {
+				$ret = true;
+				break;
+			}	
+		}
+		return $ret;
+	}
+
+	/**
+	 * Get all send headers as assoziative array with (lower case) header name as key
+	 * and full header as value
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @return array
+	 */
+	public static function get_headers() {
+		$ret = false;
+		foreach(headers_list() as $header) {
+			$tmp = self::split_header($header);
+			$ret[strtolower($tmp[0])] = $header;
+		}
+		return $ret;
+	}
+	
+	/**
 	 * Strips possible slashes added by magic quotes
 	 */
 	public static function preprocess_input() {
