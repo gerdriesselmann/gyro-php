@@ -3,6 +3,8 @@
  * @defgroup Tristate
  * @ingroup DB
  * 
+ * @since 0.5.1
+ * 
  * A tristate DB field, allowing a user choice of YES, NO, and UNKNOWN.
  * 
  * While a tristate also can be achieved unsing a boolean field together with a NULL value, 
