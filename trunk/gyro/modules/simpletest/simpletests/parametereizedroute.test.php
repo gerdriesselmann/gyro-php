@@ -113,6 +113,54 @@ class ParameterizedRouteTest extends GyroUnitTestCase {
 		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
 	}
 	
+	function test_string_plain() {
+		$token1 = new ParameterizedRoute('some/url/{test:sp}', null, '');
+
+		$weight = $token1->weight_against_path('some/url/123');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		$weight = $token1->weight_against_path('some/url/-123');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		$weight = $token1->weight_against_path('some/url/_123');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		$weight = $token1->weight_against_path('some/url/0');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		$weight = $token1->weight_against_path('some/url/string');		
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		// No matches
+		$weight = $token1->weight_against_path('some/url/123/string');		
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);		
+
+		$weight = $token1->weight_against_path('some/url/!123');
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
+		
+		$weight = $token1->weight_against_path('some/url/#123');
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
+		
+		$token2 = new ParameterizedRoute('some/url/{test:sp}.html', null, '');
+
+		$weight = $token2->weight_against_path('some/url/123.html');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+
+		$weight = $token2->weight_against_path('some/url/123.htm');
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
+		
+		$token3 = new ParameterizedRoute('some/url/{test:sp:2}', null, '');
+
+		$weight = $token3->weight_against_path('some/url/abc');
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
+		
+		$weight = $token3->weight_against_path('some/url/ab');
+		$this->assertEqual(RouteBase::WEIGHT_FULL_MATCH, $weight);
+		
+		$weight = $token3->weight_against_path('some/url/a');
+		$this->assertEqual(RouteBase::WEIGHT_NO_MATCH, $weight);
+	}	
+	
 	function test_enum() {
 		$token1 = new ParameterizedRoute('some/url/{test:e:one,two,three}', null, '');
 
@@ -209,4 +257,13 @@ class ParameterizedRouteTest extends GyroUnitTestCase {
 		$this->assertEqual('/some/url/path', $url);
 	}
 	
+	function test_build_url_sp() {
+		$token1 = new ParameterizedRoute('some/{test:sp}', null, '');
+		
+		$url = $token1->build_url(false, array('test' => '_test'));
+		$this->assertEqual('/some/_test', $url);
+
+		$url = $token1->build_url(false, array('test' => '!test-ö!'));
+		$this->assertEqual('/some/test-oe', $url);
+	}
 } 
