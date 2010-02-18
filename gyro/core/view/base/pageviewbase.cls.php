@@ -8,6 +8,8 @@ require_once dirname(__FILE__) . '/viewbase.cls.php';
  * @ingroup View
  */
 class PageViewBase extends ViewBase {
+	const POLICY_GZIP = 1024;
+	
 	/**
 	 * Page Data 
 	 *
@@ -24,7 +26,19 @@ class PageViewBase extends ViewBase {
 		parent::__construct($file, $cacheid);
 	}
 
-
+	/**
+	 * Process view and returnd the created content
+	 *
+	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @return string The rendered content
+	 */
+	public function render($policy = self::NONE) {
+		if (Config::has_feature(Config::GZIP_SUPPORT)) {
+			$policy |= self::POLICY_GZIP;
+		}
+		return parent::render($policy);
+	}
+	
 	/**
 	 * Called before content is rendered, always
 	 * 
@@ -38,6 +52,20 @@ class PageViewBase extends ViewBase {
 			$this->template = $this->page_data->page_template;
 		}
 	}
+
+	/**
+	 * Sets content
+	 * 
+	 * @param $rendered_content The content rendered
+	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @return void
+	 */
+	protected function render_content(&$rendered_content, $policy) {
+		parent::render_content($rendered_content, $policy);
+		if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
+			$rendered_content = gzcompress($rendered_content, 9);
+		}	
+	}	
 	
 	/**
 	 * Sets content
@@ -48,13 +76,6 @@ class PageViewBase extends ViewBase {
 	 */
 	protected function after_render(&$rendered_content, $policy) {
 		parent::after_render($rendered_content, $policy);
-		
-		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
-			header('Pragma: no-cache');
-			header("Cache-Control: no-cache,no-store,private,max-age=0,must-revalidate");
-			header('Last-Modified:');
-			header('Expires: ' . GyroDate::http_date(time() - GyroDate::ONE_DAY));
-		}		
 	}	
 	
 	/**
@@ -67,10 +88,20 @@ class PageViewBase extends ViewBase {
 	protected function render_postprocess(&$rendered_content, $policy) {
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
 			$this->send_status();
-		
-			if (Config::has_feature(Config::GZIP_SUPPORT)) {
-				header('Content-Encoding: gzip');
-				$rendered_content = gzencode($rendered_content, 9);
+
+			// Send default headers, if not already sent
+			Common::header('Pragma', 'no-cache', false);
+			Common::header('Cache-Control', 'no-cache,no-store,private,max-age=0,must-revalidate', false);
+			Common::header('Last-Modified', '', false);
+			Common::header('Expires', GyroDate::http_date(time() - GyroDate::ONE_DAY), false);
+			
+			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
+				Common::header('Content-Encoding', 'gzip', true);
+				// Magic! Actually gzencode usually is used, but there is no
+				// decode < PHP 6, so it won't work with cache compression.
+				// gzcompress, which is used here, needs this magic bytes 
+				// to look like gzencode
+				$rendered_content =  "\x1f\x8b\x08\x00\x00\x00\x00\x00" . $rendered_content;
 			}
 		}
 	}
@@ -111,17 +142,23 @@ class PageViewBase extends ViewBase {
 	 * @param $content
 	 * @param $lifetime
 	 */
-	protected function store_cache($cache_key, $content, $lifetime) {
+	protected function store_cache($cache_key, $content, $lifetime, $policy) {
 		$headers = array();
-		$allowed = array(
-			'content-type'
+		$forbidden = array(
+			'age',
+			'date',
+			'content-encoding',
+			'content-length',
+			'server',
+			'set-cookie',
+			'transfer-encoding',
+			'x-powered-by',
+			'keep-alive',
+			'connection'			
 		);
-		foreach(headers_list() as $h) {
-			$h_test = strtolower($h);
-			foreach($allowed as $a) {
-				if (String::starts_with($h_test, $a)) {
-					$headers[] = $h;
-				}
+		foreach(Common::get_headers() as $name => $val) {
+			if (!in_array($name, $forbidden)) {
+				$headers[] = $val;
 			}
 		}
 		$cache_data = array(
@@ -129,7 +166,8 @@ class PageViewBase extends ViewBase {
 			'in_history' => $this->page_data->in_history,
 			'headers' => $headers
 		);
-		Cache::store($cache_key, $content, $lifetime, $cache_data, false);
+		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
+		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
 		$age = intval($lifetime / 10);
 		$this->send_cache_headers(time(), time() + $lifetime, $age);
 	}
@@ -146,7 +184,7 @@ class PageViewBase extends ViewBase {
 		if ($cache) {
 			$cache_data = $cache->get_data();
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
-				header($header);
+				Common::header($header, '', true);
 			}
 			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate());
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
@@ -155,7 +193,12 @@ class PageViewBase extends ViewBase {
 				Common::check_not_modified($cache->get_creationdate()); // exits if not modified
 			}
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
-			$ret = $cache->get_content_plain();
+			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
+				$ret = $cache->get_content_compressed();
+			}
+			else {
+				$ret = $cache->get_content_plain();
+			}
 		}
 		return $ret;
 	}
@@ -169,10 +212,10 @@ class PageViewBase extends ViewBase {
 	 */
 	protected function send_cache_headers($lastmodified, $expires, $max_age = 600) {
 		$max_age = intval($max_age);
-		header('Pragma:');
-		header("Cache-Control: private, max-age=0, pre-check=0, must-revalidate");
-		header('Last-Modified: ' . GyroDate::http_date($lastmodified));
-		header('Expires: ' . GyroDate::http_date($expires));		
+		Common::header('Pragma', '', false);
+		Common::header('Cache-Control', 'private, max-age=0, pre-check=0, must-revalidate', false);
+		Common::header('Last-Modified', GyroDate::http_date($lastmodified), false);
+		Common::header('Expires', GyroDate::http_date($expires), false);		
 	}
 
 	/**
