@@ -178,6 +178,43 @@ class Arr {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Implodes the array using $glues, but appends the last element using $glue_tail
+	 * 
+	 * Example: 
+	 * 
+	 * @code
+	 * $arr = array('cats', 'dogs', 'squirrels');
+	 * print 'It\'s raining ' . Arr::implode_tail(', ', ', and ', $arr);
+	 * // Outputs: It's raining cats, dogs, and squirrels.
+	 * $arr = array('cats', 'dogs');
+	 * print 'It\'s raining ' . Arr::implode_tail(', ', ', and ', $arr);
+	 * // Outputs: It's raining cats, and dogs.
+	 * $arr = array('cats');
+	 * print 'It\'s raining ' . Arr::implode_tail(', ', ', and ', $arr);
+	 * // Outputs: It's raining cats.
+	 * @endcode
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $glue
+	 * @param string $glue_tail
+	 * @param array $pieces
+	 * @return string
+	 */
+	public static function implode_tail($glue, $glue_tail, $pieces) {
+		$ret = '';
+		$last = array_pop($pieces);
+		$ret .= implode($glue, $pieces);
+		if (!is_null($last)) {
+			if ($ret !== '') {
+				$ret .= $glue_tail;
+			}
+			$ret .= $last;
+		}
+		return $ret;
+	}
 
 	/**
 	 * Force element into an array
