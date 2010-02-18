@@ -24,6 +24,7 @@ class SimpleTestController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
  	public function action_run_tests($page_data) {
+		ob_start();
  		require_once APP_SIMPLETEST_DIR . 'unit_tester.php';
 		require_once APP_SIMPLETEST_DIR . 'reporter.php';
 		require_once APP_SIMPLETEST_DIR . 'mock_objects.php';
@@ -40,6 +41,7 @@ class SimpleTestController extends ControllerBase {
 		}
 		
 		$suite->run(new HtmlReporter());
+		ob_flush();
 		exit(); 		
  	} 		 	 			 	
  	
