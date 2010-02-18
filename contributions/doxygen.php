@@ -16,3 +16,9 @@
  * 
  * Modules related to Caching (and Sessions, probably)
  */
+
+/**
+ * @defgroup DB
+ * 
+ * Modules related to database stuff.
+ */
