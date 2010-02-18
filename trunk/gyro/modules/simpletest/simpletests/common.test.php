@@ -9,4 +9,41 @@ class CommonTest extends GyroUnitTestCase {
 		$this->assertFalse(Common::flag_is_set(2, 1));
 		$this->assertFalse(Common::flag_is_set(3, 5));
 	}
+	
+	public function test_header_related() {
+		$h = 'X-Test-Header';
+		$this->assertFalse(Common::is_header_sent($h));
+		
+		Common::header($h, 1, false);
+		$this->assertTrue(Common::is_header_sent($h));
+		$this->assertTrue(Common::is_header_sent(strtolower($h)));
+		$this->assertTrue(in_array($h . ': 1', headers_list()));
+		
+		Common::header($h, 2, false);
+		$this->assertTrue(in_array($h . ': 1', headers_list()));
+				
+		Common::header(strtoupper($h), 2, false);
+		$this->assertTrue(in_array($h . ': 1', headers_list()));
+		
+		Common::header(strtolower($h), 2, false);
+		$this->assertTrue(in_array($h . ': 1', headers_list()));
+		
+		Common::header($h, 2, true);
+		$this->assertTrue(in_array($h . ': 2', headers_list()));
+		
+		// TEst with date (containes ":")
+		$h = 'X-Test-Date-Header';
+		$d1 = GyroDate::http_date(time());
+		$d2 = GyroDate::http_date(time() + GyroDate::ONE_HOUR);
+		$this->assertFalse(Common::is_header_sent($h));
+		
+		Common::header($h, $d1, false);
+		$this->assertTrue(Common::is_header_sent($h));		
+
+		Common::header($h, $d2, false);
+		$this->assertTrue(in_array($h . ': ' . $d1, headers_list()));
+				
+		Common::header($h, $d2, true);
+		$this->assertTrue(in_array($h . ': ' . $d2, headers_list()));
+	}
 }
