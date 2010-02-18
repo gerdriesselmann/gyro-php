@@ -4,6 +4,8 @@
  * 
  * Field in DB should be defined as ENUM('FALSE','TRUE','UNKNOWN').
  * 
+ * @since 0.5.1
+ * 
  * @author Gerd Riesselmann
  * @ingroup Tristate
  */
