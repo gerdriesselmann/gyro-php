@@ -23,6 +23,13 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  * s: string (default). You can specify a length like so: s:2 - String of two ANSI characters
  * e: enum. Usage is e:value1,value2,value3,..,valueN
  * 
+ * Two meta types are available:
+ * 
+ * _class_: Gets replaced by the class name of an instance passed as paramter
+ * _ model_: Gets replaced by te model name of an instance passed as paramter
+ *  
+ * Both meta types cannot be bound to variables. You must use the string type "s" 
+ * 
  * The parameterized route supports optional elements, but only at the end of the query
  * 
  * A terminating ! means this part of the URL is optional. Be sure to define a default value in the 
@@ -78,6 +85,12 @@ class ParameterizedRoute extends RouteBase {
 	 * @var array
 	 */
 	private $types = array();
+	
+	/**
+	 * Associative array with type as key and IParameterizedRouteHandler as value
+	 * @var array
+	 */
+	private static $handlers = array();
 	
 	/**
 	 * Weight this token against path
@@ -140,17 +153,6 @@ class ParameterizedRoute extends RouteBase {
 	 * @param PageData $page_data
 	 */
 	protected function initialize_adjust_path($page_data) {
-		/*
-		$pathstack = $page_data->get_pathstack();
-		$this_path = new PathStack($this->path);
-		$c = $this_path->count_front();
-		if (substr($this->path, -1) == '*') {
-			$c--;
-		}
-		for ($i = 0; $i < $c; $i++) {
-			$pathstack->next();
-		}
-		*/
 		// GR, * processes complete URL into variable, no need for path stack 
 		$page_data->get_pathstack()->clear_front();
 	}	
@@ -165,11 +167,31 @@ class ParameterizedRoute extends RouteBase {
 	}
 	
 	/**
+	 * Return handler for given type
+	 * 
+	 * @return IParameterizedRouteHandler  
+	 */
+	protected function get_handler($type) {
+		return Arr::get_item(self::$handlers, $type, false);
+	}
+	
+	/**
+	 * Return handler for given key
+	 * 
+	 * @return IParameterizedRouteHandler  
+	 */
+	protected function get_handler_for_key($key) {
+		$types = $this->get_types();
+		$type = Arr::get_item($types, $key, 's');
+		return $this->get_handler($type);
+	}
+	
+	/**
 	 * Add a value and a type
 	 */
 	private function add_value_and_type($name, $value, $type) {
-			$this->params[$name] = $value;
- 			$this->types[$name] = $type;		
+		$this->params[$name] = $value;
+ 		$this->types[$name] = $type;		
 	}
 	 	
  	/**
@@ -196,8 +218,8 @@ class ParameterizedRoute extends RouteBase {
 		$tags = '';
 		preg_match_all($tag, $this_path_elem, $tags);
 		$tags = $tags[0];
-		// we now have two arrays, one for text between tags ($html_texts),
-		// and one for the tags itself ($html_tags)
+		// we now have two arrays, one for text between tags ($texts),
+		// and one for the tags itself ($tags)
  		
  		$names = array();
  		$types = array();
@@ -265,32 +287,12 @@ class ParameterizedRoute extends RouteBase {
  			throw new Exception(tr('Illegal expression name found: %i', 'core', array('%i' => $expression)));
  		}
  		
- 		// Check type
- 		switch ($type) {
- 			case 's':
- 				if ($params === false) {
- 					return '.*?';
- 				}
- 				else {
- 					return '.{' . preg_quote($params) . '}';
- 				}
- 			case 'sp':
- 				if ($params === false) {
- 					return '[a-zA-Z0-9_-]*?';
- 				}
- 				else {
- 					return '[a-zA-Z0-9_-]{' . preg_quote($params) . '}';
- 				}
- 			case 'i':
- 				return '[+-]?[0-9][0-9]*';
- 			case 'ui':
- 				return '[0-9][0-9]*';
- 			case 'ui>':
- 				return '[1-9][0-9]*';
- 			case 'e':
- 				return str_replace(',', '|', preg_quote($params));
- 			default:
- 				return $this->build_unknown_type_regexp($type, $params);	
+ 		$handler = $this->get_handler($type);
+ 		if ($handler) {
+			return $handler->get_validate_regex($params); 			
+ 		}
+ 		else {
+ 			return $this->build_unknown_type_regexp($type, $params);	
  		}
  	}
 
@@ -389,14 +391,19 @@ class ParameterizedRoute extends RouteBase {
 	 * @return string
 	 */
 	protected function replace_path_variable($path, $key, $value) {
-		// Replace sb first
-		//$reg_sp = '#\{' . $key . ':sp.*?\}[*%!]?#';
-		//$replace = implode('/', array_map(array('String', 'plain_ascii'), explode('/', Cast::string($value))));
-		//$path = preg_replace($reg_sp, $replace, $path); 
-		
-		// Replace otional type with strign type. Reduces RegExp complexity,
+		// Replace otional type with string type. Reduces RegExp complexity,
 		// since we now can force a ":" after key and before type
 		$path = str_replace('{' . $key . '}', '{' . $key . ':s}', $path);
+		
+		// Figure out type of $key
+		$reg = '#\{' . $key . ':([^:\}]*)[:]?.*?\}#';
+		$matches = array();
+		if (preg_match($reg, $path, $matches)) {
+			$handler = $this->get_handler($matches[1]);
+			if ($handler) {
+				$value = $handler->preprocess_build_url($value);
+			}
+		}
 		
 		$reg = '#\{' . $key . ':.*?\}[*%!]?#';
 		$replace = implode('/', array_map(array($this, 'preprocess_replace_value'), explode('/', Cast::string($value)))); 
@@ -411,4 +418,32 @@ class ParameterizedRoute extends RouteBase {
 	protected function preprocess_replace_value($value) {
 		return urlencode(Cast::string($value));
 	}
+	
+	// ---------------------------------------------
+	// Static part
+	// ---------------------------------------------
+	
+	/**
+	 * Autoload handlers
+	 */
+	public static function init_handlers() {
+		$files = Load::get_files_from_directory('controller/base/routes/parameterizedroutehandlers', '*.handler.php');
+		foreach($files as $file => $inc) {
+			include_once $inc;
+			$cls = Load::filename_to_classname($file, 'ParameterizedRouteHandler', 'handler');
+			if (!class_exists($cls)) {
+				throw new Exception('ParameterizedRoute: ' . $inc . ' does not define class ' . $cls);	
+			}
+			self::add_handler(new $cls());
+		}
+	}
+	
+	/**
+	 * Add a handler
+	 */
+	public static function add_handler(IParameterizedRouteHandler $handler) {
+		self::$handlers[$handler->get_type_key()] = $handler;
+	} 
 }
+
+ParameterizedRoute::init_handlers();
