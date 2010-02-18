@@ -21,7 +21,7 @@ class Translator {
 	/**
 	 * Array of translation groups
 	 */
-	private $groups = array();
+	public $groups = array();
 		
 	/**
 	 * Translations as array 
