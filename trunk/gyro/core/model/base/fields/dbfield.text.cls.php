@@ -2,6 +2,8 @@
 /**
  * A text field im DB
  * 
+ * @attention A string of length 0 is treated as NULL, too 
+ * 
  * @author Gerd Riesselmann
  * @ingroup Model
  */
