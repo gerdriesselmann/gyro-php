@@ -95,6 +95,10 @@ class html
 		return html::p($text, "note");
 	}
 
+	public static function warning($text) {
+		return html::p($text, "warning");
+	}
+	
 	public static function info($text) {
 		return html::p($text, "info");
 	}
@@ -154,7 +158,6 @@ class html
 		}
 		
 		$li = '';
-		$clsItem = 'first ' . $cls;
 		$i = 0;
 		foreach($items as $item) {
 			$arr_cls = array($cls);
@@ -394,6 +397,9 @@ class html
 		return $ret;
 	}
 
+	/**
+	 * Build a table cell. 
+	 */
 	public static function td($text, $attr = array(), $is_head = false) {
 		if ($is_head) {
 			return self::tag('th', $text, $attr);
@@ -401,9 +407,79 @@ class html
 		return self::tag('td', $text, $attr);
 	}
 
+	/**
+	 * Combine table cells into a row.
+	 * 
+	 * Table cells must be enclosed in <td> or <th> already
+	 */
 	public static function tr($cells, $attr = array()) {
 		$text = implode("\n", $cells);
 		return self::tag('tr', $text, $attr);
+	}
+	
+	/**
+	 * Output a table
+	 * 
+	 * The table rows are labeled with classes "first", "last" and "even"/"uneven"
+	 * 
+	 * If you pass an array as $rows or $head, instead an array of arrays, it is
+	 * treated as one single row.
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param array $rows Array of arrays of body cells. Cells must be already formated with either <td> or <th>
+	 * @param array $head Array of arrays of head cells. Cells must be already formated with either <td> or <th>
+	 * @param string $summary Table summary
+	 * @param array $attr Additional html attributes
+	 * 
+	 * @return string
+	 */
+	public static function table($rows, $head, $summary, $attr = array()) {
+		$ret = '';
+		
+		$body = self::table_build_rows($rows);
+		$head = self::table_build_rows($head);
+		
+		$content = '';
+		$content .= ($head) ? html::tag('thead', $head) . "\n" : '';
+		$content .= ($body) ? html::tag('tbody', $body) . "\n" : '';
+		
+		$attr['summary'] = $summary;
+		$ret .= html::tag(
+			'table', 
+			$content, 
+			$attr
+		);
+		
+		return $ret;
+	}
+	
+	/**
+	 * Build rows
+	 * 
+	 * @param array  $rows Array or Array of arrays of cells. Cells must be already formated with either <td> or <th>
+	 */
+	private function table_build_rows($rows) {
+		$ret = '';
+		$i = 0;		
+		$c = count($rows);
+		// Test if $rwos is array or array of arrays;
+		if ($c && !is_array($rows[0])) {
+			$rows = array($rows);
+		}
+		// Iterate and output
+		foreach($rows as $cells) {
+			$arr_cls = array();
+			$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
+			if ($i === 1) {
+				$arr_cls[] = 'first';
+			}
+			if ($i === $c) {
+				$arr_cls[] = 'last';
+			}
+			$ret .= html::tr($cells, array('class' => $arr_cls));
+		}
+		return $ret;
 	}
 	
 	private static function _appendClass(&$attrs, $cls) {
