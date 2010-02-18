@@ -143,7 +143,7 @@ class ViewBase implements IView, ICache {
 		if (empty($ret)) {
 			$ret = $this->do_render($policy);
 			if ($cache_enabled && $this->should_cache()) {
-				$this->store_cache($this->cache_id, $ret, $this->get_cache_lifetime());
+				$this->store_cache($this->cache_id, $ret, $this->get_cache_lifetime(), $policy);
 			}			
 		}
 		$this->render_postprocess($ret, $policy);
@@ -271,7 +271,7 @@ class ViewBase implements IView, ICache {
 	 * @param $content Content to cache as string
 	 * @param $lifetime Lifetime in seconds
 	 */
-	protected function store_cache($cache_key, $content, $lifetime) {
+	protected function store_cache($cache_key, $content, $lifetime, $policy) {
 		Cache::store($cache_key, $content, $lifetime);
 	}
 	
