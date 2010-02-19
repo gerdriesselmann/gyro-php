@@ -126,8 +126,9 @@ class JQueryUI {
 		$css_components[] = 'ui.theme';
 		
 		$ret = array();
+		$prefix = self::is_version_1_8() ? 'jquery.' : ''; 
 		foreach($css_components as $c) {
-			$path = 'css/jqueryui/' . $c . '.css';
+			$path = 'css/jqueryui/' . $prefix . $c . '.css';
 			if (!in_array($path, $ret)) {
 				$ret[] = $path;
 			}	
