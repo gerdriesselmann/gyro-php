@@ -2,7 +2,7 @@
 /**
  * String class using php functions
  */
-class StringMBString {
+class StringPHP {
 	/**
 	 * Convert input to current charset
 	 * 
