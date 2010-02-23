@@ -9,8 +9,13 @@ class StringPHP {
 	 * @param string $value Input to convert
 	 * @return string 
 	 */
-	public function convert($value) {
+	public function convert($value, $from = false, $to = false) {
+		if (empty($to)) { $to = GyroLocale::get_charset(); }
+		
 		$ret = $value;
+		if (!empty($from) && function_exists('iconv')) {
+			$ret = iconv($from, $to . '//IGNORE', $value);
+		}
 		return $ret;
 	}	
 	
