@@ -6,7 +6,11 @@
  * @ingroup Interfaces
  */
 interface IDBDriver {
-	const FEATURE_REPLACE = 'replace';	
+	const FEATURE_REPLACE = 'replace';
+	
+	const TABLE = 'TABLE';
+	const ALIAS = 'ALIAS';
+	const FIELD = 'FIELD';
 	
 	/**
 	 * Return name of driver, e.g "mysql". Lowercase!
@@ -35,8 +39,9 @@ interface IDBDriver {
 	 * @param string $user Username
 	 * @param string $password Password
 	 * @param string $host Host
+	 * @param mixed $params Driver dependend
 	 */
-	public function initialize($dbname, $user = '', $password = '', $host = 'localhost');
+	public function initialize($dbname, $user = '', $password = '', $host = 'localhost', $params = false);
 
 	/**
 	 * Escape given value
@@ -57,8 +62,9 @@ interface IDBDriver {
 	 * Escape given database object, like table, field etc
 	 *
 	 * @param string $obj
+	 * @param string $type What to escape, field, table, or alias
 	 */
-	public function escape_database_entity($obj);
+	public function escape_database_entity($obj, $type = self::FIELD);
 	
 	/**
 	 * Return current status
@@ -82,6 +88,16 @@ interface IDBDriver {
 	 * @return IDBResultSet
 	 */
 	public function query($sql);
+	
+	/**
+	 * Explain the given query
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $sql
+	 * @return IDBResultSet False if quey cant be explain or driver does not support it
+	 */
+	public function explain($sql);
 	
 	/**
 	 * Start transaction

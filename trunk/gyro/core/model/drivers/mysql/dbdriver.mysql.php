@@ -6,6 +6,20 @@
  * @ingroup Model
  */
 class DBDriverMysql implements IDBDriver {
+	/**
+	 * Primary connection
+	 */
+	const PRIMARY = 0;
+	/**
+	 * A connectionj other than default one
+	 */
+	const SECONDARY = 1;
+	
+	/**
+	 * Connection type: PRIMARY, SECONDARY
+	 * @var int
+	 */
+	private $type;
 	private $db_handle = false;
 	private static $transaction_count = 0;
 	private $connect_params;
@@ -43,15 +57,18 @@ class DBDriverMysql implements IDBDriver {
 	 * @param string $user Username
 	 * @param string $password Password
 	 * @param string $host Host
+	 * @param array $params 
+	 *    Associative array allowing the following keys:
+	 *      - type: Connection type
 	 */
-	public function initialize($dbname, $user = '', $password = '', $host = 'localhost') {
+	public function initialize($dbname, $user = '', $password = '', $host = 'localhost', $params = false) {
 		$this->connect_params = array(
 			'host' => $host,
 			'user' => $user,
 			'pwd' => $password,
-			'db' => $dbname,
-			
+			'db' => $dbname,			
 		);
+		$this->type = Arr::get_item($params, 'type', self::PRIMARY);
 	}
 	
 	/**
@@ -61,28 +78,30 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	private function connect() {
 		if ($this->db_handle === false) {
+			$success = false;
 			$this->db_handle = mysql_connect(
 				$this->connect_params['host'], 
 				$this->connect_params['user'],
 				$this->connect_params['pwd']
 			);
 			if ($this->db_handle) {
-				if (mysql_select_db($this->connect_params['db'], $this->db_handle)) {
+				$success = ($this->type == self::SECONDARY) ? true : mysql_select_db($this->connect_params['db'], $this->db_handle);
+				if($success) {
 					// We are connected
 					if (GyroLocale::get_charset() == 'UTF-8') {
- 						$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'" );
+ 						$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
  					}
  					//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
- 					$this->connect_params = false;
-					return;				
 				}
 			}
-		
-			throw new Exception(tr(
-				'Could not connect to database %db on server %host', 
-				'core', 
-				array('%db' => $this->connect_params['db'], '%host' => $this->connect_params['host'])
-			));
+			
+			if (!$success) {
+				throw new Exception(tr(
+					'Could not connect to database %db on server %host', 
+					'core', 
+					array('%db' => $this->connect_params['db'], '%host' => $this->connect_params['host'])
+				));
+			}
 		}
 	}
 	
@@ -100,8 +119,13 @@ class DBDriverMysql implements IDBDriver {
 	 *
 	 * @param string $obj
 	 */
-	public function escape_database_entity($obj) {
-		return "`" . $obj . "`";
+	public function escape_database_entity($obj, $type = self::FIELD) {
+		$ret = '';
+		if ($this->type !== self::PRIMARY && $type === self::TABLE) {
+			$ret .= '`' . $this->get_db_name() . '`.';
+		}
+		$ret .= '`' . $obj . '`';
+		return $ret;
 	}
 	
 	/**
@@ -153,6 +177,21 @@ class DBDriverMysql implements IDBDriver {
 		$status = $this->get_status();
 		return new DBResultSetMysql($handle, $status);
 	}
+	
+	/**
+	 * Explain the given query
+	 * 
+	 * @param string $sql
+	 * @return IDBResultSet
+	 */
+	public function explain($sql) {
+		$ret = false;
+		if (strtolower(substr($sql, 0, 6)) === 'select') {
+			$sql = 'EXPLAIN ' . $sql;
+			$ret = $this->query($sql);
+		}
+		return $ret;
+	}	
 	
 	/**
 	 * Start transaction

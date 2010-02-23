@@ -62,7 +62,7 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 				$fieldnames[] = $this->prefix_column($name, $table);
 			}
 			else {
-				$fieldnames[] = DB::escape_database_entity($name, $table->get_table_driver());
+				$fieldnames[] = DB::escape_database_entity($name, $table->get_table_driver(), IDBDriver::FIELD);
 			}
 		}		
 		if (count($fieldnames) > 0) {

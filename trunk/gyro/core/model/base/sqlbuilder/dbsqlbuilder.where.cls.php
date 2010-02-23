@@ -81,13 +81,13 @@ class DBSqlBuilderWhere implements IDBSqlBuilder {
 		$ret = $column;
 		if (!String::contains($column, '.')) {
 			if ($table instanceof IDBTable) {
-				$ret = DB::escape_database_entity($column, $table->get_table_driver()); 
+				$ret = DB::escape_database_entity($column, $table->get_table_driver(), IDBDriver::FIELD); 
 				if ($table->get_table_field($column)) {
 					$ret = $table->get_table_alias_escaped() . '.' . $ret;
 				}
 			}
 			else {
-				$ret = DB::escape_database_entity($column);
+				$ret = DB::escape_database_entity($column, DB::DEFAULT_CONNECTION, IDBDriver::FIELD);
 			}
 		}
 		return $ret;

@@ -33,7 +33,7 @@ class DBField implements IDBField {
 	 */
 	protected $connection;
 	
-	public function __construct($name, $default_value = null, $policy = self::NONE, $connection = DB::DEFAULT_CONNNECTION) {
+	public function __construct($name, $default_value = null, $policy = self::NONE, $connection = DB::DEFAULT_CONNECTION) {
 		$this->name = $name;
 		$this->default_value = $default_value;
 		$this->policy = $policy;

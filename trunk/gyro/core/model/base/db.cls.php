@@ -8,6 +8,10 @@ require_once dirname(__FILE__) . '/dataobjectbase.cls.php';
  * @ingroup Model
  */ 
 class DB {
+	const DEFAULT_CONNECTION = 'default';
+	/**
+	 * @deprecated Left for backward compatability only
+	 */
 	const DEFAULT_CONNNECTION = 'default';
 	
 	/**
@@ -47,15 +51,16 @@ class DB {
 	 * @param string $db_user
 	 * @param string $db_pwd
 	 * @param string $db_host
+	 * @param mixed $params Driver specific data
 	 * @return IDBDriver
 	 */
-	public static function create_connection($connection_name, $driver, $db_name, $db_user, $db_pwd, $db_host) {
+	public static function create_connection($connection_name, $driver, $db_name, $db_user, $db_pwd, $db_host, $params = false) {
 		//define database configuration values
 		Load::directories('model/drivers/' . $driver);
 		//Load::directories('model/drivers/' . $driver . '/sqlbuilder');
 		$drivername = 'DBDriver' . ucfirst($driver); // Driver must be ASCII
 		$db = new $drivername();
-		$db->initialize($db_name, $db_user, $db_pwd, $db_host);
+		$db->initialize($db_name, $db_user, $db_pwd, $db_host, $params);
 		self::$connections[$connection_name] = $db;
 
 		return $db;
@@ -119,7 +124,7 @@ class DB {
 	 */
 	public static function initialize() {
 		//define database configuration values
-		self::$db = self::create_connection(self::DEFAULT_CONNNECTION, APP_DB_TYPE, APP_DB_NAME, APP_DB_USER, APP_DB_PWD, APP_DB_HOST);
+		self::$db = self::create_connection(self::DEFAULT_CONNECTION, APP_DB_TYPE, APP_DB_NAME, APP_DB_USER, APP_DB_PWD, APP_DB_HOST);
 	}
 
 	/**
@@ -128,7 +133,7 @@ class DB {
 	 * @param mixed $value
 	 * @return string
 	 */
-	public static function escape($value, $connection = self::DEFAULT_CONNNECTION) {
+	public static function escape($value, $connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		return $conn->escape($value);
 	}
@@ -138,9 +143,9 @@ class DB {
 	 *
 	 * @param string $obj
 	 */
-	public static function escape_database_entity($obj, $connection = self::DEFAULT_CONNNECTION) {
+	public static function escape_database_entity($obj, $connection = self::DEFAULT_CONNECTION, $type = IDBDriver::FIELD) {
 		$conn = self::get_connection($connection);
-		return $conn->escape_database_entity($obj);
+		return $conn->escape_database_entity($obj, $type);
 	}
 		
  	/**
@@ -149,7 +154,7 @@ class DB {
  	 * @param string $val 
  	 * @return string
  	 */
- 	public static function quote($val, $connection = self::DEFAULT_CONNNECTION) {
+ 	public static function quote($val, $connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		return $conn->quote($val); 
  	}
@@ -211,11 +216,11 @@ class DB {
  	 * @param string $query
  	 * @return IDBResultSet
  	 */
- 	public static function query($query, $connection = self::DEFAULT_CONNNECTION) {
+ 	public static function query($query, $connection = self::DEFAULT_CONNECTION) {
  		$timer = new Timer();
  		$conn = self::get_connection($connection);
  		$ret = $conn->query($query);
- 		self::log_query($query, $timer->seconds_elapsed(), $ret->get_status());
+ 		self::log_query($query, $timer->seconds_elapsed(), $ret->get_status(), $conn);
  		return $ret;
  	}
  	
@@ -225,18 +230,31 @@ class DB {
 	 * @param string $query
 	 * @return Status
 	 */
-	public static function execute($query, $connection = self::DEFAULT_CONNNECTION) {
+	public static function execute($query, $connection = self::DEFAULT_CONNECTION) {
 		$timer = new Timer();
 		$conn = self::get_connection($connection);
 		$ret = $conn->execute($query);
-		self::log_query($query, $timer->seconds_elapsed(), $ret);
+		self::log_query($query, $timer->seconds_elapsed(), $ret, $conn);
 		return $ret;
 	}
 	
 	/**
+	 * Explain the given query
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @param string $sql
+	 * @return IDBResultSet False if quey cant be explain or driver does not support it
+	 */
+	public static function explain($sql, $connection = self::DEFAULT_CONNECTION) {
+		$conn = self::get_connection($connection);
+		return $conn->explain($sql);
+	}	
+	
+	/**
 	 * Get last insert ID
 	 */
-	public static function last_insert_id($connection = self::DEFAULT_CONNNECTION) {
+	public static function last_insert_id($connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		return $conn->last_insert_id();
 	}
@@ -247,7 +265,7 @@ class DB {
 	 * @param string $file
 	 * @return Status
 	 */
-	public static function execute_script($file, $connection = self::DEFAULT_CONNNECTION) {
+	public static function execute_script($file, $connection = self::DEFAULT_CONNECTION) {
 		$status = new Status();
 		$conn = self::get_connection($connection);
 		if (file_exists($file)) {
@@ -350,12 +368,12 @@ class DB {
 		return $c;
 	}
 	
-	public static function start_trans($connection = self::DEFAULT_CONNNECTION) {
+	public static function start_trans($connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		$conn->trans_start();
 	}
 	
-	public static function end_trans($status, $connection = self::DEFAULT_CONNNECTION) {
+	public static function end_trans($status, $connection = self::DEFAULT_CONNECTION) {
 		if ($status->is_ok()) {
 			self::commit($connection); 
 		}
@@ -364,12 +382,12 @@ class DB {
 		}
 	}
 
-	public static function commit($connection = self::DEFAULT_CONNNECTION) {
+	public static function commit($connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		$conn->trans_commit();
 	}
 	
-	public static function rollback($connection = self::DEFAULT_CONNNECTION) {
+	public static function rollback($connection = self::DEFAULT_CONNECTION) {
 		$conn = self::get_connection($connection);
 		$conn->trans_rollback();
 	}
@@ -378,10 +396,11 @@ class DB {
 	 * Log a query
 	 *
 	 * @param string $query
+	 * @param IDBDriver $conn
 	 * @param float $seconds
 	 * @param Status $status
 	 */
-	public static function log_query($query, $seconds, $status) {
+	public static function log_query($query, $seconds, $status, $conn = self::DEFAULT_CONNECTION) {
 		if ($status->is_error()) {
 			if (Config::has_feature(Config::LOG_FAILED_QUERIES)) {
 				$log = array(
@@ -398,16 +417,19 @@ class DB {
 		}
 		
 		if (Config::has_feature(Config::LOG_QUERIES)) {
+			$c = self::get_connection($conn);
 			$log = array(
 				'query' => $query,
 				'seconds' => $seconds,
 				'success' => $status->is_ok(),
 				'message' => $status->message
 			);
-			self::$query_log[] = $log;
-			self::$queries_total_time += $seconds;
 			Load::components('logger');
 			Logger::log('queries', $log); 
+			
+			$log['connection'] = $c;
+			self::$query_log[] = $log;
+			self::$queries_total_time += $seconds;
 		}
 		
 		if (Config::has_feature(Config::LOG_SLOW_QUERIES)) {

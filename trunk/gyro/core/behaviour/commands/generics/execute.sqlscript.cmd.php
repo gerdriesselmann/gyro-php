@@ -11,7 +11,7 @@ class ExecuteSqlScriptCommand extends CommandTransactional  {
 	 *
 	 * @param array|string $sql
 	 */
-	public function __construct($sql, $connection = DB::DEFAULT_CONNNECTION) {
+	public function __construct($sql, $connection = DB::DEFAULT_CONNECTION) {
 		parent::__construct($connection, $sql);
 	}
 	
