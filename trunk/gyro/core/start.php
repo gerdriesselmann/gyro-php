@@ -115,6 +115,10 @@ if (Config::has_feature(Config::START_SESSION)) {
 	Session::start_existing();
 }
 
+if (file_exists(APP_INCLUDE_ABSPATH . 'enabled.inc.php')) {
+	// Allow app to do things before modules start
+	include_once APP_INCLUDE_ABSPATH . 'enabled.inc.php';
+}
 Load::files('start.inc.php', Load::ORDER_DECORATORS);
 
 AccessControl::load();
