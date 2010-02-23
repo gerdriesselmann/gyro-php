@@ -15,7 +15,7 @@ class TestUnidecode extends GyroUnitTestCase {
 			'α' => 'a',
 			'château' => 'chateau',
 			'viñedos' => 'vinedos',
-			'Jürgen' => 'Jurgen'
+			"Jürgen’s" => "Jurgen's",
 		);
 		
 		foreach ($tests as $u => $t) {
