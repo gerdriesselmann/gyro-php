@@ -105,6 +105,6 @@ class DBSqlBuilderWhereSphinx extends DBSqlBuilderWhere {
 	 * @return string
 	 */
 	protected function prefix_column($column, $table) {
-		return '@' . DB::escape_database_entity($column, $table->get_table_driver());
+		return '@' . DB::escape_database_entity($column, $table->get_table_driver(), IDBDriver::FIELD);
 	}
 }

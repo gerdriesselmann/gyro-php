@@ -48,7 +48,7 @@ class DBSqlBuilderSelectSphinx extends DBSqlBuilderSelect {
 
 			$statement = $this->prefix_column($fieldname, $table);
 			if ($fieldalias != '*') {
-				$statement .=  ' AS ' . DB::escape_database_entity($fieldalias, $table->get_table_driver());
+				$statement .=  ' AS ' . DB::escape_database_entity($fieldalias, $table->get_table_driver(), IDBDriver::ALIAS);
 			}
 			
 			$fieldnames[] = $statement;
@@ -112,6 +112,6 @@ class DBSqlBuilderSelectSphinx extends DBSqlBuilderSelect {
 	 * @return string
 	 */
 	protected function prefix_column($column, $table) {
-		return DB::escape_database_entity($column, $table->get_table_driver());
+		return DB::escape_database_entity($column, $table->get_table_driver(), IDBDriver::FIELD);
 	}	
 }
