@@ -22,3 +22,9 @@
  * 
  * Modules related to database stuff.
  */
+ 
+/**
+ * @defgroup Text
+ * 
+ * Modules related to text processing
+ */
