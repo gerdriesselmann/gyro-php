@@ -28,7 +28,7 @@
  * Ommit encoding when dealing with strings in default encoding
  * 
  * @code
- * print ConverterFactory::encode('Jürgen's Café offers à la carte', CONVERTER_UNIDECODE);
+ * print ConverterFactory::encode('Jürgen\'s Café offers à la carte', CONVERTER_UNIDECODE);
  * // prints: Jurgen's Cafe offers a la carte
  * @endcode
  * 
@@ -36,6 +36,7 @@
  * 
  * This is a port of the Tomaz Solc's <tomaz@zemanta.com> Python port of the 
  * Text::Unidecode Perl module by Sean M. Burke <sburke@cpan.org>.
+ * 
  * 
  * Character transliteration tables copyright 2001, Sean M. Burke <sburke@cpan.org>, 
  * all rights reserved. http://search.cpan.org/~sburke/Text-Unidecode-0.04/

@@ -68,7 +68,7 @@ class ConverterUnidecode implements IConverter {
 			self::$groups[$high] = $group;
 		}
 		
-		return $group[$low];		
+		return Arr::get_item($group, $low, '');		
 	}
 	
 } 
