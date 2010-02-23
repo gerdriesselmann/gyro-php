@@ -24,7 +24,7 @@ class DBWhere implements IDBWhere {
 	public function __construct(IDBTable $table, $column, $operator = null, $value = null, $mode = IDBWhere::LOGIC_AND) {
 		$this->table = $table;
 		$this->column = $column;
-		$this->operator = String::to_upper(trim($operator));
+		$this->operator = strtoupper(trim($operator)); // $operator is ASCII
 		$this->value = $value;
 		$this->logical_operator = $mode;
 	}
@@ -95,13 +95,13 @@ class DBWhere implements IDBWhere {
 		$ret = $column;
 		if (!String::contains($column, '.')) {
 			if ($table instanceof IDBTable) {
-				$ret = DB::escape_database_entity($column, $table->get_table_driver()); 
+				$ret = DB::escape_database_entity($column, $table->get_table_driver(), IDBDriver::FIELD); 
 				if ($table->get_table_field($column)) {
 					$ret = $table->get_table_alias_escaped() . '.' . $ret;
 				}
 			}
 			else {
-				$ret = DB::escape_database_entity($column);
+				$ret = DB::escape_database_entity($column, DB::DEFAULT_CONNECTION, IDBDriver::FIELD);
 			}
 		}
 		return $ret;

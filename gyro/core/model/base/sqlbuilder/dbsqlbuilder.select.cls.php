@@ -43,7 +43,7 @@ class DBSqlBuilderSelect extends DBSqlBuilderBase {
 			$statement = ($dbfield) ? $dbfield->format_select() : $fieldname;
 			$statement = str_replace($fieldname, $this->prefix_column($fieldname, $table), $statement);
 			if ($fieldalias != '*') {
-				$statement .=  ' AS ' . DB::escape_database_entity($fieldalias, $connection);
+				$statement .=  ' AS ' . DB::escape_database_entity($fieldalias, $connection, IDBDriver::ALIAS);
 			}
 			
 			$fieldnames[] = $statement;

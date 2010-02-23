@@ -31,11 +31,11 @@ class DBSqlBuilderInsert extends DBSqlBuilderBase {
 		foreach($arr_fields as $key => $field) {
 			if (!is_numeric($key)) {
 				// FOrm array('col1' => val1, 'col2' => val2): Used with INSERT VALUES
-				$ret[] = DB::escape_database_entity($key, $conn);
+				$ret[] = DB::escape_database_entity($key, $conn, IDBDriver::FIELD);
 			}
 			else {
 				// Form array("col1", "col2", ...): Used with INSERT SELECT only
-				$ret[] = DB::escape_database_entity($field, $conn); 
+				$ret[] = DB::escape_database_entity($field, $conn, IDBDriver::FIELD); 
 			}
 		}
 		return implode(', ', $ret);

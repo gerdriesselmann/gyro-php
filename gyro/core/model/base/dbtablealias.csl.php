@@ -63,7 +63,7 @@ class DBTableAlias implements IDBTable {
 	 * @return string
 	 */
 	public function get_table_alias_escaped() {
-		return $this->get_table_driver()->escape_database_entity($this->alias);
+		return $this->get_table_driver()->escape_database_entity($this->alias, IDBDriver::ALIAS);
 	}	
 
 	/**

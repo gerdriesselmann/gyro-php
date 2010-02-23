@@ -50,7 +50,7 @@ class DBTable implements IDBTable {
 	protected $driver;
 	
 	public function __construct($name, $fields = null, $keys = null, $relations = null, $constraints = null, $driver = null) {
-		$this->driver = empty($driver) ? DB::get_connection(DB::DEFAULT_CONNNECTION) : DB::get_connection($driver);
+		$this->driver = empty($driver) ? DB::get_connection(DB::DEFAULT_CONNECTION) : DB::get_connection($driver);
 		$this->name = $name;
 		$this->alias = $name;
 		if (is_array($fields)) {
@@ -101,7 +101,7 @@ class DBTable implements IDBTable {
 	 * @return string
 	 */
 	public function get_table_name_escaped() {
-		return $this->driver->escape_database_entity($this->name);
+		return $this->driver->escape_database_entity($this->name, IDBDriver::TABLE);
 	}
 
 	/**
@@ -110,7 +110,7 @@ class DBTable implements IDBTable {
 	 * @return string
 	 */
 	public function get_table_alias_escaped() {
-		return $this->driver->escape_database_entity($this->alias);
+		return $this->driver->escape_database_entity($this->alias, IDBDriver::ALIAS);
 	}	
 
 	/**

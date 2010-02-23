@@ -131,14 +131,14 @@ class DBSqlBuilderBase implements IDBSqlBuilder {
 		$connection = ($is_itable) ? $table->get_table_driver() : $this->get_connection();	
 
 		if ($column !== '*') {
-			$column = DB::escape_database_entity($column, $connection);
+			$column = DB::escape_database_entity($column, $connection, IDBDriver::FIELD);
 		}
 		if ($is_itable) {
 			return $table->get_table_alias_escaped() . '.' . $column;
 		}
 
 		if (!empty($table)) {
-			return DB::escape_database_entity($table, $this->get_connection()) . '.' . $column;
+			return DB::escape_database_entity($table, $this->get_connection(), IDBDriver::TABLE) . '.' . $column;
 		}
 
 		return '';
