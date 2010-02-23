@@ -9,10 +9,17 @@ class StringMBString {
 	 * @param string $value Input to convert
 	 * @return string 
 	 */
-	public function convert($value) {
+	public function convert($value, $from = false, $to = false) {
+		if (empty($to)) { $to = GyroLocale::get_charset(); }
+		
 		$ret = $value;
-		if (!mb_check_encoding($value, GyroLocale::get_charset())) {
-			$ret = mb_convert_encoding($value, GyroLocale::get_charset());
+		if (empty($from)) {
+			if (!mb_check_encoding($value, $to)) {
+				$ret = mb_convert_encoding($value, $to);
+			}
+		}
+		else {
+			$ret = mb_convert_encoding($value, $to, $from);
 		}
 		return $ret;
 	}	

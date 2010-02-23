@@ -51,13 +51,20 @@ class String {
 	}
 	
 	/**
-	 * Static convert input to current charset
+	 * Convert input charset
+	 * 
+	 * @attention 
+	 *   Note that charset autodetection usually requries the according charsets to be installed on your system.
+	 *   If you use UTF-8, e.g. a UTF-8 locale should be installed. While on Windows, this is usually the case, 
+	 *   you may want to check this on Linux by invoking "locale -a" on the command line.
 	 * 
 	 * @param string $value Input to convert
+	 * @param string $from Charset to convert from. If empty, system tries to autodetect it (may fail, though)
+	 * @param string $to Charset to convert to, if empty charset set on GyroLocale is used 
 	 * @return string 
 	 */
-	public static function convert($value) {
-		return self::$impl->convert($value);
+	public static function convert($value, $from = false, $to = false) {
+		return self::$impl->convert($value, $from, $to);
 	}
 	
 	/**
