@@ -413,7 +413,7 @@ class html
 	 * Table cells must be enclosed in <td> or <th> already
 	 */
 	public static function tr($cells, $attr = array()) {
-		$text = implode("\n", $cells);
+		$text = implode("\n", Arr::force($cells));
 		return self::tag('tr', $text, $attr);
 	}
 	
