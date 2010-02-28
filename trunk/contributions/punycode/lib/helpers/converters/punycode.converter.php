@@ -1,12 +1,12 @@
 <?php
-/**
- * Created on 06.08.2007
- *
- * @author Gerd Riesselmann
- */
- 
 require_once  dirname(__FILE__) . '/../../../3rdparty/idna_convert/idna_convert.class.php';
 
+/**
+ * Converter from and to punycode
+ *
+ * @author Gerd Riesselmann
+ * @ingroup Punycode
+ */ 
 class ConverterPunycode implements IConverter {
 	public function encode($value, $params = false) {
 		$inst = $this->create_converter();
