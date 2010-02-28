@@ -1,6 +1,9 @@
 <?php
 /**
  * Holds information about a bookmark 
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup SocialBookmarking
  */
 class SocialBookmark {
 	public $service = '';

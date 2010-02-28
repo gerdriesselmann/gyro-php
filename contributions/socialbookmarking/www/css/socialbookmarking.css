@@ -1,28 +1,28 @@
 .socialbookmarking li {
-	list-style-type: none !important;
-	list-style-position: outside !important;
-	display: inline !important;
-	margin: 0 !important;
-	padding: 0 !important;
+	list-style-type: none;
+	list-style-position: outside;
+	display: inline;
+	margin: 0;
+	padding: 0;
 }
 
 .socialbookmarking li img {
-	display: inline !important;
-	margin: 0 !important;
-	padding: 0 !important;
-	float: none !important;
+	display: inline;
+	margin: 0;
+	padding: 0;
+	float: none;
 }
 
 .socialbookmarking li a {
-	display: inline !important;
-	margin: 0 !important;
-	padding: 0.25em !important;
+	display: inline;
+	margin: 0;
+	padding: 0.25em;
 }
 
 .socialbookmarking li.first a {
-	padding-left: 0 !important;
+	padding-left: 0;
 }
 
 .socialbookmarking li.last a {
-	padding-right: 0 !important;
+	padding-right: 0;
 }
