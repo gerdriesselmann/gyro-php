@@ -1,6 +1,9 @@
 <?php
 /**
  * Prints social bookmarking list
+ *
+ * @author Gerd Riesselmann
+ * @ingroup SocialBookmarking
  */
 class WidgetBookmarking implements IWidget {
 	/**
