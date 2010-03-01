@@ -5,13 +5,13 @@
  * 
  * Allows switching the driver (this is: the connection) of an already existing table.
  * 
- * @section Usage
+ * @section Usage Usage
  * 
- * To swithc a given table to a new driver, call 
+ * To switch a given table to a new driver, call
  * 
  * @code
  * DBTableDriverSwitch::switch_table($table_name, $driver);
- * @endcoe
+ * @endcode
  * 
- * If you do this for a module's tables, palce this code in app/enabled.inc.php.  
+ * If you do this for a module's tables, place this code in app/enabled.inc.php.  
  */
