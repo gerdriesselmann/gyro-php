@@ -156,7 +156,7 @@ class Common {
 	 * @return array
 	 */
 	public static function get_headers() {
-		$ret = false;
+		$ret = array();
 		foreach(headers_list() as $header) {
 			$tmp = self::split_header($header);
 			$ret[strtolower($tmp[0])] = $header;
