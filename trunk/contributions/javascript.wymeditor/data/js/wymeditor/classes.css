@@ -1,0 +1,48 @@
+/* EDITOR RELATED STYLES - CUSTOMIZE FOR YOUR NEEDS */
+/*
+    The classes panel, the visual feedback and the preview
+    will be affected by these values.
+    
+    - Commented styles inside style definitions are used for visual 
+      feedback when using the editor.
+    - Comments before opening the style are used as caption.
+    - Comments after the class name and before the style declaration ({)
+      define the jQuery expression that decides whether this 
+      style should be applied or not.
+      
+    Note: the WYMeditor and /WYMeditor comments below are required
+    for the CSS parser to work properly.
+*/
+
+
+/* WYMeditor */
+
+/* P.note */
+p.note {
+  /* color: blue; border: 2px solid blue; */
+}
+
+/* P.info */
+p.info {
+    /* color: #999; border: 2px solid #ccc; */
+}
+
+/* P.error  */
+p.error {
+    /* color: red; font-weight: bold; border: 2px solid red; */
+}
+
+/* P.success  */
+p.success {
+    /* color: green; font-weight: bold; border: 2px solid green; */
+}
+
+/* P.warning  */
+p.warning {
+    /* background-color: #ff9; border: 2px solid #ee9; */
+}
+
+
+/* /WYMeditor */
+/* END EDITOR RELATED STYLES */
+
