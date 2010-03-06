@@ -9,12 +9,12 @@ require_once dirname(__FILE__) . '/config.php';
 /**
  * The Gyro version to use
  */
-define('APP_VERSION_MAX', 0.4);
+#define('APP_VERSION_MAX', 0.5);
 
 /**
  * Define Language
  */
-# define('APP_LANG', 'de');
+#define('APP_LANG', 'de');
 
 /**
  * The title of the application
@@ -26,7 +26,7 @@ define('APP_TITLE', 'Gyro Application');
 /**
  * Charset
  */
-#define('APP_CHARSET', 'UTF-8');
+define('APP_CHARSET', 'UTF-8');
 
 /**
  * Number of items in lists (=per page for paging) 
@@ -34,11 +34,6 @@ define('APP_TITLE', 'Gyro Application');
 define('APP_ITEMS_PER_PAGE', 10);
 
 /**
- * External libraries, if any
- */
-# define ('APP_3RDPARTY_DIR', APP_INCLUDE_ABSPATH . '../3rdparty/');
-
-/**
  * Set path to Gyro, if not set
  */ 
-// if (!defined('APP_GYRO_PATH')) define ('APP_GYRO_PATH', '/path/to/gyro/');
+#if (!defined('APP_GYRO_PATH')) define ('APP_GYRO_PATH', '/path/to/gyro/');
