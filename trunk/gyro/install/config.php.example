@@ -30,6 +30,7 @@ define('APP_DB_TYPE', 'mysql');
 define('APP_DB_NAME', 'fill in!');
 define('APP_DB_USER', 'fill in!');
 define('APP_DB_PWD', 'fill in!');
+define('APP_DB_HOST', 'localhost');
 
 /**
  * Mail related
