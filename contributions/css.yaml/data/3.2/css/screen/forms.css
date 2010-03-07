@@ -26,59 +26,59 @@
    *  (de) Festlegung des optischen Erscheinungsbildes
    */
 
-  .yform {
+  form {
     background:#f4f4f4;
     border:1px #ddd solid;
     margin:0 0 1em 0;
     padding:10px;
   }
 
-  .yform fieldset {
+  form fieldset {
     border:1px #ddd solid;
     background:#fafafa;
     margin:0 0 1em 0;
     padding: 0.5em;
   }
   
-  .yform legend {
+  form legend {
     font-size:125%; 
     font-weight:normal; 
     color:#000;
   }
 
-  .yform label {
+  form label {
     color:#666;
   }
 
-  .yform input,
-  .yform textarea,
-  .yform select, 
-  .yform optgroup {
+  form input,
+  form textarea,
+  form select, 
+  form optgroup {
     font-family:Arial, Helvetica, sans-serif; /* proportional fonts for all form elements */
   }
 
-  .yform .type-text input,
-  .yform .type-text textarea,
-  .yform .type-select select {
+  form .type-text input,
+  form .type-text textarea,
+  form .type-select select {
     border:1px solid #ddd;
   }
 
   /* :hover and :focus status on form fields | Effekt zur Hervorhebung von Formularfeldern bei :hover oder :focus */
-  .yform div.type-text input:focus,
-  .yform div select:focus,
-  .yform div textarea:focus,
-  .yform div.type-text input:hover,
-  .yform div select:hover,
-  .yform div textarea:hover,
-  .yform div.type-text input:active,
-  .yform div select:active,
-  .yform div textarea:active {
+  form div.type-text input:focus,
+  form div select:focus,
+  form div textarea:focus,
+  form div.type-text input:hover,
+  form div select:hover,
+  form div textarea:hover,
+  form div.type-text input:active,
+  form div select:active,
+  form div textarea:active {
     border:1px #a66 solid;
     background:#fff;
   }
 
   /* Styling of custom styled buttons | Gestaltung von individuell gestalteten Buttons */
-  .yform .type-button input {
+  form .type-button input {
     border-top:1px #ddd solid;
     border-left:1px #ddd solid;
     border-right:1px #444 solid;
@@ -88,17 +88,17 @@
     padding:5px 1em;
   }
 
-  .yform .type-button input[type=reset] { color:#300; background:#661717 url(images/button_red.png) top left repeat-x; }
-  .yform .type-button input[type=submit] { color:#330; background:#5e5607 url(images/button_yellow.png) top left repeat-x; }
+  form .type-button input[type=reset] { color:#300; background:#661717 url(images/button_red.png) top left repeat-x; }
+  form .type-button input[type=submit] { color:#330; background:#5e5607 url(images/button_yellow.png) top left repeat-x; }
 
   /* optional button styling for IE6 using classes */
-  .yform .type-button input.reset { color:#300; background:#661717 url(images/button_red.png) top left repeat-x; }
-  .yform .type-button input.submit { color:#330; background:#5e5607 url(images/button_yellow.png) top left repeat-x; }
+  form .type-button input.reset { color:#300; background:#661717 url(images/button_red.png) top left repeat-x; }
+  form .type-button input.submit { color:#330; background:#5e5607 url(images/button_yellow.png) top left repeat-x; }
 
   /* :hover and :focus status on buttons | Effekt zur Hervorhebung von Schaltern bei :hover oder :focus */
-  .yform div.type-button input:focus,
-  .yform div.type-button input:hover,
-  .yform div.type-button input:active {
+  form div.type-button input:focus,
+  form div.type-button input:hover,
+  form div.type-button input:active {
     border-top:1px #444 solid;
     border-left:1px #444 solid;
     border-right:1px #ddd solid;
@@ -107,15 +107,15 @@
     background:#555; 
   }
 
-  .yform div.type-button input.reset:focus,
-  .yform div.type-button input.reset:hover,
-  .yform div.type-button input.reset:active {
+  form div.type-button input.reset:focus,
+  form div.type-button input.reset:hover,
+  form div.type-button input.reset:active {
     background:#800; color:#fff;
   }
 
-  .yform div.type-button input.submit:focus,
-  .yform div.type-button input.submit:hover,
-  .yform div.type-button input.submit:active {
+  form div.type-button input.submit:focus,
+  form div.type-button input.submit:hover,
+  form div.type-button input.submit:active {
     background:#880; color:#fff;
   }
 
@@ -140,78 +140,78 @@
   */
 
   /* General form styling  | Allgemeine Formatierung des Formulars */
-  .yform { overflow:hidden; }
-  .yform fieldset { overflow:hidden; }
-  .yform label { display:block; cursor:pointer; }
-  .yform legend { background:transparent; border:0; padding:0 0.5em; }
-  .yform .message { display:block; margin-bottom:0.5em; color:#666; }
+  form { overflow:hidden; }
+  form fieldset { overflow:hidden; }
+  form label { display:block; cursor:pointer; }
+  form legend { background:transparent; border:0; padding:0 0.5em; }
+  form .message { display:block; margin-bottom:0.5em; color:#666; }
 
   /* Hiding of hidden fields (otherwise ugly spaces in Firefox) | Versteckte Felder wirklich verstecken (sonst ggf. häßliche Lücken im Firefox) */
-  .yform input[type=hidden] { display:none !important; }
+  form input[type=hidden] { display:none !important; }
 
   /* Highlight mandatory fields | Pflichtfeldkennzeichnung hervorheben */
-  .yform sup { color:#800; font-weight:bold; }
+  form sup { color:#800; font-weight:bold; }
 
   /* styling containing DIV elements | Gestaltung der kapselnden DIV-Elemente */
-  .yform div.type-text,
-  .yform div.type-select,
-  .yform div.type-check,
-  .yform div.type-button {
+  form div.type-text,
+  form div.type-select,
+  form div.type-check,
+  form div.type-button {
     margin:0.5em 0;
     padding:3px 0.5em;  
     position:relative;
     overflow:hidden;
   }
 
-  .yform div.type-button {
+  form div.type-button {
     padding:3px 0em;  
   }
   
   /* styling standard form elements with 'almost' equal flexible width | Gestaltung der einzelnen Formularelemente mit annähend gleicher Breite */
-  .yform .type-text input,
-  .yform .type-text textarea {
+  form .type-text input,
+  form .type-text textarea {
     display:block;
     position:relative;
     padding:0.3em 0.3em;
     width:58.5%;
   }
 
-  .yform .type-select select {
+  form .type-select select {
     display:block;
     position:relative;
     padding:0.3em 2px 0.3em 1px;
     width:60%;
     cursor:pointer;
   }
-  .yform .type-select select optgroup {
+  form .type-select select optgroup {
     font-style:normal;
     font-weight:bold;
   }
 
-  .yform .type-check input { cursor:pointer; }
-  .yform .type-check label { display:inline; }
+  form .type-check input { cursor:pointer; }
+  form .type-check label { display:inline; }
 
   /* Styling of buttons | Gestaltung von Buttons */
-  .yform .type-button input {
+  form .type-button input {
     cursor:pointer;
     overflow:visible;  /* Fixes IE7 auto-padding bug */
     width:auto;
   }
 
   /* Styling of error-messages | Fehlermeldungen */
-  .yform div.error {
+  form div.error {
     border:1px #a00 dashed;
     background:#faf4f4;
     padding:0.5em;
   }
 
-  .yform div.error label { color:#000; font-weight:bold; }
-  .yform div.error .message { color:#800; }
+  form div.error label { color:#000; font-weight:bold; }
+  form div.error .message { color:#800; }
 
   /* avoid jumping checkboxes & radiobuttons in IE8 */
-  .yform div.type-check input:focus,
-  .yform div.type-check input:hover,
-  .yform div.type-check input:active { border:0 none; }
+  form div.type-check input:focus,
+  form div.type-check input:hover,
+  form div.type-check input:active { border:0 none; }
 
  /*------------------------------------------------------------------------------------------------------*/
 
@@ -281,9 +281,9 @@
   * @valid no
   */
 
-  .yform, 
-  .yform div,
-  .yform div * { zoom:1; }
+  form, 
+  form div,
+  form div * { zoom:1; }
 
  /**
   * Forms Fieldset/Legend-Bug in IE
@@ -296,15 +296,15 @@
   */
   
   /* all IE */
-  .yform { padding-top:0\9; }
-  .yform fieldset { padding:0 5px\9; padding-top:1em\9; }
-  .yform legend { position:absolute\9; top:-.5em\9; *left:0\9; }
-  .yform fieldset { position:relative\9; overflow:visible\9;  margin-top:1.5em\9; zoom:1; }
+  form { padding-top:0\9; }
+  form fieldset { padding:0 5px\9; padding-top:1em\9; }
+  form legend { position:absolute\9; top:-.5em\9; *left:0\9; }
+  form fieldset { position:relative\9; overflow:visible\9;  margin-top:1.5em\9; zoom:1; }
 
   /* IE5.x, IE6 & IE7 */
-  .yform legend { *padding:0 5px; }
-  .yform fieldset { *padding-top:1.5em; }
+  form legend { *padding:0 5px; }
+  form fieldset { *padding-top:1.5em; }
   
   /* IE5.x & IE6 */
-  * html .yform { padding-top:10px; }
+  * html form { padding-top:10px; }
 }

@@ -16,6 +16,10 @@
 /* import screen layout | Screen-Layout einbinden */
 @import url(../yaml/navigation/nav_shinybuttons.css);
 @import url(screen/basemod.css);
+/* YAML forms that work on the form tag */
+/* @import url(screen/forms.css); */
+/* YAML forms that work on the .yform class */
+/* @import url(../yaml/screen/forms.css); */
 @import url(screen/content.css);
 
 /* import print layout | Druck-Layout einbinden */
