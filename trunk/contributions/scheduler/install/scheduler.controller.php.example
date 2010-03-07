@@ -1,0 +1,6 @@
+<?php
+/**
+ * Scheduler controller
+ */
+class SchedulerController extends SchedulerBaseController {
+}
