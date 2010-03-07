@@ -1,24 +1,11 @@
 <?php
+require_once GYRO_CORE_DIR . 'view/widgets/input/base/textarea.input.widget.php';
+
 /**
  * A text area
  * 
  * @author Gerd Riesselmann
  * @ingroup View
  */
-class InputWidgetTextarea extends InputWidgetBase {
-	/**
-	 * Add new attributes or process old ones
-	 */
-	protected function extend_attributes(&$attrs, $params, $name, $title, $value, $policy) {
-		$attrs['name'] = $name;
-		$attrs['rows'] = Arr::get_item($params, 'rows', 5);
-		$attrs['cols'] = Arr::get_item($params, 'cols', 10);	
-	}
-	
-	/**
-	* Render the actual widget
-	 */
-	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
-		return html::tag('textarea', String::escape($value), $attrs);
-	}	
+class InputWidgetTextarea extends InputWidgetTextareaBase {
 }

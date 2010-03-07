@@ -107,7 +107,7 @@ class WidgetInput implements IWidget {
 	 * @return string
 	 */
 	public function render($policy = self::NONE) {
-		Load::directories('view/widgets/input');
+		Load::classes_in_directory('view/widgets/input', array('base', $this->type), 'input.widget', true);
 		$cls = 'InputWidget' . Load::filename_to_classname($this->type);
 		if (class_exists($cls)) {
 			$delegate = new $cls($this->name, $this->label, $this->value, $this->params);
