@@ -1,0 +1,18 @@
+<?php
+/**
+ * User controller
+ */
+class UsersController extends UserBaseController {
+	/**
+ 	 * Returns a set of bitflags defining the features supported
+ 	 *
+ 	 * @return int
+ 	 */
+	protected function get_features_policy() {
+		return parent::get_features_policy();
+		
+		// Example for usermangement that allows login, password loss and dashboard only, but no
+		// registration and related
+		#return self::ALLOW_LOST_PASSWORD | self::ALLOW_LOGIN | self::SUPPORT_DASHBOARD;		
+	}
+}
