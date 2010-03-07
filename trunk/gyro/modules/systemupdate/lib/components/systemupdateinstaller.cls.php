@@ -45,6 +45,36 @@ class SystemUpdateInstaller {
 		return self::copy_to_dir($app . $target_dir, $source_dir, $files, $policy);
 	}
 	
+	/**
+	 * Copy a file to app
+	 * 
+	 * For example this cip
+	 * 
+	 * @code
+	 * SystemUpdateInstaller::copy_file_to_app('/var/backup/test.php.example', 'www/test.php');
+	 * @endcode
+	 * 
+	 * @param string $source_file Absolute path to source file
+	 * @param string $target_file path to target file, relative to /app
+	 * @param string $policy Either SystemUpdateInstaller::COPY_NO_REPLACE or SystemUpdateInstaller::COPY_OVERWRITE
+	 * 
+	 * @return Status
+	 */
+	public static function copy_file_to_app($source_file, $target_file, $policy = self::COPY_OVERWRITE) {
+		$ret = new Status();
+		$target = APP_INCLUDE_ABSPATH . ltrim($target_file, '/');
+		if ($policy == self::COPY_OVERWRITE || !file_exists($target)) {
+			if (!copy($source_file, $target)) {
+				$ret->merge(tr(
+					'Could not create %target from %source. Please do it manually', 
+					'systemupdate', 
+					array('%target' => $target, '%source' => $source_file)
+				));
+			}
+		}
+		return $ret;				
+	}
+	
 	
 	private static function copy_to_dir($target_dir, $source_dir, $files, $policy) {
 		$ret = new Status();
