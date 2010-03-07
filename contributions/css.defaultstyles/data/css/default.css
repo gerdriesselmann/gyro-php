@@ -1,0 +1,45 @@
+ /**
+  * textfilter form inline
+  */
+.textfilter form div { display: inline; }
+.textfilter form input { display: inline; }
+
+/**
+ * Item Menu
+ */
+.list_menu {
+	margin: 0 0 1em 0;
+	text-align: right;
+}
+
+.list_menu form {
+	padding: 0;
+	display: inline;
+}
+
+.list_menu ul {
+	font-size: 1em;
+	list-style-type: none;
+	margin: 0;
+}
+	
+.list_menu li {
+	display: inline;
+	margin: 0 0.5em 0 0;
+	padding-right: 1em;
+	font-weight: bold;
+}
+
+
+.list_menu a {
+	font-weight: bold;
+	letter-spacing: 0;
+	padding: 2px 0 2px 20px;
+}
+
+/**
+ * Breadcrumb
+ */
+.breadcrumb {
+	margin-bottom: 1em;
+}
