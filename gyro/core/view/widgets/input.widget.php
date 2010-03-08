@@ -79,6 +79,7 @@ class WidgetInput implements IWidget {
 	const SUBMIT = 'submit';
 	const RADIO = 'radio';
 	const FILE = 'file';
+	const DATE = 'date';
 	
 	public static function output($name, $label, $value = '', $type = self::TEXT, $params = array(), $policy = self::NONE) {
 		$widget = new WidgetInput($name, $label, $value, $type, $params);
