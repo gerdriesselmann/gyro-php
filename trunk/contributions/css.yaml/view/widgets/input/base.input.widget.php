@@ -21,6 +21,7 @@ class InputWidgetBase extends InputWidgetBaseBase {
 			case 'textarea':
 			case 'password':
 			case 'file':
+			case 'date':
 				$type = 'text';
 				break;
 			case 'radio':
