@@ -25,8 +25,8 @@
 	
 .list_menu li {
 	display: inline;
-	margin: 0 0.5em 0 0;
-	padding-right: 1em;
+	margin: 0 0 0 20px;
+	padding: 0;
 	font-weight: bold;
 }
 
@@ -34,7 +34,7 @@
 .list_menu a {
 	font-weight: bold;
 	letter-spacing: 0;
-	padding: 2px 0 2px 20px;
+	padding: 2px 2px;
 }
 
 /**
@@ -43,3 +43,13 @@
 .breadcrumb {
 	margin-bottom: 1em;
 }
+
+/**
+ * Warning, note etc.
+ */
+.error { background:#fee; color:#400; border:2px #844 solid; padding:10px; margin-bottom:1em; }
+.note, .info { background:#f8f8f8; color:#666; padding:10px; margin-bottom:0.5em; font-size:91.7%; }
+.success { background:#efe; color:#040; border:2px #484 solid; padding:10px; margin-bottom:1em; }
+.warning, .important { background:#ffe; color:#440; border:2px #884 solid; padding:10px; margin-bottom:1em; }
+
+ 
