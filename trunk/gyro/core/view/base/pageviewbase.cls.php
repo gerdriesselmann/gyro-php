@@ -143,6 +143,8 @@ class PageViewBase extends ViewBase {
 	 * @param $lifetime
 	 */
 	protected function store_cache($cache_key, $content, $lifetime, $policy) {
+		$etag = md5($content);
+		
 		$headers = array();
 		$forbidden = array(
 			'age',
@@ -164,12 +166,13 @@ class PageViewBase extends ViewBase {
 		$cache_data = array(
 			'status' => $this->page_data->status_code,
 			'in_history' => $this->page_data->in_history,
-			'headers' => $headers
+			'headers' => $headers,
+			'etag' => $etag
 		);
 		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
 		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
 		$age = intval($lifetime / 10);
-		$this->send_cache_headers(time(), time() + $lifetime, $age);
+		$this->send_cache_headers(time(), time() + $lifetime, $age, $etag);
 	}
 
 	/**
@@ -186,11 +189,13 @@ class PageViewBase extends ViewBase {
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
 				Common::header($header, '', true);
 			}
-			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate());
+			$etag = Arr::get_item($cache_data, 'etag', '');
+			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate(), 600, $etag);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			if ($this->page_data->successful()) {
 				// Send 304, if applicable, but only if site has 200 OK 
 				Common::check_not_modified($cache->get_creationdate()); // exits if not modified
+				Common::check_if_none_match($etag);
 			}
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
@@ -210,12 +215,13 @@ class PageViewBase extends ViewBase {
 	 * @param $expires A timestamp
 	 * @param $max_age Max age in seconds
 	 */
-	protected function send_cache_headers($lastmodified, $expires, $max_age = 600) {
+	protected function send_cache_headers($lastmodified, $expires, $max_age = 600, $etag = '') {
 		$max_age = intval($max_age);
 		Common::header('Pragma', '', false);
-		Common::header('Cache-Control', 'private, max-age=0, pre-check=0, must-revalidate', false);
+		Common::header('Cache-Control', 'private, max-age=0, pre-check=0, must-revalidate', true);
 		Common::header('Last-Modified', GyroDate::http_date($lastmodified), false);
-		Common::header('Expires', GyroDate::http_date($expires), false);		
+		Common::header('Expires', GyroDate::http_date($expires), false);
+		Common::header('Etag', $etag, true);		
 	}
 
 	/**
