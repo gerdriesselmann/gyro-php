@@ -1,4 +1,12 @@
 <?php
+Load::tools('filtertext');
+
+/**
+ * Filter name and emial for user name
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
 class FilterUsername extends FilterText {
 	/**
 	 * Contructor
@@ -6,7 +14,7 @@ class FilterUsername extends FilterText {
 	 * @param PageData $page_data;
 	 */
 	public function __construct($page_data, $adapter = false) {
-		$this->adapter = ($adapter instanceof IFilterTextAdapter) ? $adapter : new FilterTextDefaultAdapter($page_data, String::plain_ascii($filtername));
+		$this->adapter = ($adapter instanceof IFilterTextAdapter) ? $adapter : new FilterTextDefaultAdapter($page_data, 'username');
 		$this->page_data = $page_data;
 		$this->filter_object = new DBFilterMultiColumn(
 			array(
