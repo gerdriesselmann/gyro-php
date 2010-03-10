@@ -135,7 +135,7 @@ class RequestInfo {
 	 * @return string
 	 */
 	public function method() {
-		return Arr::get_item($this->data, 'REQUEST_METHOD', 'GET');
+		return strtoupper(Arr::get_item($this->data, 'REQUEST_METHOD', 'GET'));
 	}
 	
 	/**
