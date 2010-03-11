@@ -11,6 +11,7 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
 	public $name;
 	public $password;                        // string(50)  
+	public $hash_type;
 	public $email;                           // string(100)  
 	public $status;                          // string(11)  not_null enum
 	public $creationdate;                    // datetime(19)  binary
@@ -23,13 +24,14 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 		return new DBTable(
 			'users',
 			array(
-				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
-				new DBFieldText('name', 100, null, DBFieldText::NOT_NULL),
-				new DBFieldText('email', 100, null, DBFieldText::NOT_NULL),
+				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBField::NOT_NULL),
+				new DBFieldText('name', 100, null, DBField::NOT_NULL),
+				new DBFieldTextEmail('email', null, DBField::NOT_NULL),
 				new DBFieldText('password', 50),
-				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBFieldEnum::NOT_NULL),
+				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL),
+				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL),
 				new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::NOT_NULL),
-				new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW,  DBFieldDateTime::TIMESTAMP | DBFieldDateTime::NOT_NULL)
+				new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW,  DBFieldDateTime::TIMESTAMP | DBField::NOT_NULL)
 			),
 			'id'
 		);
@@ -297,17 +299,6 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 			$ret[$cmd] = $desc;
 		}
 		return $ret;
-	}
-		
-	/**
-	 * Validate user
-	 */
-	public function validate() {
-		$err = parent::validate();
-		if (Validation::is_email($this->email) == false) {
-			$err->append(tr('No valid e-mail', 'users'));
-		}
-		return $err;		
 	}
 
 	/**

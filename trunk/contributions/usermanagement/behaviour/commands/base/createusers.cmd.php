@@ -82,14 +82,35 @@ class CreateUsersBaseCommand extends CommandChain {
 	 */
 	protected function preprocess_params($params) {
 		// Encrypt password
+		$params['hash_type'] = Config::get_value(ConfigUsermanagement::USER_HASH_TYPE, 'md5');
+		$this->preprocess_hash_password($params);
+		$this->preprocess_check_roles($params);
+		return $params;
+	}
+	
+	/**
+	 * Hash the password
+	 * 
+	 * @since 0.5.1
+	 */
+	protected function preprocess_hash_password(&$params) {
+		$params['hash_type'] = Arr::get_item($params, 'hash_type', Config::get_value(ConfigUsermanagement::USER_HASH_TYPE, 'md5'));
+		
 		$pwd = Arr::get_item($params, 'password', '');
 		if (!empty($pwd)) {
-			$params['password'] = md5($pwd);
+			$params['password'] = Users::create_hash($pwd, $params['hash_type']);
 		}
 		else {
 			unset($params['password']);
-		}
-		
+		}			
+	}
+	
+	/**
+	 * Check if at least one role is assigned
+	 * 
+	 * @since 0.5.1
+	 */
+	protected function preprocess_check_roles(&$params) {
 		// Check roles
 		$roles = Arr::force(Arr::get_item($params, 'roles', array()));
 		if (count($roles) == 0) {
@@ -99,8 +120,6 @@ class CreateUsersBaseCommand extends CommandChain {
 				$roles[] = $role->id;
 				$params['roles'] = $roles;
 			}	
-		}
-		
-		return $params;
+		}			
 	}
 } 

@@ -314,4 +314,33 @@ class Users {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Create a hash algorith instance of $hash_type
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @return IHashAlgorithm
+	 */
+	public static function create_hash_algorithm($hash_type) {
+		// Load hash class
+		$hash_type = strtolower($hash_type);
+		Load::classes_in_directory('behaviour/commands/users/hashes', $hash_type, 'hash', true);
+		$cls_name = Load::filename_to_classname($hash_type, 'hash');
+		
+		return new $cls_name();
+	}
+
+	/**
+	 * Create a hash of $source using algorith $hash_type
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * @return string
+	 */
+	public static function create_hash($source, $hash_type) {
+		$algo = self::create_hash_algorithm($hash_type);
+		return $algo->hash($source);
+	}
+	
 }
