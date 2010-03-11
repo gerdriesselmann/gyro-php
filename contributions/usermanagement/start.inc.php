@@ -81,6 +81,65 @@
  * default values usually don't get modified.
  */
 
+/**
+ * Usermanagement config options
+ * 
+ * @since 0.5.1
+ * 
+ * Every option can be set through the according APP_ constant, e.g. 
+ * to define default role, use constant APP_USER_DEFAULT_ROLE.
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Usermanagement
+ */
+class ConfigUsermanagement {
+	/**
+	 * Default role of newly registerd user. Default is "user"
+	 */
+	const USER_DEFAULT_ROLE = 'USER_DEFAULT_ROLE';
+	
+	/**
+	 * The default URL for users logged in
+	 */
+	const USER_DEFAULT_PAGE = 'USER_DEFAULT_PAGE';
+	
+	/**
+	 * Defines how routing should act if an anonymous user hits a page that requires login
+	 * 
+	 * Allowed are:
+	 * 
+	 * - DENY: (default) Just show a 403 page and message
+	 * - REDIRECT_LOGIN: Redirect to login page 
+	 */
+	const USER_403_BEHAVIOUR = 'USER_403_BEHAVIOUR';
+	
+	/**
+	 * Defines the hash algorithm to encyrpt the user's password. 
+	 * 
+	 * @since 0.5.1
+	 *
+	 * Possible values are:
+	 * 
+	 * - md5: (default) The MD5 hash
+	 * - sha1: The SHA1 hash
+	 * - pas2f: phpass 0.2 in full mode 
+	 * - pas2p: phpass 0.2 in portable mode. This is a kind of salted md5.
+	 * 
+	 * @see http://www.openwall.com/phpass/
+	 * 
+	 * Modules or applications may add more algorithms
+	 * 
+	 * Regarding the two phppass modes, the full mode may lead to different results based on your system's 
+	 * configuration. It should only be used if either PHP 5.3 or the Suhosin Patch is installed. Moving from 
+	 * a PHP 5.2/Non Suhosin to a PHP 5.3 or PHP 5.2/Suhosin system (or vice versa) may turn your user's 
+	 * passwords unverifyable.
+	 * 
+	 * Full mode is generally safer, though.
+	 */
+	const USER_HASH_TYPE = 'USER_HASH_TYPE';	
+}
+
+
 
 if (!defined('USER_ROLE_USER')) define('USER_ROLE_USER', 'user');
 if (!defined('USER_ROLE_EDITOR')) define('USER_ROLE_EDITOR', 'editor');
@@ -100,61 +159,6 @@ if (Config::get_value(Config::VERSION_MAX) < 0.6) {
 	if (!defined('USER_DEFAULT_ROLE')) define('USER_DEFAULT_ROLE', APP_USER_DEFAULT_ROLE);
 	if (!defined('APP_DEFAULT_PAGE_USER')) define('APP_DEFAULT_PAGE_USER', APP_USER_DEFAULT_PAGE);
 	if (!defined('APP_DEFAULT_PAGE_ADMIN')) define('APP_DEFAULT_PAGE_ADMIN', APP_USER_DEFAULT_PAGE);	
-}
-
-/**
- * Usermanagement config options
- * 
- * Every option can be set through the according APP_ constant, e.g. 
- * to define default role, use constant APP_USER_DEFAULT_ROLE.
- * 
- * @author Gerd Riesselmann
- * @ingroup Usermanagement
- */
-class ConfigUsermanagement {
-	/**
-	 * Default role of newly registerd user. Default is "user"
-	 * 
-	 * @var string
-	 */
-	const USER_DEFAULT_ROLE = 'USER_DEFAULT_ROLE';
-	/**
-	 * The default URL for users logged in
-	 *
-	 * @var String
-	 */
-	const USER_DEFAULT_PAGE = 'USER_DEFAULT_PAGE';
-	/**
-	 * Defines how routing should act if an anonymous user hits a page that requires login
-	 * 
-	 * Allowed are:
-	 * 
-	 * DENY - (default) Just show a 403 page and message
-	 * REDIRECT_LOGIN - Redirect to login page 
-	 */
-	const USER_403_BEHAVIOUR = 'USER_403_BEHAVIOUR';
-	/**
-	 * Defines the hash algorithm to encyrpt the user's password. 
-	 * 
-	 * @since 0.5.1
-	 *
-	 * Possible values are:
-	 * 
-	 * md5 - (default) The MD5 hash
-	 * sha1 - The SHA1 hash
-	 * pas2f - phppass 0.2 in full mode (@see http://www.openwall.com/phpass/) 
-	 * pas2p - phppass 0.2 in portable mode. This is a kind of salted md5.
-	 * 
-	 * Modules or applications may add more algorithms
-	 * 
-	 * Regarding the two phppass modes, the full mode may lead to different results based on your system's 
-	 * configuration. It should only be used if either PHP 5.3 or the Suhosin Patch is installed. Moving from 
-	 * a PHP 5.2/Non Suhosin to a PHP 5.3 or PHP 5.2/Suhosin system (or vice versa) may turn your user's 
-	 * passwords unverifyable.
-	 * 
-	 * Full mode is generally safer, though.
-	 */
-	const USER_HASH_TYPE = 'USER_HASH_TYPE';	
 }
 
 Config::set_value_from_constant(ConfigUsermanagement::USER_DEFAULT_PAGE, 'APP_USER_DEFAULT_PAGE', Config::get_url(Config::URL_BASEURL_SAFE) . 'user');
