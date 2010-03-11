@@ -22,11 +22,15 @@ class LoginUsersBaseCommand extends CommandChain {
 		$params = $this->get_params();
 		
 		$user = $this->do_create_user_dao($params, $ret);
-		$this->do_prepare_user_dao($user);
+		if ($ret->is_error()) {
+			return $ret;
+		}
 		
-		if ($ret->is_ok()) {
-			// Try to load user
-			if ($user->find(IDataObject::AUTOFETCH)) {
+		$this->do_prepare_user_dao($user);
+		// Try to load user
+		if ($user->find(IDataObject::AUTOFETCH)) {
+			$ret->merge($this->check_password_hash($user, $params));			
+			if ($ret->is_ok()) {
 				switch ($user->status) {
 					case Users::STATUS_UNCONFIRMED;
 						$ret->append(tr('Your account has not yet been activated', 'users')); 
@@ -41,12 +45,52 @@ class LoginUsersBaseCommand extends CommandChain {
 						break;
 				}
 			}
-			else {
-				$ret->append($this->do_get_default_error_message());
-			}
+		}
+		else {
+			$ret->append($this->do_get_default_error_message());
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Validate password hash
+	 * 
+	 * @since 0.5.1
+	 */
+	protected function check_password_hash(DAOUsers $user, $params) {
+		$ret = new Status();
+		$password = $this->params_extract_password($params);
+		$algo = Users::create_hash_algorithm($user->hash_type);
+		
+		if (!$algo->check($password, $user->password)) {
+			$ret->append($this->do_get_default_error_message()); 
+		}
+		else if ($user->hash_type != Config::get_value(ConfigUsermanagement::USER_HASH_TYPE)) {
+			$user->hash_type = Config::get_value(ConfigUsermanagement::USER_HASH_TYPE);
+			$algo = Users::create_hash_algorithm($user->hash_type);
+			$user->password = $algo->hash($password);
+			$this->append(CommandsFactory::create_command($user, 'update', array()));
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Extracts name from param array
+	 * 
+	 * @return string
+	 */
+	protected function params_extract_name($params) {
+		return Cast::string(Arr::get_item($params, 'name', ''));
+	} 
+	
+	/**
+	 * Extracts password from param array
+	 * 
+	 * @return string
+	 */
+	protected function params_extract_password($params) {
+		return Cast::string(Arr::get_item($params, 'password', ''));
+	} 
 	
 	/**
 	 * Find user from parameters given
@@ -56,8 +100,8 @@ class LoginUsersBaseCommand extends CommandChain {
 	 * @return DAOUsers
 	 */
 	protected function do_create_user_dao($params, $err) {
-		$name = Cast::string(Arr::get_item($params, 'name', ''));
-		$pwd = Cast::string(Arr::get_item($params, 'password', ''));
+		$name = $this->params_extract_name($params);
+		$pwd = $this->params_extract_password($params);
 		
 		if ($name == '') {
 			$err->append(tr('Please provide a user name for login', 'users'));
@@ -68,7 +112,6 @@ class LoginUsersBaseCommand extends CommandChain {
 		
 		$user = new DAOUsers();
 		$user->name = $name;
-		$user->password = md5($pwd);
 		
 		return $user;
 	}

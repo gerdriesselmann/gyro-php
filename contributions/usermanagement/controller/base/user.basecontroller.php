@@ -598,7 +598,7 @@ class UserBaseController extends ControllerBase {
 			$err->merge(Users::login($post->get_array(), $permanent));
 			if ($err->is_ok()) {
 				if ($this->has_feature(self::SUPPORT_DASHBOARD)) {
-					History::push(APP_DEFAULT_PAGE_USER);
+					History::push(Config::get_url(ConfigUsermanagement::USER_DEFAULT_PAGE));
 				}
 			}
 		}
