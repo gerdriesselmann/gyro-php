@@ -80,4 +80,42 @@ class ConverterFactory {
 	public static function register_converter($type, IConverter $converter) {
 		self::$registered_converters[$type] = $converter;
 	}
+	
+	/**
+	 * Creates a chain of converters, that is a set of converters that get 
+	 * executed one after the other.
+	 * 
+	 * @since 0.5.1
+	 * 
+	 * You may pass an array that contains either key-value pairs where the key
+	 * is the name of a converter and the value is its parameters, or a simple
+	 * array, whereas the value is the name of a converter. This also can be mixed.
+	 * 
+	 * @code
+	 * $chain = ConverterFactory::create_chain(
+	 *   ConverterFactory::HTML_EX => array('h' => 3),
+	 *   CONVERTER_TIDY
+	 * );
+	 * @endcode
+	 * 
+	 * @return IConverter
+	 */
+	public static function create_chain($arr_converters) {
+		require_once dirname(__FILE__) . '/converters/chain.converter.php';
+		$ret = new ConverterChain();
+
+		foreach($arr_converters as $name_or_index => $params_or_name) {
+			$has_index = is_numeric($name_or_index); 
+			$name = ($has_index) ? $params_or_name : $name_or_index;
+			$params = ($has_index) ? false : $params_or_name;
+			
+			$converter = self::create($name);
+			if (!$converter instanceof IConverter)  {
+				throw new Exception("Unknown Covnerter $name");
+			}
+			$ret->append($converter, $params);
+		}
+		
+		return $ret;
+	}
 }
