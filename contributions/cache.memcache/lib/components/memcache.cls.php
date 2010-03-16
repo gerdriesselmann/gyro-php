@@ -71,7 +71,7 @@ class GyroMemcache  {
 			return self::$delegate->add($key, $value, false, $lifetime_in_seconds);
 		}
 		else {
-			return self::$delegate->add($eky, $value, $lifetime_in_seconds);
+			return self::$delegate->add($key, $value, $lifetime_in_seconds);
 		}		
 	}
 	
@@ -87,7 +87,7 @@ class GyroMemcache  {
 			self::$delegate->set($key, $value, false, $lifetime_in_seconds);
 		}
 		else {
-			self::$delegate->set($eky, $value, $lifetime_in_seconds);
+			self::$delegate->set($key, $value, $lifetime_in_seconds);
 		}
 	}
 	
