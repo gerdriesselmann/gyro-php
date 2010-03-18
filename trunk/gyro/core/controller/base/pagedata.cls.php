@@ -1,6 +1,6 @@
 <?php
 /**
- * Collects data used to render a page and to be exchange betwween different 
+ * Collects data used to render a page and to be exchange between different 
  * parts of the application
  * 
  * One instance of PageData is passed around in all steps of the rendering 
