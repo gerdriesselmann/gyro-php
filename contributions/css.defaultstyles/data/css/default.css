@@ -55,20 +55,20 @@
 /**
  * Debug Block
  */
-#debug table {
+.debugblock table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-#debug td {
+.debugblock td {
 	vertical-align: top;
 	padding: 5px;
 	border-top: 1px solid black;
 }	
 
-#debug .slow {
+.debugblock .slow {
 	background-color: yellow;	
 }
-#debug .query.explain {
+.debugblock .query.explain {
 	background-color: #FFFFCF;
 }
