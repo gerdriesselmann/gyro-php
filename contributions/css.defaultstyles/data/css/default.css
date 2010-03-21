@@ -52,4 +52,23 @@
 .success { background:#efe; color:#040; border:2px #484 solid; padding:10px; margin-bottom:1em; }
 .warning, .important { background:#ffe; color:#440; border:2px #884 solid; padding:10px; margin-bottom:1em; }
 
- 
+/**
+ * Debug Block
+ */
+#debug table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+#debug td {
+	vertical-align: top;
+	padding: 5px;
+	border-top: 1px solid black;
+}	
+
+#debug .slow {
+	background-color: yellow;	
+}
+#debug .query.explain {
+	background-color: #FFFFCF;
+}
