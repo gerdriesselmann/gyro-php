@@ -104,6 +104,13 @@ class Common {
 			header($header);
 		}
 	}
+	
+	/**
+	 * Remove given header
+	 */
+	public static function header_remove($name) {
+		self::header($name, '', true);
+	}
 
 	/**
 	 * Split header into array with name as first element, and value as second
@@ -162,6 +169,24 @@ class Common {
 			$ret[strtolower($tmp[0])] = $header;
 		}
 		return $ret;
+	}
+	
+	/**
+	 * Restore headers 
+	 * 
+	 * Headers not in passed array wil be removed, headers fro marray will be set
+	 * 
+	 * @param $arr_headers Array of headers retrieved by Common::get_headers()
+	 */
+	public static function header_restore($arr_headers) {
+		$current = self::get_headers();
+		// array_diff_key exists as of PHP 5.1.0 only
+		foreach(array_diff(array_keys($current), array_keys($arr_headers)) as $name) {
+			self::header_remove($name);
+		}
+		foreach($arr_headers as $name => $value) {
+			self::header($name, $value, true);
+		}
 	}
 	
 	/**

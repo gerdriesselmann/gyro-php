@@ -13,7 +13,7 @@ class Session {
 		if (!session_id()) {
 			//session_cache_limiter('private_no_expire');
 			if (!headers_sent()) {
-				session_start();
+				self::do_start();
 			}
 		}
 	}
@@ -25,9 +25,23 @@ class Session {
 		if (!session_id()) {
 			$name  = session_name();
 			if (Cookie::exists($name)) {
-				session_start();
+				self::do_start();
 			}
 		}
+	}
+	
+	/**
+	 * Starts a session, but keeps headers untouched
+	 * 
+	 * PHP sends a couple of headers when starting a session. Since
+	 * Gyro handles headers on its own, they come in the way.
+	 * 
+	 * @return void
+	 */
+	private static function do_start() {
+		$headers = Common::get_headers();
+		session_start();
+		Common::header_restore($headers);
 	}
 	
 	public static function clear() {
