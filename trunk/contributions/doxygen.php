@@ -28,3 +28,16 @@
  * 
  * Modules related to text processing
  */
+ 
+/**
+ * @defgroup Routing
+ * 
+ * Modules related to routing 
+ */
+ 
+/**
+ * @defgroup Lib
+ * 
+ * Additional helpers and components  
+ */
+ 
