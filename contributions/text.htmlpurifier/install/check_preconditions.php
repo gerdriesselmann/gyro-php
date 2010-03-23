@@ -4,6 +4,7 @@ function text_htmlpurifier_check_preconditions() {
 	$basedir = Config::get_value(Config::TEMP_DIR) . 'htmlpurifier/'; 
 	$dirs = array('CSS', 'HTML', 'URI');
 	foreach($dirs as $dir) {
+		$dir = $basedir . $dir;
 		if (!file_exists($dir)) {
 			mkdir($dir);
 			chmod($dir, 0777);
