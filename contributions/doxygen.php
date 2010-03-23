@@ -36,7 +36,7 @@
  */
  
 /**
- * @defgroup Lib
+ * @defgroup Libs
  * 
  * Additional helpers and components  
  */
