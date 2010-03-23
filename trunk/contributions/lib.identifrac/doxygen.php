@@ -1,11 +1,15 @@
 <?php
 /**
  * @defgroup IdentiFrac
- * @ingroup Lib
+ * @ingroup Libs
  * 
  * Creates unique icons out of a hash, using fractal functions. Similar to identicons.
  * 
- * The class is a component:
+ * @section Usage Usage
+ * 
+ * Enable as "lib.identifrac" 
+ * 
+ * The class itself is a component:
  * 
  * @code
  * Load::components('identifrac');
