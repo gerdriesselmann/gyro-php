@@ -115,7 +115,7 @@ class CreateUsersBaseCommand extends CommandChain {
 		$roles = Arr::force(Arr::get_item($params, 'roles', array()));
 		if (count($roles) == 0) {
 			// Assign at least default role
-			$role = UserRoles::get_by_name(USER_DEFAULT_ROLE);
+			$role = UserRoles::get_by_name(Config::get_value(ConfigUsermanagement::USER_DEFAULT_ROLE));
 			if ($role) {
 				$roles[] = $role->id;
 				$params['roles'] = $roles;
