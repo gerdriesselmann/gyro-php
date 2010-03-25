@@ -1,5 +1,6 @@
 <?php
 if (count($actions) || count($commands)) {
+	$out = '';
 	$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/menu/items');
 
 	$view->assign('actions', $actions);
