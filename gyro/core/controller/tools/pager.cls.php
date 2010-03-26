@@ -31,8 +31,11 @@ class Pager implements IDBQueryModifier {
 	 * @param int Number of items per page 
 	 * @param IPagerAdapter Adapter. For compatability reasons, this is also interpreted as a policy, if you pass an integer 
 	 */
-	public function __construct($page_data, $items_total, $items_per_page, $adapter = false) {
+	public function __construct($page_data, $items_total, $items_per_page = false, $adapter = false) {
 		$this->adapter = ($adapter instanceof IPagerAdapter) ? $adapter : new PagerDefaultAdapter($page_data, 'page');
+		if ($items_per_page === false) {
+			$items_per_page = Config::get_value(Config::ITEMS_PER_PAGE);
+		}
 		
 		$this->pager_data['page_data'] = $page_data;
 		$this->pager_data['policy'] = (is_int($adapter)) ? $adapter : 0;
