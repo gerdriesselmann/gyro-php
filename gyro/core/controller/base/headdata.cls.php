@@ -47,6 +47,7 @@ class HeadData implements IRenderer {
 	public $conditional_css_files = array();
 	public $meta = array();
 	public $meta_http_equiv = array();
+	public $links = array();
 	
 	const META_INFORMATION = 256;
 	const JAVASCRIPT_INCLUDES = 512;
@@ -74,6 +75,7 @@ class HeadData implements IRenderer {
 			$ret .= $this->render_title($this->title, $this->description, $this->keywords);
 			$ret .= $this->render_robots($this->robots_index);
 			$ret .= $this->render_meta($this->meta);
+			$ret .= $this->render_links($this->links);
 			$ret .= $this->render_meta_http_equiv($this->meta_http_equiv);
 		}
 		if (Common::flag_is_set($policy, self::CSS_INCLUDES)) {
@@ -86,6 +88,13 @@ class HeadData implements IRenderer {
 		return $ret;
 	}
 
+	/**
+	 * Add a javascript file include 
+	 * 
+	 * @param string $file
+	 * @param bool $to_front If true, the javascript file is included before other
+	 * @return void
+	 */
 	public function add_js_file($file, $to_front = false) {
 		if (!empty($file)) {
 			if ($to_front) {
@@ -96,6 +105,13 @@ class HeadData implements IRenderer {
 		}
 	}
 	
+	/**
+	 * Add a javascript snippet
+	 * 
+	 * @param string $snippet
+	 * @param bool $before_includes If true, the snippet is placed before include files
+	 * @return void
+	 */
 	public function add_js_snippet($snippet, $before_includes = false) {
 		if (!empty($snippet)) {
 			if ($before_includes) {
@@ -137,6 +153,21 @@ class HeadData implements IRenderer {
 
 	public function add_meta_http_equiv($name, $content) {
 		$this->meta_http_equiv[$name] = $content;
+	}
+	
+	/**
+	 * Add a <link> to head
+	 * 
+	 * @param string $href Url link points to 
+	 * @param string $rel rel attribute 
+	 * @param array $attrs More attributes, like type, rev, etc
+	 * @return void
+	 */
+	public function add_link($href, $rel, $attrs = array()) {
+		$attrs = Arr::force($attrs, false);
+		$attrs['rel'] = $rel;
+		$attrs['href'] = $href;
+		$this->links[$href] = html::tag_selfclosing('link', $attrs);
 	}
 	
 	/**
@@ -184,7 +215,6 @@ class HeadData implements IRenderer {
     	
     	return html::meta('robots', implode(', ', $robots_policies)) . "\n";
 	}
-
 		
 	/**
 	 * Render Meta Tags
@@ -210,6 +240,20 @@ class HeadData implements IRenderer {
 		$ret = '';
 		foreach ($arr_meta as $name => $content) {
 			$ret .= html::meta_http_equiv($name, $content)  . "\n";
+		}
+		return $ret;
+	}	
+	
+	/**
+	 * Render Links
+	 *
+	 * @param array 
+	 * @return string
+	 */
+	protected function render_links($arr_links) {
+		$ret = '';
+		foreach ($arr_links as $name => $content) {
+			$ret .= $content . "\n";
 		}
 		return $ret;
 	}	
