@@ -71,7 +71,12 @@ class RefererTest extends GyroUnitTestCase {
 		$this->assertEqual($test, $referer->build());
 		$sei = $referer->search_engine_info();
 		$this->assertEqual('www.weihnachtsplätzchen.de', $sei['keywords']);		
-		
+	}
+	
+	function test_fragment() {
+		$in = 'http://www.example.org/in/a/dir/#p403187';
+		$test = Referer::create($in);
+		$this->assertEqual($in, $test->build());		
 	}
 	
 }
