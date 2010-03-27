@@ -148,5 +148,11 @@ class UrlTest extends GyroUnitTestCase {
 		
 		$this->assertEqual($in, $url->build(Url::ABSOLUTE, URl::NO_ENCODE_PARAMS));
 	}
+	
+	public function test_fragment_on_dir() {
+		$in = 'http://www.example.org/in/a/dir/#p403187';
+		$url = Url::create($in);
+		$this->assertEqual('p403187', $url->get_fragment());
+	}
 }
 
