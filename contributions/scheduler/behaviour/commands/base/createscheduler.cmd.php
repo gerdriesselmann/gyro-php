@@ -5,7 +5,7 @@
 class CreateSchedulerBaseCommand extends CommandChain {
 	protected function do_execute() {
 		$ret = new Status();
-		$params = $this->get_params();
+		$params = $this->validate_params($this->get_params());
 		
 		//Create the Sourcedomain
 		$created = false;
@@ -15,6 +15,20 @@ class CreateSchedulerBaseCommand extends CommandChain {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Check params, makes action relative
+	 */
+	protected function validate_params($params) {
+		$action = Arr::get_item($params, 'action', '');
+		if (strpos($action, '://') !== false) {
+			$url = Url::create($action);
+			if ($url->is_valid()) {
+				$params['action'] = $url->get_path();
+			}
+		}  	
+		return $params;	
+	} 
 	
 	/**
 	 * Create the Scheduler Task
