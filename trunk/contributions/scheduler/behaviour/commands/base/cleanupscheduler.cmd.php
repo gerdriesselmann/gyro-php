@@ -15,7 +15,7 @@ class CleanupSchedulerBaseCommand extends ProcessSchedulerCommand {
 		
 		$tasks = new DAOScheduler();
 		$tasks->status = Scheduler::STATUS_PROCESSING;
-		$tasks->add_where('scheduledate', '<', time() - 2* Date::ONE_HOUR);
+		$tasks->add_where('scheduledate', '<', time() - 2 * GyroDate::ONE_HOUR);
 		$tasks->find();
 		$err = new Status(tr('Task has crashed, possible out of memory or time', 'scheduler'));
 		while ($tasks->fetch()) {
