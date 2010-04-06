@@ -5,6 +5,12 @@ AddDefaultCharset utf-8
 Options -Multiviews
 Options -Indexes
 
+<IfModule mod_php5.c>
+	php_value magic_quotes_gpc                0
+	php_value register_globals                0
+	php_value session.auto_start              0
+</IfModule>
+
 ### BEGIN OPTIONS ###
 
 ### END OPTIONS  ###
