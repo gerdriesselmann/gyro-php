@@ -16,7 +16,7 @@ class CreateConfirmationsCommand extends CommandChain {
 		$confirmation = new DAOConfirmations();
 		$found = 1;
 		while ($found > 0) {
-			$code = uniqid('', true); 
+			$code = sha1(uniqid(mt_rand(), true)); 
 			$confirmation->code = $code;
 			$found = $confirmation->count();
 		}
