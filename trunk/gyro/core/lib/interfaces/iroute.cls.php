@@ -31,5 +31,9 @@ interface IRoute {
 	 * Return a string that identifies this Route - e.g for debug purposes
 	 */
 	public function identify();
+	
+	/**
+	 * Returns true, if this route is a directory (that is: ends with '/')
+	 */
+	public function is_directory();
 }
-?>

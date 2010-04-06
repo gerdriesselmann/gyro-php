@@ -60,12 +60,15 @@ class RouterBase implements IEventSink {
 		}
 		else {
 			// SImualte Apache behaviout that a becomes a/ if a/ is defiend, but a not
-			$path_route = Url::create($token->build_url(IUrlBuilder::ABSOLUTE))->build();
-			if (substr($path_route, -1) === '/') {
-				$path_current = Url::current()->build();
-				if ($path_current . '/' === $path_route) {
-					Url::create($path_route)->redirect(Url::PERMANENT);
-				}
+			$path_current = Url::current()->get_path();
+			$current_is_dir = (substr($path_current, -1) === '/');
+			$route_is_dir = $token->is_directory();
+			
+			if ($route_is_dir && !$current_is_dir) {
+				Url::current()->set_path($path_current . '/')->redirect(Url::PERMANENT);
+			}
+			else if (!$route_is_dir && $current_is_dir) {
+				Url::current()->set_path(rtrim($path_current, '/'))->redirect(Url::PERMANENT);
 			}
 		}		
 		$this->current_route = $token;
