@@ -13,6 +13,11 @@ try {
 	$page_data = new PageData($cache_manager, $_GET, $_POST);
 	
 	/*
+	// This will save bandwith even with pages that are not cached.
+	$page_data->add_render_decorator_class('ETagRenderDecorator');
+	*/
+	
+	/*
 	// This will try to serve the page from cache now instead at the end
 	// of the routing process. This usually is around 10% faster.  
 	// However, this will only work if all pages have the same caching policy,
@@ -34,7 +39,7 @@ try {
 	$route->initialize($page_data);
 	
 	$renderer = $route->get_renderer($page_data);
-	$renderer->render(true);
+	print $renderer->render();
 }
 catch (Exception $ex) {
 	ob_clean();
