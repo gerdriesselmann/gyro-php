@@ -17,14 +17,22 @@ class FormHandler {
 	 * Url of form
 	 */
 	private $url = null;
+	
+	/**
+	 * Create (and validate) a token?
+	 */
+	private $use_token = true;
 		
 	/**
 	 * Constructor
 	 * 
-	 * @param string Name of form
+	 * @param string $name Name of form
+	 * @param string $path (optional) Path of form , if != current path
+	 * @param bool   $create_token True to create a unique token to identify Form
 	 */	
- 	public function __construct($name, $path = '') {
+ 	public function __construct($name, $path = '', $use_token = true) {
  		$this->name = $name;
+ 		$this->use_token = $use_token;
  		$this->url = Url::current();
  		if (!empty($path)) {
  			$this->url->set_path($path);
@@ -38,9 +46,17 @@ class FormHandler {
  	 * @param mixed Array or Object containing key/value-pairs for default data
  	 */
  	public function prepare_view($view, $data = false) {
- 		$token = $this->create_token();
-		$token_html = html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
-		$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), array('value' => $this->name));		
+ 		$token_html = '';
+ 		if ($this->use_token) {
+	 		$token = $this->create_token();
+			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
+			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), array('value' => $this->name));
+			
+			if (Session::is_started()) {
+				// Note that token is key and form id is value
+				Session::push_to_array_assoc('formhandlertokens', $this->name, $token);
+			}
+ 		}		
  		$view->assign('form_validation', $token_html);
 
 		if (!empty($data)) {
@@ -86,10 +102,21 @@ class FormHandler {
  	 */
  	public function validate() {
  		$ret = new Status();
-		$token = Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
 		$success = true;
-		$success = $success && ($this->name == Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
- 		$success = $success && FormValidations::validate_token($this->name, $token);
+ 		if ($this->use_token) {
+			$token = Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
+			// Validate if token is in DB
+			$success = $success && ($this->name == Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
+	 		$success = $success && FormValidations::validate_token($this->name, $token);
+	 		// Validate if token is in Session, too
+	 		if (Session::is_started()) {
+	 			$formtokens = Session::pull('formhandlertokens');
+	 			$success = $success && ($this->name == Arr::get_item($formtokens, $token, ''));
+	 			
+	 			unset($formtokens[$token]);
+	 			Session::push('formhandlertokens', $formtokens);
+	 		}	 		
+ 		}
  		if ($success == false) {
  			$ret->append(tr('Form verification token is too old. Please try again.', 'core'));
  		}
