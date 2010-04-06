@@ -8,7 +8,7 @@ require_once dirname(__FILE__) . '/constantcachemanager.cls.php';
  * @ingroup Controller
  */
 class SimpleCacheManager extends ConstantCacheManager {
-	public function __construct() {
+	public function __construct($duration = 7200) {
 		$url = Url::current();
 		$cache_id = array();
 			
@@ -22,6 +22,6 @@ class SimpleCacheManager extends ConstantCacheManager {
 		}
 		$cache_id[] = $path;			
 		$cache_id[] = $url->get_query();
-		parent::__construct($cache_id);
+		parent::__construct($cache_id, $duration);
 	}
 }
