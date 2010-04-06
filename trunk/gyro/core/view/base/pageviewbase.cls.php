@@ -115,7 +115,7 @@ class PageViewBase extends ViewBase {
 		$ret = parent::should_cache();
 		if ($ret) {
 			// Do not read cache, if a message should be or has been displayed
-			$ret = empty($this->page_data->status->message);
+			$ret = empty($this->page_data->status) || $this->page_data->status->is_empty();
 		}
 		return $ret;
 	}	
