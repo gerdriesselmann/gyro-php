@@ -171,6 +171,9 @@ class PageViewBase extends ViewBase {
 		);
 		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
 		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
+		// Check ETag and send 304, if matches
+		Common::check_if_none_match($etag);
+		// This is 200 OK...
 		$age = intval($lifetime / 10);
 		$this->send_cache_headers(time(), time() + $lifetime, $age, $etag);
 	}
