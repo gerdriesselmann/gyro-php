@@ -44,6 +44,9 @@ class RSSWriter extends FeedWriter {
 	 */
 	protected function render_item(FeedWriterItem $item) {
 		$tags = array();
+		if (empty($item->baseurl)) {
+			$item->baseurl = $item->link;
+		}
 		
 		// We misuse html class to generate tags :)
 		$tags[] = html::tag('title', $this->escape($item->title));

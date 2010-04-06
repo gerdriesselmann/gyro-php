@@ -205,18 +205,31 @@ class FeedWriter implements IRenderer {
 	 * @param string $base baseurl
 	 */
 	protected function relative_to_absolute($text, $base) {
-		if (empty($base))
+		if (empty($base)) {
 			return $text;
+		}
 			
-		if (substr($base, -1, 1) != "/")
-			$base .= "/";
+		if (substr($base, -1, 1) != "/") { $base .= "/"; }
+		$domain = Url::create($base)->clear_query()->set_path('')->build(Url::ABSOLUTE);
 		
-		$pattern = 	"/<a([^>]*) href=\"[^http|ftp|https]([^\"]*)\"/";
-		$replace = "<a\${1} href=\"" . $base . "\${2}\"";
+		// Replace href="/abc" with domain
+		$pattern = 	'|<a(.*?) href="/(.*?)"|';
+		$replace = '<a$1 href="' . $domain . '$2"';
 		$text = preg_replace($pattern, $replace, $text);
 		
-		$pattern = 	"/<img([^>]*) src=\"[^http|ftp|https]([^\"]*)\"/";
-		$replace = "<img\${1} src=\"" . $base . "\${2}\"";
+		// Replace href="abc" with base
+		$pattern = 	'|<a(.*?) href="(?!\w+://)(.*?)"|';
+		$replace = '<a$1 href="' . $base . '$2"';
+		$text = preg_replace($pattern, $replace, $text);
+
+		// Replace src="/abc" with domain
+		$pattern = 	'|<img(.*?) src="/(.*?)"|';
+		$replace = '<img$1 src="' . $domain . '$2"';
+		$text = preg_replace($pattern, $replace, $text);
+		
+		// Replace src="abc" with base
+		$pattern = 	'|<img(.*?) src="(?!\w+://)(.*?)"|';
+		$replace = '<img$1 src="' . $base . '$2"';
 		$text = preg_replace($pattern, $replace, $text);
 		
 		return $text;
