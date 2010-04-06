@@ -278,7 +278,7 @@ class Common {
 	 */
 	public static function check_if_none_match($etag) {
 		// Get client headers - Apache only
-		$match_tag = Arr::get_item($_SERVER, 'IF_NONE_MATCH', '');
+		$match_tag = Arr::get_item($_SERVER, 'HTTP_IF_NONE_MATCH', '');
 		if ($match_tag && $match_tag == $etag) {
  			// Save on some bandwidth!
  			Common::send_status_code(304); // Not modified
