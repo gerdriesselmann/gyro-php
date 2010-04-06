@@ -17,9 +17,9 @@ GyroMemcache::add_server(
 	Config::get_value(ConfigMemcache::MEMCACHE_PORT)
 );
 if (Config::has_feature(ConfigMemcache::MEMCACHE_STORE_SESSIONS)) {
-	Config::set_feature(Config::SESSION_USE_DB, false);
+	// Switch Session Handler
 	require_once dirname(__FILE__) . '/session.memcache.impl.php';
-	$sessionhandler = new MemcacheSession();	
+	Config::set_value(Config::SESSION_HANDLER, 'MemcacheSession');
 }
 
 

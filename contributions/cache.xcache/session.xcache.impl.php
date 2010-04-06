@@ -5,21 +5,7 @@
  * @author Gerd Riesselmann
  * @ingroup XCache
  */
-class XCacheSession {
-	/**
-	 * Switch session handling to this instance
-	 */	
-	public function __construct() {
-		session_set_save_handler(
-			array($this, 'open'), 
-			array($this, 'close'), 
-			array($this, 'read'), 
-			array($this, 'write'), 
-			array($this, 'destroy'), 
-			array($this, 'gc')
-		);		
-	} 
-
+class XCacheSession implements ISessionHandler {
 	/**
 	 * Open a session
 	 */ 

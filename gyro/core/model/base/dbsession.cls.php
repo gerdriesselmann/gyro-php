@@ -7,38 +7,24 @@ Load::models(array('sessions'));
  * @author Gerd Riesselmann
  * @ingroup Model
  */
-class DBSession {
-	/**
-	 * Switch session handling to this instance
-	 */	
-	public function __construct() {
-		session_set_save_handler(
-			array($this, 'open'), 
-			array($this, 'close'), 
-			array($this, 'read'), 
-			array($this, 'write'), 
-			array($this, 'destroy'), 
-			array($this, 'gc')
-		);		
-	} 
-
+class DBSession implements ISessionHandler {
 	/**
 	 * Open a session
 	 */ 
-	function open($save_path, $session_name) {
+	public function open($save_path, $session_name) {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	function close() {
+	public function close() {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
 		//files in /var/lib/php*.  This is all fine, but it means if you write your own 
-		//session handlers you'll need to explicitly call your _gc function yourself.  
-		//A good place to do this is in your _close function
+		//session handlers you'll need to explicitly call your _gc public function yourself.  
+		//A good place to do this is in your _close public function
 		
 		$this->gc(get_cfg_var('session.gc_maxlifetime'));
 		return true;
@@ -47,7 +33,7 @@ class DBSession {
 	/**
 	 * Load session data from database
 	 */
-	function read($key) {
+	public function read($key) {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
@@ -62,7 +48,7 @@ class DBSession {
 	/**
 	 * Write session data to DB
 	 */
-	function write($key, $value) {
+	public function write($key, $value) {
 		try {
 			// Rollback any open transactions, if there are any
 			//DB::rollback();
@@ -88,7 +74,7 @@ class DBSession {
 	/**
 	 * Delete a session
 	 */
-	function destroy($key) {
+	public function destroy($key) {
 		try {
 			$sess = new DAOSessions();
 			$sess->id = $key;
@@ -100,7 +86,7 @@ class DBSession {
 	/**
 	 * Delete outdated sessions
 	 */
-	function gc($lifetime) {
+	public function gc($lifetime) {
 		if (!Session::is_started()) {
 			return;
 		}
