@@ -592,8 +592,8 @@ class UserBaseController extends ControllerBase {
  	protected function do_login($formhandler, $page_data) {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
-			$post = $page_data->get_post();;
-			$permanent = $post->get_item('stayloggedin', false) !== false;
+			$post = $page_data->get_post();
+			$permanent = $post->get_item('stayloggedin', false) != false;
 
 			$err->merge(Users::login($post->get_array(), $permanent));
 			if ($err->is_ok()) {

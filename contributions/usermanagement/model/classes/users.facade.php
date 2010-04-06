@@ -230,7 +230,8 @@ class Users {
 		$permanent = PermanentLogins::get_current();
 		if ($permanent) {
 			if ($user = self::get($permanent->id_user)) {
-				Session::restart();
+				$cmd = CommandsFactory::create_command($user, 'restartsession', false);
+				$cmd->execute();
 				self::do_login($user);
 			}
 		} 

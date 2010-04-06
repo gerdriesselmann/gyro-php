@@ -37,7 +37,7 @@ class LoginUsersBaseCommand extends CommandChain {
 						break;
 					case Users::STATUS_ACTIVE:
 						// We can login this user
-						Session::restart();
+						$this->append(CommandsFactory::create_command($user, 'restartsession', false));
 						$this->append(CommandsFactory::create_command($user, 'loginknown', $params));
 						break;
 					default:
