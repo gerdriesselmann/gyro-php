@@ -1,5 +1,5 @@
 <?php
-define('FORMVALIDATION_EXPIRATION_TIME', 60); // Time in minutes form tokens are valid   
+define('FORMVALIDATION_EXPIRATION_TIME', 15); // Time in minutes form tokens are valid   
 
 /**
  * Stores form tokens
@@ -14,7 +14,7 @@ class FormValidations {
 	public static function create_token($name) {
 		self::remove_expired();
 		
-		$token = substr(uniqid(dechex(mt_rand()), true), 0, 35);
+		$token = sha1(uniqid(mt_rand(), true));
 		
 		$validations = new DAOFormvalidations();
 		$validations->name = $name;
