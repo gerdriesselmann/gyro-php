@@ -9,21 +9,7 @@
  * @author Gerd Riesselmann
  * @ingroup Memcache
  */
-class MemcacheSession {
-	/**
-	 * Switch session handling to this instance
-	 */	
-	public function __construct() {
-		session_set_save_handler(
-			array($this, 'open'), 
-			array($this, 'close'), 
-			array($this, 'read'), 
-			array($this, 'write'), 
-			array($this, 'destroy'), 
-			array($this, 'gc')
-		);		
-	} 
-
+class MemcacheSession implements ISessionHandler {
 	/**
 	 * Open a session
 	 */ 

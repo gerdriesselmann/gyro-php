@@ -10,3 +10,4 @@ require_once GYRO_LIB_DIR . 'helpers/common.cls.php';
 require_once GYRO_LIB_DIR . 'helpers/requestinfo.cls.php';
 require_once GYRO_LIB_DIR . 'helpers/url.cls.php';
 //
+require_once GYRO_LIB_DIR . 'interfaces/isessionhandler.cls.php';

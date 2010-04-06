@@ -28,9 +28,9 @@ class Config {
 	const START_SESSION = 'START_SESSION';
 	const FORCE_FULL_DOMAINNAME = 'FORCE_FULL_DOMAINNAME';
 	/**
-	 * True to use DB based session. 
+	 * Name of Session Handling Class (class must be included manually) 
 	 */
-	const SESSION_USE_DB = 'SESSION_USE_DB';
+	const SESSION_HANDLER = 'SESSION_HANDLER';
 	/**
 	 * Template engine
 	 */
@@ -225,4 +225,17 @@ class Config {
 		$url = str_replace('%basedir%', self::get_value(self::URL_BASEDIR), $url);
 		return $url;
 	}	
+	
+	/**
+	 * Creates a hash from config values
+	 * 
+	 * @return string 40 character long hexstring (sha1)  
+	 */
+	public static function create_fingerprint() {
+		$ret = '';
+		foreach(self::$data as $key => $value) {
+			$ret .= $value;
+		}
+		return sha1($ret);
+	}
 }

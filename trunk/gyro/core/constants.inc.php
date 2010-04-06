@@ -45,7 +45,7 @@ Config::set_feature_from_constant(Config::VALIDATE_URL, 'APP_VALIDATE_URL', true
  */
 Config::set_feature_from_constant(Config::ENABLE_HTTPS, 'APP_ENABLE_HTTPS', true);
 Config::set_feature_from_constant(Config::START_SESSION, 'APP_START_SESSION', true);
-Config::set_feature_from_constant(Config::SESSION_USE_DB, 'APP_SESSION_USE_DB', true);
+Config::set_value_from_constant(Config::SESSION_HANDLER, 'APP_SESSION_HANDLER', 'DBSession');
 /**
  * Template engine
  */
