@@ -19,6 +19,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	protected $path = '';
 	protected $scheme = 'http';
 	protected $decorators = null;
+	protected $is_directory = false;
 	
 	/**
 	 * Contructor
@@ -41,6 +42,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 			$path = substr($path, $pos_scheme + 3);
 		}
 		$this->path = ($path !== '/') ? ltrim($path, '/') : $path;
+		$this->is_directory = (substr($path, -1) === '/');
 		$this->decorators = is_array($decorators) ? $decorators : array($decorators);
 		ActionMapper::register_url($action, $this);
 	}
@@ -112,6 +114,13 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 		return $ret;		
 	}
 
+	/**
+	 * Returns true, if this route is a directory (that is: ends with '/')
+	 */
+	public function is_directory() {
+		return $this->is_directory;
+	}
+	
 	/**
 	 * Initialize the data passed
 	 * 
