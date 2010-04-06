@@ -13,9 +13,9 @@ class Cookie {
 	 * @param string Cotent of Cookuie
 	 * @param int Number of seconds the cookie will be valid
 	 */
-	public static function create($name, $content, $valid_seconds = null, $path = '/') {
+	public static function create($name, $content, $valid_seconds = null, $path = '/', $http_only = true, $domain = false, $ssl = false) {
 		$expire = empty($valid_seconds) ? null : time() + Cast::int($valid_seconds); 
-		setcookie($name, $content, $expire, $path);
+		setcookie($name, $content, $expire, $path, $domain, $ssl, $http_only);
 	}
 	
 	/**
@@ -43,4 +43,3 @@ class Cookie {
 		return Arr::get_item($_COOKIE, $name, false);
 	}
 }
-?>
