@@ -190,7 +190,7 @@ class PageViewBase extends ViewBase {
 		if ($cache) {
 			$cache_data = $cache->get_data();
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
-				Common::header($header, '', true);
+				Common::header($header, false, true);
 			}
 			$etag = Arr::get_item($cache_data, 'etag', '');
 			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate(), 600, $etag);
