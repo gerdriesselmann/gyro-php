@@ -24,7 +24,7 @@ class ETagRenderDecorator extends RenderDecoratorBase {
 			Common::header('etag', $etag);
 			// Send Cache headers
 			Common::header('Pragma', '', true);
-			Common::header('Cache-Control', 'private, max-age=0, pre-check=0, must-revalidate', true);
+			Common::header('Cache-Control', 'private, no-cache, must-revalidate', true);
 		}
 		return $ret;
 	}	
