@@ -274,7 +274,7 @@ class UserBaseController extends ControllerBase {
  	 */
  	public function action_user_delete_account($page_data) {
 		if (Users::current_has_role(USER_ROLE_USER) == false) {
-			return CONTROLLER_ACCESS_DENIED;
+			return self::ACCESS_DENIED;
 		}
 		
 		$formhandler = new FormHandler('delete_account');
@@ -413,10 +413,8 @@ class UserBaseController extends ControllerBase {
 				$err->merge(Users::create($params, $dummy));
 			}
 		}
-		// At this point we habe an error. Do post fix (redirects)
 		$formhandler->finish($err, tr('The new user has been created', 'users'));
  	}
-	
 	
 	/**
 	 * Edit account settings
@@ -424,7 +422,7 @@ class UserBaseController extends ControllerBase {
 	public function action_users_edit($page_data, $id) {
 		$user = Users::get($id);
 		if ($user == false) {
-			return CONTROLLER_NOT_FOUND;
+			return self::NOT_FOUND;
 		}
 		
 		$formhandler = new FormHandler('edit_account');
@@ -484,7 +482,6 @@ class UserBaseController extends ControllerBase {
 				$err->merge(Users::update($user, $params));
 			}
 		}
-		// At this point we habe an error. Do post fix (redirects)
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
  	}
 		
@@ -492,7 +489,7 @@ class UserBaseController extends ControllerBase {
 	 * Edit account settings
 	 */
 	public function action_users_edit_self($page_data) {
-		// Template for self user edititing
+		// User exists, since Route is for logged in only
 		$user = Users::get_current_user();
 		$formhandler = new FormHandler('edit_account_self');
 		if ($page_data->has_post_data()) {
@@ -518,14 +515,12 @@ class UserBaseController extends ControllerBase {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
 			// Validate
-			$params = $page_data->get_post()->get_array();
-			unset($params['roles']);
+			$params = $user->unset_internals($page_data->get_post()->get_array());
 			$err->merge($this->validate_password($params));
 			if ($err->is_ok()) {
 				$err->merge(Users::update($user, $params));
 			}
 		}
-		// At this point we habe an error. Do post fix (redirects)
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
  	}
 	
