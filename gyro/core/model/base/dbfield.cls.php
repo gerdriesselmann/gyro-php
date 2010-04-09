@@ -6,7 +6,14 @@
  * @ingroup Model
  */
 class DBField implements IDBField {
+	/**
+	 * Indicates this field may not be NULL 
+	 */
 	const NOT_NULL = 1;
+	/**
+	 * Indicates this field is internal. This flag can be checked when building UI or on updates 
+	 */
+	const INTERNAL = 8;
 	
 	/**
 	 * Name of the field
