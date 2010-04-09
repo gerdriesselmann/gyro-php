@@ -20,15 +20,52 @@ class DAOJcsscompressedfiles extends DataObjectBase {
 				new DBFieldSerialized('sources', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NOT_NULL),
 				new DBFieldInt('version', 1,DBFieldInt::UNSIGNED | DBField::NOT_NULL)
 			),
-			'type'
+			array('type', 'filename')
 		);		
 	}
 	
+	/**
+	 * Returns versioned filename
+	 * 
+	 * @return string
+	 */
 	public function get_versioned_filename() {
 		$arr = explode('.', $this->filename);
 		$ext = array_pop($arr);
 		$arr[] = $this->version;
 		$arr[] = $ext;
 		return implode('.', $arr);  			
+	}
+	
+	/**
+	 * Substitute any of the files given in $arr_files
+	 * 
+	 * @param array $arr_files
+	 * @return array Array of files  
+	 */
+	public function substitute($arr_files) {
+		if (count($arr_files) < count($this->sources)) {
+			return $arr_files;
+		}
+		
+		$ret = $arr_files;
+		$match = true;
+		foreach($this->sources as $file) {
+			$key = array_search($file, $ret);
+			if ($key !== false) {
+				unset($ret[$key]);
+			}
+			else {
+				$match = false;
+				$ret = $arr_files;
+				break;
+			}
+		}
+		
+		if ($match) {
+			array_unshift($ret, $this->get_versioned_filename());
+		}
+		
+		return $ret;
 	}
 }

@@ -7,13 +7,29 @@ class JCSSManagerCompressBaseCommand extends CommandBase {
 	 * COnstructor
 	 *  
 	 * @param $in_files array
-	 * @param $out_file string
+	 * @param $out_file string A template string for output naming
 	 * @return void
 	 */
 	public function __construct($in_files, $out_file) {
-		$this->in_files = Arr::force($in_files, false);
+		$this->in_files = $this->clean_in_files(Arr::force($in_files, false));
 		$this->out_file = $out_file;
 		parent::__construct(null, false);
+	}
+	
+	/**
+	 * Combine in files to groups
+	 */
+	protected function clean_in_files($in_files) {
+		$ret = array();
+		foreach($in_files as $key => $value) {
+			if (is_numeric($key)) {
+				$ret['default'][] = $value;
+			}
+			else {
+				$ret[$key] = $value;
+			}
+		}
+		return $ret;
 	}
 	
 	/**
@@ -25,10 +41,21 @@ class JCSSManagerCompressBaseCommand extends CommandBase {
 		$ret = new Status();
 		
 		$versioned_file_name = false;
-		$ret->merge($this->compress($this->in_files, $this->out_file, $versioned_file_name));
-		$gzip_file = false;
-		if ($versioned_file_name && $ret->is_ok()) {
-			$ret->merge($this->gzip($versioned_file_name, $gzip_file));
+		foreach($this->in_files as $groupname => $in_files) {
+			$out_file = $this->out_file;
+			if ($groupname != 'default') {
+				$arr = explode('.', $out_file);
+				$ext = array_pop($arr);
+				$arr[] = $groupname;
+				$arr[] = $ext;
+				$out_file = implode('.', $arr);  
+			}
+
+			$ret->merge($this->compress($in_files, $out_file, $versioned_file_name));
+			$gzip_file = false;
+			if ($versioned_file_name && $ret->is_ok()) {
+				$ret->merge($this->gzip($versioned_file_name, $gzip_file));
+			}
 		}
 		return $ret;
 	}

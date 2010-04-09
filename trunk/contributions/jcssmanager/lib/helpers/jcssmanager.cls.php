@@ -85,41 +85,47 @@ class JCSSManager {
 
 		// Update htaccess
 		if ($err->is_ok()) {
-			$htc_option = '';
-			$htc_rewrite = '';
-			if (Config::has_feature(ConfigJCSSManager::ALSO_GZIP)) {
-				$charset = GyroLocale::get_charset();
-				$htc_option = array(
-					'# Workaround Apache 1.3, which always uses gzip, x-gzip as encoding, which crashes browsers',
-					'RemoveEncoding .gz',
-					'AddEncoding gzip .gz',		
-					'# End workaround',		
-					'<FilesMatch .*\.js.gz$>',
-					'AddEncoding gzip .js',
-					"ForceType \"text/javascript;charset=$charset\"",
-					'</FilesMatch>',
-					'<FilesMatch .*\.css.gz$>',
-					'AddEncoding gzip .css',
-					"ForceType \"text/css;charset=$charset\"",
-					'</FilesMatch>',
-					'<IfModule mod_expires.c>',
-					'ExpiresActive On',				
-					"ExpiresByType text/css 'access plus 2 years'",
-					"ExpiresByType text/javascript 'access plus 2 years'",
-					"ExpiresByType application/x-javascript 'access plus 2 years'",
-					'</IfModule>'				
-				); 
-				$htc_rewrite = array(
-					'RewriteCond %{HTTP:Accept-encoding} gzip',
-					'RewriteCond %{REQUEST_FILENAME}.gz -f',
-					'RewriteRule ^(.*)$ $1.gz [QSA,L]'
-				);
-			}
-			Load::components('systemupdateinstaller');
-			$err->merge(SystemUpdateInstaller::modify_htaccess('jcssmanager', SystemUpdateInstaller::HTACCESS_OPTIONS, $htc_option));
-			$err->merge(SystemUpdateInstaller::modify_htaccess('jcssmanager', SystemUpdateInstaller::HTACCESS_REWRITE, $htc_rewrite));
+			$err->merge(self::update_htaccess());
 		}
 		return $err;
+	}
+	
+	private static function update_htaccess() {
+		$err = new Status();
+		$htc_option = '';
+		$htc_rewrite = '';
+		if (Config::has_feature(ConfigJCSSManager::ALSO_GZIP)) {
+			$charset = GyroLocale::get_charset();
+			$htc_option = array(
+				'# Workaround Apache 1.3, which always uses gzip, x-gzip as encoding, which crashes browsers',
+				'RemoveEncoding .gz',
+				'AddEncoding gzip .gz',		
+				'# End workaround',		
+				'<FilesMatch .*\.js.gz$>',
+				'AddEncoding gzip .js',
+				"ForceType \"text/javascript;charset=$charset\"",
+				'</FilesMatch>',
+				'<FilesMatch .*\.css.gz$>',
+				'AddEncoding gzip .css',
+				"ForceType \"text/css;charset=$charset\"",
+				'</FilesMatch>',
+				'<IfModule mod_expires.c>',
+				'ExpiresActive On',				
+				"ExpiresByType text/css 'access plus 2 years'",
+				"ExpiresByType text/javascript 'access plus 2 years'",
+				"ExpiresByType application/x-javascript 'access plus 2 years'",
+				'</IfModule>'				
+			); 
+			$htc_rewrite = array(
+				'RewriteCond %{HTTP:Accept-encoding} gzip',
+				'RewriteCond %{REQUEST_FILENAME}.gz -f',
+				'RewriteRule ^(.*)$ $1.gz [QSA,L]'
+			);
+		}
+		Load::components('systemupdateinstaller');
+		$err->merge(SystemUpdateInstaller::modify_htaccess('jcssmanager', SystemUpdateInstaller::HTACCESS_OPTIONS, $htc_option));
+		$err->merge(SystemUpdateInstaller::modify_htaccess('jcssmanager', SystemUpdateInstaller::HTACCESS_REWRITE, $htc_rewrite));
+		return $err;		
 	}
 	
 }
