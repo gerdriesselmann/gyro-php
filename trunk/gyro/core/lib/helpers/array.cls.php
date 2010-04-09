@@ -122,7 +122,7 @@ class Arr {
 	 * @param string|array $key
 	 * @return array
 	 */
-	private static function extract_array_keys($key) {
+	public static function extract_array_keys($key) {
 		$ret = array();
 		if (is_array($key)) {
 			$ret = $key;
