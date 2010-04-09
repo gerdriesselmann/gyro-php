@@ -27,7 +27,8 @@ class InputWidgetBaseBase implements IWidget {
 	public function render($policy = self::NONE) {
 		$ret = '';
 		$item = Arr::get_item($this->params, 'item', false);
-		$can_edit = true; //($item) ? $item->can_edit_field($name, Users::get_current_user()) : true;
+		$name = array_pop(Arr::extract_array_keys($this->name));
+		$can_edit = ($item) ? AccessControl::is_allowed('edit', $item, $name) : true;
 		if ($can_edit) {
 			$ret = $this->input_build_widget($this->params, $this->name, $this->label, $this->value, $policy);
 		}

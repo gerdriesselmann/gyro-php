@@ -84,10 +84,7 @@ class AccessControl {
 				// Detect access control name from filename
 				// ".", "-" and "_" get translated to camel case:
 				// users.access.php => UsersAccessControl
-				$clsname = basename($inc, '.access.php');
-				$clsname = strtr($clsname, '.-_', '   ');
-				$clsname = ucwords($clsname);
-				$clsname = str_replace(' ', '', $clsname) . 'AccessControl';
+				$clsname = Load::filename_to_classname($inc, 'Control');
 				if (class_exists($clsname)) {
 					self::set_implementation(new $clsname());
 				}
