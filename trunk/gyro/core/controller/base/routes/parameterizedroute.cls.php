@@ -391,6 +391,10 @@ class ParameterizedRoute extends RouteBase {
 	 * @return string
 	 */
 	protected function replace_path_variable($path, $key, $value) {
+		if (is_object($value) || is_array($value)) {
+			return $path;
+		}
+		
 		// Replace otional type with string type. Reduces RegExp complexity,
 		// since we now can force a ":" after key and before type
 		$path = str_replace('{' . $key . '}', '{' . $key . ':s}', $path);
