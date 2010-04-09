@@ -95,18 +95,10 @@ class WidgetJCSS implements IWidget {
 			return $arr_files;
 		}
 		
-		$dao = JCSSCompressedFiles::get($type);
-		if ($dao === false) {
-			return $arr_files;
-		}
-		
-		$ret = array();
-		$ret[] = $dao->get_versioned_filename();
-		
-		foreach($arr_files as $file) {
-			if (!in_array($file, $dao->sources)) {
-				$ret[] = $file;
-			}
+		$compressed_files = JCSSCompressedFiles::find($type);
+		$ret = $arr_files;
+		foreach($compressed_files as $compressed_file) {
+			$ret = $compressed_file->substitute($ret);
 		}
 		
 		return $ret;

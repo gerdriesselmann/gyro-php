@@ -1,7 +1,12 @@
 <?php
 class JCSSCompressedFiles {
-	public static function get($type) {
-		return DB::get_item('jcsscompressedfiles', 'type', $type);
+	/**
+	 * Find all compressed files of given type
+	 */
+	public static function find($type) {
+		$dao = new DAOJcsscompressedfiles();
+		$dao->type = $type;
+		return $dao->find_array();
 	}
 	
 	/**
@@ -20,9 +25,9 @@ class JCSSCompressedFiles {
 		
 		$dao = new DAOJcsscompressedfiles();
 		$dao->type = $type;
+		$dao->filename = $filename;
 		if ($dao->find(DataObjectBase::AUTOFETCH)) {
-			if ($dao->hash != $hash || $dao->filename != $filename) {
-				$dao->filename = $filename;
+			if ($dao->hash != $hash) {
 				$dao->hash = $hash;
 				$dao->sources = $sources;
 				$dao->version++;
