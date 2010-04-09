@@ -308,6 +308,28 @@ class DataObjectBase implements IDataObject, IActionSource {
  	}
  	
  	/**
+	 * Removes all properties from array that are marked using DBField::INTERNAL
+	 * 
+	 * @param array $arr_properties Associative array with field name as key 
+	 * @return array The cleaned array 
+ 	 */
+ 	public function unset_internals($arr_properties) {
+ 		$ret = array();
+ 		// Copy only elements that are not INTERNAL
+ 		foreach($arr_properties as $field => $value) {
+ 			$dbfield = $this->get_table_field($field);
+ 			if ($dbfield && !$dbfield->has_policy(DBField::INTERNAL)) {
+ 				$ret[$field] = $value;
+ 			}
+ 		}
+ 		// Remove primary keys from cleaned array
+ 		foreach($this->get_table_keys() as $field => $tmp) {
+ 			unset($ret[$field]);
+ 		}
+ 		return $ret;
+ 	}
+ 	
+ 	/**
  	 * Validate this object
  	 * 
  	 * @return Status Error
