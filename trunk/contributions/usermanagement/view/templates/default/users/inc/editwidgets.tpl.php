@@ -3,8 +3,8 @@
 	<fieldset>
 	<legend><?=tr('User Data', 'users')?></legend>
 
-	<?php print WidgetInput::output('name', tr('Username', 'users'), $form_data) ?>
-	<?php print WidgetInput::output('email', tr('E-mail', 'users'), $form_data) ?>
+	<?php print WidgetInput::output('name', tr('Username:', 'users'), $form_data) ?>
+	<?php print WidgetInput::output('email', tr('E-mail:', 'users'), $form_data) ?>
 
 	<?php 
 	if ($context == 'edit') {
@@ -12,8 +12,8 @@
 	}
 	?>
 
-	<?php print WidgetInput::output('pwd1', tr('Password', 'users'), $form_data, WidgetInput::PASSWORD) ?>
-	<?php print WidgetInput::output('pwd2', tr('Repeat Password', 'users'), $form_data, WidgetInput::PASSWORD) ?>
+	<?php print WidgetInput::output('pwd1', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD) ?>
+	<?php print WidgetInput::output('pwd2', tr('Repeat Password:', 'users'), $form_data, WidgetInput::PASSWORD) ?>
 
 	<p><?php print tr('Leave these fields empty to not change the password.',  'users')?></p> 
 
@@ -26,5 +26,5 @@
 		}	
 	}	
 	?>
-	<?php print WidgetInput::output('roles', tr('Roles', 'users'), $form_data, WidgetInput::MULTISELECT, array('options' => $role_options))?>
+	<?php print WidgetInput::output('roles', tr('Roles:', 'users'), $form_data, WidgetInput::MULTISELECT, array('options' => $role_options))?>
 	</fieldset>
