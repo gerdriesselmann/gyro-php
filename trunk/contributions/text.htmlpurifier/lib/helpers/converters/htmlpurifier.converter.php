@@ -10,7 +10,7 @@ class ConverterHtmlPurifier implements IConverter {
 	 * Purify HTML
 	 * 
 	 * @param string $value
-	 * @param array
+	 * @param array See http://htmlpurifier.org/live/configdoc/plain.html for all possible values
 	 */
 	public function encode($value, $params = false) {
 		require_once Load::get_module_dir('text.htmlpurifier') . '3rdparty/htmlpurifier-4/HTMLPurifier.standalone.php';
@@ -18,6 +18,11 @@ class ConverterHtmlPurifier implements IConverter {
 		$config = HTMLPurifier_Config::createDefault();
 		$config->set('Core.Encoding', GyroLocale::get_charset());
 		$config->set('Cache.SerializerPath', Config::get_value(Config::TEMP_DIR) . 'htmlpurifier');
+
+		$config->set('AutoFormat.AutoParagraph', true);		
+		$config->set('HTML.TidyLevel', 'medium');
+		
+		$config->loadArray(Arr::force($params, false));
 		
 		$purifier = new HTMLPurifier($config);
     	$value = $purifier->purify($value);
