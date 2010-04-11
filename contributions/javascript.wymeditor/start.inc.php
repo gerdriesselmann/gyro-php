@@ -1,7 +1,7 @@
 <?php
 /**
  * @defgroup WYMEditor
- * @ingroup Javascript
+ * @ingroup JavaScript
  * 
  * Include WYMEditor (http://www.wymeditor.org/) 
  *
@@ -23,11 +23,7 @@
  * This will turn all textareas with class "rte" into a WYMEditor instance.
  * 
  * @note It is good practice to use "rte" as classname for rich text editors.
- * 
- * @attention 
- *   The above code only works if javascript.jquery module is enabled, too. If
- *   you don't user jQuery, you must create you own configuration.   
- * 
+ *
  * @section Config Creating Configurations
  * 
  * If the default configuration is not sufficent, you may create your own. This is
