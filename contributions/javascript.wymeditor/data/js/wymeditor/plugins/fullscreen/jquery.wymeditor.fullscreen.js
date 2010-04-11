@@ -13,6 +13,7 @@
  *
  * File Authors:
  *        Luis Santos (luis.santos a-t openquest dotpt)
+ *        Gerd Riesselmann (gerd a-t gyro-php dot org) : Fixed issue with new skin layout
  */
 
 //Extend WYMeditor
@@ -34,14 +35,30 @@ WYMeditor.editor.prototype.fullscreen = function() {
 
   //handle click event
   jQuery(wym._box).find('li.wym_tools_fullscreen a').click(function() {
-    if (jQuery(wym._box).css('position') != 'fixed') {
+    var iframe = jQuery(wym._box).find('.wym_iframe iframe'); 
+    if (jQuery('.wym_box').css('position') != 'fixed') {
+      var screen_height = jQuery(window).height();
+      var iframe_height = (screen_height - 100) + 'px';
+      screen_height = screen_height + 'px';
+      
+      var screen_width = jQuery(window).width();
+      var editor_width = (screen_width - 40) + 'px'; // This may not work with all skins
+      screen_width = screen_width + 'px';
+   
+      // Store old iframe height
+      jQuery.data(wym, 'iframe_height', jQuery(iframe).css('height'));
+      
       jQuery('body').append('<div id="loader"></div>');
-      jQuery('#loader').css({'position' : 'fixed', 'background-color': 'rgb(0, 0, 0)', 'opacity': '0.8', 'z-index': '98', 'width': '100%', 'height': '100%', 'top': '0px', 'left': '0px'});
-      jQuery(wym._box).css({'position' : 'fixed', 'z-index' : '99', 'top': '5%', 'left': '5%', 'width': '90%', 'height': '90%'});
-      //WYMeditor.SKINS[wym._options.skin].init(wym);
+      jQuery('#loader').css({'position' : 'fixed', 'background-color': 'rgb(0, 0, 0)', 'opacity': '0.8', 'z-index': '98', 'width': screen_width, 'height': screen_height, 'top': '0px', 'left': '0px'});
+      jQuery(wym._box).css({'position' : 'fixed', 'z-index' : '99', 'top': '15px', 'left': '15px', 'width': editor_width});
+      // With new skin layout, the iframe must be adjusted in height. Rest will follow
+      // Especially height of wym._box must be left untouched!
+      jQuery(iframe).css({'height': iframe_height});
     } else {
       jQuery('#loader').remove();
-      jQuery(wym._box).css({'position' : 'static', 'z-index' : '99', 'height' : '100%', 'width' : '100%', 'top': '0px', 'left': '0px'});
+      jQuery(wym._box).css({'position' : 'static', 'z-index' : '99', 'width' : '100%', 'top': '0px', 'left': '0px'});
+      // Restore old height
+      jQuery(iframe).css({'height': jQuery.data(wym, 'iframe_height')});
     }
 
     return(false);
