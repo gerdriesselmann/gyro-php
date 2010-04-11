@@ -20,6 +20,10 @@
  * This will turn all textareas with class "rte" into a CKEditor instance.
  * 
  * @note It is good practice to use "rte" as classname for rich text editors.
+ *  
+ * @attention 
+ *   The above code only works if javascript.jquery module is enabled, too. If
+ *   you don't user jQuery, you must create you own configuration.   
  * 
  * @section Config Creating Configurations
  * 
