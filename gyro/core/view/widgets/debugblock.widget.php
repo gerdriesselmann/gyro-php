@@ -18,15 +18,18 @@ class WidgetDebugBlock implements IWidget {
 			$out .= $this->render_properties();
 			
 			$sections = array(
-				'DB Queries' => $this->render_db_queries(),
+				'Slow and Failed Queries' => $this->render_db_queries(true),
 				'Templates'  => $this->render_templates(),
+				'DB Queries' => $this->render_db_queries(),
 			);
 			// Alow modules extending sections
   			EventSource::Instance()->invoke_event('debugblock', 'sections', $sections);
 			
 			foreach($sections as $heading => $content) {
-				$out .= html::h(String::escape($heading), 3);
-				$out .= $content;
+				if ($content) {
+					$out .= html::h(String::escape($heading), 3);
+					$out .= $content;
+				}
 			}
 		}
 		
@@ -41,6 +44,8 @@ class WidgetDebugBlock implements IWidget {
 	  		'Memory Peak' => String::number(memory_get_peak_usage()/1024, 2) . ' KB',
 	  		'Execution time' => $this->duration($endtime - APP_START_MICROTIME),
 	   		'DB-Queries execution time' => $this->duration(DB::$queries_total_time),
+			'DB-Queries' => count(DB::$query_log),
+			'DB-Queries average time' => $this->duration(DB::$queries_total_time / count(DB::$query_log)),
 			'DB connect time' => $this->duration(DB::$db_connect_time),
 	  		'PHP-Version' => phpversion(),
 			'Generated' => GyroDate::local_date(time()),
@@ -58,17 +63,23 @@ class WidgetDebugBlock implements IWidget {
 		return html::li($li);
 	}
 
-	protected function render_db_queries() {
+	protected function render_db_queries($only_problems = false) {
 		$out = '';
 		// Query Logs
 		if (count(DB::$query_log)) {
 			$table = '';
+			$c = 0;
 			foreach(DB::$query_log as $query) {
-				$table .= $this->render_db_query_times($query);
-				$table .= $this->render_db_query_message($query);
-				$table .= $this->render_db_query_explain($query);
+				$is_problem = !$query['success'] || ($query['seconds'] > Config::get_value(Config::DB_SLOW_QUERY_THRESHOLD));
+				if (!$only_problems || $is_problem) {
+					$table .= $this->render_db_query_times($query);
+					$table .= $this->render_db_query_message($query);
+					$table .= $this->render_db_query_explain($query);
+				}
 			}
-			$out .= html::tag('table', $table, array('summary' => 'List of all issued DB queries'));
+			if ($table) {
+				$out .= html::tag('table', $table, array('summary' => 'List of all issued DB queries'));
+			}
 		}
 		return $out;
 	}
@@ -78,8 +89,8 @@ class WidgetDebugBlock implements IWidget {
 		$cls = $query['success'] ? 'query ok' : 'query error';
 		
 		$query_time = array(
+			$this->msec($query['seconds']),
 			$this->sec($query['seconds']),
-			$this->msec($query['seconds'])
 		);
 		if ($is_slow) {
 			$cls .= ' slow';
@@ -189,6 +200,6 @@ class WidgetDebugBlock implements IWidget {
 	}
 	
 	protected function duration($sec) {
-		return $this->sec($sec) . ' - ' . $this->msec($sec);
+		return $this->msec($sec) . ' - ' . $this->sec($sec);
 	}
 }
