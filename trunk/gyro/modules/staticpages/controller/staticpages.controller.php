@@ -16,7 +16,7 @@ class StaticPagesController extends ControllerBase {
 	public function get_routes() {
 		$templates = implode(',', $this->collect_templates());
 		return array(
-			new ParameterizedRoute(STATICPAGES_PREPEND . "{page:e:$templates}" . STATICPAGES_APPEND, $this, 'static', new SimpleCacheManager())
+			new ParameterizedRoute(STATICPAGES_PREPEND . "{page:e:$templates}" . STATICPAGES_APPEND, $this, 'static')
 		);
 	}
 	
