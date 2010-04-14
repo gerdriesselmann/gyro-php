@@ -213,11 +213,15 @@ class DB {
  	/**
  	 * Execute a SELECT query
  	 *
- 	 * @param string $query
+ 	 * @param string|IDBQuery $query
  	 * @return IDBResultSet
  	 */
  	public static function query($query, $connection = self::DEFAULT_CONNECTION) {
  		$timer = new Timer();
+ 		if ($query instanceof IDBQuery) {
+ 			$connection = $query->get_table()->get_table_driver();
+ 			$query = $query->get_sql();
+ 		}
  		$conn = self::get_connection($connection);
  		$ret = $conn->query($query);
  		self::log_query($query, $timer->seconds_elapsed(), $ret->get_status(), $conn);
@@ -227,11 +231,15 @@ class DB {
 	/**
 	 * Execute an query. Do not use with SELECT!
 	 * 
-	 * @param string $query
+	 * @param string|IDBQuery $query
 	 * @return Status
 	 */
 	public static function execute($query, $connection = self::DEFAULT_CONNECTION) {
 		$timer = new Timer();
+ 		if ($query instanceof IDBQuery) {
+ 			$connection = $query->get_table()->get_table_driver();
+ 			$query = $query->get_sql();
+ 		}
 		$conn = self::get_connection($connection);
 		$ret = $conn->execute($query);
 		self::log_query($query, $timer->seconds_elapsed(), $ret, $conn);
