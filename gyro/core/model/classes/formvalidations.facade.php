@@ -24,7 +24,29 @@ class FormValidations {
 		
 		return $token;
 	}
-	
+
+	/**
+	 * Create a token for form of given name
+	 */
+	public static function create_or_reuse_token($name, $token) {
+		self::remove_expired();
+		
+		$validations = new DAOFormvalidations();
+		$validations->name = $name;
+		$validations->token = $token;
+		
+		if ($validations->find(IDataObject::AUTOFETCH)) {
+			if ($validations->expirationdate - 2 * GyroDate::ONE_MINUTE < time()) {
+				$token = self::create_token($name);
+			}
+		}	
+		else {
+			$token = self::create_token($name);
+		}
+		
+		return $token;
+	}
+
 	/**
 	 * Validate a given token for form of given name
 	 * 
