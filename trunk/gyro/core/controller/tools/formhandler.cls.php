@@ -9,6 +9,19 @@ Load::models('formvalidations');
  */ 
 class FormHandler {
 	/**
+	 * Create a token on each request
+	 */
+	const TOKEN_POLICY_UNIQUE = 1;
+	/**
+	 * Do not use tokens
+	 */
+	const TOKEN_POLICY_NONE = 0;
+	/**
+	 * Create a token for a form, but reuse it until it expires
+	 */
+	const TOKEN_POLICY_REUSE = 2;	
+	
+	/**
 	 * Name of form. 
 	 */
 	private $name = '';
@@ -19,9 +32,9 @@ class FormHandler {
 	private $url = null;
 	
 	/**
-	 * Create (and validate) a token?
+	 * How to deal with tokens
 	 */
-	private $use_token = true;
+	private $token_policy = true;
 		
 	/**
 	 * Constructor
@@ -30,9 +43,17 @@ class FormHandler {
 	 * @param string $path (optional) Path of form , if != current path
 	 * @param bool   $create_token True to create a unique token to identify Form
 	 */	
- 	public function __construct($name, $path = '', $use_token = true) {
+ 	public function __construct($name, $path = '', $token_policy = self::TOKEN_POLICY_UNIQUE) {
+ 		// Compatability
+ 		if ($token_policy === false) {
+ 			$token_policy = self::TOKEN_POLICY_NONE;
+ 		}
+ 		else if ($token_policy === true) {
+ 			$token_policy = self::TOKEN_POLICY_UNIQUE;
+ 		}
+ 		
  		$this->name = $name;
- 		$this->use_token = $use_token;
+ 		$this->token_policy = $token_policy;
  		$this->url = Url::current();
  		if (!empty($path)) {
  			$this->url->set_path($path);
@@ -46,10 +67,11 @@ class FormHandler {
  	 * @param mixed Array or Object containing key/value-pairs for default data
  	 */
  	public function prepare_view($view, $data = false) {
- 		$token_html = '';
- 		if ($this->use_token) {
-	 		$token = $this->create_token();
-			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
+ 		$token = $this->create_token();
+
+	 	$token_html = '';
+ 		if ($token) {
+	 		$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
 			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), array('value' => $this->name));
 			
 			if (Session::is_started()) {
@@ -91,7 +113,26 @@ class FormHandler {
  	 * Create a new token
  	 */
  	private function create_token() {
- 		$token = FormValidations::create_token($this->name);
+ 		$token = ''; 
+ 		switch($this->token_policy) {
+ 			case self::TOKEN_POLICY_NONE:
+ 				break;
+ 			case self::TOKEN_POLICY_REUSE:
+ 				if (Session::is_started()) {
+ 					$formtokens = Session::peek('formhandlertokens_reuse');
+	 				$reuse_token = Arr::get_item($formtokens, $this->name, '');
+	 				$token = FormValidations::create_or_reuse_token($this->name, $reuse_token);
+	 				Session::push_to_array_assoc('formhandlertokens_reuse', $token, $this->name);
+ 				}
+	 			else {
+ 					$token = FormValidations::create_token($this->name);
+ 				}
+ 				break;
+ 			default:
+ 				$token = FormValidations::create_token($this->name);
+ 				break;						 				
+ 		}
+ 		
  		return $token; 			
  	}
  	
@@ -103,7 +144,7 @@ class FormHandler {
  	public function validate() {
  		$ret = new Status();
 		$success = true;
- 		if ($this->use_token) {
+ 		if ($this->token_policy != self::TOKEN_POLICY_NONE) {
 			$token = Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
 			// Validate if token is in DB
 			$success = $success && ($this->name == Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
