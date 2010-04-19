@@ -154,5 +154,10 @@ class UrlTest extends GyroUnitTestCase {
 		$url = Url::create($in);
 		$this->assertEqual('p403187', $url->get_fragment());
 	}
+	
+	public function test_no_host() {
+		$url = Url::create('http:///');
+		$this->assertFalse($url->is_valid());
+	}
 }
 
