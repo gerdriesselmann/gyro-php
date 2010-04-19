@@ -62,7 +62,7 @@ class DBQueryCountTest extends GyroUnitTestCase {
 
 		$query->set_fields(array("'some value'" => 'column1'));
 		$this->assertEqual(
-			"SELECT COUNT(DISTINCT `column1`) AS c FROM `table` AS `alias`",
+			"SELECT COUNT(DISTINCT 'some value') AS c FROM `table` AS `alias`",
 			$query->get_sql()
 		);
 	}
