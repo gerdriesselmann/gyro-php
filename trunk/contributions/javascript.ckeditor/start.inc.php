@@ -8,7 +8,7 @@
  * @section Usage
  *
  * On install, the module copies CKEditor files to the a folder named "js/ckeditor" below web root. The version
- * of CKEditor installed is 3.2.
+ * of CKEditor installed is 3.2.1.
  * 
  * CKEditor files are not included by default. To enable CKEditor on a page, place the following code
  * 
