@@ -25,8 +25,14 @@ function init_wymeditor() {
 	    skin: 'default',
 	    stylesheet: '/js/wymeditor/classes.css',
 	    postInit: function(wym) {
+			// Make editor as height as the original textarea 
+			$(wym._iframe).css('height', $(wym._element).height());
 			_wym_init_plugins(wym);
-		}
+		},
+	    // Important if you use compression!
+	    basePath: '/js/wymeditor/',
+	    wymPath: '/js/wymeditor/',
+	    jQueryPath: '/js/jquery.js'    
 	});
 }
 

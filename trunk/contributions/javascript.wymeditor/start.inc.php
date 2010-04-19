@@ -8,7 +8,7 @@
  * @section Usage
  *
  * On install, the module copies wymeditor files to the a folder named "js/wymeditor" below web root. The version
- * of WYMEditor installed is 0.5, but it contains bugfixes for tidy and fullscreen plugin.
+ * of WYMEditor installed is 0.5, but tidy and fullscreen plugin are taken from trunk.
  * 
  * @see http://forum.wymeditor.org/forum/viewtopic.php?f=3&t=734
  * 
