@@ -23,6 +23,7 @@ class RegisterUsersBaseCommand extends CommandChain {
 		$ret->merge($create_cmd->execute());
 		if ($ret->is_ok()) {
 			$user = $create_cmd->get_result();
+			$this->set_result($user);
 			// Create Double OptIn
 			$params_double_opt_in = array(
 				'id_item' => $user->id,
