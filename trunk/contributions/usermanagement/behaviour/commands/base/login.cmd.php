@@ -13,11 +13,11 @@ class LoginUsersBaseCommand extends CommandChain {
 		return 'login';
 	}
 	
-	public function do_can_execute($user) {
+	protected function do_can_execute($user) {
 		return empty($user); // Not logged in only
 	}
 	
-	public function do_execute() {
+	protected function do_execute() {
 		$ret = new Status();
 		$params = $this->get_params();
 		
@@ -31,6 +31,7 @@ class LoginUsersBaseCommand extends CommandChain {
 		if ($user->find(IDataObject::AUTOFETCH)) {
 			$ret->merge($this->check_password_hash($user, $params));			
 			if ($ret->is_ok()) {
+				$this->set_result($user);
 				switch ($user->status) {
 					case Users::STATUS_UNCONFIRMED;
 						$ret->append(tr('Your account has not yet been activated', 'users')); 
