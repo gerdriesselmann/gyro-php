@@ -10,4 +10,4 @@
 <p><a href="<?=$resend_url?>"><?=tr('Registered, but got no confirmation mail?', 'users')?></a></p>
 <?php endif; ?>
 <br />		
-<?php print WidgetInput::output('stayloggedin', tr('Stay loged in.', 'users'), $form_data, WidgetInput::CHECKBOX); ?> 
+<?php print WidgetInput::output('stayloggedin', tr('Stay logged in.', 'users'), $form_data, WidgetInput::CHECKBOX); ?> 
