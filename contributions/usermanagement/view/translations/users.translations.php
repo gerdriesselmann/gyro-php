@@ -204,7 +204,7 @@ function users_load_translations($languages) {
 		'Registered, but got no confirmation mail?' => array(
 			'de' => 'Registriert, aber noch keine Bestätigungs-Mail bekommen?'
 		),
-		'Stay loged in.' => array(
+		'Stay logged in.' => array(
 			'de' => 'Eingeloggt bleiben, nachdem der Browser geschlossen wurde'
 		),
 		'Click here to become a member.' => array(
@@ -230,6 +230,21 @@ function users_load_translations($languages) {
 		),
 		'Welcome %name' => array(
 			'de' => 'Willkommen, %name!'
+		),
+		'Not registered yet?' => array(
+			'de' => 'Noch kein Mitglied?'
+		),
+		'Your personal site' => array(
+			'de' => 'Kontrollzentrum'
+		),
+		'Content Management' => array(
+			'de' => 'Inhalte verwalten'
+		),
+		'User Menu' => array(
+			'de' => 'Benutzermenu'
+		),
+		'You have been logged out' => array(
+			'de' => 'Sie wurden abgemeldet'
 		)
 	);
 }
