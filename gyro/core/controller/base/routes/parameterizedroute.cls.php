@@ -103,7 +103,7 @@ class ParameterizedRoute extends RouteBase {
 		// Do some simple plausibility check
 		$simple_check = true;
 		$cf_delta = $url_pathstack->count_front() - $def_pathstack->count_front(); 
-		$lastchar = substr($this->path, -1);
+		$lastchar = substr(rtrim($this->path, '/'), -1);
 		switch ($lastchar) {
 			case '!':
 				$simple_check = ($cf_delta == 0 || $cf_delta == -1);
@@ -210,6 +210,10 @@ class ParameterizedRoute extends RouteBase {
  		if (strpos($this_path_elem, '{') === false) {
  			return ($this_path_elem == $element_to_validate);
  		}
+ 		$optional = (substr($this_path_elem, -1) === '!');
+ 		if ($optional && $element_to_validate === false) {
+ 			return true;
+ 		}
  
  		$tag = '#\{[^\}]*\}#';
 		// Split on tags - we have ANSI data, so use native functions
@@ -262,7 +266,7 @@ class ParameterizedRoute extends RouteBase {
  			case '*':
  			case '%':
  			case '!':
- 				break;
+ 				break; 				
  			default:
  				$ret .= preg_quote($last);
  				break;
