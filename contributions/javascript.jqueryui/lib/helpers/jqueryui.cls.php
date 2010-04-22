@@ -197,7 +197,7 @@ class JQueryUI {
 				self::WIDGET_PROGRESSBAR => array(self::CORE, self::CORE_WIDGET),
 				self::WIDGET_SLIDER => array(self::CORE, self::CORE_WIDGET, self::FEATURE_MOUSE),
 				self::WIDGET_TABS => array(self::CORE, self::CORE_WIDGET),
-				self::WIDGET_AUTOCOMPLETE => array(self::CORE, self::CORE_WIDGET),
+				self::WIDGET_AUTOCOMPLETE => array(self::CORE, self::CORE_WIDGET, self::FEATURE_POSITION),
 				
 				/* Feature constants */
 				self::FEATURE_DRAGGABLE => array(self::CORE, self::CORE_WIDGET, self::FEATURE_MOUSE),
