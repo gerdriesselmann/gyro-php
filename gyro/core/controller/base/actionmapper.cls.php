@@ -35,7 +35,7 @@ class ActionMapper {
 	}
 	
 	/**
-	 * Returns path for given action. Path is relative to base url, although an url builder may decide to 
+	 * Returns path for given action. Path is relative to web root, although an url builder may decide to 
 	 * return an absolute url (including "http://"!) nonetheless (e.g. if https is required for action url)
 	 * 
 	 * @param string $action Action name
@@ -45,6 +45,20 @@ class ActionMapper {
 	public static function get_path($action, $params = null) {
 		return self::build_url($action, $params, IUrlBuilder::RELATIVE);
 	}
+
+	/**
+	 * Returns path for given action. Path is relative to web root. Even if protocol or host do not match,
+	 * only the path will be returned. Use this for images, e.g.  
+	 * 
+	 * @param string $action Action name
+	 * @param mixed $params Parameters, depend on action
+	 * @return string
+	 */
+	public static function force_path($action, $params = null) {
+		$url = self::build_url($action, $params, IUrlBuilder::ABSOLUTE);
+		return '/' . Url::create($url)->get_path();
+	}
+	
 	
 	/**
 	 * Returns url for given action. Path is absolute
