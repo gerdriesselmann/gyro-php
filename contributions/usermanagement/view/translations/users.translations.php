@@ -89,15 +89,15 @@ function users_load_translations($languages) {
 		'Your changes have been stored' => array(
 			'de' => 'Ihre Änderungen wurden gespeichert'
 		),
-		'ADMIN' => array(
+		USER_ROLE_ADMIN => array(
 			'en' => 'Admin',
 			'de' => 'Administrator'
 		),
-		'USER' => array(
+		USER_ROLE_USER => array(
 			'en' => 'User',
 			'de' => 'Normaler Benutzer'
 		),
-		'EDITOR' => array(
+		USER_ROLE_EDITOR => array(
 			'en' => 'Editor',
 			'de' => 'Redakteur'
 		),
