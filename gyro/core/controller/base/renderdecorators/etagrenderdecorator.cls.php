@@ -16,10 +16,8 @@ class ETagRenderDecorator extends RenderDecoratorBase {
 	 */
 	public function render_page($page_data, $content_render_decorator, $policy = IView::NONE) {
 		$ret = parent::render_page($page_data, $content_render_decorator, $policy);
-		Load::components('logger');
 		if ($ret && !Common::is_header_sent('etag')) {
 			$etag = md5($ret);
-			Logger::log('etag', $_SERVER);
 			Common::check_if_none_match($etag);
 			Common::header('etag', $etag);
 			// Send Cache headers
