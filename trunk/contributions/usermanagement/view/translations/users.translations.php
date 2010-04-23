@@ -245,6 +245,12 @@ function users_load_translations($languages) {
 		),
 		'You have been logged out' => array(
 			'de' => 'Sie wurden abgemeldet'
+		),
+		'Become a member' => array(
+			'de' => 'Mitglied werden'
+		),
+		'Fill in the fields and click <strong>Register</strong> to become a member. You will get an e-mail with a confirmation link afterwards.' => array(
+			'de' => 'Füllen Sie die Felder aus und klicken anschließend <strong>Registrieren</strong> um ein Mitglied zu werden. Sie bekommen anschließend eine E-Mail mit einem Bestätigungslink.' 
 		)
 	);
 }
