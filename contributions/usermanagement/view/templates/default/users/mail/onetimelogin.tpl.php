@@ -9,7 +9,8 @@ Please visit
 
 to automatically get logged in once. You then can - for example - change your password.
 
-Please note that the web site above is valid only for 24 hours.
+Please note that the web site above is only valid for 24 hours.
 
 Best regards,
-Team <?php print $appname?>
+The team of <?php print $appname?>
+

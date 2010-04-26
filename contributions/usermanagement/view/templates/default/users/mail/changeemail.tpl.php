@@ -14,7 +14,8 @@ Please visit
 
 to confirm the new address.
 
-Please note that the url above is valid only for 24 hours.
+Please note that the url above is only valid for 24 hours.
 
 Best regards,
-Team <?php print $appname?>
+The team of <?php print $appname?>
+
