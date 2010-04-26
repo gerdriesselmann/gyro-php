@@ -254,11 +254,11 @@ class Users {
 	 */
 	public static function lost_password($email) {
 		$ret = new Status();
-		
+
 		$user = new DAOUsers();
 		$user->email = $email;
 		$user->status = self::STATUS_ACTIVE;
-		if ($user->find(IDataObject::AUTOFETCH)) {
+		if ($email && $user->find(IDataObject::AUTOFETCH)) {
 			$params = array(
 				'id_item' => $user->id,
 				'action' => 'onetimelogin',
@@ -283,10 +283,10 @@ class Users {
 		$user = new DAOUsers();
 		$user->email = $email;
 		$ret = new Status();
-		if ($user->find(IDataObject::AUTOFETCH)) {
+		if ($email && $user->find(IDataObject::AUTOFETCH)) {
 			switch ($user->status) {
 				case Users::STATUS_ACTIVE:
-					$ret->append(tr('Your account already has been activated, use you email address and password to log in.', 'users'));
+					$ret->append(tr('Your account already has been activated, use you user name and password to log in.', 'users'));
 					$ret->persist();
 					Url::create(ActionMapper::get_url('login'))->redirect();
 					exit;

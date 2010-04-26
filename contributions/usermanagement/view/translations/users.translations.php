@@ -251,7 +251,29 @@ function users_load_translations($languages) {
 		),
 		'Fill in the fields and click <strong>Register</strong> to become a member. You will get an e-mail with a confirmation link afterwards.' => array(
 			'de' => 'Füllen Sie die Felder aus und klicken anschließend <strong>Registrieren</strong> um ein Mitglied zu werden. Sie bekommen anschließend eine E-Mail mit einem Bestätigungslink.' 
+		),
+		'If you enter your e-mail address, the system will send you a link to log you in for once. You then will be able to change your password.' => array(
+			'de' => 'Geben Sie Ihre E-Mail-Adresse ein. Das System schickt Ihnen einen Link, mit dem Sie sich einmalig einloggen können. Dort können Sie dann Ihr Passwort ändern.'
+		),
+		'Please enter your e-mail address and click <strong>Submit</strong> afterwards.' => array(
+			'de' => 'Bitte geben Sie Ihre E-Mail-Adresse ein und klicken anschließend auf <strong>Absenden</strong>'
+		),
+		'Submit' => array(
+			'de' => 'Absenden'
+		),
+		'Lost Password' => array(
+			'de' => 'Passwort vergessen'
+		),
+		'If you registered but did not receive an activation e-mail, you can force the mail to be resend by filling out the form and clicking on Resend  below' => array(
+			'de' => 'Wenn Sie sich registriert haben, aber keine Aktivierungs-E-Mail bekommen haben, können Sie sich diese hier erneut zuschicken lassen. Tragen Sie dazu Ihre E-Mail-Adresse und klicken dann auf <strong>Erneut zusenden</strong>.' 
+		),
+		'Please check, if the mail has been blocked as spam, before trying to resend.' => array(
+			'de' => 'Bitte prüfen Sie vorher, ob Ihr Mail-Programm oder Ihr Mail-Provider die Aktivierungsnachricht irrtümlich als Spam eingestuft haben.'
+		),
+		'Resend' => array(
+			'de' => 'Erneut zusenden'
 		)
+		
 	);
 }
 ?>
