@@ -264,7 +264,7 @@ function users_load_translations($languages) {
 		'Lost Password' => array(
 			'de' => 'Passwort vergessen'
 		),
-		'If you registered but did not receive an activation e-mail, you can force the mail to be resend by filling out the form and clicking on Resend  below' => array(
+		'If you registered but did not receive an activation e-mail, you can force the mail to be resend by filling out the form and clicking on <strong>Resend</strong> below' => array(
 			'de' => 'Wenn Sie sich registriert haben, aber keine Aktivierungs-E-Mail bekommen haben, können Sie sich diese hier erneut zuschicken lassen. Tragen Sie dazu Ihre E-Mail-Adresse und klicken dann auf <strong>Erneut zusenden</strong>.' 
 		),
 		'Please check, if the mail has been blocked as spam, before trying to resend.' => array(
