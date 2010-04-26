@@ -46,7 +46,7 @@
     color:#000;
   }
 
-  form label {
+  form label, form .label {
     color:#666;
   }
 
@@ -142,7 +142,7 @@
   /* General form styling  | Allgemeine Formatierung des Formulars */
   form { overflow:hidden; }
   form fieldset { overflow:hidden; }
-  form label { display:block; cursor:pointer; }
+  form label, form .label { display:block; cursor:pointer; }
   form legend { background:transparent; border:0; padding:0 0.5em; }
   form .message { display:block; margin-bottom:0.5em; color:#666; }
 
@@ -189,7 +189,7 @@
   }
 
   form .type-check input { cursor:pointer; }
-  form .type-check label { display:inline; }
+  form .type-check label, form .type-check .label { display:inline; }
 
   /* Styling of buttons | Gestaltung von Buttons */
   form .type-button input {
@@ -205,7 +205,7 @@
     padding:0.5em;
   }
 
-  form div.error label { color:#000; font-weight:bold; }
+  form div.error label, form div.error .label { color:#000; font-weight:bold; }
   form div.error .message { color:#800; }
 
   /* avoid jumping checkboxes & radiobuttons in IE8 */
@@ -249,7 +249,9 @@
 
   /* Columnar display | Spalten-Darstellung */
   .columnar .type-text label,
-  .columnar .type-select label {
+  .columnar .type-select label,
+  .columnar .type-text .label,
+  .columnar .type-select .label {
     float:left;
     width:30%; /* Can be fixed width too | Kann auch eine fixe Angabe sein */
   }
