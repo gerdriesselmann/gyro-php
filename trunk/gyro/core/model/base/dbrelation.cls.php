@@ -7,21 +7,23 @@
  */
 class DBRelation implements IDBRelation {
 	/**
-	 * No special restrictions on this relation
-	 */
-	const NONE = 0;
-	/**
 	 * Do not allow source field(s) to be null
 	 */
 	const NOT_NULL = 1;
 	
+	const ONE_TO_ONE = 1;
+	const ONE_TO_MANY = 2;
+	const MANY_TO_MANY = 3;
+	
 	protected $target_table;
 	protected $arr_fields = array();
 	protected $policy;
+	protected $type;
 
-	public function __construct($target_table, $fields = null, $policy = self::NOT_NULL) {
+	public function __construct($target_table, $fields = null, $policy = self::NOT_NULL, $type = self::ONE_TO_MANY) {
 		$this->target_table = $target_table;
 		$this->policy = $policy;
+		$this->type = $type;
 		
 		if (!empty($fields)) {
 			foreach(Arr::force($fields) as $field) {
@@ -122,4 +124,41 @@ class DBRelation implements IDBRelation {
 	public function add_field_relation(IDBFieldRelation $field) {
 		$this->arr_fields[$field->get_source_field_name()] = $field;
 	}
+	
+	/**
+	 * Return policy
+	 *
+	 * @return int
+	 */
+	public function get_policy() {
+		return $this->policy;
+	}
+	
+	/**
+	 * Set policy
+	 *
+	 * @param int $policy
+	 */
+	public function set_policy($policy) {
+		$this->policy = $policy;
+	}
+	
+	/**
+	 * Returns true, if client has given policy
+	 *
+	 * @param int $policy
+	 * @return bool
+	 */
+	public function has_policy($policy) {
+		return Common::flag_is_set($this->policy, $policy);
+	}
+
+	/**
+	 * Returns type of relation
+	 * 
+	 * @return int
+	 */
+	public function get_type() {
+		return $this->type;
+	}	
 }
