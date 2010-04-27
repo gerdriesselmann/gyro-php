@@ -902,7 +902,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQuerySelect
 	 */
 	public function create_select_query($policy = self::NORMAL) {
-		$query = new DBQuerySelect($this->table, DBQuerySelect::DISTINCT);
+		$query = new DBQuerySelect($this->table, DBQuerySelect::NONE);
     	$this->configure_select_query($query, $policy);
     	$this->execute_query_hooks($query);
     	return $query;
@@ -929,6 +929,7 @@ class DataObjectBase implements IDataObject, IActionSource {
     		$query->add_order(key($order_by), current($order_by));
     	}
     	
+    	$use_distinct = false;
     	foreach($this->joins as $join) {
     		$joined_table = $join['table'];
     		$conditions = $join['conditions'];
@@ -940,9 +941,13 @@ class DataObjectBase implements IDataObject, IActionSource {
     				$joined_query->add_join_condition_object($cond);
     			}
     		}
+    		$use_distinct = $use_distinct || ($joined_query->get_relation_type() != DBRelation::ONE_TO_ONE);
     		if ($joined_table instanceof DataObjectBase) {
     			$joined_table->configure_select_query($joined_query, self::NORMAL);
     		}
+    	}
+    	if ($use_distinct) {
+    		$query->set_policy($query->get_policy() | DBQuerySelect::DISTINCT);
     	}
 	}
 

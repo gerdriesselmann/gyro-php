@@ -10,7 +10,7 @@
  * @author Gerd Riesselmann
  * @ingroup Interfaces
  */
-interface IDBRelation {
+interface IDBRelation extends IPolicyHolder {
 	/**
 	 * Return target table name
 	 * 
@@ -49,4 +49,11 @@ interface IDBRelation {
 	 * @return Status
 	 */
 	public function validate($arr_fields);
+	
+	/**
+	 * Returns type of relation
+	 * 
+	 * @return int
+	 */
+	public function get_type();
 }

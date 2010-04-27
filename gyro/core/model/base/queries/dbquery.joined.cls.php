@@ -31,6 +31,7 @@ class DBQueryJoined extends DBQuerySelect {
 	 * @var int
 	 */	
 	protected $join_type;
+	
 	/**
 	 * The query this join is joined to
 	 *
@@ -44,6 +45,14 @@ class DBQueryJoined extends DBQuerySelect {
 	 * @var DBWhereGroup
 	 */
 	protected $join_conditions;
+	
+	/**
+	 * Relations (cache)
+	 *
+	 * @var array
+	 */
+	protected $relations = false;
+	
 	
 	public function __construct(IDBTable $table, DBQuery $parent_query, $join_type = self::INNER, $policy = self::AUTODETECT_CONDITIONS) {
 		parent::__construct($table, $policy);
@@ -101,15 +110,18 @@ class DBQueryJoined extends DBQuerySelect {
 	public function get_join_conditions() {
 		$ret = $this->join_conditions;
 		if ($this->has_policy(self::AUTODETECT_CONDITIONS)) {
-			$ret->add_where_object($this->compute_join_conditions($this->get_table(), $this->parent_query->get_table()));
+			$ret->add_where_object($this->compute_join_conditions());
 		}
 		return $ret;
 	}
 	
-	protected function compute_join_conditions(IDBTable $parent, IDBTable $child) {
+	protected function compute_join_conditions() {
+		$parent = $this->get_table();
+		$child = $this->parent_query->get_table();
+		
 		$ret = new DBWhereGroup($parent);
 		
-		$relations = $parent->get_matching_relations($child);
+		$relations = $this->get_relations();
 		foreach($relations as $relation) {
 			foreach($relation->get_fields() as $fieldrelation) {
 				$ret->add_where_object(
@@ -123,5 +135,25 @@ class DBQueryJoined extends DBQuerySelect {
 			}
 		}
 		return $ret;
+	}
+	
+	protected function get_relations() {
+		if (!is_array($this->relations)) {
+			$this->relations = $this->get_table()->get_matching_relations($this->parent_query->get_table());
+		}
+		return $this->relations;
+	}
+	
+	/**
+	 * Returns type of relation, one of DBRelation's constant
+	 */
+	public function get_relation_type() {
+		$types = array();
+		$relations = $this->get_relations();
+		foreach($relations as $relation) {
+			/* @var $relation DBRelation */
+			$types[$relation->get_type()] = $relation->get_type(); 	
+		}
+		return max($types);
 	}
 }
