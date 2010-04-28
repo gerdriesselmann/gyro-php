@@ -22,6 +22,10 @@ class CKEditor {
 		}
 		
 		$page_data->head->add_js_file($config->init_file);
+		
+		// CKEditor path mus be set, else compressed version will not work
+		$path = Config::get_value(Config::URL_BASEDIR) . 'js/ckeditor/';
+		$page_data->head->add_js_snippet("var CKEDITOR_BASEPATH = '$path';", true);		
 	}
 
 	/**
