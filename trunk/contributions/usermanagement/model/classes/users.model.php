@@ -7,31 +7,27 @@ Load::models(array('userroles', 'users2userroles'));
  * @author Gerd Riesselmann
  * @ingroup Usermanagement
  */
-class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribing, ITimeStamped  {
+class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISelfDescribing {
 	public $id;                              // int(10)  not_null primary_key unsigned auto_increment
 	public $name;
 	public $password;                        // string(50)  
 	public $hash_type;
 	public $email;                           // string(100)  
 	public $status;                          // string(11)  not_null enum
-	public $creationdate;                    // datetime(19)  binary
-	public $modificationdate;                // timestamp  binary
-
 	
 	// now define your table structure.
 	// key is column name, value is type
 	protected function create_table_object() {
 		return new DBTable(
 			'users',
-			array(
+			array_merge(array(
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBField::NOT_NULL),
 				new DBFieldText('name', 100, null, DBField::NOT_NULL),
 				new DBFieldTextEmail('email', null, DBField::NOT_NULL),
 				new DBFieldText('password', 50, null, DBField::NOT_NULL),
 				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL),
 				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL),
-				new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::NOT_NULL),
-				new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW,  DBFieldDateTime::TIMESTAMP | DBField::NOT_NULL)
+				), $this->get_timestamp_field_declarations()
 			),
 			'id'
 		);
@@ -143,28 +139,6 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 	 */
 	public function is_disabled() {
 		return $this->status == Users::STATUS_DISABLED;
-	}
-
-	// -------------------------------------
-	// interface ITimeStamped 
-	// -------------------------------------
-	
-	/**
-	 * Return creation date and time
-	 *
-	 * @return timestamp
-	 */
-	public function get_creation_date() {
-		return $this->creationdate;
-	}
-
-	/**
-	 * Return modification date and time
-	 *
-	 * @return timestamp
-	 */
-	public function get_modification_date() {
-		return $this->modificationdate;
 	}
 	
 	// **************************************
@@ -300,28 +274,4 @@ class DAOUsers extends DataObjectCached implements IStatusHolder, ISelfDescribin
 		}
 		return $ret;
 	}
-
-	/**
-	 * Insert data. Autoincrement IDs will be automatically set.
- 	 * 
- 	 * @return Status
- 	 */
- 	public function insert() {
-		if (empty($this->creationdate)) {
- 			$this->creationdate = time();
-		}
-		return parent::insert(); 		
- 	}
- 	
- 	/**
- 	 * Update current item
- 	 * 
- 	 * @param int $policy If DBDataObject::WHERE_ONLY is used, no conditions are build automatically
- 	 * @return Status
- 	 */
- 	public function update($policy = self::NORMAL) {
- 		$this->modificationdate = time();
- 		return parent::update($policy);	 		
- 	}
-	
 }
