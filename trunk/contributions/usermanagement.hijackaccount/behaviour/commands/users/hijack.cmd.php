@@ -64,7 +64,8 @@ class HijackUsersCommand extends CommandComposite {
 			'notify', 
 			array(
 				'title' => tr('%name logged into your account', 'hijackaccount', array('%name' => $hijacker->name)),
-				'message' => $view->render()
+				'message' => $view->render(),
+				'source' => 'usermanagement.hijackaccount'
 			)
 		);
 		return $cmd;		
