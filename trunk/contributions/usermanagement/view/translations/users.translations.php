@@ -272,8 +272,31 @@ function users_load_translations($languages) {
 		),
 		'Resend' => array(
 			'de' => 'Erneut zusenden'
-		)
-		
+		),
+		'Edit' => array(
+			'de' => 'Bearbeiten'
+		),
+		'Change Account Data' => array(
+			'de' => 'Benutzerkonto Bearbeiten'
+		),
+		'Fill out the fields below and click <strong>Save</strong> to save your data.' => array(
+			'de' => 'Füllen Sie die Felder aus und klicken Sie dann <strong>Speichern</strong> um die Daten zu übernehmen.'
+		),
+		'If the e-mail changes, you will get a mail send to the new address to confirm this address exists.' => array(
+			'de' => 'Wenn sich Ihre E-Mail-Adresse ändert erhalten Sie eine Mail an die neue Adresse, um diese zu verifizieren.'
+		),
+		'Repeat Password:' => array(
+			'de' => 'Passwort wiederholen:'
+		),
+		'Leave these fields empty to not change the password.' => array(
+			'de' => 'Lassen Sie deise Felder leer um das Passwort nicht zu ändern.'
+		),		
+		'E-mail:' => array(
+			'de' => 'E-Mail:'
+		),		
+		'Save' => array(
+			'de' => 'Speichern'
+		),		
 	);
 }
 ?>
