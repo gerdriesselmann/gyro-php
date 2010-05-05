@@ -21,6 +21,14 @@ class HijackAccountEventSink implements IEventSink {
 					$result['hijack'] = tr('Hijack Account', 'hijackaccount'); 
 				}
 				break;
+			case 'notifications_collect_sources':
+				$result['usermanagement.hijackaccount'] = tr('usermanagement.hijackaccount', 'hijackaccount');
+				break;
+			case 'notifications_translate':
+				if ($event_params == 'usermanagement.hijackaccount') {
+					$result = tr('usermanagement.hijackaccount', 'hijackaccount');
+				}
+				break;
 		}
 	}
 }
