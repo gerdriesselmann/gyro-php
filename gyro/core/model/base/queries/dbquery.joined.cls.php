@@ -154,6 +154,6 @@ class DBQueryJoined extends DBQuerySelect {
 			/* @var $relation DBRelation */
 			$types[$relation->get_type()] = $relation->get_type(); 	
 		}
-		return max($types);
+		return count($types) ? max($types) : DBRelation::MANY_TO_MANY;
 	}
 }
