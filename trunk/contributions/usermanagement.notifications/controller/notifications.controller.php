@@ -10,8 +10,12 @@ class NotificationsController extends ControllerBase {
  	 */
 	public function get_routes() {
 		return array(
-			new ExactMatchRoute('https://user/notifications', $this, 'users_notifications', new AccessRenderDecorator()),
+			new ExactMatchRoute('https://user/notifications/', $this, 'users_notifications', new AccessRenderDecorator()),
 			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
+			new ExactMatchRoute('https://user/notifications/settings/', $this, 'notifications_settings', new AccessRenderDecorator()),
+			new ParameterizedRoute('https://notifications/feeds/{id_user:ui>}/{feed_token:s:40}', $this, 'notifications_feed', new NoCacheCacheManager()),
+			// Command Line 
+			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator())
 		);	
 	}	
 	
@@ -40,6 +44,74 @@ class NotificationsController extends ControllerBase {
 	}
 	
 	/**
+	 * Change notifcation settings
+	 */
+	public function action_notifications_settings(PageData $page_data) {
+		Load::models('notificationssettings');
+		Load::tools('formhandler');
+		$formhandler = new FormHandler('notificationssettings');
+		
+		$user = Users::get_current_user(); 
+		$settings = NotificationsSettings::get_for_user($user->id); // can be false
+		
+		if ($page_data->has_post_data()) {
+			$this->do_notifications_settings($page_data, $formhandler, $settings);
+		}
+		
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'notifications/settings', $page_data);
+		$view->assign('sources', NotificationsSettings::collect_sources($user));
+		$view->assign('settings', $settings);
+		
+		if (empty($settings)) {
+			$settings = new DAONotificationssettings();
+			$settings->set_default_values();
+		}
+		$formhandler->prepare_view($view, $settings);
+		
+		$view->render(); 
+	}
+	
+	/**
+	 * Save settings
+	 */
+	protected function do_notifications_settings(PageData $page_data, FormHandler $formhandler, $settings) {
+		$err = $formhandler->validate();
+		if ($err->is_ok()) {
+			$update = ($settings != false);
+			$data = $page_data->get_post()->get_array();
+			$data['id_user'] = Users::get_current_user()->id;
+			if (!$update) {
+				$settings = new DAONotificationssettings();
+			}
+			$settings->unset_internals($data);
+			
+			$cmd = $update 
+				? CommandsFactory::create_command($settings, 'update', $data) 
+				: CommandsFactory::create_command('notificationssettings', 'create', $data);
+			$err->merge($cmd->execute());			
+		}
+		$formhandler->finish($err, tr('Your settings have been saved', 'notifications'));
+	}
+	
+	/**
+	 * Notifications feed
+	 */
+	public function action_notifications_feed(PageData $page_data, $id_user, $feed_token) {
+		Load::models('notificationssettings');
+		$settings = NotificationsSettings::get_for_user($id_user);
+		if ($settings === false || !$settings->feed_enable || $settings->feed_token != $feed_token) {
+			return self::NOT_FOUND;
+		}
+
+		// Find notifications
+		$dao = NotificationsSettings::create_feed_adapter($settings);
+		
+		$view = ViewFactory::create_view(ViewFactoryMime::MIME, 'notifications/feed', $page_data);
+		$view->assign('notifications', $dao->execute());
+		$view->render();
+	}
+	
+	/**
 	 * Toggle a message state 
 	 */
 	public function action_notifications_ajax_toggle(PageData $page_data) {
@@ -59,5 +131,22 @@ class NotificationsController extends ControllerBase {
 		else {
 			return self::INTERNAL_ERROR;
 		}
+	}
+	
+	/**
+	 * Send a mail digest
+	 */
+	public function action_notifications_digest(PageData $page_data) {
+		Load::models('notificationssettings');
+		$err = new Status();
+		
+		$possible_digests = NotificationsSettings::create_possible_digest_adapter();
+		$possible_digests->find();
+		while($possible_digests->fetch()) {
+			$cmd = CommandsFactory::create_command(clone($possible_digests), 'digest', false);
+			$err->merge($cmd->execute());
+		}
+		
+		$page_data->status = $err;
 	}
 }

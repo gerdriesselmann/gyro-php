@@ -24,8 +24,9 @@ class NotifyallUsersCommand extends CommandTransactional {
 		if ($ret->is_ok()) {		
 			$title = Arr::get_item($params, 'title', '');
 			$message = Arr::get_item($params, 'message', '');
+			$source = Arr::get_item($params, 'source', '');
 			
-			$ret->merge($this->mass_insert($title, $message));
+			$ret->merge($this->mass_insert($title, $message, $source));
 		}
 		return $ret;
 	}
@@ -33,7 +34,7 @@ class NotifyallUsersCommand extends CommandTransactional {
 	/**
 	 * Create the insert query an run it
 	 */
-	protected function mass_insert($title, $message) {
+	protected function mass_insert($title, $message, $source) {
 		$user = new DAOUsers();
 		$notification = new DAONotifications();
 		
@@ -42,11 +43,12 @@ class NotifyallUsersCommand extends CommandTransactional {
 			'id' => 'id_user',
 			$notification->quote($title) => 'title',
 			$notification->quote($message) => 'message',
+			$notification->quote($source) => 'source',
 		));
 		
 		$insert = $notification->create_insert_query();
 		$insert->set_fields(array(
-			'id_user', 'title', 'message'
+			'id_user', 'title', 'message', 'source'
 		)); 
 		$insert->set_select($select);
 		return DB::execute($insert->get_sql(), $notification->get_table_driver());
