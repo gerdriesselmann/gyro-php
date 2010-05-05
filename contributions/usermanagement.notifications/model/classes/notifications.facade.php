@@ -77,10 +77,11 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_single_user(DAOUsers $user, $message, $title = '') {
+	public static function notify_single_user(DAOUsers $user, $message, $title = '', $source = 'app') {
 		$params = array(
 			'title' => self::compute_title($message, $title),
-			'message' => $message
+			'message' => $message,
+			'source' => $source
 		);
 		$cmd = CommandsFactory::create_command($user, 'notify', $params);
 		return $cmd->execute();
@@ -94,11 +95,11 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_some_users($arr_users, $message, $title = '') {
+	public static function notify_some_users($arr_users, $message, $title = '', $source = 'app') {
 		$ret = new Status();
 		$title = self::compute_title($message, $title);
 		foreach($arr_users as $user) {
-			$ret->merge(self::notify_single_user($user, $message, $title));
+			$ret->merge(self::notify_single_user($user, $message, $title, $source));
 			if ($ret->is_error()) {
 				break;
 			}	
@@ -113,10 +114,11 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_all_users($message, $title = '') {
+	public static function notify_all_users($message, $title = '', $source = 'app') {
 		$params = array(
 			'title' => self::compute_title($message, $title),
-			'message' => $message
+			'message' => $message,
+			'source' => $source
 		);		
 		$cmd = CommandsFactory::create_command('users', 'notifyall', $params);
 		return $cmd->execute();		
@@ -130,5 +132,25 @@ class Notifications {
 			$title = String::substr_word(String::clear_html($message), 0, 150) . '...';
 		}
 		return $title;
+	}
+	
+	/**
+	 * Returns all sources available (for user)
+	 * 
+	 * @return array
+	 */
+	public static function get_all_sources($id_user) {
+		$dao = new DAONotifications();
+		$dao->id_user = $id_user;
+		$query = $dao->create_select_query();
+		$query->set_fields('source');
+		$query->set_policy(DBQuerySelect::DISTINCT);
+		
+		$result = DB::query($query);
+		$ret = array();
+		while($row = $result->fetch()) {
+			$ret[] = $row['source'];
+		}
+		return $ret;
 	}
 }
