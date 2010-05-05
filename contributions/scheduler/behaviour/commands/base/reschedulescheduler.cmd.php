@@ -174,9 +174,8 @@ class RescheduleSchedulerBaseCommand extends CommandChain {
 		$ret = false;
 		
 		$policy = strtolower($policy);
-		$file = 'behaviour/scheduler/' . $policy . '.rescheduler.php';
+		Load::classes_in_directory('behaviour/scheduler/', $policy, 'rescheduler');
 		$cls = 'Rescheduler' . ucfirst($policy);
-		Load::first_file($file);
 		$rescheduler = new $cls();
 
 		$newdate = $rescheduler->reschedule($task, $err);
