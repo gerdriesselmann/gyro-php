@@ -4,6 +4,7 @@
  */
 class NotificationsSettings {
 	const SOURCE_ALL = 'all';
+	const SOURCE_APP = 'app';
 	
 	const TYPE_MAIL = 'mail';
 	const TYPE_DIGEST = 'digest';
@@ -27,6 +28,7 @@ class NotificationsSettings {
 	public static function collect_sources(DAOUsers $user) {
 		$ret = array(
 			self::SOURCE_ALL => tr(self::SOURCE_ALL, 'notifications'),
+			self::SOURCE_APP => tr(self::SOURCE_APP, 'notifications'),
 		);
 		EventSource::Instance()->invoke_event('notifications_collect_sources', $user, $ret);
 		
