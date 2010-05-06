@@ -25,4 +25,15 @@ class ConverterHtmlEx extends ConverterHtml {
 			return parent::process_paragraph($text, $params);
 		}
 	}
+	
+	public function decode($value, $params = false) {
+		$value = str_replace("\n", ' ', $value);
+		$value = str_replace("\r", ' ', $value);
+		$value = str_replace('</p>', "</p>\n", $value);
+		$value = preg_replace('@<br.*?>@', "\n", $value);
+		$value = String::unescape($value);
+		$value = strip_tags($value);
+		$value = String::preg_replace('| +|', ' ', $value);
+		return $value;		
+	} 		
 } 
