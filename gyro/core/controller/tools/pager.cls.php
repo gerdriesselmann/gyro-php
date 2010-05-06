@@ -46,9 +46,13 @@ class Pager implements IDBQueryModifier {
 		$this->pager_data['next_link'] = '';	
 		
 		// We asume an url like x/y/?page=2, where page=2 indicates page 2 of pagination		
-		$page = $this->adapter->get_current_page();
+		$page = intval($this->adapter->get_current_page());
 		if ($page <= 0) {
-			$page = 1;
+			// Oops, weirdo page param
+			// Redirect to first page
+			$url = $this->adapter->get_url_for_page(1);
+			$url->redirect(Url::TEMPORARY);
+			exit;			
 		}
 
 		$page_total = 0;
@@ -165,7 +169,7 @@ class PagerDefaultAdapter implements IPagerAdapter {
 	 * @return int
 	 */
 	public function get_current_page() {
-		return intval($this->get->get_item($this->parameter, 1));
+		return $this->get->get_item($this->parameter, 1);
 	}
 	
 	/**
