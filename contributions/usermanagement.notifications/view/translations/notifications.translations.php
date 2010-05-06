@@ -63,6 +63,12 @@ function notifications_load_translations($languages) {
 		'You have no unread messages.' => array(
 			'de' => 'Sie haben keine ungelesenen Benachrichtigungen.'
 		), 
+		'Read' => array(
+			'de' => 'Gelesen'
+		),
+		'Unread' => array(
+			'de' => 'Ungelesen'
+		)
 	);
 }
 
