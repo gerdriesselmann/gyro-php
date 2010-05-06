@@ -3,9 +3,6 @@
  * Facade for notofocation settings
  */
 class NotificationsSettings {
-	const SOURCE_ALL = 'all';
-	const SOURCE_APP = 'app';
-	
 	const TYPE_MAIL = 'mail';
 	const TYPE_DIGEST = 'digest';
 	const TYPE_FEED = 'feed';
@@ -27,12 +24,11 @@ class NotificationsSettings {
 	 */
 	public static function collect_sources(DAOUsers $user) {
 		$ret = array(
-			self::SOURCE_ALL => tr(self::SOURCE_ALL, 'notifications'),
-			self::SOURCE_APP => tr(self::SOURCE_APP, 'notifications'),
+			Notifications::SOURCE_ALL => tr(Notifications::SOURCE_ALL, 'notifications'),
+			Notifications::SOURCE_APP => tr(Notifications::SOURCE_APP, 'notifications'),
 		);
 		EventSource::Instance()->invoke_event('notifications_collect_sources', $user, $ret);
 		
-		Load::models('notifications');
 		$dao = new DAONotifications();
 		$dao->id_user = $user->id;
 		
@@ -89,7 +85,6 @@ class NotificationsSettings {
 	 */
 	private static function create_notification_adapter(DAONotificationssettings $settings, $type) {
 		// Fidn notifications
-		Load::models('notifications');
 		$dao = Notifications::create_user_adapter($settings->id_user);
 		
 		if (!$settings->is_type_enabled($type)) {
@@ -97,7 +92,7 @@ class NotificationsSettings {
 		}
 		else {
 			$sources = $settings->get_settings_for_type($type);
-			if (!in_array(self::SOURCE_ALL, $sources)) {
+			if (!in_array(Notifications::SOURCE_ALL, $sources)) {
 				$dao->add_where('source', DBWhere::OP_IN, $sources);
 			}
 		}

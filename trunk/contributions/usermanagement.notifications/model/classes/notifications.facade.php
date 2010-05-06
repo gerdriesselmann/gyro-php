@@ -3,8 +3,20 @@
  * Facade class for notifications model
  */
 class Notifications {
+	const SOURCE_ALL = 'all';
+	const SOURCE_APP = 'app';
+	
 	const STATUS_NEW = 'NEW';
 	const STATUS_READ = 'READ';
+	
+	/**
+	 * return given Notification
+	 * 
+	 * @return DAONotifications
+	 */
+	public static function get($id) {
+		return DB::get_item('notifications', 'id', $id);
+	}
 	
 	/**
 	 * Returns all possible status
@@ -149,7 +161,24 @@ class Notifications {
 		$result = DB::query($query);
 		$ret = array();
 		while($row = $result->fetch()) {
-			$ret[] = $row['source'];
+			$ret[$row['source']] = self::translate_source($row['source']);
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Translates source
+	 */
+	public static function translate_source($src) {
+		$ret = $src;
+		switch($src) {
+			case self::SOURCE_ALL:
+			case self::SOURCE_APP:
+				$ret = tr($src, 'notifications');
+				break;
+			default:
+				EventSource::Instance()->invoke_event('notifications_translate', $src, $ret);
+				break;
 		}
 		return $ret;
 	}

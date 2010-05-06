@@ -1,5 +1,5 @@
 <?php
-$title = tr('Your notifications', 'notifications');
+$title = tr('Your Notifications', 'notifications');
 $page_data->head->title = $title;
 $page_data->breadcrumb = WidgetBreadcrumb::output($title);
 ?>
@@ -7,7 +7,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output($title);
 
 <?php
 print WidgetItemMenu::output(
-	array(new ActionBase('', 'notifications_settings', tr('Notification Settings')))
+	array(new ActionBase('', 'notifications_settings', tr('Notification Settings', 'notifications')))
 );
 ?>
 
