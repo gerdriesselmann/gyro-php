@@ -98,7 +98,7 @@ class FormHandler {
  	 * @param IView $view
  	 */
  	private function set_form_data_on_view($form_data, $view) {
- 		$form_data_clean = Arr::force($view->retrieve('form_data'));
+ 		$form_data_clean = Arr::force($view->retrieve('form_data'), false);
  		if (is_array($form_data)) {
  			foreach($form_data as $key => $value) {
  				if ($key != Config::get_value(Config::FORMVALIDATION_FIELD_NAME) && $key != Config::get_value(Config::FORMVALIDATION_HANDLER_NAME)) {
