@@ -14,6 +14,7 @@ class NotificationsController extends ControllerBase {
 			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
 			new ExactMatchRoute('https://user/notifications/settings/', $this, 'notifications_settings', new AccessRenderDecorator()),
 			new ParameterizedRoute('https://notifications/feeds/{id_user:ui>}/{feed_token:s:40}', $this, 'notifications_feed', new NoCacheCacheManager()),
+			new ParameterizedRoute('https://notifications/{id:ui>}/', $this, 'notifications_view', new AccessRenderDecorator()),
 			// Command Line 
 			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator())
 		);	
@@ -40,6 +41,21 @@ class NotificationsController extends ControllerBase {
 		$pager->prepare_view($view);
 		
 		$view->assign('notifications', $adapter->execute());
+		$view->render();
+	}
+	
+	/**
+	 * Show given notification
+	 */
+	public function action_notifications_view(PageData $page_data, $id) {
+		Load::models('notifications');
+		$n = Notifications::get($id);
+		if ($n === false || !Users::is_current($n->get_user())) {
+			return self::ACCESS_DENIED;
+		}
+		
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'notifications/view', $page_data);
+		$view->assign('notification', $n);
 		$view->render();
 	}
 	

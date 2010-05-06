@@ -22,7 +22,7 @@ class DAONotifications extends DataObjectBase implements ISelfDescribing, IStatu
 				new DBFieldInt('id_user', null, DBFieldInt::UNSIGNED), // Null allowed!
 				new DBFieldText('title', 200, null, DBField::NOT_NULL),
 				new DBFieldText('message', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NOT_NULL),
-				new DBFieldText('source', 100, null, DBField::NOT_NULL),
+				new DBFieldText('source', 100, Notifications::SOURCE_APP, DBField::NOT_NULL),
 				new DBFieldEnum('status', array_keys(Notifications::get_status()), Notifications::STATUS_NEW, DBField::NOT_NULL),
 				new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::TIMESTAMP | DBField::NOT_NULL)
 			),
@@ -63,8 +63,8 @@ class DAONotifications extends DataObjectBase implements ISelfDescribing, IStatu
 	 */
 	public function get_filters() {
 		$sources = array();
-		foreach(Notifications::get_all_sources($this->id_user) as $source) {
-			$sources[$source] = new DBFilterColumn('notifications.source', $source, tr($source));			
+		foreach(Notifications::get_all_sources($this->id_user) as $source => $descr) {
+			$sources[$source] = new DBFilterColumn('notifications.source', $source, $descr);			
 		}
 		return array(
 			new DBFilterGroup(

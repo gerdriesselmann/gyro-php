@@ -1,4 +1,6 @@
 <?php
+Load::models('notifications');
+
 /**
  * Manage norification subcriptions	
  */
@@ -24,7 +26,7 @@ class DAONotificationssettings extends DataObjectCached {
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBField::NOT_NULL),
 				new DBFieldInt('id_user', null, DBFieldInt::UNSIGNED), // Null allowed!
 				new DBFieldBool('mail_enable', true, DBField::NOT_NULL),
-				new DBFieldSerialized('mail_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(NotificationsSettings::SOURCE_ALL), DBField::NONE),
+				new DBFieldSerialized('mail_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(Notifications::SOURCE_ALL), DBField::NONE),
 				new DBFieldBool('digest_enable', false, DBField::NOT_NULL),
 				new DBFieldSerialized('digest_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(), DBField::NONE),
 				new DBFieldDateTime('digest_last_sent', null, DBField::INTERNAL),
@@ -111,7 +113,7 @@ class DAONotificationssettings extends DataObjectCached {
 		$ret = false;
 		if ($this->is_type_enabled($type)) {
 			$settings = $this->get_settings_for_type($type);
-			if (in_array(NotificationsSettings::SOURCE_ALL, $settings)) {
+			if (in_array(Notifications::SOURCE_ALL, $settings)) {
 				$ret = true;
 			}
 			else {

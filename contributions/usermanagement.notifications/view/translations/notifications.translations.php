@@ -21,7 +21,7 @@ function notifications_load_translations($languages) {
 		'Your settings have been saved' => array(
 			'de' => 'Ihre Einstellungen wurden gespeichert'
 		),
-		'Your notifications' => array(
+		'Your Notifications' => array(
 			'de' => 'Ihre Benachrichtigungen'
 		),
 		'Notification Settings' => array(

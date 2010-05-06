@@ -2,7 +2,7 @@
 $title = tr('Notification Settings', 'notifications');
 $page_data->head->title = $title;
 $page_data->breadcrumb = WidgetBreadcrumb::output(array(
-	WidgetActionLink::output(tr('Your notifications', 'notifications'), 'users_notifications'),
+	WidgetActionLink::output(tr('Your Notifications', 'notifications'), 'users_notifications'),
 	tr('Settings', 'notifications')
 ));
 ?>
