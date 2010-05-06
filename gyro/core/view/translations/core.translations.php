@@ -115,6 +115,9 @@ function core_load_translations($languages) {
 		),
 		'No filter' => array(
 			'de' => 'Filterung aufheben'	
-		) 
+		),
+		'<p>%name filtered by: <strong>%current</strong>. <span class="noprint">Filter by %values</span></p>' => array(
+			'de' => '<p>%name gefiltert nach: <strong>%current</strong>. <span class="noprint">Filtern nach %values</span></p>'
+		)
 	);
 }

@@ -11,7 +11,7 @@ if ($filter_group->count() > 1) {
 			$filter_url_builder->get_filter_link($filter_item, $filter_group->get_group_id()),
 			tr(
 				'Filter by %name', 
-				'app',  
+				array('app', 'core'),  
 				array('%name' => String::escape($filter_item->get_title()))
 			)
 		);
@@ -20,7 +20,7 @@ if ($filter_group->count() > 1) {
 	
 	$filter_html = tr(
 		'<p>%name filtered by: <strong>%current</strong>. <span class="noprint">Filter by %values</span></p>', 
-		'app', 
+		array('app', 'core'), 
 		array(
 			'%name' => String::escape($filter_group->get_name()),
 			'%current' => String::escape($filter_current->get_title()),
