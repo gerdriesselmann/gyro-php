@@ -13,7 +13,7 @@ class DeleteDialogController extends ControllerBase {
 	 */
 	public function get_routes() {
 		$ret = array(
-			new ParameterizedRoute('https://process_commands/{model:s}/{id:ui>}/delete', $this, 'deletedialog_cmd_handler'),
+			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/delete', $this, 'deletedialog_cmd_handler'),
 			new ParameterizedRoute('https://deletedialog/approve/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve')
 		);
 		return $ret;

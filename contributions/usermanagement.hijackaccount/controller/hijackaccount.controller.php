@@ -7,7 +7,7 @@ class HijackaccountController extends ControllerBase {
  	 */
 	public function get_routes() {
 		return array(
-			new ParameterizedRoute('process_commands/users/{id:ui>}/hijack', $this, 'users_hijack', new UsersAccessControl())
+			new CommandsRoute('https://process_commands/users/{id:ui>}/hijack', $this, 'users_hijack', new UsersAccessControl())
 		);
 	}	
 	
