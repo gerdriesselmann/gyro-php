@@ -13,7 +13,7 @@ class StatusCommandsController extends ControllerBase {
 	 */
 	public function get_routes() {
 		return array(
-			new ParameterizedRoute('https://process_commands/{model:s}/{id:ui>}/status/{newstatus:s}', $this, 'status_cmd_handler'),
+			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/status/{newstatus:s}', $this, 'status_cmd_handler'),
 		);
 	}
 	
