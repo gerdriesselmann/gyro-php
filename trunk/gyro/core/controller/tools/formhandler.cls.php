@@ -141,13 +141,16 @@ class FormHandler {
  	 * 
  	 * @return Status 
  	 */
- 	public function validate() {
+ 	public function validate($data = false) {
+ 		if ($data === false) {
+ 			$data = $_POST;
+ 		}
  		$ret = new Status();
 		$success = true;
  		if ($this->token_policy != self::TOKEN_POLICY_NONE) {
-			$token = Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
+			$token = Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
 			// Validate if token is in DB
-			$success = $success && ($this->name == Arr::get_item($_POST, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
+			$success = $success && ($this->name == Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
 	 		$success = $success && FormValidations::validate_token($this->name, $token);
 	 		// Validate if token is in Session, too
 	 		if (Session::is_started()) {

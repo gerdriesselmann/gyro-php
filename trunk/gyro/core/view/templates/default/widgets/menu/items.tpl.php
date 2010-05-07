@@ -7,6 +7,7 @@ foreach($actions as $action) {
 	// commands
 	$view = ($action instanceof ICommand) ? $command_view : $action_view; 
 	$view->assign('action', $action);
+	$view->assign('form_validation', $form_validation);
 	$items[] = $view->render();
 }
 $c = count($items) - 1;
