@@ -21,7 +21,7 @@ class CommandsRouteRenderDecorator extends RenderDecoratorBase {
 		$formhandler = new FormHandler('process_commands');
 		$err = $formhandler->validate($_GET);
 		if ($err->is_error()) {
-			$formhandler->error($err);
+			History::go_to(0, $err);
 			exit;
 		}
 		
