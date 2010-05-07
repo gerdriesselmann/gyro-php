@@ -9,6 +9,7 @@ require_once dirname(__FILE__) . '/dbfield.text.cls.php';
  */
 class DBFieldSerialized extends DBFieldText {
 	public function __construct($name, $length = DBFieldText::BLOB_LENGTH_SMALL, $default_value = null, $policy = self::NONE) {
+		/* @TODO Should default value be serialized here? */
 		parent::__construct($name, $length, serialize($default_value), $policy);
 	}
 	
@@ -44,4 +45,17 @@ class DBFieldSerialized extends DBFieldText {
 	public function convert_result($value) {
 		return is_null($value) ? null : unserialize($value);
 	}
+	
+	/**
+	 * Returns the default value for this field
+	 *
+	 * @return mixed
+	 */
+	public function get_field_default() {
+		$ret = parent::get_field_default();
+		if ($ret) {
+			$ret = unserialize($ret);
+		}
+		return $ret;
+	}	
 }
