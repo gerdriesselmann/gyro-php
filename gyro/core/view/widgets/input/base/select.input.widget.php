@@ -14,12 +14,11 @@ class InputWidgetSelectBase extends InputWidgetBase {
 		$nodefault = Arr::get_item($attrs, 'nodefault', false);
 		unset($attrs['options']);
 		unset($attrs['nodefault']);
-		
 		if (empty($value) && $nodefault) {
 			// This preservers numeric keys, array_merge destroys them
 			$new_options = array('' => tr('Please choose...', 'core'));
-			foreach($options as $key => $value) {
-				$new_options[$key] = $value;
+			foreach($options as $key => $v) {
+				$new_options[$key] = $v;
 			}
 			$options = $new_options;
 		}
