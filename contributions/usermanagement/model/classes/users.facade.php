@@ -184,6 +184,35 @@ class Users {
 	} 
 	
 	/**
+	 * Prepare DAO instance for retrieving all user with given roles
+	 * 
+	 * @return DAOUsers
+	 */
+	public static function create_role_adapter($roles) {
+		$users = new DAOUsers();
+		
+		$all_roles = self::get_user_roles();
+		$arr_roles_in = array();
+		foreach(Arr::force($roles, false) as $r) {
+			$key = array_search($r, $all_roles);
+			if ($key) {
+				$arr_roles_in[] = $key;
+			}
+		} 
+		if (count($arr_roles_in) > 0) {
+			$link = new DAOUsers2userroles();
+			$link->add_where('id_role', DBWhere::OP_IN, $arr_roles_in);
+			$users->status = self::STATUS_ACTIVE;	
+			$users->join($link);			
+		}
+		else {
+			$users->add_where('1 = 2');
+		}
+		
+		return $users;
+	}
+	
+	/**
 	 * Return number of unconfirmed users
 	 * 
 	 * @return int
