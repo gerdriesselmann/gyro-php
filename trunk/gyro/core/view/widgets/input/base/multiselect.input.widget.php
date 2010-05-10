@@ -11,17 +11,6 @@ class InputWidgetMultiselectBase extends InputWidgetBase {
 	protected $use_checkboxes = false;
 	
 	/**
-	 * Constructor
-	 */
-	public function __construct($name, $label, $value, $params) {
-		// Base class wil try to force array into something more flat.. trick it, if necesary
-		if (is_array($value) && !isset($value[$name])) {
-			$value = array($name => $value);
-		}
-		parent::__construct($name, $label, $value, $params);
-	}
-	
-	/**
 	 * Render the actual widget
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
