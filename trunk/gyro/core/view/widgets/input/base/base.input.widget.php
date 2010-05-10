@@ -17,7 +17,7 @@ class InputWidgetBaseBase implements IWidget {
 	public function __construct($name, $label, $value, $params) {
 		$this->name = $name;
 		$this->label = $label;
-		$this->value = is_array($value) ? Arr::get_item_recursive($value, $name, '') : $value;
+		$this->value = $value;
 		$this->params = Arr::force($params, false);		
 	}
 
