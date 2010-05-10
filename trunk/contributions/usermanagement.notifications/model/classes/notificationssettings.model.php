@@ -94,13 +94,13 @@ class DAONotificationssettings extends DataObjectCached {
 		$ret = array();
 		switch($type) {
 			case NotificationsSettings::TYPE_FEED:
-				$ret = $this->feed_settings;
+				$ret = Arr::force($this->feed_settings, false);
 				break; 
 			case NotificationsSettings::TYPE_MAIL:
-				$ret = $this->mail_settings;
+				$ret = Arr::force($this->mail_settings, false);
 				break; 
 			case NotificationsSettings::TYPE_DIGEST:
-				$ret = $this->digest_settings;
+				$ret = Arr::force($this->digest_settings, false);
 				break; 
 		}
 		return $ret;
