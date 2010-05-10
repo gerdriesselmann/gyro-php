@@ -30,8 +30,8 @@ class DataObjectTimestampedCached extends DataObjectCached implements ITimeStamp
 	 */
 	protected function get_timestamp_field_declarations() {
 		return array(
-			new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::NOT_NULL),
-			new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW, DBFieldDateTime::TIMESTAMP | DBFieldDateTime::NOT_NULL),
+			new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::NOT_NULL | DBField::INTERNAL),
+			new DBFieldDateTime('modificationdate', DBFieldDateTime::NOW, DBFieldDateTime::TIMESTAMP | DBFieldDateTime::NOT_NULL | DBField::INTERNAL),
 		);
 	}
 	
