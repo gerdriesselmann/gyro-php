@@ -296,7 +296,10 @@ function users_load_translations($languages) {
 		),		
 		'Save' => array(
 			'de' => 'Speichern'
-		),		
+		),
+		'Users' => array(
+			'de' => 'Benutzer'
+		)		
 	);
 }
 ?>
