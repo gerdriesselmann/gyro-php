@@ -99,7 +99,7 @@ class NotificationsController extends ControllerBase {
 			if (!$update) {
 				$settings = new DAONotificationssettings();
 			}
-			$settings->unset_internals($data);
+			$data = $settings->unset_internals($data);
 			
 			$cmd = $update 
 				? CommandsFactory::create_command($settings, 'update', $data) 
