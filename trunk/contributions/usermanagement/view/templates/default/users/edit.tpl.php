@@ -2,7 +2,7 @@
 $page_data->head->title = tr('Edit user %name%', 'users', array('%name%' => $user->name));
 $page_data->breadcrumb = WidgetBreadcrumb::output(
 	array(
-		WidgetActionLink::output('Users', 'users_list_all'),
+		WidgetActionLink::output(tr('Users', 'users'), 'users_list_all'),
 		$user,
 		'Edit'
 	)
