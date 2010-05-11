@@ -173,7 +173,7 @@ class DBTable implements IDBTable {
 		$relations_other2this = $this->remove_duplicated_relations($relations_other2this, $relations_this2other);
 		
 		foreach($relations_other2this as  $relation) {
-			$relations_this2other[] = new DBRelation($other->get_table_name(), $relation->get_reversed_fields());
+			$relations_this2other[] = new DBRelation($other->get_table_name(), $relation->get_reversed_fields(), $relation->get_policy(), $relation->get_type());
 		}
 				
 		return $relations_this2other;
