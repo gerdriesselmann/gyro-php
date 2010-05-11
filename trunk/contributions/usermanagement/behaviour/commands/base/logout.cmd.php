@@ -20,6 +20,7 @@ class LogoutUsersBaseCommand extends CommandComposite {
 			$cmd = new TriggerEventCommand('logout', false);
 			$cmd->execute();			
 		}
+		return $ret;
 	}
 	
 	protected function do_execute() {
