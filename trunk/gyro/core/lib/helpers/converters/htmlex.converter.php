@@ -32,8 +32,6 @@ class ConverterHtmlEx extends ConverterHtml {
 	 * Keeps Links
 	 */
 	public function decode($value, $params = false) {
-		$value = str_replace("\n", ' ', $value);
-		$value = str_replace("\r", ' ', $value);
 		// Process Links
 		$value = $this->relative_to_absolute($value, Config::get_url(Config::URL_BASEURL));
 		// Turn <a href="xxx">Text</a> into Text: xxx
@@ -41,9 +39,12 @@ class ConverterHtmlEx extends ConverterHtml {
 		
 		$value = str_replace('</p>', "</p>\n\n", $value);
 		$value = preg_replace('@<br.*?>@', "\n", $value);
-		$value = String::unescape($value);
 		$value = strip_tags($value);
+		$value = String::unescape($value);
 		$value = String::preg_replace('| +|', ' ', $value);
+		
+		$value = str_replace("\r", "\n", $value);
+		$value = String::preg_replace('|\n+|', "\n", $value);
 		return $value;		
 	}
 
