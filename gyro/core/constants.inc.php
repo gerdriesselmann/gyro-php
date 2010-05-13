@@ -118,7 +118,7 @@ Config::set_value_from_constant(Config::FORMVALIDATION_HANDLER_NAME, 'FORMVALIDA
  */
 Config::set_feature(
 	Config::GZIP_SUPPORT, 
-	isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') && !APP_TESTMODE 
+	isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate') && !APP_TESTMODE 
 );
 /**
  * Some URLs

@@ -63,7 +63,7 @@ class PageViewBase extends ViewBase {
 	protected function render_content(&$rendered_content, $policy) {
 		parent::render_content($rendered_content, $policy);
 		if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
-			$rendered_content = gzcompress($rendered_content, 9);
+			$rendered_content = gzdeflate($rendered_content, 9);
 		}	
 	}	
 	
@@ -96,12 +96,15 @@ class PageViewBase extends ViewBase {
 			Common::header('Expires', GyroDate::http_date(time() - GyroDate::ONE_DAY), false);
 			
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
-				Common::header('Content-Encoding', 'gzip', true);
+				Common::header('Content-Encoding', 'deflate', true);
 				// Magic! Actually gzencode usually is used, but there is no
 				// decode < PHP 6, so it won't work with cache compression.
 				// gzcompress, which is used here, needs this magic bytes 
-				// to look like gzencode
-				$rendered_content =  "\x1f\x8b\x08\x00\x00\x00\x00\x00" . $rendered_content;
+				// to look like gzencode	
+				//$rendered_content = gzuncompress($rendered_content);
+				//$rendered_content = gzencode($rendered_content);
+				
+				//$rendered_content =  "\x1f\x8b\x08\x00\x00\x00\x00\x00" . $rendered_content;
 			}
 		}
 	}
