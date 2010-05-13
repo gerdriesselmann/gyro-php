@@ -56,8 +56,8 @@ class MemcacheCacheItem implements ICacheItem {
 	 */
 	public function get_content_plain() {
 		$ret = $this->get_content_compressed();
-		if ($ret && function_exists('gzuncompress')) {
-			$ret = gzuncompress($ret);
+		if ($ret && function_exists('gzinflate')) {
+			$ret = gzinflate($ret);
 		}
 		return $ret;
 	}
@@ -110,8 +110,8 @@ class CacheMemcacheImpl implements ICachePersister {
 	 */
 	public function store($cache_keys, $content, $cache_life_time, $data = '', $is_compressed = false) {
 		if (!$is_compressed) {
-			if (function_exists('gzcompress')) {
-				$content = gzcompress($content, 9);
+			if (function_exists('gzdeflate')) {
+				$content = gzdeflate($content, 9);
 			}
 		} 
 		$data = array(
