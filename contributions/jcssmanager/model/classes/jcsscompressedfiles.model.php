@@ -48,22 +48,22 @@ class DAOJcsscompressedfiles extends DataObjectBase {
 			return $arr_files;
 		}
 		
-		$ret = $arr_files;
-		$match = true;
-		foreach($this->sources as $file) {
-			$key = array_search($file, $ret);
-			if ($key !== false) {
-				unset($ret[$key]);
+		$ret = array();
+		$matches = 0;
+		foreach($arr_files as $file) {
+			if (in_array($file, $this->sources)) {
+				if ($matches == 0) {
+					$ret[] = $this->get_versioned_filename();
+				}
+				$matches++;
 			}
 			else {
-				$match = false;
-				$ret = $arr_files;
-				break;
+				$ret[] = $file;
 			}
 		}
 		
-		if ($match) {
-			array_unshift($ret, $this->get_versioned_filename());
+		if ($matches != count($this->sources)) {
+			$ret = $arr_files;
 		}
 		
 		return $ret;
