@@ -131,34 +131,11 @@ class CacheMemcacheImpl implements ICachePersister {
 	 */
 	public function clear($cache_keys = NULL) {
 		if (empty($cache_keys)) {
-			$this->do_clear_all();
-		}
-		else if ($cache_keys instanceof ICachable) {
-			$this->do_clear_cachable($cache_keys);
-			foreach($cache_keys->get_dependend_cachables() as $dependance) {
-				$this->do_clear_cachable($dependance);
-			}
+			$this->do_clear(array());
 		}
 		else {
 			$this->do_clear($cache_keys);
 		}
-	}
-	
-	/**
-	 * Clear chache for given ICachable 
-	 */
-	private function do_clear_cachable($cachable) {
-		$keys = $cachable->get_all_cache_ids();
-		foreach($keys as $key) {
-			$this->do_clear($key);
-		}		
-	}
-	
-	/**
-	 * Clear all cache
-	 */
-	private function do_clear_all() {
-		$this->do_clear(array());
 	}
 	
 	/**
