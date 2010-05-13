@@ -5,12 +5,18 @@ class ConverterHtmlExTest extends GyroUnitTestCase {
 		$expected = "abc def \nghi\nabc";
 		$result = ConverterFactory::decode($test, ConverterFactory::HTML_EX);
 		$this->assertEqual($result, $expected);
+
+		$test = "<p><a href=\"/test.html\">abc def</a> <br />ghi</p>abc";
+		$expected = 'abc def: ' . Config::get_url(Config::URL_BASEURL) . "test.html \nghi\nabc";
+		$result = ConverterFactory::decode($test, ConverterFactory::HTML_EX);
+		$this->assertEqual($result, $expected);
 	}
 	
 	public function test_encode() {
 		$test = "abc  def \n\nWhen Wellignton  came to the crossroads, the devil already was waiting for him\rabc.";
-		$expected = "<h2>abc  def</h2>\n<p>When Wellignton  came to the crossroads, the devil already was waiting for him</p>\n<p>abc.</p>";
+		$expected = "<h2>abc def</h2>\n<p>When Wellignton came to the crossroads, the devil already was waiting for him</p>\n<p>abc.</p>";
 		$result = ConverterFactory::encode($test, ConverterFactory::HTML_EX);
+		
 		$this->assertEqual($result, $expected);		
 	}
 }

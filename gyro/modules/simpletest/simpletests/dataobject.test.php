@@ -58,7 +58,7 @@ class DataObjectTest extends GyroUnitTestCase {
 		
 		$query = $student->create_select_query();
 		$this->assertEqual(
-			"SELECT DISTINCT `studentstest`.`id` AS `id`, `studentstest`.`name` AS `name`, UNIX_TIMESTAMP(`studentstest`.`modificationdate`) AS `modificationdate` FROM `studentstest` AS `studentstest` WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
+			"SELECT `studentstest`.`id` AS `id`, `studentstest`.`name` AS `name`, UNIX_TIMESTAMP(`studentstest`.`modificationdate`) AS `modificationdate` FROM `studentstest` AS `studentstest` WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
 			$query->get_sql()
 		);
 		
