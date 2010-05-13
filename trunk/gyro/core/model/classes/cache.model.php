@@ -74,8 +74,8 @@ class DAOCache extends DataObjectBase implements ICacheItem {
 	
 	public function get_content_plain() {
 		$ret = $this->content_gzip;
-		if ($ret && function_exists('gzuncompress')) {
-			$ret = gzuncompress($ret);
+		if ($ret && function_exists('gzinflate')) {
+			$ret = gzinflate($ret);
 		}
 		return $ret;
 	}
@@ -85,8 +85,8 @@ class DAOCache extends DataObjectBase implements ICacheItem {
 	}
 
 	public function set_content_plain($content) {
-		if (function_exists('gzcompress')) {
-			$content = gzcompress($content, 9);
+		if (function_exists('gzdeflate')) {
+			$content = gzdeflate($content, 9);
 		}
 		$this->content_gzip = $content;		
 	}
