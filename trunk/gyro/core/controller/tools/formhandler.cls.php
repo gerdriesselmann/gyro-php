@@ -184,7 +184,7 @@ class FormHandler {
  			$this->error($status);
  		}
  		else {
- 			$msg = ($status->is_empty()) ? $success_message : $status->message;
+ 			$msg = ($status->is_empty()) ? $success_message : $status->to_string(Status::OUTPUT_PLAIN);
  			$this->success($msg);
  		}
  	}
