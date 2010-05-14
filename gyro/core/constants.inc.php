@@ -111,8 +111,9 @@ if (defined('APP_3RDPARTY_DIR')) {
 /**
  * Formhandler stuff
  */
-Config::set_value_from_constant(Config::FORMVALIDATION_FIELD_NAME, 'FORMVALIDATION_FIELD_NAME', 'jfioeudkswefs');
-Config::set_value_from_constant(Config::FORMVALIDATION_HANDLER_NAME, 'FORMVALIDATION_HANDLER_NAME', 'uerwudjmdjwu');
+Config::set_value_from_constant(Config::FORMVALIDATION_FIELD_NAME, 'APP_FORMVALIDATION_FIELD_NAME', 'jfioeudkswefs');
+Config::set_value_from_constant(Config::FORMVALIDATION_HANDLER_NAME, 'APP_FORMVALIDATION_HANDLER_NAME', 'uerwudjmdjwu');
+Config::set_value_from_constant(Config::FORMVALIDATION_EXPIRATION_TIME, 'APP_FORMVALIDATION_EXPIRATION_TIME', 15);
 /**
  * Use GZIP?
  */
