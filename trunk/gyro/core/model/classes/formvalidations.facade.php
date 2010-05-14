@@ -1,6 +1,4 @@
 <?php
-define('FORMVALIDATION_EXPIRATION_TIME', 15); // Time in minutes form tokens are valid   
-
 /**
  * Stores form tokens
  * 
@@ -19,7 +17,7 @@ class FormValidations {
 		$validations = new DAOFormvalidations();
 		$validations->name = $name;
 		$validations->token = $token;
-		$validations->expirationdate = time() + FORMVALIDATION_EXPIRATION_TIME * GyroDate::ONE_MINUTE; // 
+		$validations->expirationdate = time() + Config::get_value(Config::FORMVALIDATION_EXPIRATION_TIME) * GyroDate::ONE_MINUTE; // 
 		$validations->insert();
 		
 		return $token;
