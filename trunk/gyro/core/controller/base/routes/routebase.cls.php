@@ -127,7 +127,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	 * @param PageData $page_data
 	 */
 	public function initialize($page_data) {
-		if (Url::current()->get_scheme() != $this->scheme) {
+		if ($this->scheme != 'any' && Url::current()->get_scheme() != $this->scheme) {
 			// redirect to given scheme
 			Url::current()->set_scheme($this->scheme)->redirect();
 			exit;
@@ -295,7 +295,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	}	 
 	
 	protected function build_url_base($absolute_or_relative) {
-		if (Url::current()->get_scheme() != $this->scheme) {
+		if ($this->scheme != 'any' && Url::current()->get_scheme() != $this->scheme) {
 			// E.g. a switch from http to https is required. Force absolute
 			$absolute_or_relative = self::ABSOLUTE;
 		}
