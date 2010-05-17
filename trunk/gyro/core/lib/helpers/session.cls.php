@@ -123,6 +123,10 @@ class Session {
 		$_SESSION = array();
 		self::restart();		
 	}
+	
+	public static function end() {
+		session_destroy();
+	}
 
 	/**
 	 * Regenerates session id
@@ -133,7 +137,7 @@ class Session {
 				$backup = array();
 				if (self::is_started()) {
 					$backup = $_SESSION;
-					session_destroy();
+					self::end();
 				}
 				self::do_start($id);
 				$_SESSION = $backup;
