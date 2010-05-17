@@ -185,7 +185,7 @@ class Common {
 			self::header_remove($name);
 		}
 		foreach($arr_headers as $name => $value) {
-			self::header($name, $value, true);
+			self::header($value, '', true);
 		}
 	}
 	
