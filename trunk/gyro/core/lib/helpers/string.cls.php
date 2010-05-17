@@ -287,6 +287,11 @@ class String {
 		return preg_replace($pattern, $replacement, $subject, $limit, $count);
 	}
 
+	public static function preg_replace_callback($pattern, $callback, $subject, $limit = -1, &$count = false) {
+		self::apply_u_modifier($pattern);
+		return preg_replace_callback($pattern, $callback, $subject, $limit, $count);
+	}	
+	
 	public static function preg_match($pattern, $subject, &$matches = array(), $flags = 0, $offset = 0) {
 		self::apply_u_modifier($pattern);
 		return preg_match($pattern, $subject, $matches, $flags, $offset);
