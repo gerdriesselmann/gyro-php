@@ -51,7 +51,7 @@ class HijackUsersCommand extends CommandComposite {
 		if (Load::is_module_loaded('usermanagement.notifications')) {
 			$notify = $this->create_notification_command($cur_user, $user);
 			if ($notify->can_execute($user)) {
-				$this->append();
+				$this->append($notify);
 			}
 		}
 		// Set a Cookie
