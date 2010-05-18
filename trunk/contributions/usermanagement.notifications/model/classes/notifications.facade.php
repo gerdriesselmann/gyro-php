@@ -73,10 +73,11 @@ class Notifications {
 	 * @return Status
 	 */
 	public static function create(DAOUsers $user, $params, &$created) {
+		$ret = new Status();
 		$params['id_user'] = $user->id;
 		$params['title'] = self::compute_title(Arr::get_item($params, 'message', ''), Arr::get_item($params, 'title', ''));
 		$cmd = CommandsFactory::create_command('notifications', 'create', $params);
-		$ret = $cmd->execute();
+		$ret->merge($cmd->execute());
 		$created = $cmd->get_result();
 		return $ret;
 	}
@@ -90,13 +91,17 @@ class Notifications {
 	 * @return Status
 	 */
 	public static function notify_single_user(DAOUsers $user, $message, $title = '', $source = 'app') {
+		$ret = new Status();
 		$params = array(
 			'title' => self::compute_title($message, $title),
 			'message' => $message,
 			'source' => $source
 		);
 		$cmd = CommandsFactory::create_command($user, 'notify', $params);
-		return $cmd->execute();
+		if ($cmd->can_execute($user)) {
+			$ret->merge($cmd->execute());
+		}
+		return $ret;
 	}
 	
 	/**
@@ -109,12 +114,17 @@ class Notifications {
 	 */
 	public static function notify_some_users($arr_users, $message, $title = '', $source = 'app') {
 		$ret = new Status();
+		$already_notified_ids = array();
 		$title = self::compute_title($message, $title);
 		foreach($arr_users as $user) {
-			$ret->merge(self::notify_single_user($user, $message, $title, $source));
-			if ($ret->is_error()) {
-				break;
-			}	
+			$user_id = $user->id;
+			if (!in_array($user_id, $already_notified_ids)) {
+				$ret->merge(self::notify_single_user($user, $message, $title, $source));
+				if ($ret->is_error()) {
+					break;
+				}	
+				$already_notified_ids[] = $user_id;
+			}
 		}
 		return $ret;
 	}

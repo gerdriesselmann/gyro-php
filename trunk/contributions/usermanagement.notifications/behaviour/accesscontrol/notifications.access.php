@@ -4,7 +4,7 @@ class NotificationsAccessControl extends AccessControlBase {
 	 * Constructor. Sets type on parent.
 	 */
 	public function __construct() {
-		parent::__construct('notifications', 'users');
+		parent::__construct(array('notifications', 'users'));
 	}
 	
 	/**
@@ -31,6 +31,9 @@ class NotificationsAccessControl extends AccessControlBase {
 			switch ($action) {
 				case 'notifyall':
 					$ret = $this->to_result($user->has_role(USER_ROLE_ADMIN)); 
+					break;
+				case 'notify':
+					$ret = $this->to_result($item->is_active());
 					break;
 			}			
 		}
