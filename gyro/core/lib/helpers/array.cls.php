@@ -272,4 +272,32 @@ class Arr {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Remove all occurences of a given value from array 
+	 * 
+	 * @param array $arr The array to modify
+	 * @param mixed $value The value to unset
+	 */
+	public static function remove(&$arr, $value) {
+		foreach(array_keys($arr, $value) as $key) {
+			unset($arr[$key]);
+		}
+	}
+	
+	/**
+	 * Remove all occurences of a given value from array recursivley 
+	 * 
+	 * @param array $arr The array to modify
+	 * @param mixed $value The value to unset
+	 */
+	public static function remove_recursive(&$arr, $value) {
+		self::remove($arr, $value);
+		foreach($arr as $key => $item) {
+			if (is_array($item)) {
+				self::remove_recursive($item, $value);
+				$arr[$key] = $item;
+			}
+		}
+	}
 }
