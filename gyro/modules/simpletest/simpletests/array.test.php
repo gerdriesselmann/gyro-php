@@ -166,4 +166,36 @@ class ArrayTest extends GyroUnitTestCase {
 		Arr::unset_item_recursive($arr, 'does[not][exist]');
 		$this->assertEqual($test, $arr);
 	}	
+	
+	public function test_remove() {
+		$arr = array('a', 2, 3, 'b', 'a', 'k' => 'b');
+		
+		Arr::remove($arr, 'a');
+		$test = array(1 => 2, 2 => 3, 3 => 'b', 'k' => 'b');
+		$this->assertEqual($test, $arr);
+		
+		Arr::remove($arr, '2');
+		$test = array(2 => 3, 3 => 'b', 'k' => 'b');
+		$this->assertEqual($test, $arr);
+		
+		Arr::remove($arr, 'b');
+		$test = array(2 => 3);		
+		$this->assertEqual($test, $arr);
+	}
+	
+	public function test_remove_recusive() {
+		$arr = array('a', 2, 3, 'b', 'a', 'k' => array('b'), 'l' => array(1,2, array('x','a')));
+		
+		Arr::remove_recursive($arr, 'a');
+		$test = array(1 => 2, 2 => 3, 3 => 'b', 'k' => array('b'), 'l' => array(1, 2, array('x')));
+		$this->assertEqual($test, $arr);
+		
+		Arr::remove_recursive($arr, '2');
+		$test = array(2 => 3, 3 => 'b', 'k' => array('b'), 'l' => array(1, 2 => array('x')));
+		$this->assertEqual($test, $arr);
+		
+		Arr::remove_recursive($arr, 'b');
+		$test = array(2 => 3, 'k' => array(), 'l' => array(1, 2 => array('x')));		
+		$this->assertEqual($test, $arr);
+	}
 }
