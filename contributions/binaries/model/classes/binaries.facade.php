@@ -129,7 +129,7 @@ class Binaries {
 				$ret->append(tr('The uploaded file is too big', 'binaries'));
 				break;
 			default:
-				$ret->append(tr('An unknonw error code was retrieved while uploading the file.', 'binaries'));
+				$ret->append(tr('An unknown error code was retrieved while uploading the file.', 'binaries'));
 				break;
 		}
 		return $ret;
