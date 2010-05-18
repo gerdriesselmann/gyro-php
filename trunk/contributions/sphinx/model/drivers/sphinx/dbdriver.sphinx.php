@@ -172,6 +172,9 @@ class DBDriverSphinx implements IDBDriver {
 			);
 		}
 		
+		// Field Weights
+		$this->client->SetFieldWeights(Arr::get_item_recursive($arr_query, 'features[weights]', array()));
+		
 		// query
 		$result = $this->client->Query($terms, $index_name);
 		if (isset($arr_query['features']['count'])) {

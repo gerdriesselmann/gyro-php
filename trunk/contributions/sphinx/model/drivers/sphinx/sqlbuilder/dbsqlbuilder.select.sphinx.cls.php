@@ -101,7 +101,11 @@ class DBSqlBuilderSelectSphinx extends DBSqlBuilderSelect {
 	 * @return array
 	 */
 	protected function get_features($query) {
-		return array();
+		$ret = array();
+		if (isset($query->sphinx_weights)) {
+			$ret['weights'] = $query->sphinx_weights;
+		}
+		return $ret;
 	}
 	
 	/**
