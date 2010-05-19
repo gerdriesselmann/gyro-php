@@ -113,6 +113,7 @@ class NotificationsController extends ControllerBase {
 	 * Notifications feed
 	 */
 	public function action_notifications_feed(PageData $page_data, $id_user, $feed_token) {
+		$page_data->in_history = false;
 		Load::models('notificationssettings');
 		$settings = NotificationsSettings::get_for_user($id_user);
 		if ($settings === false || !$settings->feed_enable || $settings->feed_token != $feed_token) {
