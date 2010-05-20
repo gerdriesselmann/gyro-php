@@ -12,6 +12,12 @@ class DataObjectSphinxBase extends DataObjectBase {
 	 * @var string
 	 */
 	public $sphinx_all_fields = '';
+	/**
+	 * Set Sphinx features, like weights
+	 * 
+	 * @var array
+	 */
+	public $sphinx_features = array();
 	
 	/**
 	 * Configure a select query
@@ -24,6 +30,7 @@ class DataObjectSphinxBase extends DataObjectBase {
     	if (!empty($this->sphinx_all_fields)) {
 			$query->add_where('*', '=', $this->sphinx_all_fields);    		
     	}
+    	$query->sphinx_features = $this->sphinx_features;
 	}	
 	
 	// ----------------------------------------------
@@ -58,5 +65,21 @@ class DataObjectSphinxBase extends DataObjectBase {
 	 */
 	public function count_pager() {
 		return min($this->count(), APP_SPHINX_MAX_MATCHES);
+	}
+
+	/**
+	 * Set a sphinx feature
+	 */
+	public function set_sphinx_feature($name, $value) {
+		$this->sphinx_features[$name] = $value;
+	}
+
+	/**
+	 * Get a sphinx feature
+	 * 
+	 * @return mixed The feature's value or NULL, if not set
+	 */
+	public function get_sphinx_feature($name) {
+		return Arr::get_item($this->sphinx_features, $name, null);
 	}
 }
