@@ -7,7 +7,20 @@
  */
 class DBDriverSphinx implements IDBDriver {
 	const DEFAULT_CONNECTION_NAME = 'sphinx';
-	const SPHINX_ATTRIBUTE        = 16384;
+	const SPHINX_ATTRIBUTE = 16384;
+	
+	/**
+	 * Set weights like so:
+	 * 
+	 * $query->sphinx_features[DBDriverSphinx::FEATURE_WEIGHTS] = array('column' => weight);
+	 */
+	const FEATURE_WEIGHTS = 'weights';
+	/**
+	 * Set to strip operators:
+	 * 
+	 * $query->sphinx_features[DBDriverSphinx::FEATURE_STRIP_OPERATORS] = true;
+	 */
+	const FEATURE_STRIP_OPERATORS = 'strip_operators';
 	
 	private $client = false;
 	private $connect_params;
@@ -101,8 +114,8 @@ class DBDriverSphinx implements IDBDriver {
 	public function escape($value) {
 		// Handcraft escaping for extended query syntax
 		// TODO Maybe we should even leave it untouched within double quotes?
-		$from = array ( '\\', '@', '&', '/', '^', '$');
-		$to   = array ( '\\\\', '\@', '\&', '\/', '\^', '\$');
+		$from = array ( '\\', '@', '&', '/');
+		$to   = array ( '\\\\', '\@', '\&', '\/');
 		$ret = str_replace($from, $to, $value);
 		
 		// This code escapes extended search operators like !, -, | etc.
@@ -147,8 +160,13 @@ class DBDriverSphinx implements IDBDriver {
 		$this->connect();
 		
 		$arr_query = unserialize($query);
+		$features = Arr::get_item($arr_query, 'features', false);
+		
 		$index_name = $this->connect_params['dbname'] . $arr_query['from'];
 		$terms = Arr::get_item_recursive($arr_query, 'conditions[query]', '');
+		if (Arr::get_item($features, self::FEATURE_STRIP_OPERATORS, false)) {
+			$terms = self::strip_operators($terms);
+		}
 		
 		// Set options
 		$this->client->SetSelect($arr_query['fields']);
@@ -173,11 +191,11 @@ class DBDriverSphinx implements IDBDriver {
 		}
 		
 		// Field Weights
-		$this->client->SetFieldWeights(Arr::get_item_recursive($arr_query, 'features[weights]', array()));
+		$this->client->SetFieldWeights(Arr::get_item($features, self::FEATURE_WEIGHTS, array()));
 		
 		// query
 		$result = $this->client->Query($terms, $index_name);
-		if (isset($arr_query['features']['count'])) {
+		if (isset($features['count'])) {
 			return new DBResultSetCountSphinx($result, $this->get_status());
 		}
 		else {
@@ -229,4 +247,13 @@ class DBDriverSphinx implements IDBDriver {
 	public function has_feature($feature) {
 		return false;
 	}
+	
+	/**
+	 * Strip operators form searrch term
+	 */
+	public static function strip_operators($terms) {
+		$ops = '|-!@[]()*"<=^$~/';
+		$replace = str_repeat(' ', strlen($ops));
+		return strtr($terms, $ops, $replace);			
+	} 
 }

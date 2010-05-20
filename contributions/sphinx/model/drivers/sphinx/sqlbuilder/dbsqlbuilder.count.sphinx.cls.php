@@ -16,6 +16,8 @@ class DBSqlBuilderCountSphinx extends DBSqlBuilderSelectSphinx {
 	}
 	
 	protected function get_features($query) {
-		return array('count' => true);
+		$ret = parent::get_features($query);
+		$ret['count'] = true;
+		return $ret;
 	}	
 }
