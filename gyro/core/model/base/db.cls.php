@@ -409,28 +409,13 @@ class DB {
 	 * @param Status $status
 	 */
 	public static function log_query($query, $seconds, $status, $conn = self::DEFAULT_CONNECTION) {
-		if ($status->is_error()) {
-			if (Config::has_feature(Config::LOG_FAILED_QUERIES)) {
-				$log = array(
-					'query' => $query,
-					'message' => $status->message
-				);
-				Load::components('logger');
-				Logger::log('failed_queries', $log);
-			}
-			if (Config::has_feature(Config::THROW_ON_DB_ERROR)) {
-				$text = $status->message . " [$query]";
-				throw new Exception($text);
-			}
-		}
-		
 		if (Config::has_feature(Config::LOG_QUERIES)) {
 			$c = self::get_connection($conn);
 			$log = array(
 				'query' => $query,
 				'seconds' => $seconds,
 				'success' => $status->is_ok(),
-				'message' => $status->message
+				'message' => $status->to_string(Status::OUTPUT_PLAIN)
 			);
 			Load::components('logger');
 			Logger::log('queries', $log); 
@@ -448,6 +433,21 @@ class DB {
 				);
 				Load::components('logger');
 				Logger::log('slow_queries', $log); 
+			}
+		}		
+		
+		if ($status->is_error()) {
+			if (Config::has_feature(Config::LOG_FAILED_QUERIES)) {
+				$log = array(
+					'query' => $query,
+					'message' => $status->to_string(Status::OUTPUT_PLAIN)
+				);
+				Load::components('logger');
+				Logger::log('failed_queries', $log);
+			}
+			if (Config::has_feature(Config::THROW_ON_DB_ERROR)) {
+				$text = $status->to_string(Status::OUTPUT_PLAIN) . " [$query]";
+				throw new Exception($text);
 			}
 		}		
 	}
