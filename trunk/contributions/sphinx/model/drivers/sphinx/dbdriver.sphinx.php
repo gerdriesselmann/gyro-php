@@ -101,8 +101,8 @@ class DBDriverSphinx implements IDBDriver {
 	public function escape($value) {
 		// Handcraft escaping for extended query syntax
 		// TODO Maybe we should even leave it untouched within double quotes?
-		$from = array ( '\\', '@', '&', '/', '^');
-		$to   = array ( '\\\\', '\@', '\&', '\/', '\^');
+		$from = array ( '\\', '@', '&', '/', '^', '$');
+		$to   = array ( '\\\\', '\@', '\&', '\/', '\^', '\$');
 		$ret = str_replace($from, $to, $value);
 		
 		// This code escapes extended search operators like !, -, | etc.
