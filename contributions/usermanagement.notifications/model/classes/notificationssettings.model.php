@@ -28,10 +28,10 @@ class DAONotificationssettings extends DataObjectCached {
 				new DBFieldBool('mail_enable', true, DBField::NOT_NULL),
 				new DBFieldSerialized('mail_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(Notifications::SOURCE_ALL), DBField::NONE),
 				new DBFieldBool('digest_enable', false, DBField::NOT_NULL),
-				new DBFieldSerialized('digest_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(), DBField::NONE),
+				new DBFieldSerialized('digest_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(Notifications::SOURCE_ALL), DBField::NONE),
 				new DBFieldDateTime('digest_last_sent', null, DBField::INTERNAL),
 				new DBFieldBool('feed_enable', false, DBField::NOT_NULL),
-				new DBFieldSerialized('feed_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(), DBField::NONE),
+				new DBFieldSerialized('feed_settings', DBFieldSerialized::BLOB_LENGTH_SMALL, array(Notifications::SOURCE_ALL), DBField::NONE),
 				new DBFieldText('feed_token', 40, null, DBField::INTERNAL)
 			),
 			'id',

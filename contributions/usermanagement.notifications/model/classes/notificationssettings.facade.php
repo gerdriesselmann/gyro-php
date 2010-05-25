@@ -86,12 +86,12 @@ class NotificationsSettings {
 	private static function create_notification_adapter(DAONotificationssettings $settings, $type) {
 		// Fidn notifications
 		$dao = Notifications::create_user_adapter($settings->id_user);
+		$sources = $settings->get_settings_for_type($type);
 		
-		if (!$settings->is_type_enabled($type)) {
+		if (count($sources) == 0 || !$settings->is_type_enabled($type)) {
 			$dao->add_where('1 = 2');	
 		}
 		else {
-			$sources = $settings->get_settings_for_type($type);
 			if (!in_array(Notifications::SOURCE_ALL, $sources)) {
 				$dao->add_where('source', DBWhere::OP_IN, $sources);
 			}
