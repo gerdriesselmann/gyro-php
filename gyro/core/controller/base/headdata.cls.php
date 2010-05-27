@@ -183,6 +183,7 @@ class HeadData implements IRenderer {
     	// title
     	$ret .= html::tag('title', String::escape($title)) . "\n";
     	if ($description) {
+    		$description = String::preg_replace('|\s\s+|s', ' ', $description);
     		$ret .= html::meta('description', String::substr_word($description, 0, 200)) . "\n";
     	}
     	if ($keywords) {
