@@ -36,6 +36,15 @@
  * This module resolves any dependencies for the components selected, so no need to worry about 
  * that.
  * 
+ * To enable localization for a given language use
+ * 
+ * @code
+ * JQueryUI::enable_locales('de');
+ * @endcode
+ * 
+ * This module will automatically include localization files, if available. Note it's still up to you
+ * to correctly initialize the accordings components, e.g. within the document.ready() event.
+ * 
  * To include components on each page and to have them compressed by JCSSManager, its best to 
  * include according code in the file start.inc.php in your app directory.
  *    
@@ -79,3 +88,5 @@ Config::set_value_from_constant(ConfigJQueryUI::JQUERYUI_VERSION, 'APP_JQUERYUI_
 if (Config::get_value(ConfigJQueryUI::JQUERYUI_VERSION) == '1.8' && !defined('APP_JQUERY_VERSION')) {
 	define('APP_JQUERY_VERSION', 1.4);
 }
+
+JQueryUI::enable_locales(GyroLocale::get_language());
