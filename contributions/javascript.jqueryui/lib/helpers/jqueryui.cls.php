@@ -51,7 +51,13 @@ class JQueryUI {
 	 * @var array
 	 */
 	private static $enabled_components = array();
-
+	/**
+	 * Locales selected for current page
+	 * 
+	 * @var array
+	 */
+	private static $enabled_locales = array();
+	
 	/**
 	 * Enable some components
 	 * 
@@ -72,6 +78,25 @@ class JQueryUI {
 	}
 	
 	/**
+	 * Enable some locales
+	 * 
+	 * @param array|string $locales
+	 */
+	public static function enable_locales($locales) {
+		self::$enabled_locales = array_merge(self::$enabled_locales, Arr::force($locales, false));
+		self::$enabled_locales = array_unique(self::$enabled_locales);
+	}
+	
+	/**
+	 * Returns array of enabled locales
+	 * 
+	 * @return array
+	 */
+	public static function get_enabled_locales() {
+		return self::$enabled_locales;
+	}	
+	
+	/**
 	 * Returns paths for selected components
 	 * 
 	 * @param array $component
@@ -80,14 +105,19 @@ class JQueryUI {
 	public static function get_js_paths($components) {
 		$resolved = array();
 		$deps = self::get_dependencies();
+		$locs = self::get_supported_locales();
 		foreach($components as $c) {
-			self::collect_dependencies($c, $resolved, $deps);
+			self::collect_dependencies($c, $resolved, $deps, $locs);
 		}
 		
 		$ret = array();
 		$prefix = self::is_version_1_8() ? 'jquery.' : ''; 
 		foreach($resolved as $c) {
-			$path = 'js/jqueryui/' . $prefix . $c . '.js';
+			$c = explode('/', $c);
+			$file = array_pop($c);
+			$file = $prefix . $file;
+			$c[] = $file;
+			$path = 'js/jqueryui/' . implode('/', $c) . '.js';
 			if (!in_array($path, $ret)) {
 				$ret[] = $path;
 			}	
@@ -98,12 +128,26 @@ class JQueryUI {
 	/**
 	 * Collect dependencies for given component
 	 */
-	private static function collect_dependencies($component, &$resolved, &$dependencies) {
+	private static function collect_dependencies($component, &$resolved, $dependencies, $localizations) {
 		$deps = Arr::get_item($dependencies, $component, array());
 		foreach($deps as $d) {
-			self::collect_dependencies($d, $resolved, $dependencies);
+			self::collect_dependencies($d, $resolved, $dependencies, $localizations);
 		}
 		$resolved[$component] = $component;
+		self::collect_localizations($component, $resolved, $localizations);
+	}
+	
+	/**
+	 * Collect localization scripts for given component 
+	 */
+	private static function collect_localizations($component, &$resolves, $localizations) {
+		$localizations_for_comp = Arr::get_item($localizations, $component, array());
+		foreach(self::get_enabled_locales() as $l) {
+			if (in_array($l, $localizations_for_comp)) {
+				$file = 'i18n/' . $component . '-' . $l;
+				$resolves[$file] = $file;
+			}
+		}
 	}
 
 	/**
@@ -251,6 +295,67 @@ class JQueryUI {
 			);
 		}
 	}
+	
+		/**
+	 * Returns array of dependencies for every component
+	 * 
+	 * @return array
+	 */
+	private static function get_supported_locales() {
+		if (self::is_version_1_8()) {
+			return array(
+				self::WIDGET_DATEPICKER => array(
+					'af', 'ar', 'az',
+					'bg', 'bs',
+					'ca', 'cs',
+					'da', 'de', 
+					'el', 'en-GB', 'eo', 'es', 'et', 'eu', 
+					'fa', 'fi', 'fo', 'fr-CH', 'fr',
+					'he', 'hr', 'hu', 'hy',
+					'id', 'is', 'it', 
+					'ja', 
+					'ko', 
+					'lt', 'lv',
+					'ms',
+					'nl', 'no', 
+					'pl', 'pt-BR',
+					'ro', 'ru',
+					'sk', 'sl', 'sq', 'sr', 'sr-SR', 'sv',
+					'ta', 'th', 'tr', 
+					'uk', 
+					'vi',
+					'zh-CN', 'zh-HK', 'zh-TW',					
+				),
+			);
+		}	
+		else {
+			// Version 1.7
+			return array(
+				self::WIDGET_DATEPICKER => array(
+					'ar',
+					'bg',
+					'ca', 'cs',
+					'da', 'de', 
+					'el', 'eo', 'es', 
+					'fa', 'fi', 'fr',
+					'he', 'hr', 'hu', 'hy',
+					'id', 'is', 'it', 
+					'ja', 
+					'ko', 
+					'lt', 'lv',
+					'ms',
+					'nl', 'no', 
+					'pl', 'pt-BR',
+					'ro', 'ru',
+					'sk', 'sl', 'sq', 'sr', 'sr-SR', 'sv',
+					'th', 'tr', 
+					'uk', 
+					'vi',
+					'zh-CN', 'zh-TW',
+				),	
+			);
+		}		
+	}	
 	
 	/**
 	 * Returns all elements that have a CSS file
