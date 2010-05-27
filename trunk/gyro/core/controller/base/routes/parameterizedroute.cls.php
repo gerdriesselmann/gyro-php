@@ -210,7 +210,7 @@ class ParameterizedRoute extends RouteBase {
  		if (strpos($this_path_elem, '{') === false) {
  			return ($this_path_elem == $element_to_validate);
  		}
- 		$optional = (substr($this_path_elem, -1) === '!');
+ 		$optional = (substr($this_path_elem, -1) === '!'); 		
  		if ($optional && $element_to_validate === false) {
  			return true;
  		}
