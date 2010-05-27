@@ -18,7 +18,7 @@ if ($page > 1) {
 			$last = array_pop($breadcrumb);
 			if ($last !== $t) {
 				// First call!
-				if (is_string($last) && strpos($last, '<a ') !== false) {
+				if (is_string($last) && strpos($last, '<a ', 0) === false) {
 					// last item is not a link => Link it to current
 					$last = html::a($last, $pager_calculator->get_page_url(1), '');
 				}
