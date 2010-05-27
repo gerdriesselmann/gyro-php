@@ -49,6 +49,9 @@ function core_load_translations($languages) {
 		' - page %page' => array(
 			'de' => ' - Seite %page'
 		),
+		'Page %page' => array(
+			'de' => 'Seite %page'
+		),
 		' Shown is page %page.' => array(
 			'de' => ' Angezeigt wird Seite %page.'
 		),
