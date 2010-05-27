@@ -279,6 +279,7 @@ class html
 	 * @exception 
 	 */
 	public static function attr($name, $value) {
+		$value = str_replace("\n", ' ', $value);
 		if ($value === self::EMPTY_ATTRIBUTE) {
 			$value = '';
 		} else if (empty($value) && strval($value) !== '0') {
