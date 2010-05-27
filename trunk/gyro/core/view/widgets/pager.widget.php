@@ -124,6 +124,14 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	}
 	
 	/**
+	 * Returns URL for page $page
+	 */
+	public function get_page_url($page) {
+		$page_data = Arr::get_item($this->data['pages'], $page - 1);
+		return Arr::get_item($page_data, 'url', '');
+	}
+	
+	/**
 	 * Returns a next or prev link, depending on policy
 	 *
 	 * @param string $link
@@ -245,6 +253,7 @@ class WidgetPager implements IWidget {
 	const NO_FORCE_TOTAL_LINKS = 1024;
 	const DONT_INDEX_PAGE_2PP = 2048;
 	const DONT_CHANGE_TITLE = 4096;
+	const DONT_ADD_BREADCRUMB = 8192;
 	
 	public $data;
 	
@@ -269,7 +278,12 @@ class WidgetPager implements IWidget {
 		$view->assign('pager_calculator', $calculator);
 		$view->assign('page_data', $this->data['page_data']);
 		$view->render(); // this view should not return anything! 
-				
+		
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/pager.breadcrumb');
+		$view->assign('pager_calculator', $calculator);
+		$view->assign('page_data', $this->data['page_data']);
+		$view->render(); // this view should not return anything! 
+					
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/pager');
 		$view->assign('pager_calculator', $calculator);
 		return $view->render();
