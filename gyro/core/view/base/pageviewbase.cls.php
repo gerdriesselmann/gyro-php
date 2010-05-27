@@ -245,6 +245,12 @@ class PageViewBase extends ViewBase {
 		$this->assign('status', $this->page_data->status);
 		$this->assign('blocks', $this->page_data->blocks);
 		$this->assign('content', $this->page_data->content);
+		$breadcrumb = is_string($this->page_data->breadcrumb) ? $this->page_data->breadcrumb : WidgetBreadcrumb::output($this->page_data->breadcrumb);
+		if (Config::get_value(Config::VERSION_MAX) < 0.6) {
+			// In 0.5 PageData::breadcrumb is alwys the result of WidgetBreadcrumb 
+			$this->page_data->breadcrumb = $breadcrumb;
+		}
+		$this->assign('breadcrumb', $breadcrumb);
 		
 		if ($this->page_data->router) {
 			$this->assign('route_id', $this->page_data->router->get_route_id());
