@@ -269,9 +269,8 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	 */
 	public function build_url($absolute_or_relative, $params = null) {
 		$ret = $this->build_url_base($absolute_or_relative);
-		$ret .= $this->build_url_path($params);
+		$ret .= preg_replace('|/+|', '/', $this->build_url_path($params));
 		$ret = rtrim($ret, '.');
-		$ret = preg_replace('|/+|', '/', $ret);
 		return $ret;
 	}
 
