@@ -50,9 +50,11 @@ class WidgetItemMenu implements IWidget {
 			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'core::widgets/menu');
 			$view->assign('actions', $actions);
 			
-			Load::tools('formhandler');
-			$formhandler = new FormHandler('process_commands', 'process_commands', FormHandler::TOKEN_POLICY_REUSE);
-			$formhandler->prepare_view($view);
+			if (count($commands)) {
+				Load::tools('formhandler');
+				$formhandler = new FormHandler('process_commands', 'process_commands', FormHandler::TOKEN_POLICY_REUSE);
+				$formhandler->prepare_view($view);
+			}
 			
 			$view->assign('commands', $commands);
 			$view->assign('policy', $policy);
