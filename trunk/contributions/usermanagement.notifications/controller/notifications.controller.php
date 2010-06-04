@@ -154,16 +154,7 @@ class NotificationsController extends ControllerBase {
 	 * Send a mail digest
 	 */
 	public function action_notifications_digest(PageData $page_data) {
-		Load::models('notificationssettings');
-		$err = new Status();
-		
-		$possible_digests = NotificationsSettings::create_possible_digest_adapter();
-		$possible_digests->find();
-		while($possible_digests->fetch()) {
-			$cmd = CommandsFactory::create_command(clone($possible_digests), 'digest', false);
-			$err->merge($cmd->execute());
-		}
-		
-		$page_data->status = $err;
+		$cmd = CommandsFactory::create_command('notifications', 'digest', false);
+		$page_data->status = $cmd->execute();
 	}
 }
