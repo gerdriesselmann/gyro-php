@@ -110,7 +110,7 @@ class HttpRequest {
 			if (curl_setopt_array($ch, $options)) {
 				$ret = curl_exec ($ch);
 				if ($ret === false) {
-					$status->append(curl_error($ch));
+					$status->append($url . ': ' . curl_error($ch));
 					$err_no = curl_errno($ch);
 				}				
 			}
@@ -118,11 +118,11 @@ class HttpRequest {
 		catch (Exception $e) {
 			// Do nothing special here
 			if ($ch) {
-				$status->append(curl_error($ch));
+				$status->append($url . ': ' . curl_error($ch));
 				$err_no = curl_errno($ch);
 			}
 			else {
-				$status->append($e->getMessage());
+				$status->append($url . ': ' . $e->getMessage());
 				$err_no = 999;
 			}
 			$ret = false;
@@ -131,7 +131,7 @@ class HttpRequest {
 			@curl_close ($ch);
 		}
 		if (Config::has_feature(Config::LOG_HTTPREQUESTS)) {
-			$log = array($address, $err_no, $status->message);
+			$log = array($address, $err_no, $status->to_string(Status::OUTPUT_PLAIN));
 			Load::components('logger');
 			Logger::log('httprequests', $log);
 		}
