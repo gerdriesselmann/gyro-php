@@ -71,7 +71,7 @@ class FetchTweetsCommand extends CommandChain {
 		
 		$tweet->find(DataObjectBase::AUTOFETCH);
 		
-		$message = trim($s->text);
+		$message = ConverterFactory::decode($s->text, CONVERTER_TWITTER);
 		$tweet->message = $message;
 		$tweet->message_html = ConverterFactory::encode($message, CONVERTER_TWITTER, $policy);
 		$tweet->title = String::substr_word($message, 0, 120);

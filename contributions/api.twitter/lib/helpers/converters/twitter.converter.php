@@ -14,7 +14,7 @@ require_once GYRO_CORE_DIR . 'lib/helpers/converters/html.converter.php';
  * @ingroup Twitter
  * @author Gerd Riesselmann
  */
-class ConverterTwitter extends ConverterHtml {
+class ConverterTwitter implements IConverter {
 	const EXPAND_LINKS = 1024;
 	
 	public function encode($value, $params = false) {
@@ -56,5 +56,12 @@ class ConverterTwitter extends ConverterHtml {
 		$value = String::preg_replace($search, $replace, $value);
 		
 		return $value;
-	}	
+	}
+
+
+	public function decode($value, $params = false) {
+		$value = str_replace('&gt;', ">", $value);
+		$value = str_replace('&lt;', "<", $value);
+		return trim($value);		
+	} 		
 }
