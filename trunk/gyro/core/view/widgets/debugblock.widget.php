@@ -39,13 +39,14 @@ class WidgetDebugBlock implements IWidget {
 	protected function render_properties() {
 	   	$endtime = microtime(true);
 		$modules = Load::get_loaded_modules();
+		$count_queries = count(DB::$query_log);
 		$debugs = array(
 	  		'Memory' => String::number(memory_get_usage()/1024, 2) . ' KB',
 	  		'Memory Peak' => String::number(memory_get_peak_usage()/1024, 2) . ' KB',
 	  		'Execution time' => $this->duration($endtime - APP_START_MICROTIME),
 	   		'DB-Queries execution time' => $this->duration(DB::$queries_total_time),
-			'DB-Queries' => count(DB::$query_log),
-			'DB-Queries average time' => $this->duration(DB::$queries_total_time / count(DB::$query_log)),
+			'DB-Queries' => $count_queries,
+			'DB-Queries average time' => $this->duration(DB::$queries_total_time / max($count_queries, 1)),
 			'DB connect time' => $this->duration(DB::$db_connect_time),
 	  		'PHP-Version' => phpversion(),
 			'Generated' => GyroDate::local_date(time()),
