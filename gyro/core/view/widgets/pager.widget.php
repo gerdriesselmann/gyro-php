@@ -127,7 +127,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 * Returns URL for page $page
 	 */
 	public function get_page_url($page) {
-		$page_data = Arr::get_item($this->data['pages'], $page - 1);
+		$page_data = Arr::get_item($this->data['pages'], $page - 1, array());
 		return Arr::get_item($page_data, 'url', '');
 	}
 	
