@@ -12,7 +12,7 @@ require_once dirname(__FILE__) . '/dbsqlbuilder.select.cls.php';
  */
 class DBSqlBuilderCount extends DBSqlBuilderSelect {
 	protected function get_sql_template() {
-		return 'SELECT COUNT(%!fields) AS c FROM %!from%join%where';
+		return 'SELECT COUNT(%distinct%!fields) AS c FROM %!from%join%where';
 	}
 	
 	protected function get_substitutes() {
@@ -20,6 +20,7 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 		$ret = array(
 			'%!fields' => $this->get_fieldnames($this->get_field_array(), $table),
 			'%!from' => $this->get_table_and_alias($table),
+			'%distinct' => $this->get_feature_sql($this->params, 'distinct', 'DISTINCT '),
 			'%where' => $this->get_where($this->query->get_wheres()),
 			'%join' => $this->get_join($this->query->get_subqueries()),
 			'%having' => $this->get_having($this->query->get_havings()),
@@ -50,12 +51,12 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 	protected function get_fieldnames($arr_fields, IDBTable $table) {
     	$count_fields = '*';
     	$fieldnames = array();
-    	if (count($arr_fields) == 0) {
-    		// * on joins is no good idea
-	    	if (count($this->query->get_subqueries()) > 0) {
-				$arr_fields = array_keys($table->get_table_keys());
-	    	}
-		}
+//    	if (count($arr_fields) == 0) {
+//    		// * on joins is no good idea
+//	    	if (count($this->query->get_subqueries()) > 0) {
+//				$arr_fields = array_keys($table->get_table_keys());
+//	    	}
+//		}
 		
 		foreach($arr_fields as $key => $name) {
 			if (is_numeric($key)) {
@@ -66,9 +67,13 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 			}
 		}		
 		if (count($fieldnames) > 0) {
-	    	$count_fields = 'DISTINCT ' . implode(', ', $fieldnames);
+	    	$count_fields = implode(', ', $fieldnames);
 	    }
 		
+	    if ($count_fields == '*') {
+	    	unset($this->params['distinct']);
+	    }
+	    
     	return $count_fields;
 	}
 }
