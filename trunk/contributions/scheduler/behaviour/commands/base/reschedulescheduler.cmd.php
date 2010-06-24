@@ -127,7 +127,7 @@ class RescheduleSchedulerBaseCommand extends CommandChain {
 		return array(
 			'runs_success' => $task->runs_success,
 			'runs_error' => $task->runs_error + 1,
-			'error_message' => $err->message,
+			'error_message' => $err->to_string(Status::OUTPUT_PLAIN),
 		);		
 	}
 	
