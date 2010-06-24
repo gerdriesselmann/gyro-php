@@ -15,7 +15,7 @@ else {
 		else {
 			$success = false;
 			$out .= tr('Error', 'systemupdates');
-			$out .= "\n -- " . tr('Message: %message', 'systemupdate', array('%message' => $status->message));
+			$out .= "\n -- " . tr('Message: %message', 'systemupdate', array('%message' => $status->to_string(Status::OUTPUT_PLAIN)));
 		}
 		$out .= "\n -- ". tr('Task: %task', 'systemupdates', array('%task' => $log['task']));
 		$out .= "\n\n";
