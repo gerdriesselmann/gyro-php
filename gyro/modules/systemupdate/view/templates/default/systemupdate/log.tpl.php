@@ -16,7 +16,7 @@ else {
 		}
 		else {
 			$success = false;
-			$status_message = html::span(String::escape($status->message), 'error');
+			$status_message = html::span($status->to_string(), 'error');
 		}
 		
 		$sub_li = array();

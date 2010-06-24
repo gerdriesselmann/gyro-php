@@ -16,8 +16,8 @@ switch ($page_data->status_code) {
 	default:
 		break;
 }
-if ($page_data->status && $page_data->status->message) {
-	print ConverterFactory::decode($page_data->status->message, ConverterFactory::HTML) . "\n";
+if ($page_data->status) {
+	$page_data->status->display(Status::OUTPUT_PLAIN) . "\n";
 }
 if ($content) {
 	print $content . "\n";
