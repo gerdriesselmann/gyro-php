@@ -63,7 +63,9 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 				$fieldnames[] = $this->prefix_column($name, $table);
 			}
 			else {
-				$fieldnames[] = $this->prefix_column($key, $table);
+				if (!$this->is_function($key)) {
+					$fieldnames[] = $this->prefix_column($key, $table);
+				}
 			}
 		}		
 		if (count($fieldnames) > 0) {
