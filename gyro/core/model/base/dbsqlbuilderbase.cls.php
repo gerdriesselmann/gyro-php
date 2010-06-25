@@ -156,7 +156,7 @@ class DBSqlBuilderBase implements IDBSqlBuilder {
 		if (strpos($column, '.') !== false) {
 			$ret = true; // Already prefixed
 		}
-		else if (strpos($column, '(') !== false) {
+		else if ($this->is_function($column)) {
 			$ret = true; // a fucntion
 		}
 		else {
@@ -164,5 +164,12 @@ class DBSqlBuilderBase implements IDBSqlBuilder {
 			$ret = ($test === '"' || $test === "'");
 		}
 		return $ret;
+	}
+	
+	/**
+	 * Returns true, if column passed is a function
+	 */
+	protected function is_function($column) {
+		return (strpos($column, '(') !== false);
 	}
 }
