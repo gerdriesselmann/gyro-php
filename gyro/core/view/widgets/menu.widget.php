@@ -33,12 +33,20 @@ class WidgetItemMenu implements IWidget {
 		$sources = $this->retrieve_actions($this->item);
 		$commands = array();
 		$actions = array();
+		$has_commands = false;
 		
 		if (Common::flag_is_set($policy, self::SEPARATE_COMMANDS)) {
 			$this->separate($sources, $actions, $commands);
+			$has_commands = (count($commands) > 0);
 		}
 		else {
 			$actions = $sources;
+			foreach($sources as $s) {
+				if ($s instanceof ICommand) {
+					$has_commands = true;
+					break;
+				}
+			}
 		}
 		
 		if (Common::flag_is_set($policy, self::SORTED)) {
@@ -46,11 +54,11 @@ class WidgetItemMenu implements IWidget {
 			$this->sort($commands);
 		}
 		
-		if (count($actions)) {
+		if ($has_commands || count($actions)) {
 			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'core::widgets/menu');
 			$view->assign('actions', $actions);
 			
-			if (count($commands)) {
+			if ($has_commands) {
 				Load::tools('formhandler');
 				$formhandler = new FormHandler('process_commands', 'process_commands', FormHandler::TOKEN_POLICY_REUSE);
 				$formhandler->prepare_view($view);
