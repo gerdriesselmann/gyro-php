@@ -61,6 +61,9 @@ class DBSqlBuilderWhereSphinx extends DBSqlBuilderWhere {
 			if (strpos($str_failures, substr($ret, -1)) !== false) {
 				$ret = substr($ret, 0, -2);
 			}
+			else {
+				break;
+			}
 		}
 		return $ret;
 	}
