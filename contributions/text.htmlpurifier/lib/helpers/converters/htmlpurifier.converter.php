@@ -19,7 +19,6 @@ class ConverterHtmlPurifier implements IConverter {
 		$config->set('Core.Encoding', GyroLocale::get_charset());
 		$config->set('Cache.SerializerPath', Config::get_value(Config::TEMP_DIR) . 'htmlpurifier');
 
-		//$config->set('AutoFormat.AutoParagraph', true);		
 		$config->set('HTML.TidyLevel', 'medium');
 		
 		$config->loadArray(Arr::force($params, false));
