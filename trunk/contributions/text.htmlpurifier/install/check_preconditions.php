@@ -1,7 +1,12 @@
 <?php
 function text_htmlpurifier_check_preconditions() {
 	$ret = new Status();
-	$basedir = Config::get_value(Config::TEMP_DIR) . 'htmlpurifier/'; 
+	$basedir = Config::get_value(Config::TEMP_DIR) . 'htmlpurifier/';
+	if (!file_exists($basedir)) {
+		mkdir($basedir);
+		chmod($basedir, 0777);
+	}
+	
 	$dirs = array('CSS', 'HTML', 'URI');
 	foreach($dirs as $dir) {
 		$dir = $basedir . $dir;
