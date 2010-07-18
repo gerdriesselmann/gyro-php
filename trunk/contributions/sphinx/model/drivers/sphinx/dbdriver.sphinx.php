@@ -194,6 +194,7 @@ class DBDriverSphinx implements IDBDriver {
 		$this->client->SetFieldWeights(Arr::get_item($features, self::FEATURE_WEIGHTS, array()));
 		
 		// query
+		$this->client->SetMatchMode(SPH_MATCH_EXTENDED);
 		$result = $this->client->Query($terms, $index_name);
 		if (isset($features['count'])) {
 			return new DBResultSetCountSphinx($result, $this->get_status());
@@ -211,6 +212,15 @@ class DBDriverSphinx implements IDBDriver {
 	 */
 	public function explain($sql) {
 		return false;
+	}	
+	
+	/**
+	 * Make this driver the default driver
+	 * 
+	 * @return Status
+	 */
+	public function make_default() {
+		return new Status();
 	}	
 	
 	/**
