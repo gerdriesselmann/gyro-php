@@ -77,7 +77,7 @@ class DBSqlBuilderBase implements IDBSqlBuilder {
 	}
 
 	protected function get_table(IDBTable $table) {
-		return $table->get_table_name();
+		return $table->get_table_name_escaped();
 	}
 
 	protected function get_order_by($arr_orders) {
