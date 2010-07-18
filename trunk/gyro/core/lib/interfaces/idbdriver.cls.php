@@ -98,6 +98,13 @@ interface IDBDriver {
 	 * @return IDBResultSet False if quey cant be explain or driver does not support it
 	 */
 	public function explain($sql);
+
+	/**
+	 * Make this driver the default driver
+	 * 
+	 * @return Status
+	 */
+	public function make_default();
 	
 	/**
 	 * Start transaction
