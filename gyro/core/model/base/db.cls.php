@@ -275,8 +275,9 @@ class DB {
 	 */
 	public static function execute_script($file, $connection = self::DEFAULT_CONNECTION) {
 		$status = new Status();
-		$conn = self::get_connection($connection);
 		if (file_exists($file)) {
+			$conn = self::get_connection($connection);
+			$conn->make_default();
 			$handle = fopen($file, 'r');
 			$dao = self::create('cache');
 			while($query = self::extract_next_sql_statement($handle)) {
@@ -285,6 +286,8 @@ class DB {
 				}
 			}
 			fclose($handle);
+			$def = self::get_connection();
+			$def->make_default();
 		}
 		else {
 			$status->append(tr('File %file not found', 'core', array('%file' => $file)));

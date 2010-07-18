@@ -78,15 +78,17 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	private function connect() {
 		if ($this->db_handle === false) {
-			$success = false;
+			$err = new Status();
 			$this->db_handle = mysql_connect(
 				$this->connect_params['host'], 
 				$this->connect_params['user'],
 				$this->connect_params['pwd']
 			);
 			if ($this->db_handle) {
-				$success = ($this->type == self::SECONDARY) ? true : mysql_select_db($this->connect_params['db'], $this->db_handle);
-				if($success) {
+				if ($this->type == self::PRIMARY) {
+					$err->merge($this->make_default());
+				} 
+				if ($err->is_ok()) {
 					// We are connected
 					if (GyroLocale::get_charset() == 'UTF-8') {
  						$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
@@ -94,13 +96,15 @@ class DBDriverMysql implements IDBDriver {
  					//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
 				}
 			}
-			
-			if (!$success) {
-				throw new Exception(tr(
-					'Could not connect to database %db on server %host', 
+			else {
+				$err->append(tr(
+					'Could not connect to server %host', 
 					'core', 
-					array('%db' => $this->connect_params['db'], '%host' => $this->connect_params['host'])
+					array('%host' => $this->connect_params['host'])
 				));
+			}
+			if ($err->is_error()) {
+				throw new Exception($err->to_string(Status::OUTPUT_PLAIN));
 			}
 		}
 	}
@@ -191,6 +195,23 @@ class DBDriverMysql implements IDBDriver {
 			$ret = $this->query($sql);
 		}
 		return $ret;
+	}	
+	
+	/**
+	 * Make this driver the default driver
+	 * 
+	 * @return Status
+	 */
+	public function make_default() {
+		$ret = new Status();
+		if (!mysql_select_db($this->connect_params['db'], $this->db_handle)) {
+			$ret->append(tr(
+				'Could not connect to database %db on server %host', 
+				'core', 
+				array('%db' => $this->connect_params['db'], '%host' => $this->connect_params['host'])
+			));
+		}	
+		return $ret;	
 	}	
 	
 	/**
