@@ -74,12 +74,26 @@ class GeoCoordinate {
 	 * Calculates distance between this and other points
 	 * 
 	 * @param GeoCoordinate $other Coordinate of point
-	 * @return float Distance in km
+	 * @return float Distance in km or FALSE if one of the coordinates is invalid
 	 */
 	public function distance_to($other) {
-		return GeoCalculator::distance($this->lat, $this->lon, $other->lat, $other->lon);
+		$ret = false;
+		if ($this->is_valid() && $other->is_valid()) {
+			$ret = GeoCalculator::distance($this->lat, $this->lon, $other->lat, $other->lon);
+		}
+		return $ret;
 	}	
 
+	/**
+	 * Returns true, if this coordinate is valid
+	 * 
+	 * Invalid coordinates can be created by passing NULL or a string to contructor
+	 * 
+	 * @return bool
+	 */
+	public function is_valid() {
+		return is_numeric($this->lat) && is_numeric($this->lon);
+	}
 
 	/**
 	 * Compute bounding box
