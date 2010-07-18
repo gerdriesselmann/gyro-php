@@ -38,7 +38,7 @@ class DBSqlBuilderWhereSphinx extends DBSqlBuilderWhere {
 	 * @param mixed $value
 	 * @param IDTable $table
 	 */
-	protected function process_as_query($columm, $operator, $value, $table) {
+	protected function process_as_query($column, $operator, $value, $table) {
 		if (empty($operator)) {
 			return $column;
 		}
