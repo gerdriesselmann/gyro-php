@@ -16,6 +16,9 @@ class ConverterUnidecode implements IConverter {
 	 */
 	public function encode($value, $params = false) {
 		// We need 
+		if (empty($params)) {
+			$params = GyroLocale::get_charset();
+		}
 		$value = String::convert($value, $params, 'UTF-16');
 		$value = $this->unidecode($value);
 			
