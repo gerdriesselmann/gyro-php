@@ -12,7 +12,7 @@ class ConverterPunycode implements IConverter {
 		$inst = $this->create_converter();
 		$ret = false;
 		if ($inst) {
-			$ret = $inst->encode($value);
+			$ret = $inst->encode(trim($value));
 		}
 		return $ret;
 	}
@@ -21,7 +21,7 @@ class ConverterPunycode implements IConverter {
 		$inst = $this->create_converter();
 		$ret = false;
 		if ($inst) {
-			$ret = $inst->decode($value);
+			$ret = $inst->decode(trim($value));
 		}
 		return $ret;		
 	} 	
@@ -30,4 +30,3 @@ class ConverterPunycode implements IConverter {
 		return new idna_convert();
 	}
 } 
-?>
