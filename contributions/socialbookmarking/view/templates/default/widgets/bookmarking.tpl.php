@@ -4,7 +4,7 @@ $url = Url::current()->build();
 foreach($services as $service) {
 	$s_url = $service->get_url($page_data->head->title, $url);
 	$li[] = html::a(
-		html::img($service->get_image_path(), ''),
+		html::img($service->get_image_path(), '', array('width' => 16, 'height' => 16)),
 		$s_url,
 		$service->service,
 		array('target' => '_blank')	
