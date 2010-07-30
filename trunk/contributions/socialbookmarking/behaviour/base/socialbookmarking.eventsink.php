@@ -16,7 +16,7 @@ class SocialBookmarkingEventSink implements IEventSink {
 	 * @param mixed Event parameter(s)
 	 */
 	public function on_event($event_name, $event_params, &$result) {
-		if ($event_name == 'jcssmanager_compress' || $event_name == 'jcssmanager_collect') {
+		if ($event_name == 'jcssmanager_compress') {
 			switch($event_params) {
 				case JCSSManager::TYPE_CSS:
 					$result['socialbookmarking'] = array('css/socialbookmarking.css');
