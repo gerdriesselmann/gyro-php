@@ -20,3 +20,4 @@
  * // prints the three desired bookmarks
  * @endcode
  */
+EventSource::Instance()->register(new SocialBookmarkingEventSink());
