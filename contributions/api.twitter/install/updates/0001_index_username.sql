@@ -1,0 +1,1 @@
+ALTER TABLE `tweets` ADD INDEX `i_tweets_username`(`username`);
