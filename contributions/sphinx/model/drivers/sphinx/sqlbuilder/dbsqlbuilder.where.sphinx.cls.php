@@ -78,7 +78,7 @@ class DBSqlBuilderWhereSphinx extends DBSqlBuilderWhere {
 	 */
 	protected function process_as_filter($columm, $operator, $value) {
 		$exclude = false;
-		$values = Arr::force($value, false);
+		$values = Arr::force($value, true);
 		switch ($operator) {
 			case '=':
 			case DBWhere::OP_IN:
