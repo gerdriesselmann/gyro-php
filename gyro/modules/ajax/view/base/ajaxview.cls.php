@@ -41,7 +41,7 @@ class AjaxView extends PageViewBase {
 				$data['result'] = $this->page_data->ajax_data;
 				break;
 		} 
-		$date['is_error'] = $is_error;
+		$data['is_error'] = $is_error;
 		$rendered_content = ConverterFactory::encode($data, CONVERTER_JSON);
 	}
 
