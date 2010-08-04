@@ -80,7 +80,7 @@ class AjaxView extends PageViewBase {
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
 			header('Cache-Control: maxage=3600'); //Fix for IE in SSL 
 			header('Pragma: public');
-			header('Content-Length: ') . strlen($rendered_content);			
+			//header('Content-Length: ') . strlen($rendered_content);			
 			header('Content-Type: application/json');
 		}
 	}	
