@@ -11,6 +11,9 @@
  * get included on all pages, if JCSSManager WidgetJCSS is used. It also will be compressed by JCSSManager, 
  * if compression is enabled.
  * 
+ * To dissable automatic inclusion of jquery.js set constant APP-JQUERY_ON_EVERY_PAGE to false, and include
+ * 'js/jquery.js' manually where approbiate.  
+ * 
  * To define the version of JQuery to use, you must specify a version to use by defining
  * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, and "1.4" for JQuery 1.4.2. 
  * The default is "1.3".
@@ -34,7 +37,8 @@ EventSource::Instance()->register(new JavascriptJQueryEventSink());
  */
 class ConfigJQuery {
 	const JQUERY_VERSION = 'JQUERY_VERSION';
+	const JQUERY_ON_EVERY_PAGE = 'JQUERY_ON_EVERY_PAGE';
 }
 
 Config::set_value_from_constant(ConfigJQuery::JQUERY_VERSION, 'APP_JQUERY_VERSION', '1.3');
-
+Config::set_feature_from_constant(ConfigJQuery::JQUERY_ON_EVERY_PAGE, 'APP_JQUERY_ON_EVERY_PAGE', true);
