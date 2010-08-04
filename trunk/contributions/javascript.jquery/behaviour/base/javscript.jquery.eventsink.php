@@ -16,12 +16,17 @@ class JavascriptJQueryEventSink implements IEventSink {
 	 * @param mixed Event parameter(s)
 	 */
 	public function on_event($event_name, $event_params, &$result) {
-		if ($event_name == 'jcssmanager_compress' || $event_name == 'jcssmanager_collect') {
-			switch($event_params) {
-				case JCSSManager::TYPE_JS:
+		switch ($event_name) {
+			case 'jcssmanager_compress':
+				if ($event_params == JCSSManager::TYPE_JS) {
 					array_unshift($result, 'js/jquery.js');
-					break;
-			}
+				}
+				break;
+			case 'jcssmanager_collect':
+				if ($event_params == JCSSManager::TYPE_JS && Config::has_feature(ConfigJQuery::JQUERY_ON_EVERY_PAGE)) {
+					array_unshift($result, 'js/jquery.js');
+				}
+				break;
 		}
 	}
 }
