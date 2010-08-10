@@ -6,9 +6,24 @@
  * @ingroup Model
  */
 class DBFieldInt extends DBField {
+	/**
+	 * This field is autoincremented
+	 */
 	const AUTOINCREMENT = 4; 
+	/**
+	 * This field is unsigned
+	 */
 	const UNSIGNED = 2; 
-
+	
+	/**
+	 * Convenience declaration: Combines AUTOINCREMENT, UNSIGNED, and NOT_NULL
+	 */
+	const PRIMARY_KEY = 7; // self::AUTOINCREMENT | self::UNSIGNED | self::NOT_NULL
+	/**
+	 * Convenience declaration: Combines UNSIGNED, and NOT_NULL
+	 */
+	const FOREIGN_KEY = 3; // self::UNSIGNED | self::NOT_NULL
+	
 	public function __construct($name, $default_value = 0, $policy = self::NOT_NULL) {
 		parent::__construct($name, $default_value, $policy);
 	}
