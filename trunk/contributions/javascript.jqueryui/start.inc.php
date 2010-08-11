@@ -10,7 +10,7 @@
  * On install, the module copies JQuery UI Javascript and CSS files folders below web root.
  * 
  * To define the version of JQueryUI to use, use the constant APP_JQUERYUI_VERSION. 
- * Valid values are  "1.7" for JQueryUI 1.7.2, and "1.8" for JQueryUI 1.8.1. 
+ * Valid values are  "1.7" for JQueryUI 1.7.2, and "1.8" for JQueryUI 1.8.4. 
  * Default is "1.7":
  * 
  * @code
