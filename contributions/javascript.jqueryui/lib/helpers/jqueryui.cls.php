@@ -365,6 +365,7 @@ class JQueryUI {
 	private static function get_components_having_css() {
 		$ret = self::get_all_widgets();
 		$ret[] = self::FEATURE_RESIZABLE;
+		$ret[] = self::FEATURE_SELECTABLE;
 		return $ret;
 	}
 }
