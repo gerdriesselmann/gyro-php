@@ -27,7 +27,7 @@
  * public function on_event($name, $params, &$result) {
  *   switch ($name) {
  *     case 'gsitemap_index':
- *       $result[] = 'photos1';
+ *       $result[] = 'photos';
  *       break;
  *     case 'gsitemap_site':
  *       if ($params == 'photos') {
@@ -57,6 +57,20 @@
  *           GsitemapController::build_sitemap('photos', $params, GsitemapController::ITEMS_PER_FILE, GsitemapController::NO_TIMESTAMP)
  *        );
  *        break; 
+ *   }
+ * }
+ * @endcode
+ * 
+ * This can be even more simplified by adding your model on the gsitemap_models event.
+ * 
+ * @attention The module assume there is an action "view" defined for the given model.
+ * 
+ * @code
+ * public function on_event($name, $params, &$result) {
+ *   switch ($name) {
+ *     case 'gsitemap_models':
+ *        $result[] = 'photos';
+ *        break;
  *   }
  * }
  * @endcode

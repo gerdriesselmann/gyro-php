@@ -82,6 +82,11 @@ class GsitemapController extends ControllerBase {
 	 */
 	protected function gsitemap_index(PageData $page_data, IView $view) {
 		$arrret = array('main');
+		$models = array();
+		EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
+		foreach($models as $model) {
+			$arrret[] = array_merge($arrret, self::build_sitemap_index($model));
+		}
  		EventSource::Instance()->invoke_event('gsitemap_index', null, $arrret);
  		$view->assign('files', $arrret); 		
  		
@@ -110,6 +115,13 @@ class GsitemapController extends ControllerBase {
 				'url' => Config::get_url(Config::URL_BASEURL),
 				'lastmod' => 0 
 			);
+ 		}
+ 		else {
+			$models = array();
+			EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
+			foreach($models as $model) {
+				$arrret = array_merge($arrret, self::build_sitemap($model, $p));
+			}
  		}
  		EventSource::Instance()->invoke_event('gsitemap_site', $p, $arrret);
  		if (count($arrret) == 0) {
