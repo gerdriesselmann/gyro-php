@@ -85,7 +85,7 @@ class GsitemapController extends ControllerBase {
 		$models = array();
 		EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
 		foreach($models as $model) {
-			$arrret[] = array_merge($arrret, self::build_sitemap_index($model));
+			$arrret = array_merge($arrret, self::build_sitemap_index($model));
 		}
  		EventSource::Instance()->invoke_event('gsitemap_index', null, $arrret);
  		$view->assign('files', $arrret); 		
