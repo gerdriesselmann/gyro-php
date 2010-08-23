@@ -6,6 +6,8 @@
  * @ingroup Lib
  */
 class GyroLocale {
+	const UTF8 = 'UTF-8';
+	
 	private static $language = APP_LANG;
 	private static $charset = APP_CHARSET;
 	
@@ -100,6 +102,12 @@ class GyroLocale {
 		return self::$charset;
 	}
 	
+	/**
+	 * Returns true, if charset is UTF-8
+	 */
+	public static function is_utf8() {
+		return strtoupper(self::get_charset()) == self::UTF8;			
+	}
 }
 
 if (!class_exists('Locale')) {
