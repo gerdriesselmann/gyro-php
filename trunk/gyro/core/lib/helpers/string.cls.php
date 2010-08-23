@@ -364,12 +364,21 @@ class String {
 		return self::$impl->substr($val, $start, $length);
 	}
 
-	public static function substr_word($val, $start, $max_length) {
+	/**
+	 * Get substr, but respect word boundaries
+	 * 
+	 * @param string $val 
+	 * @param int $start Start of substr (usually 0)
+	 * @param int $max_length Maximum length of substring
+	 * @param bool $elipsis Append "..." to the string
+	 */
+	public static function substr_word($val, $start, $max_length, $elipsis = false) {
 		$val .= ' ';
 		$ret = self::substr($val, $start, $max_length);
 		$pos = self::strrpos($ret, ' ');
 		if ($pos === false) {
 			// No space found in given substr.
+			// Check if a space follows substring
 			$test = self::substr($val, $start + $max_length, 1);
 			if ($test != '' && $test != ' ') {
 				$ret = '';
@@ -377,6 +386,9 @@ class String {
 		}
 		else {
 			$ret = self::substr($ret, 0, $pos);
+		}
+		if ($elipsis && $ret) {
+			$ret .= '...';
 		}
 
 		return $ret;
