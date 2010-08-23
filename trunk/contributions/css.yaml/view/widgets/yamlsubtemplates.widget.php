@@ -4,23 +4,23 @@
  */
 class WidgetYAMLSubtemplates implements IWidget {
 	/**
-	 * Two cols à 50%
+	 * Two cols ï¿½ 50%
 	 */
 	const SLOTS_2_50 = '2';
 	/**
-	 * Two cols à 25% and 75%
+	 * Two cols ï¿½ 25% and 75%
 	 */
 	const SLOTS_2_25_75 = '25_75';
 	/**
-	 * Two cols à 75% and 25%
+	 * Two cols ï¿½ 75% and 25%
 	 */
 	const SLOTS_2_75_25 = '75_25';
 	/**
-	 * Two cols à 33% and 66%
+	 * Two cols ï¿½ 33% and 66%
 	 */
 	const SLOTS_2_33_66 = '33_66';
 	/**
-	 * Two cols à 33% and 66%
+	 * Two cols ï¿½ 33% and 66%
 	 */
 	const SLOTS_2_66_33 = '66_33';
 	/**
@@ -32,16 +32,17 @@ class WidgetYAMLSubtemplates implements IWidget {
 	 */
 	const SLOTS_2_GOLDEN_RATIO_RIGHT = 'golden_ratio_right';
 	/**
-	 * Three cols à 33%
+	 * Three cols ï¿½ 33%
 	 */
 	const SLOTS_3_33 = '3';
 	/**
-	 * Four cols à 25%
+	 * Four cols ï¿½ 25%
 	 */
 	const SLOTS_4_25 = '4';
 	
 	protected $slotwidths;
 	protected $data;
+	protected $cls;
 	
 	/**
 	 * Output a subtemplate
@@ -49,12 +50,12 @@ class WidgetYAMLSubtemplates implements IWidget {
 	 * @param $arr_data Array of HTML elemtns for subtemplates
 	 * @param $arr_slotwidths Either array of slot widths, or One of the SLOT_* constants
 	 */
-	public static function output($arr_data, $arr_slotswidths) {
-		$w = new WidgetYAMLSubtemplates($arr_data, $arr_slotswidths);
+	public static function output($arr_data, $arr_slotswidths, $cls = '') {
+		$w = new WidgetYAMLSubtemplates($arr_data, $arr_slotswidths, $cls);
 		return $w->render();
 	}
 	
-	public function __construct($arr_data, $arr_slotswidths) {
+	public function __construct($arr_data, $arr_slotswidths, $cls) {
 		$this->data = $arr_data;
 		if (is_array($arr_slotswidths)) {
 			$this->slotwidths = $arr_slotswidths;
@@ -62,6 +63,7 @@ class WidgetYAMLSubtemplates implements IWidget {
 		else {
 			$this->slotwidths = $this->translate_slot($arr_slotswidths);
 		}
+		$this->cls = $cls;
 	}
 	
 	protected function translate_slot($slot) {
@@ -97,7 +99,7 @@ class WidgetYAMLSubtemplates implements IWidget {
 				$row .= html::div(html::div(array_shift($this->data), $slot['subc']), $slot['cls']);
 				$row .= "\n";
 			}
-			$ret .= html::div($row, 'subcolumns') . "\n";
+			$ret .= html::div($row, 'subcolumns ' . $this->cls) . "\n";
 		}
 		return $ret;
 	}
