@@ -102,6 +102,9 @@ class GeoCoordinate {
 	 * @param float $we_radius Radius of bound box in west to east direction
 	 * 
 	 * @return array Array with two elements 'min' and 'max', containing a GeoCoordinate instance 
+	 * 
+	 * @attention The bounding box is a rectangle, so the distance to elements located within the 
+	 *            corners of that rectangle may be larger than the radius passed.
 	 */
 	public function bounding_box($ns_radius, $we_radius) {
 		$arr = GeoCalculator::bounding_box($this->lat, $this->lon, $ns_radius, $we_radius);

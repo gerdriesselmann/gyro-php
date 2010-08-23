@@ -15,4 +15,7 @@
  * Load::components('geocalculator');
  * $distance = GeoCalculator::distance($lat1, $lon1, $lat2, $lon2);
  * @endcode
+ * 
+ * Additionally a class GeoCoordinate can be used that encapsulates latitude and longitude, 
+ * and offers the same calculations then GeoCalculator does.  
  */
