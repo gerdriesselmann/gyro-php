@@ -21,10 +21,23 @@
  * @code
  * $clean = ConverterFactory::encode($dirty, CONVERTER_HTMLPURIFIER);
  * @endcode
+ * 
+ * You may pass HtmlPurifier specific parameters like this:
+ * 
+ * @code
+ * $clean = ConverterFactory::encode($dirty, CONVERTER_HTMLPURIFIER, array('HTML.TidyLevel' => 'heavy'));
+ * @endcode
+ * 
+ * For a list of possible values see http://htmlpurifier.org/live/configdoc/plain.html
+ * 
+ * The module comes with a DBField that purifies its content before storing it in the database. Most 
+ * likely, you will overload it to fit your needs, though. 
  *
  * @section Notes Additional notes
  * 
- * HTML Purifier is released under GNU Lesser General Public License
+ * HTML Purifier is released under GNU Lesser General Public License.
+ * 
+ * The version contained within this module is 4.1.1.
  * 
  * @see http://htmlpurifier.org/
  *   
