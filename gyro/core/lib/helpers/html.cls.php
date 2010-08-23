@@ -367,6 +367,10 @@ class html
 	
 	/**
 	 * Returns html to embed flash files
+	 * 
+	 * @param string $file URL of flash file
+	 * @param array $attrs HTML attributes fo robject tag
+	 * @param array $params Flahs params (rendered as param tags)  
 	 */
 	public static function flash($file, $attrs = array(), $params = array()) {
 		// See http://latrine.dgx.cz/how-to-correctly-insert-a-flash-into-xhtml
@@ -375,7 +379,7 @@ class html
 			$params['wmode'] = 'transparent';
 		}
 		$param_tags = '';
-				foreach($params as $key => $value) {
+		foreach($params as $key => $value) {
 			$param_tags .= self::tag_selfclosing('param', array('name' => $key, 'value' => $value)) . "\n";
 		}
 		
