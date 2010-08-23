@@ -30,7 +30,10 @@ class InputWidgetBase extends InputWidgetBaseBase {
 				break;
 			case 'submit':
 				$type = 'button';
-				break;			
+				break;	
+			case 'multiselect':
+				$type = 'select';
+				break;		
 		}
 		
 		$ret = html::div($output, "type-$type");
