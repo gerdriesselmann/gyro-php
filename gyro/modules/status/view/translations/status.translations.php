@@ -5,7 +5,7 @@
  * @author Gerd Riesselmann
  * @ingroup Status
  */
-function users_load_translations($languages) {
+function status_load_translations($languages) {
 	return array(
 		Stati::UNCONFIRMED => array(
 			'en' => 'Unconfirmed',
