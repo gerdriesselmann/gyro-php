@@ -53,7 +53,8 @@ class html
 	 *
 	 * @param String The title of the page
 	 * @param String Optional. A wider description of the page
-	 * @returns String The HTML code for title and meta tags
+	 * 
+	 * @return String The HTML code for title and meta tags
 	 */
 	public static function title($text, $descr = "") {
 		$arrFilter = array("-", ",", ".", "(", ")", ":", "'", '"', "&");
@@ -68,6 +69,15 @@ class html
 		return $ret;
 	}
 
+	/**
+	 * Output image tag
+	 * 
+	 * @param string $path URL of image
+	 * @param string $alt Alt text
+	 * @param array $attrs HTML attributes
+	 * 
+	 * @return string 
+	 */
 	public static function img($path, $alt, $attrs = array()) {
 		if ($alt === '') {
 			$alt = self::EMPTY_ATTRIBUTE;
@@ -81,7 +91,7 @@ class html
 	 * Static. Returns $text formatted error.
 	 *
 	 * @param String The Error Message
-	 * @returns String The HTML Code for outputting an error
+	 * @return String The HTML Code for outputting an error
 	 */
 	public static function error($text) {
 		return html::p($text, "error");
@@ -103,40 +113,100 @@ class html
 		return html::p($text, "info");
 	}
 
+	/**
+	 * A div tag
+	 * 
+	 * @param string $text Content within div
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <div class="$cls>$text</div>
+	 */
 	public static function div($text, $cls = '') {
 		return html::tag('div', $text, array('class' => $cls));
 	}
 
+	/**
+	 * A p tag
+	 * 
+	 * @param string $text Content within tag
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <p class="$cls>$text</p>
+	 */
 	public static function p($text, $cls = '') {
 		return html::tag('p', $text, array('class' => $cls));
 	}
 
+	/**
+	 * A span tag
+	 * 
+	 * @param string $text Content within tag
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <span class="$cls>$text</span>
+	 */
 	public static function span($text, $cls = '') {
 		return html::tag('span', $text, array('class' => $cls));
 	}
 
 
+	/**
+	 * A strong tag
+	 * 
+	 * @param string $text Content within tag
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <strong class="$cls>$text</strong>
+	 */
 	public static function b($text, $cls = "") {
 		return html::tag('strong', $text, array('class' => $cls));
 	}
 
+	/**
+	 * An em tag
+	 * 
+	 * @param string $text Content within tag
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <em class="$cls>$text</em>
+	 */
 	public static function em($text, $cls = "") {
 		return html::tag('em', $text, array('class' => $cls));
 	}
 	
+	/**
+	 * A heading
+	 * 
+	 * @param string $text Content within tag
+	 * @param int $level The level of heading (1 to 6). 1 creates h1, 2 creates h2 etc... 
+	 * @param string $cls HTML class
+	 * 
+	 * @return string <h$level class="$cls>$text</h$level>
+	 */
 	public static function h($text, $level, $cls="") 	{
 		return html::tag('h' . $level, $text, array('class' => $cls));
 	}
 
 	/**
-	 * returns a tag surrounding text
+	 * Tag surrounding text
+	 * 
+	 * @param string $tag Tag name
+	 * @param string $text Content within tag
+	 * @param array $attrs HTML attributes as associative array of name => value
+	 * 
+	 * @return string <tag attrs>text</tag>
 	 */
 	public static function tag($tag, $text, $attrs = array()) {
 		return '<' . $tag . html::attrs($attrs) . ">" . $text . "</" . $tag . ">";
 	}
 
 	/**
-	 * Returns a self closing tag
+	 * Self closing tag
+	 * 
+	 * @param string $tag Tag name
+	 * @param array $attrs HTML attributes as associative array of name => value
+	 * 
+	 * @return string <tag attrs />
 	 */
 	public static function tag_selfclosing($tag, $attrs = array()) {
 		return '<' . $tag . html::attrs($attrs) . " />";
@@ -144,11 +214,16 @@ class html
 
 
 	/**
-	 * Returns HTMl code for a list
+	 * Returns HTML code for a list
+	 * 
+	 * The list's items are provided with special classes:
+	 * 
+	 * - Even/uneven
+	 * - First and last 
 	 *
-	 * @param Array Array of list items
-	 * @param String Possible class name
-	 * @param Boolean True if list shoudl be ordered
+	 * @param array $items Array of list items
+	 * @param string $cls Possible class name. The class is assigned to both items and container (ul/ol)
+	 * @param Boolean True if list should be ordered, that is coantiner shouldbe ol not ul
 	 * @return String
 	 */
 	public static function li($items, $cls = '', $useOrdered = false) {
@@ -175,6 +250,44 @@ class html
 		return html::tag($tag, $li, array('class' => $cls));
 	}
 
+	/**
+	 * Returns HTML code for a definition list
+	 * 
+	 * The list topics and descriptions are provided with special classes:
+	 * 
+	 * - Even/uneven
+	 * - First and last 
+	 *
+	 * @param array $items Array of list items as associative array with topic => description
+	 * @param string $cls Possible class name. The class is assigned to topics, descriptions, and container
+	 * @return String
+	 */
+	public static function dl($items, $cls = '') {
+		$c = count($items);
+		if ($c == 0) {
+			return ''; 
+		}
+		
+		$list = "\n";
+		$i = 0;
+		foreach($items as $dt => $dd) {
+			$arr_cls = array($cls);
+			$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
+			if ($i === 1) {
+				$arr_cls[] = 'first';
+			}
+			if ($i === $c) {
+				$arr_cls[] = 'last';
+			}
+			$list .= html::tag('dt', $dt, array('class' => $arr_cls));
+			$list .= "\n";
+			$list .= html::tag('dd', $dd, array('class' => $arr_cls));
+			$list .= "\n";			
+		}
+
+		return html::tag('dl', $list, array('class' => $cls));
+	}
+	
 	/**
 	 * Create an submit button
 	 */
@@ -276,7 +389,6 @@ class html
 	 * Returns code for attribute, including leading blank.
 	 *
 	 * @return string Empty string if passed value is empty
-	 * @exception 
 	 */
 	public static function attr($name, $value) {
 		$value = str_replace("\n", ' ', $value);
@@ -306,7 +418,13 @@ class html
 		return $ret;
 	}
 
-	public static function include_js($scriptName) {
+	/**
+	 * A javascript include
+	 * 
+	 * @param string $path URL of script
+	 * @return string <script type="text/javascript" src="$path"></script>
+	 */
+	public static function include_js($path) {
 		return '<script type="text/javascript" src="' . String::clear_html($scriptName) . '"></script>';
 	}
 
@@ -324,6 +442,13 @@ class html
 		return html::tag('script', $content, $attrs);  
 	}
 	
+	/**
+	 * A CSS include
+	 * 
+	 * @param string $path URL of CSS
+	 * @param string $media Media
+	 * @return string <style type="text/css" media="$media">@import url($path);</style>
+	 */
 	public static function include_css($cssName, $media = 'screen') {
 		return '<style type="text/css" media="' . String::clear_html($media) . '">@import url(' . String::clear_html($cssName) . ');</style>';
 	}
@@ -367,6 +492,8 @@ class html
 	
 	/**
 	 * Returns html to embed flash files
+	 * 
+	 * Code is XHTML compliant!
 	 * 
 	 * @param string $file URL of flash file
 	 * @param array $attrs HTML attributes fo robject tag
