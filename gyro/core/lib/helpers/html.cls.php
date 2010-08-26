@@ -425,7 +425,7 @@ class html
 	 * @return string <script type="text/javascript" src="$path"></script>
 	 */
 	public static function include_js($path) {
-		return '<script type="text/javascript" src="' . String::clear_html($scriptName) . '"></script>';
+		return '<script type="text/javascript" src="' . String::clear_html($path) . '"></script>';
 	}
 
 	/**
@@ -449,8 +449,8 @@ class html
 	 * @param string $media Media
 	 * @return string <style type="text/css" media="$media">@import url($path);</style>
 	 */
-	public static function include_css($cssName, $media = 'screen') {
-		return '<style type="text/css" media="' . String::clear_html($media) . '">@import url(' . String::clear_html($cssName) . ');</style>';
+	public static function include_css($path, $media = 'screen') {
+		return '<style type="text/css" media="' . String::clear_html($media) . '">@import url(' . String::clear_html($path) . ');</style>';
 	}
 
 	/**
