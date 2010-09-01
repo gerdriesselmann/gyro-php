@@ -46,6 +46,20 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 		$this->decorators = is_array($decorators) ? $decorators : array($decorators);
 		ActionMapper::register_url($action, $this);
 	}
+	
+	/**
+	 * Split a route identifier back into controller and action
+	 * 
+	 * @param string $route_id
+	 * @return array Associative array with two keys 'controller' and 'action'
+	 */
+	public static function split_route_id($route_id) {
+		$tmp = explode('::', $route_id);
+		return array(
+			'action' => array_pop($tmp),
+			'controller' => array_pop($tmp)
+		);
+	}
 
 	/**
 	 * Returns a suitable renderer 
