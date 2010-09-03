@@ -25,18 +25,15 @@ class WidgetVotingResult implements IWidget {
 	}
 	
 	public function render($policy = self::NONE) {
-  		Load::models('votes');
+  		Load::models('votesaggregates');
 		$inst = $this->instance;
-		$avg = 0;
-		if ($inst instanceof DAOVotesaggregates) {
-			$avg = $inst->get_average();
-		}
-		else {
-			$avg = Votes::get_average_for_instance($inst);
-		}
+		$dao_avg = ($inst instanceof DAOVotesaggregates) ? $inst : VotesAggregates::get_for_instance($inst);
+		$avg = ($dao_avg) ? $dao_avg->get_average() : 0;
+		$count = ($dao_avg) ? $dao_avg->numtotal : 0;
 			
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/votingresult');
 		$view->assign('average', $avg);
+		$view->assign('count', $count);
 		$view->assign('instance', $inst);
 		foreach(Arr::force($this->params, false) as $var => $value) {
 			$view->assign($var, $value);
