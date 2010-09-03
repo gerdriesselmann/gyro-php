@@ -510,6 +510,7 @@ class html
 			$param_tags .= self::tag_selfclosing('param', array('name' => $key, 'value' => $value)) . "\n";
 		}
 		
+		self::_appendClass($attrs, 'player');
 		$ie_attrs = array_merge($attrs, array(
 			'classid' => 'clsid:D27CDB6E-AE6D-11cf-96B8-444553540000', 
 			'codebase' => 'http://get.adobe.com/shockwave/'
