@@ -15,6 +15,16 @@ class Url {
 	const ENCODE_PARAMS = 'encode';
 	const NO_ENCODE_PARAMS = 'encodenot';
 	
+	/**
+	 * When comparing URLs, ignore only fragment
+	 */
+	const EQUALS_FULL = 0;
+	/**
+	 * When comparing URLs, ignore query (and fragment)
+	 */
+	const EQUALS_IGNORE_QUERY = 1;
+	
+	
 	private $data = array();
 	
 	/**
@@ -139,6 +149,26 @@ class Url {
 	
 	public function __wakeup() {
 		$this->parse($this->url); 
+	}
+	
+	/**
+	 * Compare this URL to an other
+	 * 
+	 * @param string|Url $other Other URL
+	 * @param enum $mode Either EQUALS_FULL or EQUALS_IGNORE_QUERY
+	 * @return bool
+	 */
+	public function equals($other, $mode = self::EQUALS_FULL) {
+		$check_against = ($other instanceof Url) ? $other : Url::create($other);
+		$ret = true;
+		$ret = $ret && $this->get_path() == $check_against->get_path();
+		$ret = $ret && $this->get_host() == $check_against->get_host();
+		$ret = $ret && $this->get_port() == $check_against->get_port();
+		$ret = $ret && $this->get_scheme() == $check_against->get_scheme();
+		if ($mode == self::EQUALS_FULL) {
+			$ret = $ret && $this->get_query() == $check_against->get_query();
+		}
+		return $ret;
 	}
 	
 	/**
