@@ -318,6 +318,16 @@ class GyroDate {
 	}
 	
 	/**
+	 * Return week in year of given Date
+	 * 
+	 * @param date $date
+	 * @return int
+	 */
+	public static function get_week($date) {
+		return Cast::int(date('W', self::datetime($date)));
+	}
+	
+	/**
 	 * Returns true if given date is a holiday. 
 	 * 
 	 * Attention: This method will not necessarily recognize Sundays as holidays! It only 
