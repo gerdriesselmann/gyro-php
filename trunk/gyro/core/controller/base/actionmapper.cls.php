@@ -72,6 +72,30 @@ class ActionMapper {
 	}
 	
 	/**
+	 * Checks if given action route matches current URL, if not redirects
+	 *  
+	 * @param string $action Action name
+	 * @param mixed $params Parameters, depend on action
+	 */
+	public static function validate_against_current($action, $params = null) {
+		$url = Url::create(self::get_url($action, $params));
+		if (!Url::current()->equals($url, Url::EQUALS_IGNORE_QUERY)) {
+			$url->redirect(Url::PERMANENT);
+		}
+	}
+
+	/**
+	 * Returns true, if the given action route equals current URL
+	 * 
+	 * @param string $action Action name
+	 * @param mixed $params Parameters, depend on action
+	 * @return bool
+	 */
+	public static function equals_current($action, $params = null) {
+		return Url::current()->equals(self::get_url($action, $params), Url::EQUALS_IGNORE_QUERY);
+	}
+	
+	/**
 	 * Build URL for given action, with given params, either relative or absolute
 	 *
 	 * @param string $action

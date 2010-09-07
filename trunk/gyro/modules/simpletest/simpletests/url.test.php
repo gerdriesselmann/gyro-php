@@ -159,5 +159,18 @@ class UrlTest extends GyroUnitTestCase {
 		$url = Url::create('http:///');
 		$this->assertFalse($url->is_valid());
 	}
+	
+	public function test_equals() {
+		$a = Url::create('http://www.example.org/some/path/?a=b&c=d');
+		$this->assertFalse($a->equals(''));
+		$this->assertTrue($a->equals('http://www.example.org/some/path/?a=b&c=d#hash'));
+		$this->assertTrue($a->equals('http://www.example.org/some/path/?a=b&c=d#otherhash'));
+		$this->assertTrue($a->equals('http://www.example.org/some/path/#otherhash', Url::EQUALS_IGNORE_QUERY));
+		
+		$this->assertFalse($a->equals('http://www.example.org/some/path/?a=b&c=d&e=f#hash'));
+		$this->assertFalse($a->equals('http://www.example.org/some/other/path/?a=b&c=d#hash'));
+		$this->assertFalse($a->equals('http://www.example.net/some/path/?a=b&c=d#hash'));
+		$this->assertFalse($a->equals('https://www.example.org/some/path/?a=b&c=d#hash'));
+	}
 }
 
