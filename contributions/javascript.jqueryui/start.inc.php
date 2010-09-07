@@ -86,7 +86,7 @@ Config::set_value_from_constant(ConfigJQueryUI::JQUERYUI_VERSION, 'APP_JQUERYUI_
 
 // Force JQuery 1.4 if JQueryUI is 1.8
 if (Config::get_value(ConfigJQueryUI::JQUERYUI_VERSION) == '1.8' && !defined('APP_JQUERY_VERSION')) {
-	define('APP_JQUERY_VERSION', 1.4);
+	Config::set_value(ConfigJQuery::JQUERY_VERSION, '1.4');
 }
 
 JQueryUI::enable_locales(GyroLocale::get_language());
