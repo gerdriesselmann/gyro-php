@@ -45,14 +45,11 @@ class WidgetBlock implements IWidget {
 		return $result;
 	}
 
-	public static function render_blocks($arr_blocks) {
-		$out = '';
-		foreach ($arr_blocks as $block) {
-			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/block');
-			$view->assign('block', $block);
-			$out .= $view->render();
-		}
-		return $out;	
+	public static function render_blocks($arr_blocks, $position = false) {
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/blocks');
+		$view->assign('blocks', $arr_blocks);
+		$view->assign('position', $position);
+		return $view->render();
 	}
 	
 	/**
@@ -81,6 +78,6 @@ class WidgetBlock implements IWidget {
 			}
 			$arr_blocks[] = $block;
 		}
-		return self::render_blocks($arr_blocks);	
+		return self::render_blocks($arr_blocks, $this->position);	
 	}
 }
