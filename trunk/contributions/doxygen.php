@@ -41,3 +41,9 @@
  * Additional helpers and components  
  */
  
+/**
+ * @defgroup Page
+ * 
+ * Extensions for PageData and related: header data, blocks etc  
+ */
+ 
