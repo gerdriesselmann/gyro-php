@@ -1,6 +1,25 @@
 <?php
 /**
  * Command to invoke a callback
+ * 
+ * This commands calls the given callback via call_user_func_array. That is: 
+ * $args passed in passed in constructor must be an ampty or asssociative
+ * array.
+ * 
+ * The function called must return a Status or a string.
+ * 
+ * Example:
+ * 
+ * @code
+ * Load::commands('generics/callback');
+ * $cmd = new CallbackCommand('fancy_func', array('left' => 100, 'right' => 50));
+ * $status = $cmd->execute();
+ * 
+ * ...
+ * 
+ * // Callback: Should return Status or anything Status->merge() accepts
+ * function fancy_func($left, $right) { ... } 
+ * @endcode
  *  
  * @author Gerd Riesselmann
  * @ingroup Behaviour
