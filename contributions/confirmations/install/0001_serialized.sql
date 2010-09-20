@@ -1,0 +1,1 @@
+UPDATE confirmations SET data = CONCAT('s:', length(data), ':"', data, '";');
