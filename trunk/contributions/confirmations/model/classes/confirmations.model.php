@@ -21,7 +21,7 @@ class DAOConfirmations extends DataObjectBase
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
 				new DBFieldInt('id_item', null, DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
 				new DBFieldText('code', 50, null, DBFieldText::NOT_NULL),
-				new DBFieldText('data', DBFieldText::BLOB_LENGTH_SMALL),
+				new DBFieldSerialized('data', DBFieldText::BLOB_LENGTH_SMALL),
 				new DBFieldText('action', 20, null, DBFieldText::NOT_NULL),
 				new DBFieldDateTime('expirationdate', null, DBFieldDateTime::NOT_NULL),
 			),
