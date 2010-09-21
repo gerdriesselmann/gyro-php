@@ -11,12 +11,15 @@ class NotificationsController extends ControllerBase {
 	public function get_routes() {
 		return array(
 			new ExactMatchRoute('https://user/notifications/', $this, 'users_notifications', new AccessRenderDecorator()),
-			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
 			new ExactMatchRoute('https://user/notifications/settings/', $this, 'notifications_settings', new AccessRenderDecorator()),
 			new ParameterizedRoute('https://notifications/feeds/{id_user:ui>}/{feed_token:s:40}', $this, 'notifications_feed', new NoCacheCacheManager()),
 			new ParameterizedRoute('https://notifications/{id:ui>}/', $this, 'notifications_view', new AccessRenderDecorator()),
+			// Ajax
+			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
 			// Command Line 
-			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator())
+			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator()),
+			// COmmands
+			new CommandsRoute('https://process_commands/notifications/markallasread', $this, 'markallasread_cmd_handler', new AccessRenderDecorator()),
 		);	
 	}	
 	
@@ -132,18 +135,21 @@ class NotificationsController extends ControllerBase {
 	 * Toggle a message state 
 	 */
 	public function action_notifications_ajax_toggle(PageData $page_data) {
+		$page_data->in_history = false;
 		$page_data->page_template = 'emptypage';
 		$id = $page_data->get_post()->get_item('id', false);
 		$notification = DB::get_item('notifications', 'id', $id);
-		if ($notification === false || !Users::is_current($notification->get_user())) {
+		if (!AccessControl::is_allowed('status', $notification)) {
 			return self::ACCESS_DENIED;
 		}
 		
 		$new_status = ($notification->get_status() != Notifications::STATUS_NEW) ? Notifications::STATUS_NEW : Notifications::STATUS_READ;
-		$notification->set_status($new_status);
-		$err = $notification->update();
+		$cmd = CommandsFactory::create_command($notification, 'status', $new_status);
+		$err = $cmd->execute();
 		if ($err->is_ok()) {
-			$page_data->content = $new_status;
+			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'notifications/inc/item', $page_data);
+			$view->assign('notification', $notification);
+			$page_data->content = $view->render();
 		}
 		else {
 			return self::INTERNAL_ERROR;
@@ -156,5 +162,18 @@ class NotificationsController extends ControllerBase {
 	public function action_notifications_digest(PageData $page_data) {
 		$cmd = CommandsFactory::create_command('notifications', 'digest', false);
 		$page_data->status = $cmd->execute();
+	}
+	
+	public function action_markallasread_cmd_handler(PageData $page_data) {
+		$cmd = CommandsFactory::create_command('notifications', 'markallasread', false);
+		if (!$cmd->can_execute(false)) {
+			return CONTROLLER_ACCESS_DENIED;
+		}
+		$err = $cmd->execute();
+		if ($err->is_ok()) {
+			$err = new Message(tr('All notifications have been marked as read', 'notifications'));
+		}
+		History::go_to(0, $err);
+		exit; 
 	}
 }

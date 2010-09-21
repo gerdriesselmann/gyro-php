@@ -7,6 +7,22 @@
  */
 function notifications_load_translations($languages) {
 	return array(
+		'READ' => array(
+			'en' => 'Read',
+			'de' => 'Gelesen'
+		),
+		'NEW' => array(
+			'en' => 'New',
+			'de' => 'Neu'
+		),
+		'Change to READ' => array(
+			'en' => 'Mark as read',
+			'de' => 'Als Gelesen markieren'
+		),
+		'Change to NEW' => array(
+			'en' => 'Mark as unread',
+			'de' => 'Als Ungelesen markieren'
+		),
 		'all' => array(
 			'en' => 'All',
 			'de' => 'Alle'
@@ -68,7 +84,13 @@ function notifications_load_translations($languages) {
 		),
 		'Unread' => array(
 			'de' => 'Ungelesen'
-		)
+		),
+		'Mark all as read' => array(
+			'de' => 'Alle als Gelesen markieren'
+		),
+		'All notifications have been marked as read' => array(
+			'de' => 'Alle Benachrichtigungen wurden als Gelesen markieren'
+		),
 	);
 }
 
