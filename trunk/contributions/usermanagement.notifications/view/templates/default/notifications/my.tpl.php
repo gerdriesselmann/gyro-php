@@ -7,7 +7,10 @@ $page_data->breadcrumb = WidgetBreadcrumb::output($title);
 
 <?php
 print WidgetItemMenu::output(
-	array(new ActionBase('', 'notifications_settings', tr('Notification Settings', 'notifications')))
+	array(
+		new ActionBase('', 'notifications_settings', tr('Notification Settings', 'notifications')),
+		CommandsFactory::create_command('notifications', 'markallasread', false),
+	)
 );
 ?>
 

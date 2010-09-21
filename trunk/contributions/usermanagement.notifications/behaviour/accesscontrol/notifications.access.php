@@ -24,7 +24,7 @@ class NotificationsAccessControl extends AccessControlBase {
 			$ret = self::NOT_ALLOWED;
 			switch ($action) {
 				case 'status':
-					$ret = ($item->id_user == $user->id); 
+					$ret =  $this->to_result($item->id_user == $user->id); 
 					break;
 			}
 		} else if ($item instanceof DAOUsers) {
@@ -36,6 +36,13 @@ class NotificationsAccessControl extends AccessControlBase {
 					$ret = $this->to_result($item->is_active());
 					break;
 			}			
+		}
+		else {
+			switch ($action) {
+				case 'markallasread':
+					$ret = self::ALLOWED; 
+					break;
+			}
 		}
 		return $ret;		
 	}
