@@ -29,6 +29,14 @@ $url_title = tr('Show all', 'notifications');
 	?>
 	<a href="<?=$url->build()?>"><?=$url_title?></a>	
 </p>
+<?php
+print WidgetItemMenu::output(
+	array(
+		new ActionBase('', 'notifications_settings', tr('Notification Settings', 'notifications')),
+		CommandsFactory::create_command('notifications', 'markallasread', false),
+	)
+);
+?>
 <?php if ($c): ?>
 	<?php gyro_include_template('notifications/inc/list')?>
 <?php endif; ?>
