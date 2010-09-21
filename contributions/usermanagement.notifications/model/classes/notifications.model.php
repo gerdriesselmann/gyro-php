@@ -2,14 +2,13 @@
 /**
  * Model for notifications
  */
-class DAONotifications extends DataObjectBase implements ISelfDescribing, IStatusHolder {
+class DAONotifications extends DataObjectTimestampedCached implements ISelfDescribing, IStatusHolder {
 	public $id;
 	public $id_user;
 	public $title;
 	public $message;
 	public $source;
 	public $status;
-	public $creationdate;
 	
 	/**
 	 * Create the table object describing this dataobejcts table
@@ -17,14 +16,14 @@ class DAONotifications extends DataObjectBase implements ISelfDescribing, IStatu
 	protected function create_table_object() {
 		return new DBTable(
 			'notifications',
-			array(
+			array_merge(array(
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBField::NOT_NULL),
 				new DBFieldInt('id_user', null, DBFieldInt::UNSIGNED), // Null allowed!
 				new DBFieldText('title', 200, null, DBField::NOT_NULL),
 				new DBFieldText('message', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NOT_NULL),
 				new DBFieldText('source', 100, Notifications::SOURCE_APP, DBField::NOT_NULL),
 				new DBFieldEnum('status', array_keys(Notifications::get_status()), Notifications::STATUS_NEW, DBField::NOT_NULL),
-				new DBFieldDateTime('creationdate', DBFieldDateTime::NOW, DBFieldDateTime::TIMESTAMP | DBField::NOT_NULL)
+				), $this->get_timestamp_field_declarations()
 			),
 			'id',
 			new DBRelation(
