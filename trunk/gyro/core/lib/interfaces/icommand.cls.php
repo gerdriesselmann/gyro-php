@@ -44,4 +44,11 @@ interface ICommand extends IAction, ISerializable  {
 	 * @return string
 	 */
 	public function get_name_serialized();	
+	
+	/**
+	 * Return parameters
+	 * 
+	 * @return mixed
+	 */
+	public function get_params();
 } 

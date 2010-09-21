@@ -23,6 +23,25 @@ function status_load_translations($languages) {
 			'en' => 'Deleted',
 			'de' => 'Gelöscht'
 		),
+		'Change to ' . Stati::UNCONFIRMED => array(
+			'en' => 'Change to Unconfirmed',
+			'de' => 'Als Unbestätigt markieren'
+		),
+		'Change to ' . Stati::ACTIVE => array(
+			'en' => 'Activate',
+			'de' => 'Aktivieren'
+		),
+		'Change to ' . Stati::DISABLED => array(
+			'en' => 'Disable',
+			'de' => 'Deaktivieren'
+		),
+		'Change to ' . Stati::DELETED => array(
+			'en' => 'Delete',
+			'de' => 'Löschen'
+		),
+		'The status has been changed' => array(
+			'de' => 'Der Status wurde geändert.'
+		),		 
 	);
 }
 			

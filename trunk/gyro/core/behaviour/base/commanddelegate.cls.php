@@ -51,6 +51,16 @@ class CommandDelegate implements ICommand {
 	public function get_instance() {
 		$this->check_delegate();
 		return $this->delegate->get_instance();
+	}
+
+	/**
+	 * Returns params
+	 *
+	 * @return mixed
+	 */
+	public function get_params() {
+		$this->check_delegate();
+		return $this->delegate->get_params();
 	}	
 
 	/**
