@@ -1,6 +1,6 @@
 // JavaScript stuff for notification lists
 function notifications_init_ajax_status() {
-	$('.notification-item input.action_status').unbind('click').click(function(ev) {
+	$('.notification-item :input.action_status').unbind('click').click(function(ev) {
 		var item = $(this).parents('.notification-item').eq(0);
 		// Try to get id
 		var id = item.attr('id').replace('notification-item-', '');
