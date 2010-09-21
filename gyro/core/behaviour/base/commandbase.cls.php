@@ -78,7 +78,7 @@ class CommandBase implements ICommand {
 	 * Returns a description of this command
 	 */
 	public function get_description() {
-		return '';
+		return $this->get_name();
 	} 
 	
 	/**
@@ -88,6 +88,15 @@ class CommandBase implements ICommand {
 	 */
 	public function get_instance() {
 		return $this->obj;
+	}
+	
+	/**
+	 * Returns params
+	 *
+	 * @return mixed
+	 */
+	public function get_params() {
+		return $this->params;
 	}
 	
 	/**
@@ -187,15 +196,6 @@ class CommandBase implements ICommand {
 	 */
 	protected function set_result($result) {
 		$this->result = $result;
-	}
-	
-	/**
-	 * Returns params
-	 *
-	 * @return mixed
-	 */
-	protected function get_params() {
-		return $this->params;
 	}
 	
 	/**

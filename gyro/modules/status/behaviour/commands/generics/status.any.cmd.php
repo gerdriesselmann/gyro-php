@@ -58,7 +58,7 @@ class StatusAnyCommand extends CommandChain {
 	 *
 	 * @return mixed
 	 */
-	protected function get_params() {
+	public function get_params() {
 		$ret = parent::get_params();
 		if (is_array($ret)) {
 			$ret = Arr::get_item($ret, 0, '');
@@ -78,9 +78,14 @@ class StatusAnyCommand extends CommandChain {
 	 */
 	public function get_description() {
 		$text = 'Change to ' . Cast::string($this->get_params());
+		$transmods = array('app', 'status');
+		$inst = $this->get_instance();
+ 		if ($inst instanceof IDataObject) {
+ 			array_unshift($transmods, $inst->get_table_name());
+ 		}
 		return tr(
 			$text, 
-			'app'
+			$transmods
 		);	
 	} 
 }
