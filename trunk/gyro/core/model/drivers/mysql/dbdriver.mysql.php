@@ -19,10 +19,10 @@ class DBDriverMysql implements IDBDriver {
 	 * Connection type: PRIMARY, SECONDARY
 	 * @var int
 	 */
-	private $type;
-	private $db_handle = false;
-	private static $transaction_count = 0;
-	private $connect_params;
+	protected $type;
+	protected $db_handle = false;
+	protected static $transaction_count = 0;
+	protected $connect_params;
 
 	/**
 	 * Return name of driver, e.g "mysql". Lowercase!
@@ -76,7 +76,7 @@ class DBDriverMysql implements IDBDriver {
 	 * 
 	 * @return void
 	 */
-	private function connect() {
+	protected function connect() {
 		if ($this->db_handle === false) {
 			$err = new Status();
 			$this->db_handle = mysql_connect(
@@ -125,7 +125,7 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function escape_database_entity($obj, $type = self::FIELD) {
 		$ret = '';
-		if ($this->type !== self::PRIMARY && $type === self::TABLE) {
+		if ($type === self::TABLE) {
 			$ret .= '`' . $this->get_db_name() . '`.';
 		}
 		$ret .= '`' . $obj . '`';
@@ -204,6 +204,7 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function make_default() {
 		$ret = new Status();
+		$this->connect();
 		if (!mysql_select_db($this->connect_params['db'], $this->db_handle)) {
 			$ret->append(tr(
 				'Could not connect to database %db on server %host', 
