@@ -48,7 +48,6 @@ class DBSqlBuilderInsert extends DBSqlBuilderBase {
 		}
 		$values = 'VALUES (' . implode(', ', $values) . ')';
 		return $values;
-		
 	}
 
 	protected function get_select($query) {
