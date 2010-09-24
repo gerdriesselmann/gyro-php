@@ -8,6 +8,8 @@
 class ConverterFactory {
 	const HTML = 'html';
 	const HTML_EX = 'htmlex';
+	const CALLBACK = 'callback';
+	const NONE = 'none';
 			
 	/**
 	 * Array of user registered converters 
@@ -32,6 +34,14 @@ class ConverterFactory {
 			case self::HTML_EX:
 				require_once dirname(__FILE__) . '/converters/htmlex.converter.php';
 				$ret = new ConverterHtmlEx();
+				break;
+			case self::CALLBACK:
+				require_once dirname(__FILE__) . '/converters/callback.converter.php';
+				$ret = new ConverterCallback();
+				break;
+			case self::NONE:
+				require_once dirname(__FILE__) . '/converters/none.converter.php';
+				$ret = new ConverterNone();
 				break;
 			default:
 				$ret = Arr::get_item(self::$registered_converters, $type, false);
@@ -89,12 +99,14 @@ class ConverterFactory {
 	 * 
 	 * You may pass an array that contains either key-value pairs where the key
 	 * is the name of a converter and the value is its parameters, or a simple
-	 * array, whereas the value is the name of a converter. This also can be mixed.
+	 * array, whereas the value is the name of a converter or an instance of
+	 * IConverter. This also can be mixed.
 	 * 
 	 * @code
 	 * $chain = ConverterFactory::create_chain(
 	 *   ConverterFactory::HTML_EX => array('h' => 3),
-	 *   CONVERTER_TIDY
+	 *   CONVERTER_TIDY,
+	 *   new FancyConverter('some', 'parameters')
 	 * );
 	 * @endcode
 	 * 
@@ -105,13 +117,20 @@ class ConverterFactory {
 		$ret = new ConverterChain();
 
 		foreach($arr_converters as $name_or_index => $params_or_name) {
-			$has_index = is_numeric($name_or_index); 
-			$name = ($has_index) ? $params_or_name : $name_or_index;
-			$params = ($has_index) ? false : $params_or_name;
-			
-			$converter = self::create($name);
-			if (!$converter instanceof IConverter)  {
-				throw new Exception("Unknown Covnerter $name");
+			$converter = false;
+			$params = false;
+			if ($params_or_name instanceof IConverter) {
+				$converter = $params_or_name;
+			}
+			else {
+				$has_index = is_numeric($name_or_index); 
+				$name = ($has_index) ? $params_or_name : $name_or_index;
+				$params = ($has_index) ? false : $params_or_name;
+				
+				$converter = self::create($name);
+				if (!$converter instanceof IConverter)  {
+					throw new Exception("Unknown Covnerter $name");
+				}
 			}
 			$ret->append($converter, $params);
 		}
