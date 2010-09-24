@@ -16,7 +16,10 @@ class DAORoomsTest extends DataObjectBase {
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
 				new DBFieldText('number', 10, null, DBField::NOT_NULL), 
 			),
-			'id'			
+			'id',
+			null,
+			null,
+			new DBDriverMySqlMock()			
 	    );
 	}	
 }

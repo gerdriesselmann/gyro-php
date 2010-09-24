@@ -20,7 +20,7 @@ class DataObjectTest extends GyroUnitTestCase {
 		$query = $rooms->create_select_query();
 		
 		$this->assertEqual(
-			"SELECT DISTINCT `roomstest`.`id` AS `id`, `roomstest`.`number` AS `number` FROM `roomstest` AS `roomstest` INNER JOIN `coursestest` AS `coursestest` ON (((`coursestest`.`id_room` = `roomstest`.`id`))) INNER JOIN `studentstest2coursestest` AS `studentstest2coursestest` ON (((`studentstest2coursestest`.`id_course` = `coursestest`.`id`))) INNER JOIN `studentstest` AS `studentstest` ON (((`studentstest`.`id` = `studentstest2coursestest`.`id_student`))) WHERE ((((((`studentstest`.`id` = 5))))))",
+			"SELECT DISTINCT `roomstest`.`id` AS `id`, `roomstest`.`number` AS `number` FROM `db`.`roomstest` AS `roomstest` INNER JOIN `db`.`coursestest` AS `coursestest` ON (((`coursestest`.`id_room` = `roomstest`.`id`))) INNER JOIN `db`.`studentstest2coursestest` AS `studentstest2coursestest` ON (((`studentstest2coursestest`.`id_course` = `coursestest`.`id`))) INNER JOIN `db`.`studentstest` AS `studentstest` ON (((`studentstest`.`id` = `studentstest2coursestest`.`id_student`))) WHERE ((((((`studentstest`.`id` = 5))))))",
 			$query->get_sql()
 		);
 	}
@@ -32,7 +32,7 @@ class DataObjectTest extends GyroUnitTestCase {
 		
 		$query = $student->create_insert_query();
 		$this->assertEqual(
-			"INSERT INTO `studentstest` (`name`) VALUES ('Heinz')",
+			"INSERT INTO `db`.`studentstest` (`name`) VALUES ('Heinz')",
 			$query->get_sql()
 		);
 	}
@@ -46,7 +46,7 @@ class DataObjectTest extends GyroUnitTestCase {
 		
 		$query = $student->create_update_query();
 		$this->assertEqual(
-			"UPDATE `studentstest` AS `studentstest` SET `studentstest`.`name` = 'Heinz', `studentstest`.`modificationdate` = DEFAULT WHERE (((`studentstest`.`id` = 18)))",
+			"UPDATE `db`.`studentstest` AS `studentstest` SET `studentstest`.`name` = 'Heinz', `studentstest`.`modificationdate` = DEFAULT WHERE (((`studentstest`.`id` = 18)))",
 			$query->get_sql()
 		);
 	}
@@ -58,14 +58,14 @@ class DataObjectTest extends GyroUnitTestCase {
 		
 		$query = $student->create_select_query();
 		$this->assertEqual(
-			"SELECT `studentstest`.`id` AS `id`, `studentstest`.`name` AS `name`, UNIX_TIMESTAMP(`studentstest`.`modificationdate`) AS `modificationdate` FROM `studentstest` AS `studentstest` WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
+			"SELECT `studentstest`.`id` AS `id`, `studentstest`.`name` AS `name`, UNIX_TIMESTAMP(`studentstest`.`modificationdate`) AS `modificationdate` FROM `db`.`studentstest` AS `studentstest` WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
 			$query->get_sql()
 		);
 		
 		$student->name = 'Heinz';
 		$query = $student->create_update_query(DataObjectBase::WHERE_ONLY);
 		$this->assertEqual(
-			"UPDATE `studentstest` AS `studentstest` SET `studentstest`.`name` = 'Heinz' WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
+			"UPDATE `db`.`studentstest` AS `studentstest` SET `studentstest`.`name` = 'Heinz' WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
 			$query->get_sql()
 		);
 		
