@@ -6,4 +6,7 @@
  * @ingroup Model
  */
 class DBNull {	
+    public function __toString() {
+    	return 'NULL';
+    }	
 }
