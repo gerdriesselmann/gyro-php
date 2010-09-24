@@ -22,7 +22,7 @@ class WidgetFilterText implements IWidget {
 	
 	public function render($policy = self::NONE) {
 		$out = '';
-		foreach ($this->data as $item) {
+		foreach (Arr::force($this->data, false) as $item) {
 			$adapter = Arr::get_item($item, 'adapter', false);
 			if (empty($adapter)) {
 				continue;
