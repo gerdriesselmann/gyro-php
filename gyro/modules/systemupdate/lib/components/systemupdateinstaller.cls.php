@@ -31,8 +31,8 @@ class SystemUpdateInstaller {
 	/**
 	 * Copy given files to the given directory benath /app
 	 * 
-	 * @param string $dir Target directory (relative to /app)
-	 * @param string $dir Source directory
+	 * @param string $target_dir Target directory (relative to /app)
+	 * @param string $source_dir Source directory (absolute path)
 	 * @param array $files array of file names relative to $dir
 	 * @param string $policy Either SystemUpdateInstaller::COPY_NO_REPLACE or SystemUpdateInstaller::COPY_OVERWRITE
 	 * 
@@ -48,7 +48,7 @@ class SystemUpdateInstaller {
 	/**
 	 * Copy a file to app
 	 * 
-	 * For example this cip
+	 * For example this copies the file test.php.example to the www subdirectory
 	 * 
 	 * @code
 	 * SystemUpdateInstaller::copy_file_to_app('/var/backup/test.php.example', 'www/test.php');
@@ -74,8 +74,17 @@ class SystemUpdateInstaller {
 		}
 		return $ret;				
 	}
-	
-	
+		
+	/**
+	 * Copy given files to the given directory
+	 * 
+	 * @param string $target_dir Target directory (absolute path)
+	 * @param string $source_dir Source directory (absolute path)
+	 * @param array $files array of file names relative to $dir
+	 * @param string $policy Either SystemUpdateInstaller::COPY_NO_REPLACE or SystemUpdateInstaller::COPY_OVERWRITE
+	 * 
+	 * @return Status
+	 */
 	private static function copy_to_dir($target_dir, $source_dir, $files, $policy) {
 		$ret = new Status();
 
