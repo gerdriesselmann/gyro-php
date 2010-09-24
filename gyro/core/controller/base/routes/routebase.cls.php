@@ -24,9 +24,9 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	/**
 	 * Contructor
 	 * 
-	 * @param object The controller to invoke
-	 * @param string The function to invoke on controller
-	 * @param string The URL this Token is responsible for
+	 * @param string $path The URL this route is responsible for
+	 * @param IController $controller The controller to invoke
+	 * @param string $action The function to invoke on controller
 	 * @param mixed Array or single instance of IRouteDecorator 
 	 */
 	public function __construct($path, $controller, $action, $decorators = null) {
