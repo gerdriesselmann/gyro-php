@@ -88,7 +88,7 @@ class DB {
 	 */
 	public static function get_item($table, $key, $value) {
 		$ret = false;
-		if (!empty($value)) {
+		if (!empty($value) && !$value instanceof DBNull) {
 			$ret = self::get_item_multi($table, array($key => $value));
 		}
 		return $ret;			
