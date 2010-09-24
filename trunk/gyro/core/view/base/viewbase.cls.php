@@ -221,9 +221,9 @@ class ViewBase implements IView, ICache {
 	 */
 	protected function render_content(&$rendered_content, $policy) {
 		$arr_engine = $this->split_template($this->template);
-		$template_engine = $this->create_template_engine(Arr::get_item($arr_engine, 'engine', Config::get_value(Config::DEFAULT_TEMPLATE_ENGINE)));
+		$template_engine = $this->create_template_engine($arr_engine['engine']);
 		$template_engine->assign_array($this->vars);
-		$rendered_content = $template_engine->fetch(Arr::get_item($arr_engine, 'resource', $this->template));
+		$rendered_content = $template_engine->fetch($arr_engine['resource']);
 	}
 	
 	/**
@@ -236,7 +236,7 @@ class ViewBase implements IView, ICache {
 			'engine' => Config::get_value(Config::DEFAULT_TEMPLATE_ENGINE),
 			'resource' => $template
 		);
-		$pos_colon = strpos($template, '::');
+		$pos_colon = is_string($template) ? strpos($template, '::') : false;
 		if ($pos_colon !== false) {
 			// There is a "::" in the template file name, so use this as protocol
 			// Example core::page => $engine = core, $template = page 

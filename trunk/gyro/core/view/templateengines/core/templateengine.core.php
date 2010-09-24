@@ -40,7 +40,7 @@ class TemplateEngineCore extends TemplateEngineSimple {
 	 */
 	protected function resolve_path($file) {
 		$file_path = parent::resolve_path($file); 
-		$compile_path = $this->get_compile_name($file, $file_path);
+		$compile_path = $this->get_compile_name($file_path);
 		if (!file_exists($compile_path)) {
 			$this->compile($compile_path, $file_path);
 		}
@@ -50,8 +50,16 @@ class TemplateEngineCore extends TemplateEngineSimple {
 		return $compile_path;
 	}
 	
-	protected function get_compile_name($file, $identifier) {
-		return Config::get_value(Config::TEMP_DIR) . 'view/templates_c/' . str_replace('/', '-', $file) . '-' . md5($identifier) . '.tpl-c.php';
+	protected function get_compile_name($file) {
+		$path = str_replace('.tpl.php', '', $file);
+		foreach(Load::get_base_directories() as $dir) {
+			$path = str_replace($dir, '', $path); 
+		}
+		$path = str_replace('view/templates/', '', $path);
+		var_dump($path);
+		$pos = strpos($path, '/');
+		$path = substr($path, $pos + 1);
+		return Config::get_value(Config::TEMP_DIR) . 'view/templates_c/' . str_replace('/', '-', $path) . '-' . md5($file) . '.tpl-c.php';
 	}
 	
 	protected function compile($compile_path, $source_path) {
