@@ -82,4 +82,14 @@ interface IDBField extends IPolicyHolder {
 	 * @return void
 	 */
 	public function set_connection($connection);
+
+	/**
+	 * Set table field belongs to
+	 * 
+	 * @attention The table may not be set, fields must be aware of this!
+	 * 
+	 * @param IDBTable $table
+	 * @return void
+	 */
+	public function set_table($table);
 }
