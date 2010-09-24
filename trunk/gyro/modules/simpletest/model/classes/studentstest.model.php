@@ -17,7 +17,10 @@ class DAOStudentsTest extends DataObjectBase {
 				new DBFieldText('name', 40, null, DBField::NOT_NULL), 
 				new DBFieldDateTime('modificationdate', null, DBFieldDateTime::TIMESTAMP | DBField::NOT_NULL)
 			),
-			'id'			
+			'id',
+			null,
+			null,
+			new DBDriverMySqlMock()		
 	    );
 	}	
 }

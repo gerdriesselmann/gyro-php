@@ -32,7 +32,9 @@ class DAOCoursesTest extends DataObjectBase {
 					'teacherstest',
 					new DBFieldRelation('id_teacher', 'id')
 				)
-			)						
+			),
+			null,
+			new DBDriverMySqlMock()								
 	    );
 	}	
 }

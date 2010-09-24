@@ -6,8 +6,8 @@
  * @ingroup Simpletest
  */
 class MockIDBTable extends DBTable {
-	public function __construct($name = 'table', $alias = 'alias', $connection = DB::DEFAULT_CONNECTION) {
-		parent::__construct($name, array(new DBField('column')), array(), array(), array(), $connection);
+	public function __construct($name = 'table', $alias = 'alias') {
+		parent::__construct($name, array(new DBField('column')), array(), array(), array(), new DBDriverMySqlMock());
 		$this->alias = $alias;
 	}
  }

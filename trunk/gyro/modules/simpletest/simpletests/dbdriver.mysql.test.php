@@ -16,7 +16,7 @@ class DBDriverMysqlTest extends GyroUnitTestCase {
 		$driver = new DBDriverMysql();
 		$driver->initialize('db', 'user', 'password', 'host');
 		
-		$this->assertEqual('`t`', $driver->escape_database_entity('t', DBDriverMysql::TABLE));
+		$this->assertEqual('`db`.`t`', $driver->escape_database_entity('t', DBDriverMysql::TABLE));
 		$this->assertEqual('`t`', $driver->escape_database_entity('t', DBDriverMysql::ALIAS));
 		$this->assertEqual('`t`', $driver->escape_database_entity('t', DBDriverMysql::FIELD));
 
