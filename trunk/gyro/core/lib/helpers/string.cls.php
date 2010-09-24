@@ -135,7 +135,7 @@ class String {
    		$locale_info = ($system) ? false : localeconv();
 		$thousands_sep = Arr::get_item($locale_info, 'thousands_sep', ',');
 		$decimal_point = Arr::get_item($locale_info, 'decimal_point', '.');
-		return number_format($number, $decimals, $decimal_point, $thousands_sep);
+		return number_format(Cast::float($number), $decimals, $decimal_point, $thousands_sep);
 	}
 
 	/**
