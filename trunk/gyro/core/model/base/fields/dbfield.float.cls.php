@@ -52,15 +52,12 @@ class DBFieldFloat extends DBField {
 	}
 
 	/**
-	 * Reformat passed value to DB format
-	 *
+	 * Format values that are not NULL
+	 * 
 	 * @param mixed $value
 	 * @return string
 	 */
-	public function format($value) {
-		if (is_null($value)) {
-			return parent::format($value);
-		}
+	protected function do_format_not_null($value) {
 		return number_format($value, 10, '.', '');
 	}	
 	

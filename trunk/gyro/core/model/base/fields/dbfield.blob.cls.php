@@ -10,12 +10,9 @@ require_once dirname(__FILE__) . '/dbfield.text.cls.php';
 class DBFieldBlob extends DBFieldText {
 	
 	/**
-	 * Reformat passed value to DB format
-	 *
-	 * @param mixed $value
-	 * @return string
+	 * Format values that are not NULL
 	 */
-	public function format($value) {
+	protected function do_format_not_null($value) {
 		if ($value !== '') {
 			return '0x' . bin2hex($value);
 		}

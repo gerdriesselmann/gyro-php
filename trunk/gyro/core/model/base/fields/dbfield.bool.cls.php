@@ -20,13 +20,13 @@ class DBFieldBool extends DBField {
 		parent::__construct($name, $default_value, $policy);
 	}
 	
-	/**
-	 * Reformat passed value to DB format
-	 *
+		/**
+	 * Format values that are not NULL
+	 * 
 	 * @param mixed $value
 	 * @return string
 	 */
-	public function format($value) {
+	protected function do_format_not_null($value) {
 		if ($value) {
 			return $this->quote('TRUE');
 		} else { 
@@ -59,7 +59,7 @@ class DBFieldBool extends DBField {
 	 */
 	public function read_from_array($arr) {
 		$ret = Arr::get_item($arr, $this->get_field_name(), null);
-		if (!is_null($ret)) {
+		if (!$this->is_null($ret)) {
 			$ret = !empty($ret);
 		}
 		return $ret;

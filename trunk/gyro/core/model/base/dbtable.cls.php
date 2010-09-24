@@ -269,6 +269,7 @@ class DBTable implements IDBTable {
 	 */
 	public function add_field(IDBField $field) {
 		$field->set_connection($this->driver);
+		$field->set_table($this);
 		$this->fields[$field->get_field_name()] = $field;
 	}
 

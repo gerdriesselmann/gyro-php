@@ -36,9 +36,9 @@ class DBFieldDateTime extends DBField {
 			return 'DEFAULT';	 
 		}
 		
-		// Treat '', falso and 0 ans NULL in updates and inserts
+		// Treat '', false and 0 as NULL in updates and inserts
 		if (empty($value)) {
-			return parent::format(null);
+			return $this->do_format_null(null);
 		}
 		else {
 			return $this->format_where($value);
@@ -52,7 +52,7 @@ class DBFieldDateTime extends DBField {
 	 * @return string
 	 */
 	public function format_where($value) {
-		if (is_null($value)) {
+		if ($this->is_null($value)) {
 			return parent::format($value);
 		}
 		else if ($value == self::NOW) {

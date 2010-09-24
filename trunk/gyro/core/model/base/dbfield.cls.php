@@ -39,6 +39,12 @@ class DBField implements IDBField {
 	 * @var string|IDBDriver
 	 */
 	protected $connection;
+	/**
+	 * Parent table for field
+	 * 
+	 * @var IDBTable
+	 */
+	protected $table;
 	
 	public function __construct($name, $default_value = null, $policy = self::NONE, $connection = DB::DEFAULT_CONNECTION) {
 		$this->name = $name;
@@ -69,7 +75,7 @@ class DBField implements IDBField {
 	 * Returns true, if field has default value
 	 */
 	public function has_default_value() {
-		return !is_null($this->default_value);
+		return !$this->is_null($this->default_value);
 	}
 	
 	/**
@@ -89,7 +95,7 @@ class DBField implements IDBField {
 	 */
 	public function validate($value) {
 		$ret = new Status();
-		if (is_null($value) && !$this->has_default_value() && !$this->get_null_allowed()) {
+		if ($this->is_null($value) && !$this->has_default_value() && !$this->get_null_allowed()) {
 			$ret->append(tr(
 				'%field may not be empty', 
 				'core', 
@@ -108,13 +114,33 @@ class DBField implements IDBField {
 	 * @return string
 	 */
 	public function format($value) {
-		if (is_null($value)) {
-			return 'NULL';
+		if ($this->is_null($value)) {
+			return $this->do_format_null($value);
 		}
 		else {
-			return $this->quote($value);
+			return $this->do_format_not_null($value);
 		}
 	}
+
+	/**
+	 * Format values that are NULL
+	 * 
+	 * @param mixed $value
+	 * @return string
+	 */
+	protected function do_format_null($value) {
+		return 'NULL';
+	} 
+	
+	/**
+	 * Format values that are not NULL
+	 * 
+	 * @param mixed $value
+	 * @return string
+	 */
+	protected function do_format_not_null($value) {
+		return $this->quote($value);
+	} 
 	
 	/**
 	 * Format for use in WHERE clause
@@ -167,7 +193,28 @@ class DBField implements IDBField {
 	protected function get_connection() {
 		return $this->connection;
 	}
+	
+	/**
+	 * Set table field belongs to
+	 * 
+	 * @attention The table may not be set, fields must be aware of this!
+	 * 
+	 * @param IDBTable $table
+	 * @return void
+	 */
+	public function set_table($table) {
+		$this->table = $table;
+	}	
 
+	/**
+	 * Get table field belongs to
+	 * 
+	 * @return IDBTable
+	 */
+	public function get_table() {
+		return $this->table;
+	}	
+	
 	/**
 	 * Return policy
 	 *
@@ -202,5 +249,12 @@ class DBField implements IDBField {
 	 */
 	protected function quote($value) {
 		return DB::quote(Cast::string($value), $this->get_connection()); 
+	}
+	
+	/**
+	 * Returns true if $value is NULL or DBNull
+	 */
+	protected function is_null($value) {
+		return is_null($value) || $value instanceof DBNull;
 	}
 }
