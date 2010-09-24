@@ -161,7 +161,7 @@ class WidgetDebugBlock implements IWidget {
 		if (count(TemplatePathResolver::$resolved_paths)) {
 			$table = ''; 
 			foreach(TemplatePathResolver::$resolved_paths as $resource => $file) {
-				$cls = $file ? 'template ok' : 'template error';
+				$cls = 'template';
 				$table .= html::tr(
 					array(
 						html::td(String::escape($resource)),
