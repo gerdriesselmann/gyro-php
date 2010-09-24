@@ -20,6 +20,18 @@ class InputWidgetBaseBase implements IWidget {
 		$this->value = $value;
 		$this->params = Arr::force($params, false);		
 	}
+	
+	/**
+	 * Returns type of this input widget, like 'textarea' or 'select', or 'multiselect'
+	 *  
+	 * @return string Always lower case
+	 */
+	protected function get_input_type() {
+		$cls = get_class($this);
+		$cls = str_replace('InputWidget', '', $cls);
+		$cls = strtolower($cls);
+		return $cls; 
+	}
 
 	/**
 	 * Render the widget 
