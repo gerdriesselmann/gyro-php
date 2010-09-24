@@ -2,6 +2,14 @@
 /**
  * Finds file for given template ressource
  * 
+ * Template files are resolved top-down, if path is relative, that is 
+ * 
+ * - application first
+ * - modules: latest enabled come first
+ * - core 
+ * 
+ * Absolute paths are left untouched.
+ * 
  * @author Gerd Riesselmann
  * @ingroup View
  */
@@ -9,17 +17,36 @@ class TemplatePathResolver {
 	public static $resolved_paths = array();
 	private static $template_paths = array();
 	
+	/**
+	 * Resolve path name
+	 * 
+	 * If an array is passed, the first item that can be resolved will be returned 
+	 * 
+	 * @throws Exception If path could not be resolved
+	 * 
+	 * @param string|array $resource Absolute or relative path or an array
+	 * @param string $required_file_extension file extension of template files. Default is "tpl.php" 
+	 */
 	public static function resolve($resource, $required_file_extension = 'tpl.php') {
-		$key = $resource;
-		if (!isset(self::$resolved_paths[$key])) {
-			$ret = self::find_template($resource, $required_file_extension);
-			// Not found
-			if ($ret === false) {
-				throw new Exception("Template file $resource not found");
+		$resource = Arr::force($resource, false);
+		foreach($resource as $res) {
+			$key = $res;
+			if (!isset(self::$resolved_paths[$key])) {
+				$ret = self::find_template($res, $required_file_extension);
+				self::$resolved_paths[$key] = $ret;
 			}
-			self::$resolved_paths[$key] = $ret;
+			else {
+				$ret = self::$resolved_paths[$key];
+			}
+			if ($ret !== false) {
+				break;
+			}
 		}
-		return self::$resolved_paths[$key];
+		// Not found
+		if ($ret === false) {
+			throw new Exception('Template file ' . implode(', ', $resource) . ' not found');
+		}	
+		return $ret;	
 	}
 
 	public static function exists($resource, $required_file_extension = 'tpl.php') {
