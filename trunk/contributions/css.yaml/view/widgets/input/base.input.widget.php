@@ -15,13 +15,14 @@ class InputWidgetBase extends InputWidgetBaseBase {
 		if (!Config::has_feature(ConfigYAML::YAML_USE_FORMS)) {
 			return parent::render_postprocess($output, $policy);
 		}
-		$cls = strtolower(substr(get_class($this), 11));
+		$cls = $this->get_input_type();
 		$type = $cls;
 		switch ($cls) {
 			case 'textarea':
 			case 'password':
 			case 'file':
 			case 'date':
+			case 'html':
 				$type = 'text';
 				break;
 			case 'radio':
