@@ -112,12 +112,11 @@ class SystemupdateController extends ControllerBase {
 			$ret = array_merge($ret, $this->check_component_postconditions($component, $dir));
 		}
 		
-		if (count($ret) > 0) {
-			// Something has happended
-			Load::commands('generics/clearcache');
-			$cmd = new ClearCacheCommand(null);
-			$cmd->execute();			
-		}
+		// Always clear cache!
+		Load::commands('generics/clearcache');
+		$cmd = new ClearCacheCommand(null);
+		$cmd->execute();			
+
 		return $ret;
 	}
 		
