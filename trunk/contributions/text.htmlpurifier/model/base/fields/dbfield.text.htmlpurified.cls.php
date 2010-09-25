@@ -2,7 +2,9 @@
 /**
  * A DB Text field holding HTML that automatically gets purified before it is written to DB
  * 
- * This class is rather generic. You can overload it to apply more specialized conversion. 
+ * This class is rather generic. You can overload it to apply more specialized conversion.
+ * 
+ * @deprecated It is recommended to use DBFieldTextHtml instead, which is much more flexible.
  * 
  * @ingroup HtmlPurifier
  * @author Gerd Riesselmann
@@ -18,16 +20,13 @@ class DBFieldTextHtmlPurified extends DBFieldText {
 	}
 	
 	/**
-	 * Reformat passed value to DB format
-	 *
+	 * Format values that are not NULL
+	 * 
 	 * @param mixed $value
 	 * @return string
 	 */
-	public function format($value) {
-		if (!is_null($value) && !$value instanceof DBNull) {
-			$value = $this->apply_conversion($value);
-		}
-		return parent::format($value);
+	protected function do_format_not_null($value) {
+		return parent::format($this->apply_conversion($value));
 	}
 	
 	/**
