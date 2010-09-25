@@ -56,7 +56,6 @@ class TemplateEngineCore extends TemplateEngineSimple {
 			$path = str_replace($dir, '', $path); 
 		}
 		$path = str_replace('view/templates/', '', $path);
-		var_dump($path);
 		$pos = strpos($path, '/');
 		$path = substr($path, $pos + 1);
 		return Config::get_value(Config::TEMP_DIR) . 'view/templates_c/' . str_replace('/', '-', $path) . '-' . md5($file) . '.tpl-c.php';
