@@ -42,6 +42,7 @@ class WYMEditor {
 	public static function create_config($name, $template = self::CONFIG_DEFAULT) {
 		$template = self::get_config($template);
 		self::$configs[$name] = $template;
+		HtmlText::register_editor($name, $template);		
 		return $template; 
 	}
 	
@@ -66,7 +67,7 @@ class WYMEditor {
  * @author Gerd Riesselmann
  * @ingroup WYMEditor
  */
-class WYMEditorConfig {
+class WYMEditorConfig implements IRichtTextEditor {
 	/**
 	 * The javascript file that fires up the WYM editor
 	 * 
@@ -84,4 +85,19 @@ class WYMEditorConfig {
 		'js/wymeditor/plugins/fullscreen/jquery.wymeditor.fullscreen.js' => 
 			'wym.fullscreen()'
 	);
+	
+	
+	// -----------------------
+	// IRichTextEditor
+	// -----------------------
+	
+	/**
+	 * Apply it
+	 * 
+	 * @param PageData $page_data
+	 * @param string $name Name of editor, can be found as class "rte_$name" on HTML textareas  
+	 */
+	public function apply(PageData $page_data, $name) {
+		WYMEditor::enable($page_data, $this);
+	}		
 }
