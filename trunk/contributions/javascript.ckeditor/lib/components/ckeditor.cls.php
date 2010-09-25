@@ -38,6 +38,7 @@ class CKEditor {
 	public static function create_config($name, $template = self::CONFIG_DEFAULT) {
 		$template = self::get_config($template);
 		self::$configs[$name] = $template;
+		HtmlText::register_editor($name, $template);
 		return $template; 
 	}
 	
@@ -62,11 +63,25 @@ class CKEditor {
  * @author Gerd Riesselmann
  * @ingroup CKEditor
  */
-class CKEditorConfig {
+class CKEditorConfig implements IRichtTextEditor {
 	/**
 	 * The javascript file that fires up the WYM editor
 	 * 
 	 * @var string
 	 */
 	public $init_file = 'js/ckeditor/default.js';
+	
+	// -----------------------
+	// IRichTextEditor
+	// -----------------------
+	
+	/**
+	 * Apply it
+	 * 
+	 * @param PageData $page_data
+	 * @param string $name Name of editor, can be found as class "rte_$name" on HTML textareas  
+	 */
+	public function apply(PageData $page_data, $name) {
+		CKEditor::enable($page_data, $this);
+	}	
 }
