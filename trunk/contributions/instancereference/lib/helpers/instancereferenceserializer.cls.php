@@ -4,7 +4,7 @@
  */
 class InstanceReferenceSerializier {
 	/**
-	 * Convert an instance top an array (containing type and keys)
+	 * Convert an instance to an array (containing type and keys)
 	 *
 	 * @param IDataObject $inst
 	 * @return array
