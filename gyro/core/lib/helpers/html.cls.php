@@ -496,7 +496,7 @@ class html
 	 * Code is XHTML compliant!
 	 * 
 	 * @param string $file URL of flash file
-	 * @param array $attrs HTML attributes fo robject tag
+	 * @param array $attrs HTML attributes for object tag
 	 * @param array $params Flahs params (rendered as param tags)  
 	 */
 	public static function flash($file, $attrs = array(), $params = array()) {
