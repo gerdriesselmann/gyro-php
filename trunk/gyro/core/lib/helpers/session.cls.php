@@ -228,7 +228,7 @@ class Session {
 	}
 
 	/**
-	 * Adds $value to array $name witj key $key
+	 * Adds $value to array $name with key $key
 	 */
 	public static function push_to_array_assoc($name, $value, $key) {
 		self::start();
@@ -263,16 +263,32 @@ class Session {
 	 */
 	static public function pull($name) {
 		self::start_existing();
+		$ret = false;
 		if (isset($_SESSION[$name])) {
-			$temp = $_SESSION[$name];
+			$ret = $_SESSION[$name];
 			unset($_SESSION[$name]);
-			return $temp;
 		}
-		else {
-			return false;
-		}
+		return $ret;
 	}
 
+	/**
+	 * Returns persistet array member and unsets it
+	 *
+	 * @param string $name Name of the array
+	 * @param mixed $index Index in array
+	 * @return mixed
+	 */
+	static public function pull_from_array($name, $index) {
+		self::start_existing();
+		$ret = false;
+		if (isset($_SESSION[$name][$index])) {
+			$ret = $_SESSION[$name][$index];
+			unset($_SESSION[$name][$index]);
+		}
+		return $ret;
+	}
+	
+	
 	/**
 	 * Static. Sets the from source
 	 *
