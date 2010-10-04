@@ -1,6 +1,6 @@
 <?php
-// Register our views
-ViewFactory::set_implementation(new ViewFactoryTextHtml());
+// Register our view event handler
+EventSource::Instance()->register(new TextHtmlEventSink());
 
 
 /**
