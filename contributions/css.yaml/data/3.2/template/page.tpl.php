@@ -39,7 +39,7 @@
           <div id="col1_content" class="clearfix">
            	<?php 
 			// Breadcrumb, if any
-			if (!empty($page_data->breadcrumb)){ print $page_data->breadcrumb; } 
+			print $breadcrumb; 
 			
 			// Error and success messages
 			if ($status) {
