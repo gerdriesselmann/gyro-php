@@ -36,13 +36,14 @@ class DBSqlBuilderReplaceMysql extends DBSqlBuilderInsertMysql {
 				$fields[$fieldname] = DB::format($value, $table, $column);
 			}
 		}
-		foreach($keyfields as $column => $dbfield) { 
-			if ($dbfield instanceof DBFieldInt && $dbfield->has_policy(DBFieldInt::AUTOINCREMENT)) {
-				// LAst isnert id fix
-				$fieldname = $this->prefix_column($column, $table);
-				$fields[$fieldname] = 'LAST_INSERT_ID(' . DB::format($value, $table, $column) . ')';
-			}
-		}
+		// This is wrong (Duplicated key)
+//		foreach($keyfields as $column => $dbfield) { 
+//			if ($dbfield instanceof DBFieldInt && $dbfield->has_policy(DBFieldInt::AUTOINCREMENT)) {
+//				// LAst isnert id fix
+//				$fieldname = $this->prefix_column($column, $table);
+//				$fields[$fieldname] = 'LAST_INSERT_ID(' . DB::format($value, $table, $column) . ')';
+//			}
+//		}
 		return Arr::implode(', ', $fields, ' = ');
 	}
 	
