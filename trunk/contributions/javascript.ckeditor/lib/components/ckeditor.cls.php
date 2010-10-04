@@ -14,7 +14,9 @@ class CKEditor {
 	 * Enable CKEditor, and use given javascript file, to invoke it 
 	 */
 	public static function enable(PageData $page_data, $config = self::CONFIG_DEFAULT) {
-		$config = self::get_config($config);
+		if (!$config instanceof CKEditorConfig) {
+			$config = self::get_config($config);
+		}
 		
 		$page_data->head->add_js_file('js/ckeditor/ckeditor.js');
 		if (Load::is_module_loaded('javascript.jquery')) {
