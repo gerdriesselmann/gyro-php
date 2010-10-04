@@ -4,4 +4,5 @@ $desc = $item->get_description();
 if ($desc) {
 	print html::div($desc, 'description');
 } 
+print WidgetItemMenu::output($item, 'list');
 ?>

@@ -1,19 +1,8 @@
-<?php 
-/* @var $parent_view IView */
-print WidgetSorter::output($parent_view->retrieve('sorter_data'));
-print WidgetFilter::output($parent_view->retrieve('filter_data'));
-print WidgetFilterText::output($parent_view->retrieve('fitertext_data'));
-print WidgetPager::output($parent_view->retrieve('pager_data'));
-?>
+<?php gyro_include_template('widgets/list/nav.top'); ?> 
+<?php if (count($items)):?>
+	<?php gyro_include_template('widgets/list/items'); ?>
+<?php else: ?>
+	<?php gyro_include_template('widgets/list/empty'); ?>
+<?php endif; ?>
 
-<div class="list">
-<?php 
-foreach($items as $item) {
-	print html::div($item, 'listitem');
-}
-?>
-</div>
-
-<?php
-print WidgetPager::output($parent_view->retrieve('pager_data'));
-?>
+<?php gyro_include_template('widgets/list/nav.bottom'); ?>
