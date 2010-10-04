@@ -18,12 +18,17 @@ class Filter implements IDBQueryModifier {
 	 * Contructor
 	 * 
 	 * @param PageData $page_data 
-	 * @param Mixed Either a single DBFilterGroup instance or an array of it.
+	 * @param Mixed 
+	 *   Either a single DBFilterGroup instance or an array of it or an instance of ISearchAdapter.
+	 *   In later case, get_filters() is invoked in the search adapter. 
 	 * @param IFilterAdapter $adapter 
 	 */
 	public function __construct($page_data, $filtergroups, $adapter = false) {
 		$this->adapter = ($adapter instanceof IFilterAdapter) ? $adapter : new FilterDefaultAdapter($page_data);
 		
+		if ($filtergroups instanceof ISearchAdapter) {
+			$filtergroups = $filtergroups->get_filters();
+		}
 		if (!is_array($filtergroups)) {
 			$filtergroups = ($filtergroups) ? array($filtergroups) : array(new DBFilterGroup());
 		}

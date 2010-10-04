@@ -27,12 +27,19 @@ class Sorter implements IDBQueryModifier {
 	 * Constructor
 	 * 
 	 * @param PageData $page_data
-	 * @param array $sort_columns Associative array of DBSortColumns
-	 * @param string $sort_default_column Key for default sort column
+	 * @param array|ISearchAdapter $columns 
+	 *   Associative array of DBSortColumns or instance of ISearchAdapter.
+	 *   In later case get_sortable_columns() and get_sort_default_column() are called on search 
+	 *   adapter. Value of $default_column_key is ignored.
+	 * @param string $default_column Key for default sort column
 	 * @param ISorterAdapter $adapter If integer is passed it is interpreted as policy for backward compatability
 	 */
-	public function __construct(PageData $page_data, $columns, $default_column_key, $adapter = false) {
+	public function __construct(PageData $page_data, $columns, $default_column_key = false, $adapter = false) {
 		$this->adapter = ($adapter instanceof ISorterAdapter) ? $adapter : new SorterDefaultAdapter($page_data);
+		if ($columns instanceof ISearchAdapter) {
+			$default_column_key = $columns->get_sort_default_column();
+			$columns = $columns->get_sortable_columns();
+		}
 		$this->sorter_data['policy'] = is_int($adapter) ? $adapter : 0;
 		$this->sorter_data['page_data'] = $page_data;
 		$this->sorter_data['column_objects'] = $columns;
