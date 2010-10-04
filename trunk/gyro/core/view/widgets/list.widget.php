@@ -26,24 +26,24 @@ class WidgetList implements IWidget {
 	public function render($policy = self::NONE) {
 		$ret = '';
 		$items = Arr::force($this->items, false);
-		if (count($items)) {
-			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/list');
-			$view->assign('page_data', $this->page_data);
-			$view->assign('parent_view', $this->parent_view);
-			$view->assign('items', $this->render_items($this->page_data, $items, $policy));
-			$view->assign('policy', $policy);
-			$ret = $view->render();
-		}
-		else {
-			$ret = $this->empty_message;
-		}
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/list');
+		$view->assign('page_data', $this->page_data);
+		$view->assign('parent_view', $this->parent_view);
+		$view->assign('items', $this->render_items($this->page_data, $items, $policy));
+		$view->assign('policy', $policy);
+		$view->assign('empty_message', $this->empty_message);
+		$ret = $view->render();
 		return $ret;
 	}
 	
 	protected function render_items($page_data, $items, $policy) {
 		$ret = array();
 		foreach($items as $item) {
-			$ret[] = WidgetListItem::output($page_data, $item, $policy);
+			$cls = array('listitem');
+			if ($item instanceof IDataObject) {
+				$cls[] = 'listitem-' . $item->get_table_name();
+			}
+			$ret[] = html::div(WidgetListItem::output($page_data, $item, $policy), implode(' ', $cls));
 		}		
 		return $ret;
 	}
