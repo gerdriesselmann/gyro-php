@@ -27,7 +27,9 @@ class Pager implements IDBQueryModifier {
 	 * Constructor
 	 * 
 	 * @param PageData $page_data
-	 * @param int Total numbers of items
+	 * @param int|ISearchAdapter $items_total
+	 *   Total numbers of items or instance of ISearchadapter. 
+	 *   In later case, count() is invoked on search adapter
 	 * @param int Number of items per page 
 	 * @param IPagerAdapter Adapter. For compatability reasons, this is also interpreted as a policy, if you pass an integer 
 	 */
@@ -35,6 +37,9 @@ class Pager implements IDBQueryModifier {
 		$this->adapter = ($adapter instanceof IPagerAdapter) ? $adapter : new PagerDefaultAdapter($page_data, 'page');
 		if ($items_per_page === false) {
 			$items_per_page = Config::get_value(Config::ITEMS_PER_PAGE);
+		}
+		if ($items_total instanceof ISearchAdapter) {
+			$items_total = $items_total->count();
 		}
 		
 		$this->pager_data['page_data'] = $page_data;
