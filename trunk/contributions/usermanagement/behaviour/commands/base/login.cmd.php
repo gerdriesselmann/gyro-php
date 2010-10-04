@@ -66,8 +66,8 @@ class LoginUsersBaseCommand extends CommandChain {
 		if (!$algo->check($password, $user->password)) {
 			$ret->append($this->do_get_default_error_message()); 
 		}
-		else if ($user->hash_type != Config::get_value(ConfigUsermanagement::USER_HASH_TYPE)) {
-			$user->hash_type = Config::get_value(ConfigUsermanagement::USER_HASH_TYPE);
+		else if ($user->hash_type != Config::get_value(ConfigUsermanagement::HASH_TYPE)) {
+			$user->hash_type = Config::get_value(ConfigUsermanagement::HASH_TYPE);
 			$algo = Users::create_hash_algorithm($user->hash_type);
 			$user->password = $algo->hash($password);
 			$this->append(CommandsFactory::create_command($user, 'update', array()));

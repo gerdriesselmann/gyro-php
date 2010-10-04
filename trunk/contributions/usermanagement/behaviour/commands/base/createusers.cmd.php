@@ -82,7 +82,7 @@ class CreateUsersBaseCommand extends CommandChain {
 	 */
 	protected function preprocess_params($params) {
 		// Encrypt password
-		$params['hash_type'] = Config::get_value(ConfigUsermanagement::USER_HASH_TYPE, 'md5');
+		$params['hash_type'] = Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5');
 		$this->preprocess_hash_password($params);
 		$this->preprocess_check_roles($params);
 		return $params;
@@ -94,7 +94,7 @@ class CreateUsersBaseCommand extends CommandChain {
 	 * @since 0.5.1
 	 */
 	protected function preprocess_hash_password(&$params) {
-		$params['hash_type'] = Arr::get_item($params, 'hash_type', Config::get_value(ConfigUsermanagement::USER_HASH_TYPE, 'md5'));
+		$params['hash_type'] = Arr::get_item($params, 'hash_type', Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5'));
 		
 		$pwd = Arr::get_item($params, 'password', '');
 		if (!empty($pwd)) {
@@ -115,7 +115,7 @@ class CreateUsersBaseCommand extends CommandChain {
 		$roles = Arr::force(Arr::get_item($params, 'roles', array()));
 		if (count($roles) == 0) {
 			// Assign at least default role
-			$role = UserRoles::get_by_name(Config::get_value(ConfigUsermanagement::USER_DEFAULT_ROLE));
+			$role = UserRoles::get_by_name(Config::get_value(ConfigUsermanagement::DEFAULT_ROLE));
 			if ($role) {
 				$roles[] = $role->id;
 				$params['roles'] = $roles;
