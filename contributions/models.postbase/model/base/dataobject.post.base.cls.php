@@ -4,6 +4,8 @@
  * Model class for Features
  */
 abstract class DataObjectPostBase extends DataObjectTimestampedCached implements ISelfDescribing {
+	private static $global_extensions = array();
+	
 	public $id;
 	public $title;
 	public $teaser;
@@ -30,6 +32,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 					new DBFieldText('meta_keywords', 255, null, DBField::NONE),
 					new DBFieldText('meta_description', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NONE),
 				),
+				$this->get_global_field_definitions(),
 				$this->get_timestamp_field_declarations(),
 				$this->get_additional_field_definitions()	
 			),
@@ -39,11 +42,29 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	}
 	
 	/**
+	 * Extend every instance that extends PostBase by arbitrary many fields
+	 * 
+	 * @param array $arr_fields Array of DBField instances
+	 */
+	public static function extend_table($arr_fields) {
+		self::$global_extensions = $arr_fields;
+	}
+	
+	/**
 	 * Too be overloaded. Return addition table name
 	 * 
 	 * @return string
 	 */
 	abstract protected function get_model_name();
+
+	/**
+	 * Return global extension
+	 * 
+	 * @return array Array of IDBField
+	 */
+	protected function get_global_field_definitions() {
+		return self::$global_extensions;
+	}
 	
 	/**
 	 * Too be overloaded. Return addition table fields
