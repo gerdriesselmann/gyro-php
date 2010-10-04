@@ -96,11 +96,13 @@ class ConfigUsermanagement {
 	/**
 	 * Default role of newly registerd user. Default is "user"
 	 */
+	const DEFAULT_ROLE = 'USER_DEFAULT_ROLE';
 	const USER_DEFAULT_ROLE = 'USER_DEFAULT_ROLE';
 	
 	/**
 	 * The default URL for users logged in
 	 */
+	const DEFAULT_PAGE = 'USER_DEFAULT_PAGE';
 	const USER_DEFAULT_PAGE = 'USER_DEFAULT_PAGE';
 	
 	/**
@@ -111,6 +113,7 @@ class ConfigUsermanagement {
 	 * - DENY: (default) Just show a 403 page and message
 	 * - REDIRECT_LOGIN: Redirect to login page 
 	 */
+	const BEHAVIOUR_403 = 'USER_403_BEHAVIOUR';
 	const USER_403_BEHAVIOUR = 'USER_403_BEHAVIOUR';
 	
 	/**
@@ -136,7 +139,15 @@ class ConfigUsermanagement {
 	 * 
 	 * Full mode is generally safer, though.
 	 */
+	const HASH_TYPE = 'USER_HASH_TYPE';
 	const USER_HASH_TYPE = 'USER_HASH_TYPE';	
+	
+	/**
+	 * Time in days a permantent login is valid. Default is 14.
+	 * 
+	 * @since 0.5.1
+	 */
+	const PERMANENT_LOGIN_DURATION = 'USER_PERMANENT_LOGIN_DURATION';
 }
 
 
@@ -161,10 +172,11 @@ if (Config::get_value(Config::VERSION_MAX) < 0.6) {
 	if (!defined('APP_DEFAULT_PAGE_ADMIN')) define('APP_DEFAULT_PAGE_ADMIN', APP_USER_DEFAULT_PAGE);	
 }
 
-Config::set_value_from_constant(ConfigUsermanagement::USER_DEFAULT_PAGE, 'APP_USER_DEFAULT_PAGE', Config::get_url(Config::URL_BASEURL_SAFE) . 'user');
-Config::set_value_from_constant(ConfigUsermanagement::USER_DEFAULT_ROLE, 'APP_USER_DEFAULT_ROLE', USER_ROLE_USER);
-Config::set_value_from_constant(ConfigUsermanagement::USER_403_BEHAVIOUR, 'APP_USER_403_BEHAVIOUR', 'DENY');
-Config::set_value_from_constant(ConfigUsermanagement::USER_HASH_TYPE, 'APP_USER_HASH_TYPE', 'md5');
+Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_PAGE, 'APP_USER_DEFAULT_PAGE', Config::get_url(Config::URL_BASEURL_SAFE) . 'user');
+Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_ROLE, 'APP_USER_DEFAULT_ROLE', USER_ROLE_USER);
+Config::set_value_from_constant(ConfigUsermanagement::BEHAVIOUR_403, 'APP_USER_403_BEHAVIOUR', 'DENY');
+Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_TYPE', 'md5');
+Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';

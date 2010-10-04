@@ -54,7 +54,7 @@ class AccessRenderDecorator extends RenderDecoratorBase {
 		$page_data->set_cache_manager(new NoCacheCacheManager()); // Do not cache
 		if ($this->access_granted == false) {
 			$page_data->status_code = ControllerBase::ACCESS_DENIED;
-			if (Config::get_value(ConfigUsermanagement::USER_403_BEHAVIOUR) == 'REDIRECT_LOGIN') {
+			if (Config::get_value(ConfigUsermanagement::BEHAVIOUR_403) == 'REDIRECT_LOGIN') {
 				if (!Users::is_logged_in()) {
 					Url::create(ActionMapper::get_url('login'))->redirect();
 					exit;

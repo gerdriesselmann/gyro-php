@@ -25,8 +25,8 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 				new DBFieldText('name', 100, null, DBField::NOT_NULL),
 				new DBFieldTextEmail('email', null, DBField::NOT_NULL),
 				new DBFieldText('password', 50, null, DBField::NOT_NULL),
-				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL),
-				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL),
+				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL | DBField::INTERNAL),
+				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
 				), $this->get_timestamp_field_declarations()
 			),
 			'id'

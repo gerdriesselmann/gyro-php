@@ -18,7 +18,7 @@ class CreatePermanentloginsCommand extends CommandComposite {
 		// Create new entry
 		$user = $this->get_params();
 		$code = sha1(uniqid($user->creationdate . $user->password . $user->modificationdate, true));
-		$validtime = 14 * GyroDate::ONE_DAY;
+		$validtime = Cast::int(Config::get_value(ConfigUsermanagement::PERMANENT_LOGIN_DURATION)) * GyroDate::ONE_DAY;
 		$params = array(
 			'code' => $code,
 			'expirationdate' => time() + $validtime,
