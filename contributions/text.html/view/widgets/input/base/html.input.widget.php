@@ -27,7 +27,7 @@ class InputWidgetHtmlBase extends InputWidgetTextareaBase {
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
 		$model = Arr::get_item($params, 'model', HtmlText::CONVERSION_DEFAULT);
-		$value = HtmlText::apply_conversion(HtmlText::EDIT, $model, $value);
+		$value = HtmlText::apply_conversion(HtmlText::EDIT, $value, $model);
 		
 		$editor = Arr::get_item($params, 'editor', HtmlText::EDITOR_DEFAULT);
 		HtmlText::enable_editor($editor);
