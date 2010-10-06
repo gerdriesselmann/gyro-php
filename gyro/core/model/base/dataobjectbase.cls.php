@@ -663,6 +663,13 @@ class DataObjectBase implements IDataObject, IActionSource {
 		}
 	} 
 	
+	/**
+	 * Set a table alias for this instance
+	 */
+	public function set_table_alias($alias) {
+		$this->table = new DBTableAlias($this->table, $alias);
+	}
+	
 	// *************************************
 	// IDBTable
 	// *************************************
