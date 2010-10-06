@@ -341,6 +341,22 @@ class PageData {
 	}
 	
 	/**
+	 * Get blocks for given position 
+	 * 
+	 * @param string $position Pass FALSE to retrieve all blocks 
+	 */
+	public function get_blocks($position = false) {
+		$ret = array();
+		foreach ($this->blocks as $block) {
+			if ($position && $position != $block->position) {
+				continue;
+			}
+			$ret[] = $block;
+		}		
+		return $ret;
+	}
+	
+	/**
 	 * Set error 
 	 *
 	 * @param Status|string $msg Error or error message
