@@ -71,13 +71,7 @@ class WidgetBlock implements IWidget {
 	
 	public function render($policy = self::NONE) {
 		$this->page_data->sort_blocks();
-		$arr_blocks = array();
-		foreach ($this->page_data->blocks as $block) {
-			if ($this->position && $this->position != $block->position) {
-				continue;
-			}
-			$arr_blocks[] = $block;
-		}
+		$arr_blocks = $this->page_data->get_blocks($this->position);
 		return self::render_blocks($arr_blocks, $this->position);	
 	}
 }
