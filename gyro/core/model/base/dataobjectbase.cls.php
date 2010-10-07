@@ -318,9 +318,10 @@ class DataObjectBase implements IDataObject, IActionSource {
  		// Copy only elements that are not INTERNAL
  		foreach($arr_properties as $field => $value) {
  			$dbfield = $this->get_table_field($field);
- 			if ($dbfield && !$dbfield->has_policy(DBField::INTERNAL)) {
- 				$ret[$field] = $value;
+ 			if ($dbfield && $dbfield->has_policy(DBField::INTERNAL)) {
+ 				continue;
  			}
+ 			$ret[$field] = $value;
  		}
  		// Remove primary keys from cleaned array
  		foreach($this->get_table_keys() as $field => $tmp) {
