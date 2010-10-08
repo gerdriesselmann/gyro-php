@@ -14,10 +14,15 @@ class StaticPagesController extends ControllerBase {
 	 * Return array of urls which are handled by this controller
  	 */
 	public function get_routes() {
-		$templates = implode(',', $this->collect_templates());
-		return array(
-			new ParameterizedRoute(STATICPAGES_PREPEND . "{page:e:$templates}" . STATICPAGES_APPEND, $this, 'static')
+		$templates = $this->collect_templates();
+		$pages_enum = implode(',', $templates);
+		$ret = array(
+			new ParameterizedRoute(STATICPAGES_PREPEND . "{page:e:$pages_enum}" . STATICPAGES_APPEND, $this, 'static')
 		);
+		foreach ($templates as $page) {
+			$ret[] = new StaticPageRoute(STATICPAGES_PREPEND, $page, STATICPAGES_APPEND, $this, 'static');
+		}
+		return $ret;
 	}
 	
 	/**
