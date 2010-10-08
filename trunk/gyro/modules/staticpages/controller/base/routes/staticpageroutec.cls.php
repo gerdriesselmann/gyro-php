@@ -33,6 +33,7 @@ class StaticPageRoute extends ExactMatchRoute {
 	 * @return mixed Status
 	 */
 	protected function invoke_action_func($controller, $funcname, $page_data) {
+		$funcname = $this->action;
 		$this->check_action_func($controller, $funcname);
 		return $this->controller->$funcname($page_data, $this->page);		
 	}	
