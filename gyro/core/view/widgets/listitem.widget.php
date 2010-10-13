@@ -9,13 +9,12 @@ class WidgetListItem implements IWidget {
 	protected $page_data;
 	protected $item;
 	
-	public static function output(PageData $page_data, $item, $policy = self::NONE) {
-		$widget = new WidgetListItem($page_data, $item);
+	public static function output($item, $policy = self::NONE) {
+		$widget = new WidgetListItem($item);
 		return $widget->render($policy);			
 	} 
 
-	public function __construct(PageData $page_data, $item) {
-		$this->page_data = $page_data;
+	public function __construct($item) {
 		$this->item = $item;
 	} 
 	
@@ -24,7 +23,6 @@ class WidgetListItem implements IWidget {
 		$model = $this->item->get_table_name();
 		$view = $this->create_item_view($model);
 		$view->assign('item', $this->item);
-		$view->assign('page_data', $page_data);
 		$view->assign('policy', $policy);
 		$ret = $view->render();
 		return $ret;
