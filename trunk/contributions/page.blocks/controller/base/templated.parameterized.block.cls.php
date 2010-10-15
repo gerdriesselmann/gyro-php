@@ -6,8 +6,8 @@
  * name like this:
  * 
  * @code
- * $block->title = 'New title';
- * $block->name = 'newname';
+ * $block->set_title('New title');
+ * $block->set_name('newname');
  * @endcode
  * 
  * @ingroup Blocks
