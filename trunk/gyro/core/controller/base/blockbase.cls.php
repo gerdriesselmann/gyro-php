@@ -11,13 +11,7 @@
  * @author Gerd Riesselmann
  * @ingroup Controller
  */
-class BlockBase  {
-	const LEFT = 'LEFT';
-	const RIGHT = 'RIGHT';
-	const TOP = 'TOP';
-	const BOTTOM = 'BOTTOM';
-	const CONTENT = 'CONTENT';
-	
+class BlockBase implements IBlock  {
 	/**
 	 * Title of block (heading)
 	 *
@@ -67,6 +61,96 @@ class BlockBase  {
 	}
 	
 	/**
+	 * Get title of block (heading)
+	 *
+	 * @return string
+	 */
+	public function get_title() {
+		return $this->title;
+	}
+	
+	/**
+	 * Set title of block (heading)
+	 *
+	 * @param string
+	 */
+	public function set_title($title) {
+		$this->title = $title;
+	}
+	
+	/**
+	 * Get content of block (HTML)
+	 *
+	 * @return string
+	 */
+	public function get_content() {
+		return $this->content;
+	}
+	
+	/**
+	 * Set content of block (HTML)
+	 *
+	 * @param string
+	 */
+	public function set_content($content) {
+		$this->content = $content;
+	}
+	
+	/**
+	 * An index to sort blocks
+	 *
+	 * @return integer
+	 */
+	public function get_index() {
+		return $this->index;
+	}
+	
+	/**
+	 * Set index to sort blocks
+	 *
+	 * @param integer
+	 */
+	public function set_index($index) {
+		$this->index = $index;
+	}
+	
+	/**
+	 * Name (used as CSS class)
+	 *
+	 * @return string
+	 */
+	public function get_name() {
+		return $this->name;
+	}
+	
+	/**
+	 * Sets Name (used as CSS class)
+	 *
+	 * @param string
+	 */
+	public function set_name($name) {
+		$this->name = $name;
+	}
+	
+	/**
+	 * One of LEFT, RIGHT, CONTENT etc...
+	 *
+	 * @return string
+	 */
+	public function get_position() {
+		return $this->position;
+	}
+	
+	/**
+	 * Set position
+	 *
+	 * @param string
+	 */
+	public function set_position($position) {
+		$this->position = $position;
+	}
+	
+	/**
 	 * Returns true if this block is valid
 	 * 
 	 * @return boolean True if this block has content
@@ -87,11 +171,17 @@ class BlockBase  {
 	
 		return ($this->index < $other->index) ? -1 : 1;
 	}
-}
-
-/**
- * Callback function for sorting blocks. Invokes $item_1->compare($item_2);  
- */
-function gyro_block_sort(&$item_1, &$item_2) {
-	return $item_1->compare($item_2);
+	
+	/**
+	 * Renders what should be rendered
+	 *
+	 * @param int $policy Defines how to render, meaning depends on implementation
+	 * @return string The rendered content
+	 */
+	public function render($policy = self::NONE) {
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/block');
+		$view->assign('block', $this);
+		$view->assign('policy', $policy);
+		return $view->render();		
+	}	
 }

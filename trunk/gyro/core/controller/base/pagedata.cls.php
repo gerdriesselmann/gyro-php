@@ -322,10 +322,10 @@ class PageData {
 	public function add_block($block, $position = false, $weight = false) {
 		if ($block->is_valid()) {
 			if (!empty($position)) {
-				$block->position = $position;
+				$block->set_position($position);
 			}
 			if (!empty($weight)) {
-				$block->index = $weight;
+				$block->set_index($weight);
 			}
 			$this->blocks[] = $block;
 		}
@@ -348,7 +348,7 @@ class PageData {
 	public function get_blocks($position = false) {
 		$ret = array();
 		foreach ($this->blocks as $block) {
-			if ($position && $position != $block->position) {
+			if ($position && $position != $block->get_position()) {
 				continue;
 			}
 			$ret[] = $block;
