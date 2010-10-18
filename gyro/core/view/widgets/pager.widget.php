@@ -51,7 +51,23 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 */
 	public function has_policy($policy) {
 		return Common::flag_is_set($this->policy, $policy);	
-	}	
+	}
+
+	/**
+	 * Returns current page (one-based)
+	 * @return int
+	 */
+	public function get_current_page() {
+		return $this->data['page'];
+	}
+	
+	/**
+	 * Returns number of pages
+	 * @var int
+	 */
+	public function get_total_pages() {
+		return $this->data['pages_total'];
+	}
 	
 	/**
 	 * Returns previous link
@@ -129,6 +145,23 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	public function get_page_url($page) {
 		$page_data = Arr::get_item($this->data['pages'], $page - 1, array());
 		return Arr::get_item($page_data, 'url', '');
+	}
+	
+	/**
+	 * Returns link for page $page, with text $text, unless $paeg is 
+	 * current page in which case it returns either nothing or 
+	 * a span containing $text, depending on $policy
+	 */
+	public function get_page_link($page, $text, $cls = '', $policy = self::NONE) {
+		$policy |= $this->policy;
+		$ret = '';
+		if ($page != $this->get_current_page()) {
+			$ret .= html::a($text, $this->get_page_url($page), '', array('class' => $cls));
+		}
+		else if (!Common::flag_is_set($policy, WidgetPager::HIDE_INACTIVE_LINKS)) {
+			$ret .= html::span($text, $cls);
+		}		
+		return $ret;				
 	}
 	
 	/**
