@@ -130,18 +130,21 @@ class UserBaseController extends ControllerBase {
 	/**
 	 * Build the user block
 	 *
-	 * @return string
+	 * @return BlockBase
 	 */
 	protected function do_user_block() {
-		$block_content = '';
 		$user = Users::is_logged_in() ? Users::get_current_user() : NULL;
-		$block_content .= $this->create_user_block_prefix($user);
-		$menu_list = $this->create_user_block_menu_list($user);
-		if (!empty($menu_list)) {
-			$block_content .= html::li($menu_list);
-		}
-		$block_content .= $this->create_user_block_postfix($user);
-		return new BlockBase('user', $this->get_block_title($user), $block_content, 10000);
+		$block = new BlockBase('user', $this->get_block_title($user), '');
+		
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'users/blocks/menu');
+		$view->assign('user', $user);
+		$view->assign('prefix', $this->create_user_block_prefix($user));
+		$view->assign('menu_list', $this->create_user_block_menu_list($user));
+		$view->assign('postfix', $this->create_user_block_postfix($user));
+		$view->assign('block', $block);
+		
+		$block->set_content($view->render());
+		return $block;
 	} 
 	
 	/**
