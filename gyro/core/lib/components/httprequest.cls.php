@@ -25,6 +25,18 @@ class HttpRequest {
 	}
 
 	/**
+	 * Read content from given url using authentication
+	 *
+	 * @return String The content of the file or NULL, if file was not found
+	 */
+	public static function get_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE) {
+		$options = self::get_default_opts($policy);
+		$options[CURLOPT_USERPWD] = "$user:$pwd";
+		$ret = self::execute_curl($url, $options, $timeout, $err);
+		return $ret;
+	}
+	
+	/**
 	 * Fetch only head
 	 *
 	 * @param Url|string $url
