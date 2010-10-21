@@ -148,9 +148,14 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	}
 	
 	/**
-	 * Returns link for page $page, with text $text, unless $paeg is 
+	 * Returns link for page $page, with text $text, unless $page is 
 	 * current page in which case it returns either nothing or 
 	 * a span containing $text, depending on $policy
+	 * 
+	 * @param int $page Page, one-based
+	 * @param string $text Link text
+	 * @param string $cls CSS class
+	 * @param int $policy Policy 
 	 */
 	public function get_page_link($page, $text, $cls = '', $policy = self::NONE) {
 		$policy |= $this->policy;
@@ -319,6 +324,7 @@ class WidgetPager implements IWidget {
 					
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/pager');
 		$view->assign('pager_calculator', $calculator);
+		$view->assign('page_data', $this->data['page_data']);
 		return $view->render();
 	}
 }
