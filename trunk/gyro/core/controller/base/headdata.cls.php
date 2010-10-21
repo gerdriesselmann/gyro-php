@@ -167,7 +167,7 @@ class HeadData implements IRenderer {
 		$attrs = Arr::force($attrs, false);
 		$attrs['rel'] = $rel;
 		$attrs['href'] = $href;
-		$this->links[$href] = html::tag_selfclosing('link', $attrs);
+		$this->links[$rel . $href] = html::tag_selfclosing('link', $attrs);
 	}
 	
 	/**
