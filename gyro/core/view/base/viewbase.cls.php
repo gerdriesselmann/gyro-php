@@ -33,9 +33,22 @@ class ViewBase implements IView, ICache {
 	 */
 	protected $template;
 
-	function __construct($template, $cache_id = '') {
+	public function __construct($template, $cache_id = '') {
 		$this->template = $template;
 		$this->set_cache_id($cache_id);
+	}
+	
+	/**
+	 * Creates a view of type IViewFactory::MESSAGE and given templaet
+	 * and copies all variables set on this view  
+	 * 
+	 * @param string $template 
+	 * @return IView
+	 */
+	public function create_child_view($template) {
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, $template);
+		$this->copy_to($view);
+		return $view;
 	}
 
 	/**
@@ -67,6 +80,24 @@ class ViewBase implements IView, ICache {
 		return Arr::get_item($this->vars, $var, false);	
 	}
 	
+	/**
+	 * Retrieve all variables
+	 * 
+	 * @return array Associative array 
+	 */
+	public function retrieve_array() {
+		return $this->vars;
+	}
+	
+	/**
+	 * Copy all variables to other view
+	 * 
+	 * @param IView $view
+	 */
+	public function copy_to($view) {
+		$view->assign_array($this->vars);
+	}
+		
 	/**
 	 * Returns cache id
 	 *
