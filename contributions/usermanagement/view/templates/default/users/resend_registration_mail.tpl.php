@@ -16,5 +16,5 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(
 	<?php print WidgetInput::output('email', tr('E-Mail:', 'users'), $form_data); ?>
 
 	<br />
-	<input class="button right" type="submit" name="submit" value="<?=tr('Resend', 'users')?>" />
+	<?php print WidgetInput::output('submit', '', tr('Resend', 'users'), WidgetInput::SUBMIT); ?>
 </form>
