@@ -24,7 +24,7 @@ interface IView extends IRenderer {
 	public function assign($var, $value);
 	
 	/**
-	 * Pass an associaet array to the view
+	 * Pass an associative array to the view
 	 *
 	 * @param array $vars
 	 */
@@ -37,4 +37,19 @@ interface IView extends IRenderer {
 	 * @return mixed The Value
 	 */
 	public function retrieve($var);
-} 
+	
+	/**
+	 * Retrieve all variables
+	 * 
+	 * @return array Associative array 
+	 */
+	public function retrieve_array();
+	
+	/**
+	 * Copy all variables to other view
+	 * 
+	 * @param IView $view
+	 */
+	public function copy_to($view);
+}
+
