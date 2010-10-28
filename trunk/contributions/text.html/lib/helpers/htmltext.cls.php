@@ -89,14 +89,16 @@ class HtmlText {
 	 */
 	public static function add_conversion($type, $conversions, $model = self::CONVERSION_DEFAULT, $to_front = false) {
 		$conversions = Arr::force($conversions, false);
-		$recent = self::get_conversion($type, $model, true);
-		if ($to_front) {
-			$recent = array_merge($conversions, $recent);
+		foreach(Arr::force($model, false) as $m) {
+			$recent = self::get_conversion($type, $m, true);
+			if ($to_front) {
+				$recent = array_merge($conversions, $recent);
+			}
+			else {
+				$recent = array_merge($recent, $conversions);
+			}
+			self::set_conversion($type, $recent, $m);
 		}
-		else {
-			$recent = array_merge($recent, $conversions);
-		}
-		self::set_conversion($type, $recent, $model);
 	} 
 	
 	/**
