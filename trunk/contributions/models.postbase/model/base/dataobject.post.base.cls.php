@@ -58,15 +58,6 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	abstract protected function get_model_name();
 
 	/**
-	 * Return global extension
-	 * 
-	 * @return array Array of IDBField
-	 */
-	protected function get_global_field_definitions() {
-		return self::$global_extensions;
-	}
-	
-	/**
 	 * Too be overloaded. Return addition table fields
 	 * 
 	 * @return array Array of IDBField
@@ -100,6 +91,15 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	 */
 	protected function get_text_field_policy() {
 		return DBField::NOT_NULL;
+	}
+	
+	/**
+	 * Return global extension
+	 * 
+	 * @return array Array of IDBField
+	 */
+	protected function get_global_field_definitions() {
+		return self::$global_extensions;
 	}
 	
 	// -- Getters ---
