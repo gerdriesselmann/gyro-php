@@ -124,6 +124,9 @@ function core_load_translations($languages) {
 		),
 		'Show All' => array(
 			'de' => 'Alle anzeigen'
+		),
+		'Please choose...' => array(
+			'de' => 'Bitte auswählen...'
 		)
 	);
 }
