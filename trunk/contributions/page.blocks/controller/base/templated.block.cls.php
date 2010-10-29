@@ -14,6 +14,9 @@
  * @author Gerd Riesselmann
  */
 class TemplatedBlock extends BlockBase {
+	protected $view_is_rendered = false;
+	protected $template = ''; 
+	
 	/**
 	 * Constructor
 	 * 
@@ -25,8 +28,7 @@ class TemplatedBlock extends BlockBase {
 	 */
 	public function __construct($name, $title, $template, $index = 1000, $position = self::LEFT) {
 		parent::__construct($name, $title, '', $index, $position);
-		$view = $this->create_view($template);
-		$this->content = $view->render();
+		$this->template = $template;
 	}
 
 	/**
@@ -49,5 +51,19 @@ class TemplatedBlock extends BlockBase {
 	 */
 	protected function configure_view($view) {
 		// to be overloaded
+	}
+	
+	/**
+	 * Get content of block (HTML)
+	 *
+	 * @return string
+	 */
+	public function get_content() {
+		if (!$this->view_is_rendered) {
+			$this->view_is_rendered = true;
+			$view = $this->create_view($this->template);
+			$this->set_content($view->render());
+		}
+		return parent::get_content();
 	}
 }
