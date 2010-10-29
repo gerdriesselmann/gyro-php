@@ -39,7 +39,7 @@ class BlockRepository {
 	 */
 	public static function enable(PageData $page_data, $position, $blocks, $start_index = 1000, $increment = 10) {
 		$enable_blocks = array();
-		foreach($blocks as $key) {
+		foreach(Arr::force($blocks) as $key) {
 			if ($key instanceof IBlock) {
 				$enable_blocks[] = $key;
 			}
