@@ -238,6 +238,23 @@ class PageViewBase extends ViewBase {
 	protected function assign_default_vars($policy) {
 		parent::assign_default_vars($policy);
 		
+		// Check for error templates and render error content, if required
+		switch ($this->page_data->status_code) {
+			case CONTROLLER_ACCESS_DENIED:
+			case CONTROLLER_NOT_FOUND:
+			case CONTROLLER_INTERNAL_ERROR:
+				$error_view = ViewFactory::create_view(
+					IViewFactory::CONTENT, 
+					'errors/' . String::plain_ascii($this->page_data->status_code, '_'),
+					$this->page_data	
+				);
+				$this->page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
+				$error_view->render();				
+				break;
+			default:			
+				break;
+		}
+		
 		$this->page_data->sort_blocks();	
 		$this->assign('page_data', $this->page_data);
 		$this->assign('pagetitle', $this->page_data->head->title);
@@ -254,23 +271,6 @@ class PageViewBase extends ViewBase {
 		
 		if ($this->page_data->router) {
 			$this->assign('route_id', $this->page_data->router->get_route_id());
-		}
-
-		switch ($this->page_data->status_code) {
-			case CONTROLLER_ACCESS_DENIED:
-			case CONTROLLER_NOT_FOUND:
-			case CONTROLLER_INTERNAL_ERROR:
-				$error_view = ViewFactory::create_view(
-					IViewFactory::MESSAGE, 
-					'errors/' . String::plain_ascii($this->page_data->status_code, '_'),
-					$this->page_data	
-				);
-				$this->page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
-				$error_view->assign('page_data', $this->page_data);
-				$this->assign('content', $error_view->render());				
-				break;
-			default:			
-				break;
 		}
 	}
 	
