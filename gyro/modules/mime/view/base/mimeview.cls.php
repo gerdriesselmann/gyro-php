@@ -64,7 +64,10 @@ class MimeView extends ContentViewBase {
 			Common::header('Pragma', 'public', true);
 			// This leads to trouuble in IE and Safari
 			// Possibly a gzip-issue?
-			//header('Content-Length: ') . strlen($rendered_content);			
+			//header('Content-Length: ') . strlen($rendered_content);
+			if (strpos($mimetype, 'charset') === false) {
+				$mimetype .= '; charset=' . GyroLocale::get_charset();
+			}			
 			Common::header('Content-Type', $mimetype, true);
 			
 			// Expires Header
