@@ -66,4 +66,17 @@ class TemplatedBlock extends BlockBase {
 		}
 		return parent::get_content();
 	}
+	
+	/**
+	 * Renders what should be rendered
+	 *
+	 * @param int $policy Defines how to render, meaning depends on implementation
+	 * @return string The rendered content
+	 */
+	public function render($policy = self::NONE) {
+		if (!$this->view_is_rendered) {
+			$this->get_content();
+		}		
+		return parent::render($policy);
+	}		
 }
