@@ -29,11 +29,11 @@ class UsersAccessControl extends AccessControlBase {
 		$is_admin = $user->has_role(array(USER_ROLE_ADMIN, USER_ROLE_SYSTEM)); 
 		switch ($action) {
 			case 'update':
-			case 'edit':
 				$ret = $this->to_result(($is_admin) || ($item->id == $user->id));
 				break;
 			case 'create':
 			case 'status':
+			case 'edit':
 				$ret = $this->to_result($is_admin);
 				break;
 		}
