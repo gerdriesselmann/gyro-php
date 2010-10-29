@@ -156,7 +156,7 @@ class BlockBase implements IBlock  {
 	 * @return boolean True if this block has content
 	 */
 	public function is_valid() {
-		return (!empty($this->content));
+		return ($this->get_content() !== '');
 	}
 	
 	/**
