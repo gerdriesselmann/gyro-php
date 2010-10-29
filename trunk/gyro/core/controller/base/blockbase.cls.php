@@ -53,11 +53,11 @@ class BlockBase implements IBlock  {
 	 * @param enum Where the block is to be dispalyed. 
 	 */
 	public function __construct($name, $title, $content, $index = 1000, $position = self::LEFT) {
-		$this->title = trim($title);
-		$this->content = trim($content);
-		$this->index = $index;
-		$this->name = $name;
-		$this->position = $position;
+		$this->set_title($title);
+		$this->set_content($content);
+		$this->set_index($index);
+		$this->set_name($name);
+		$this->set_position($position);
 	}
 	
 	/**
@@ -75,7 +75,7 @@ class BlockBase implements IBlock  {
 	 * @param string
 	 */
 	public function set_title($title) {
-		$this->title = $title;
+		$this->title = trim($title);
 	}
 	
 	/**
@@ -165,11 +165,13 @@ class BlockBase implements IBlock  {
 	 * @return int 0 if index of this is equal to other's index, -1 if this index is less than and +1 if it is more than other's index 
 	 */
 	public function compare($other) {
-		if ($this->index == $other->index) {
+		$t_idx = $this->get_index();
+		$o_idx = $other->get_index();
+		if ($t_idx == $o_idx) {
 			return 0;
 		}
 	
-		return ($this->index < $other->index) ? -1 : 1;
+		return ($t_idx < $o_idx) ? -1 : 1;
 	}
 	
 	/**
