@@ -93,7 +93,7 @@ class BlockBase implements IBlock  {
 	 * @param string
 	 */
 	public function set_content($content) {
-		$this->content = $content;
+		$this->content = trim($content);
 	}
 	
 	/**
