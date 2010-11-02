@@ -9,6 +9,8 @@ foreach($nodes as $node) {
 	if ($i == $l) { $cls[] = 'last'; }
 	if ($i % 2) { $cls[] = 'even'; } else { $cls[] = 'uneven'; }
 	
+	if ($node['is_branch']) { $cls[] = 'branch'; }
+	
 	$txt = '';
 	$v->assign('node', $node['item']);
 	$txt .= $v->render();
