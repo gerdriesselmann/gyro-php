@@ -65,7 +65,8 @@ class WidgetTree implements IWidget {
 		$has_next_level = ($level < $max_level);
 		$branch_item = array_shift($branch);
 		foreach($items as $item) {
-			if ($branch_item && $item->is_same_as($branch_item)) {
+			$is_branch = ($branch_item) ? $item->is_same_as($branch_item) : false;
+			if ($is_branch) {
 				$childs = $this->create_level($level + 1, $max_level, $item->get_childs(), $policy, $branch);		
 			}
 			else if ($has_next_level) {
@@ -74,12 +75,12 @@ class WidgetTree implements IWidget {
 			else {	
 				$childs = array();
 			}
-			$ret[] = $this->create_node($item, $childs);
+			$ret[] = $this->create_node($item, $childs, $is_branch);
 		}
 		return $ret;
 	}
 	
-	protected function create_node($item, $childs) {
-		return array('item' => $item, 'childs' => $childs);
+	protected function create_node($item, $childs, $is_branch) {
+		return array('item' => $item, 'childs' => $childs, 'is_branch' => $is_branch);
 	}
 }
