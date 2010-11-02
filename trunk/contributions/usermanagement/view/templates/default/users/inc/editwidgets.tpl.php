@@ -12,8 +12,8 @@
 	}
 	?>
 
-	<?php print WidgetInput::output('pwd1', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD) ?>
-	<?php print WidgetInput::output('pwd2', tr('Repeat Password:', 'users'), $form_data, WidgetInput::PASSWORD) ?>
+	<?php print WidgetInput::output('pwd1', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD, array('autocomplete' => 'off')) ?>
+	<?php print WidgetInput::output('pwd2', tr('Repeat Password:', 'users'), $form_data, WidgetInput::PASSWORD, array('autocomplete' => 'off')) ?>
 
 	<p><?php print tr('Leave these fields empty to not change the password.',  'users')?></p> 
 

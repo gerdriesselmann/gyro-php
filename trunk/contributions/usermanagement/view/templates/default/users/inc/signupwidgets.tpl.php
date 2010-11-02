@@ -4,8 +4,8 @@
 
 <?php print WidgetInput::output('name', tr('Username:', 'users'), $form_data); ?>
 
-<?php print WidgetInput::output('pwd1', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD); ?>
-<?php print WidgetInput::output('pwd2', tr('Retype password:', 'users'), $form_data, WidgetInput::PASSWORD); ?>
+<?php print WidgetInput::output('pwd1', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD, array('autocomplete' => 'off')); ?>
+<?php print WidgetInput::output('pwd2', tr('Retype password:', 'users'), $form_data, WidgetInput::PASSWORD, array('autocomplete' => 'off')); ?>
 </fieldset>
 <fieldset>
 <legend><?=tr('E-mail', 'users')?></legend>	
