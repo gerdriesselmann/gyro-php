@@ -289,7 +289,7 @@ function users_load_translations($languages) {
 			'de' => 'Passwort wiederholen:'
 		),
 		'Leave these fields empty to not change the password.' => array(
-			'de' => 'Lassen Sie deise Felder leer um das Passwort nicht zu ändern.'
+			'de' => 'Lassen Sie diese Felder leer um das Passwort nicht zu ändern.'
 		),		
 		'E-mail:' => array(
 			'de' => 'E-Mail:'
