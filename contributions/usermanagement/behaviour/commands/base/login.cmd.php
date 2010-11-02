@@ -21,10 +21,7 @@ class LoginUsersBaseCommand extends CommandChain {
 		$ret = new Status();
 		$params = $this->get_params();
 
-		$ret->merge($this->do_validate_params($params));
-		if ($ret->is_ok()) {
-			$user = $this->do_create_user_dao($params, $ret);
-		}
+		$user = $this->do_create_user_dao($params, $ret);
 		if ($ret->is_error()) {
 			return $ret;
 		}
@@ -104,6 +101,7 @@ class LoginUsersBaseCommand extends CommandChain {
 	 * @return DAOUsers
 	 */
 	protected function do_create_user_dao($params, $err) {
+		$err->merge($this->do_validate_params($params));
 		$user = new DAOUsers();
 		$user->name = $this->params_extract_name($params);
 		
