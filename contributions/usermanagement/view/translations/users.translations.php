@@ -144,7 +144,7 @@ function users_load_translations($languages) {
 		'Edit your account settings' => array(
 			'de' => 'Benutzername und Password ändern'
 		),	
-		'An user with this email address aready exists' => array (
+		'An user with this email address already exists' => array (
 			'de' => 'Es existiert bereits ein Benutzer mit dieser E-Mail-Adresse.'
 		),
 		'Delete Account' => array(

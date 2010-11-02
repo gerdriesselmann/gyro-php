@@ -20,8 +20,11 @@ class LoginUsersBaseCommand extends CommandChain {
 	protected function do_execute() {
 		$ret = new Status();
 		$params = $this->get_params();
-		
-		$user = $this->do_create_user_dao($params, $ret);
+
+		$ret->merge($this->do_validate_params($params));
+		if ($ret->is_ok()) {
+			$user = $this->do_create_user_dao($params, $ret);
+		}
 		if ($ret->is_error()) {
 			return $ret;
 		}
@@ -101,6 +104,20 @@ class LoginUsersBaseCommand extends CommandChain {
 	 * @return DAOUsers
 	 */
 	protected function do_create_user_dao($params, $err) {
+		$user = new DAOUsers();
+		$user->name = $this->params_extract_name($params);
+		
+		return $user;
+	}
+	
+	/**
+	 * Check params
+	 *
+	 * @param array $params
+	 * @return Status $err
+	 */
+	protected function do_validate_params($params) {
+		$err = new Status();
 		$name = $this->params_extract_name($params);
 		$pwd = $this->params_extract_password($params);
 		
@@ -111,11 +128,8 @@ class LoginUsersBaseCommand extends CommandChain {
 			$err->append(tr('Please provide a password for login', 'users'));
 		}
 		
-		$user = new DAOUsers();
-		$user->name = $name;
-		
-		return $user;
-	}
+		return $err;
+	}	
 	
 	/**
 	 * Prepares dao object 
