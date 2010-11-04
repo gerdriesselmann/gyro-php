@@ -10,6 +10,7 @@ foreach($nodes as $node) {
 	if ($i % 2) { $cls[] = 'even'; } else { $cls[] = 'uneven'; }
 	
 	if ($node['is_branch']) { $cls[] = 'branch'; }
+	if ($node['is_leaf']) { $cls[] = 'leaf'; }
 	
 	$txt = '';
 	$v->assign('node', $node['item']);
