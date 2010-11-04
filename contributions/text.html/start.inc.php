@@ -5,7 +5,7 @@ EventSource::Instance()->register(new TextHtmlEventSink());
 
 /**
  * @group Html
- * @ingroup text
+ * @ingroup Text
  * @author Gerd Riesselmann
  * 
  * This module centralizes functionality related to html processing.
