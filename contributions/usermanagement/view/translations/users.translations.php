@@ -299,6 +299,9 @@ function users_load_translations($languages) {
 		),
 		'Users' => array(
 			'de' => 'Benutzer'
+		),
+		'Your changes have been saved' => array(
+			'de' => 'Ihre Änderungen wurden gespeichert'
 		)		
 	);
 }
