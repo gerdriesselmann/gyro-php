@@ -224,7 +224,7 @@ class PageViewBase extends ViewBase {
 	protected function send_cache_headers($lastmodified, $expires, $max_age = 600, $etag = '') {
 		$max_age = intval($max_age);
 		Common::header('Pragma', '', false);
-		Common::header('Cache-Control', 'private, max-age=0, pre-check=0, must-revalidate', false);
+		Common::header('Cache-Control', "private, must-revalidate, max-age=$max_age", false);
 		Common::header('Last-Modified', GyroDate::http_date($lastmodified), false);
 		Common::header('Expires', GyroDate::http_date($expires), false);
 		Common::header('Etag', $etag, true);		
