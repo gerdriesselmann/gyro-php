@@ -46,4 +46,22 @@
  * 
  * Extensions for PageData and related: header data, blocks etc  
  */
+
+/**
+ * @defgroup Widgets
+ * 
+ * Contains Widgets 
+ */
+
+/**
+ * @defgroup Models
+ * 
+ * Contains group of database models that may form little sub applications  
+ */
+
+/**
+ * @defgroup Api
+ * 
+ * Integrates other services like Twitter, Facebook et al
+ */
  
