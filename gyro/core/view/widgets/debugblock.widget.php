@@ -15,6 +15,9 @@ class WidgetDebugBlock implements IWidget {
 		$out = '';
 		if (Config::has_feature(Config::TESTMODE)) {
 			$out .= html::h('Debug Block', 2);
+			if (!Config::has_feature(Config::DISABLE_CACHE)) {
+				$out .= html::warning('Cache is enabled!');
+			}
 			$out .= $this->render_properties();
 			
 			$sections = array(
