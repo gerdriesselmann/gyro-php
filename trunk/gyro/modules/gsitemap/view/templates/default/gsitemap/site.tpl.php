@@ -3,6 +3,8 @@
 <url>
 	<loc><?=$item['url']?></loc>
 	<?php if ($item['lastmod'] > 0): ?><lastmod><?php print GyroDate::iso_date($item['lastmod']); ?></lastmod><?php endif; ?>
+	<?php if (!empty($item['priority'])): ?><priority><?=$item['priority']; ?></priority><?php endif; ?>
+	<?php if (!empty($item['changefreq'])): ?><changefreq><?=$item['changefreq']; ?></changefreq><?php endif; ?>
 </url>
 <?php endforeach; ?>
 </urlset>

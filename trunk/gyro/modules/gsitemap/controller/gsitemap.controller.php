@@ -24,6 +24,13 @@ class GsitemapController extends ControllerBase {
  		}
  		return $ret; 		
  	}
+ 	
+	/**
+	 * Activates includes before action to reduce cache memory 
+	 */ 
+	public function before_action() {
+		Load::components('gsitemapmodel');
+	} 	 	
 
 	/**
 	 * Show a sitemap index
@@ -76,16 +83,30 @@ class GsitemapController extends ControllerBase {
  		}
   		return $ret;
 	}
+	
+	protected function collect_models() {
+		$ret = array();
+		$models = array();
+		EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
+		foreach($models as $model) {
+			if ($model instanceof GSiteMapModel) {
+				$ret[] = $model;
+			}
+			else {
+				$ret[] = new GSiteMapModel($model);
+			}
+		}
+		return $ret;
+	}
 
 	/**
 	 * Colelct data for index
 	 */
 	protected function gsitemap_index(PageData $page_data, IView $view) {
 		$arrret = array('main');
-		$models = array();
-		EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
+		$models = $this->collect_models();
 		foreach($models as $model) {
-			$arrret = array_merge($arrret, self::build_sitemap_index($model));
+			$arrret = array_merge($arrret, self::build_sitemap_index_for_model($model));
 		}
  		EventSource::Instance()->invoke_event('gsitemap_index', null, $arrret);
  		$view->assign('files', $arrret); 		
@@ -117,10 +138,9 @@ class GsitemapController extends ControllerBase {
 			);
  		}
  		else {
-			$models = array();
-			EventSource::Instance()->invoke_event('gsitemap_models', null, $models);
+			$models = $this->collect_models();
 			foreach($models as $model) {
-				$arrret = array_merge($arrret, self::build_sitemap($model, $p));
+				$arrret = array_merge($arrret, self::build_sitemap_for_model($model, $p));
 			}
  		}
  		EventSource::Instance()->invoke_event('gsitemap_site', $p, $arrret);
@@ -158,15 +178,26 @@ class GsitemapController extends ControllerBase {
 		if ($itemsperfile <= 0) {
 			$itemsperfile = self::ITEMS_PER_FILE;
 		}
-		$adapter = self::extract_adapter($params);
-		$model = $adapter->get_table_name();
-		$c = ceil($adapter->count() / $itemsperfile);
+		$model = new GSiteMapModel($params);
+		$model->items_per_file = $itemsperfile;
+		return self::build_sitemap_index_for_model($model);		
+	}
+
+	/**
+	 * Helper to build sitemap index for given sitemap model
+	 * 
+	 * @param GSiteMapModel $model 
+	 * 
+	 * @return array 
+	 */
+	public static function build_sitemap_index_for_model(GSiteMapModel $model) {
 		$ret = array();
+		$c = $model->get_number_of_chunks();
 		for($i = 0; $i < $c; $i++) {
-			$ret[] = $model . $i;
+			$ret[] = $model->build_index_name($i);
 		}
 		return $ret;		
-	}
+	}	
 	
 	/**
 	 * Build a  sitemap file for given model
@@ -183,30 +214,37 @@ class GsitemapController extends ControllerBase {
 		if ($itemsperfile <= 0) {
 			$itemsperfile = self::ITEMS_PER_FILE;
 		}
-		$dao = self::extract_adapter($params);
-		$model = $dao->get_table_name();
-		$ret = array();
-		if (String::starts_with($index, $model) == false) {
-			return $ret;
-		}
+		$model = new GSiteMapModel($params, 'view', $policy);
+		$model->items_per_file = $itemsperfile;
+		return self::build_sitemap_for_model($model, $index); 
+	}	 	
 
-		$si = String::substr($index, strlen($model));
-		$i = Cast::int($si);
-		if ($si != (string)$i) {
-			return $ret;
-		}
+	/**
+	 * Build a  sitemap file for given sitemap model
+	 * 
+	 * @param GSiteMapModel $model The model rules
+	 * @param string $index 
+	 *  
+	 * @return array
+	 */
+	public static function build_sitemap_for_model(GSiteMapModel $model, $index) {
+		$ret = array();
+		$chunk = $model->extract_chunk($index);
+		if ($chunk !== false) {
+			$dao = $model->create_adapter();
+			$model->select_chunk($dao, $i);
 		
-		$dao->limit($i * $itemsperfile, $itemsperfile);				
-		$dao->find();
-	
-		$do_timestamp = Common::flag_is_set($policy, self::USE_TIMESTAMP) && ($dao instanceof ITimeStamped); 
-		while($dao->fetch()) {
-			$lastmod = $do_timestamp ? $dao->get_modification_date() : 0;
-			$ret[] = array(
-				'url' => ActionMapper::get_url('view', $dao),
-				'lastmod' => $lastmod 
-			);
+			$dao->find();
+			while($dao->fetch()) {
+				$ret[] = array(
+					'url' => $model->get_url($dao),
+					'lastmod' => $model->get_lastmod($dao),
+					'changefreq' => $model->get_changefreq(),
+					'priority' => $model->get_priority()
+				);
+			}
 		}
 		return $ret;
 	}	 	
+	
 } 

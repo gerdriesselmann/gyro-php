@@ -74,6 +74,20 @@
  *   }
  * }
  * @endcode
+ * 
+ * Instead of passing a string, you may also pass an IDataObject:
+ *  
+ * @code
+ * public function on_event($name, $params, &$result) {
+ *   switch ($name) {
+ *     case 'gsitemap_models':
+ *        $adapter = new DAOPhotos();
+ *        $adapter->status = Stati::ACTIVE;
+ *        $result[] = $adapter;
+ *        break;
+ *   }
+ * }
+ * @endcode
  */
 
 /**
