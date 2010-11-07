@@ -8,7 +8,8 @@
 function core_load_translations($languages) {
 	return array(
 		'%field must be a positive integer' => array(
-			'de' => '%field muss eine ganze positive Zahl sein'
+			'de' => '%field muss eine ganze positive Zahl sein',
+			'pt' => '%field tem de ser um número inteiro'
 		),
 		'%field must be an integer' => array(
 			'de' => '%field must eine ganze Zahl sein'
