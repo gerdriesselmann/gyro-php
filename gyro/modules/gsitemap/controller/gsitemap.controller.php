@@ -232,7 +232,7 @@ class GsitemapController extends ControllerBase {
 		$chunk = $model->extract_chunk($index);
 		if ($chunk !== false) {
 			$dao = $model->create_adapter();
-			$model->select_chunk($dao, $i);
+			$model->select_chunk($dao, $chunk);
 		
 			$dao->find();
 			while($dao->fetch()) {
