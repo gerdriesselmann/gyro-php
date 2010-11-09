@@ -1,7 +1,9 @@
 <?php
-
 /**
- * Model class for Features
+ * Model class for a rich content item 
+ * 
+ * @ingroup PostBase
+ * @author Gerd Riesselmann
  */
 abstract class DataObjectPostBase extends DataObjectTimestampedCached implements ISelfDescribing {
 	private static $global_extensions = array();
