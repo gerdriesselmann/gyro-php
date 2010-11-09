@@ -133,8 +133,8 @@ class String {
 	 */
 	public static function number($number, $decimals = 2, $system = false) {
    		$locale_info = ($system) ? false : localeconv();
-		$thousands_sep = Arr::get_item($locale_info, 'thousands_sep', ',');
-		$decimal_point = Arr::get_item($locale_info, 'decimal_point', '.');
+		$thousands_sep = ($system) ? '' : Arr::get_item($locale_info, 'thousands_sep', ',');
+		$decimal_point = ($system) ? '.' : Arr::get_item($locale_info, 'decimal_point', '.');
 		return number_format(Cast::float($number), $decimals, $decimal_point, $thousands_sep);
 	}
 
