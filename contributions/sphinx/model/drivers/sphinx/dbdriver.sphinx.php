@@ -196,12 +196,16 @@ class DBDriverSphinx implements IDBDriver {
 		// query
 		$this->client->SetMatchMode(SPH_MATCH_EXTENDED);
 		$result = $this->client->Query($terms, $index_name);
+		
+		$ret = false;
 		if (isset($features['count'])) {
-			return new DBResultSetCountSphinx($result, $this->get_status());
+			$ret = new DBResultSetCountSphinx($result, $this->get_status());
 		}
 		else {
-			return new DBResultSetSphinx($result, $this->get_status());
+			$ret = new DBResultSetSphinx($result, $this->get_status());
 		}
+		$this->client = false;
+		return $ret;
 	}
 	
 	/**
