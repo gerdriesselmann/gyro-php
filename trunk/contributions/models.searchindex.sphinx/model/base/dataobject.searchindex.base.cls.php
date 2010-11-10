@@ -75,11 +75,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @param string|array Name of model or array of names of models
 	 */
 	public function exclude_models($models) {
-		$exclude = array();
-		foreach(Arr::force($models, false) as $model) {
-			$exclude[] = SearchIndexRepository::get_model_id($model);
-		}
-		$exclude = array_filter($exclude);
+		$exclude = $this->extract_model_ids($models);
 		if (count($exclude)) {
 			$this->add_where('item_model', DBWhere::OP_NOT_IN, $exclude);
 		}
@@ -91,16 +87,30 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @param string|array Name of model or array of names of models
 	 */
 	public function limit_to_models($models) {
-		$include = array();
-		foreach(Arr::force($models, false) as $model) {
-			$include[] = SearchIndexRepository::get_model_id($model);
+		$include = $this->extract_model_ids($models);
+		switch(count($include)) {
+			case 0:
+				// Ensure nothing is found!
+				$this->add_where('item_model', '=', 0);
+				break;
+			default:
+				$this->add_where('item_model', DBWhere::OP_IN, $include);
+				break;
 		}
-		$include = array_filter($include);
-		if (count($include)) {
-			$this->add_where('item_model', DBWhere::OP_IN, $include);
-		}		
 	}
-		
+
+	/**
+	 * Return an array of model ids for given models
+	 */
+	protected function extract_model_ids($models) {
+		$ret = array();
+		foreach(Arr::force($models, false) as $model) {
+			$ret[] = SearchIndexRepository::get_model_id($model);
+		}
+		// Remove empty ids
+		$ret = array_filter($ret);
+		return $ret;
+	} 
 	
 	// **************************************
 	// Dataobject
@@ -152,7 +162,6 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 			$this->set_sphinx_feature(DBDriverSphinx::FEATURE_STRIP_OPERATORS, true);
 			$found = $this->find();
 		}	
-		
 		if ($found) {
 			while ($this->fetch()) {
 				$model = $this->resolve_model($this->item_model);
@@ -184,10 +193,48 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @param int $policy
 	 */
 	protected function configure_select_query($query, $policy) {
-    	$this->set_sphinx_feature(DBDriverSphinx::FEATURE_WEIGHTS, array('title' => 5, 'teaser' => 3, 'text' => 2));
+    	$this->set_sphinx_feature(DBDriverSphinx::FEATURE_WEIGHTS, array('title' => 5, 'teaser' => 3, 'text' => 1));
 		parent::configure_select_query($query, $policy);
 		
-		$weight_base = 5000;
+		$query->set_fields(array(
+			'*',
+			$this->compute_relevance_w() => 'relevance_w'
+		));		
+	}
+	
+	/**
+	 * COmputed weighted relevance
+	 * 
+	 * @return string An expression Sphinx can evaluate
+	 */
+	protected function compute_relevance_w() {
+		$model_weight = $this->compute_model_weight(3000);
+		$age_weight = $this->compute_age_weight(100);
+		return "@weight + ($age_weight) + ($model_weight)";
+	}
+	
+	/**
+	 * Compute weighting regarding the age of things
+	 * 
+	 * @attention This gets added, so to vote down older stuff, return a negative expression
+	 * 
+	 * @return string
+	 */
+	protected function compute_age_weight($weight_base) {
+		$month = 30 * GyroDate::ONE_DAY;
+		$now = time();
+		$weight_base = String::number($weight_base, 2, true);
+		
+		return "-$weight_base * ($now - modificationdate) / $month";
+	}
+
+	/**
+	 * Compute weighting of models in relation to each other, like defined in model rules
+	 * 
+	 * @param int $weight_base Factor by which a model with a relevance of 2 is voted up
+	 * @return strng
+	 */
+	protected function compute_model_weight($weight_base) {
 		$weight_if_expression = $weight_base;
 		// Build model weighting expression
 		foreach(SearchIndexRepository::get_model_rules() as $rule) {
@@ -195,10 +242,6 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 			$model_weight = String::number($weight_base * $rule->weight, 2, true); 
 			$weight_if_expression = "IF(item_model = $model_id, $model_weight, $weight_if_expression)";
 		}
-		
-		$query->set_fields(array(
-			'*',
-			'@weight - (' . time() . ' - modificationdate) / 2592000 * 0.4 + ' . $weight_if_expression => 'relevance_w'
-		));		
+		return $weight_if_expression;
 	}
 }
