@@ -28,7 +28,7 @@ class SearchIndexBaseController extends ControllerBase {
  		$terms = trim($this->get_terms($page_data));
 		if ($terms !== '') {
 			$page_data->head->title = tr('Search »%terms«', 'searchindex', array('%terms' => $terms));
-			$page_data->head->description = tr('Search results for query »%terms« passen.', 'searchindex', array('%terms' => $terms));
+			$page_data->head->description = tr('Search results for query »%terms«.', 'searchindex', array('%terms' => $terms));
 			
 			$search = SearchIndexRepository::get_index_implementation();
 			$search->set_search($terms);
