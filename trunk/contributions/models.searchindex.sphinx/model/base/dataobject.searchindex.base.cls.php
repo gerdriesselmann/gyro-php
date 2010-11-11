@@ -112,6 +112,14 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 		return $ret;
 	} 
 	
+	/**
+	 * Sort by Relevance 
+	 */
+	public function sort_by_relevance() {
+		$this->sort('relevance_w', self::DESC);
+	}
+	
+	
 	// **************************************
 	// Dataobject
 	// **************************************
