@@ -27,5 +27,8 @@ interface ISearchIndex extends ISearchAdapter {
 	 */
 	public function limit_to_models($models);
 	
-	
+	/**
+	 * Sort by Relevance 
+	 */
+	public function sort_by_relevance();
 }
