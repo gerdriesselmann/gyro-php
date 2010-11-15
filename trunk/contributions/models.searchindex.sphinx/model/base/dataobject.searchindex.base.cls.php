@@ -17,6 +17,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	public $modificationdate;
 	public $creationdate;
 	
+	protected $matching = self::MATCH_NARROW; 
 	
 	/**
 	 * Create Table features
@@ -24,6 +25,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @return DBTable
 	 */
 	protected function create_table_object() {
+		$this->set_matching(self::MATCH_NARROW);
 		return new DBTable(
 			Config::get_value(ConfigSearchIndex::TABLE_NAME),
 			array_merge(
@@ -119,6 +121,13 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 		$this->sort('relevance_w', self::DESC);
 	}
 	
+	/**
+	 * Set matching mode (MATCH_WIDE or MATCH_NARROW) 
+	 */
+	public function set_matching($matching) {
+		$this->matching = $matching;
+	}	
+	
 	
 	// **************************************
 	// Dataobject
@@ -202,6 +211,14 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 */
 	protected function configure_select_query($query, $policy) {
     	$this->set_sphinx_feature(DBDriverSphinx::FEATURE_WEIGHTS, array('title' => 5, 'teaser' => 3, 'text' => 1));
+ 		switch($this->matching) {
+			case self::MATCH_WIDE:
+				$this->set_sphinx_feature(DBDriverSphinx::FEATURE_MATCH_MODE, DBDriverSphinx::MATCH_OR);
+				break;
+			default:
+				$this->set_sphinx_feature(DBDriverSphinx::FEATURE_MATCH_MODE, DBDriverSphinx::MATCH_EX);
+				break;
+		}    	
 		parent::configure_select_query($query, $policy);
 		
 		$query->set_fields(array(
@@ -229,11 +246,15 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @return string
 	 */
 	protected function compute_age_weight($weight_base) {
-		$month = 30 * GyroDate::ONE_DAY;
-		$now = time();
-		$weight_base = String::number($weight_base, 2, true);
-		
-		return "-$weight_base * ($now - modificationdate) / $month";
+		$ret = '0';
+		if ($this->matching == self::MATCH_NARROW) {
+			$month = 30 * GyroDate::ONE_DAY;
+			$now = time();
+			$weight_base = String::number($weight_base, 2, true);
+			
+			$ret = "-$weight_base * ($now - modificationdate) / $month";
+		}
+		return $ret;
 	}
 
 	/**
