@@ -21,6 +21,33 @@ class DBDriverSphinx implements IDBDriver {
 	 * $query->sphinx_features[DBDriverSphinx::FEATURE_STRIP_OPERATORS] = true;
 	 */
 	const FEATURE_STRIP_OPERATORS = 'strip_operators';
+	/**
+	 * Set matching mode
+	 * 
+	 * $query->sphinx_features[DBDriverSphinx::FEATURE_MATCH_MODE] = DBDriverSphinx::MATCH_OR;
+	 */
+	const FEATURE_MATCH_MODE = 'match_mode';
+	
+	/**
+	 * BOOLEAN match mode
+	 */
+	const MATCH_BOOL = 'bool';
+	/**
+	 * Extended mode, this is the default
+	 */
+	const MATCH_EX = 'ex';
+	/**
+	 * OR all terms
+	 */
+	const MATCH_OR = 'or';
+	/**
+	 * AND all terms
+	 */
+	const MATCH_AND = 'and';
+	/**
+	 * Match as phrase
+	 */
+	const MATCH_PHRASE = 'phrase';
 	
 	private $client = false;
 	private $connect_params;
@@ -194,7 +221,26 @@ class DBDriverSphinx implements IDBDriver {
 		$this->client->SetFieldWeights(Arr::get_item($features, self::FEATURE_WEIGHTS, array()));
 		
 		// query
-		$this->client->SetMatchMode(SPH_MATCH_EXTENDED);
+		$matchmode = '';
+		switch(Arr::get_item($features, self::FEATURE_MATCH_MODE, self::MATCH_EX)) {
+			case self::MATCH_BOOL:
+				$matchmode = SPH_MATCH_BOOLEAN;
+				break;
+			case self::MATCH_OR:
+				$matchmode = SPH_MATCH_ANY;
+				break;
+			case self::MATCH_AND:
+				$matchmode = SPH_MATCH_ALL;
+				break;
+			case self::MATCH_PHRASE:
+				$matchmode = SPH_MATCH_PHRASE;
+				break;
+			case self::MATCH_EX:
+			default:
+				$matchmode = SPH_MATCH_EXTENDED2;
+				break;				
+		}
+		$this->client->SetMatchMode($matchmode);
 		$result = $this->client->Query($terms, $index_name);
 		
 		$ret = false;
