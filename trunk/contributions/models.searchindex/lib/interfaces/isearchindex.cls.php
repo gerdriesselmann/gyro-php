@@ -7,6 +7,15 @@
  */
 interface ISearchIndex extends ISearchAdapter {
 	/**
+	 * Set to retrieve widest possible result
+	 */
+	const MATCH_WIDE = 'wide';
+	/**
+	 * Set to narrow result (default)
+	 */
+	const MATCH_NARROW = 'narrow';
+	
+	/**
 	 * Set the search string
 	 * 
 	 * @param string $search The search string
@@ -31,4 +40,9 @@ interface ISearchIndex extends ISearchAdapter {
 	 * Sort by Relevance 
 	 */
 	public function sort_by_relevance();
+	
+	/**
+	 * Set matching mode (MATCH_WIDE or MATCH_NARROW) 
+	 */
+	public function set_matching($matching);
 }
