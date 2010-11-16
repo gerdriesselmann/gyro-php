@@ -15,12 +15,14 @@ class GsitemapController extends ControllerBase {
  	 */	
  	public function get_routes() {
  		$ret = array(
- 			new ExactMatchRoute('sitemapindex.xml', $this, 'gsitemap_index', new SimpleCacheManager()),
- 			new ExactMatchRoute('sitemap.xml', $this, 'gsitemap_site', new SimpleCacheManager())
+ 			new ExactMatchRoute('sitemap.xml', $this, 'gsitemap_site', new SimpleCacheManager()),
+ 			new ExactMatchRoute('sitemap.xml', $this, 'gsitemap_index', new SimpleCacheManager()),
+ 			new ExactMatchRoute('sitemapindex.xml', $this, '', new RedirectRenderDecorator('sitemap.xml')),
  		);
  		if (Config::has_feature(ConfigGSitemap::GSITEMAP_HTML_SITEMAP)) {
- 			$ret[] = new ExactMatchRoute('sitemapindex.html', $this, 'gsitemap_index_html', new SimpleCacheManager());
  			$ret[] = new ExactMatchRoute('sitemap.html', $this, 'gsitemap_site_html', new SimpleCacheManager()); 				
+ 			$ret[] = new ExactMatchRoute('sitemap.html', $this, 'gsitemap_index_html', new SimpleCacheManager());
+ 			$ret[] = new ExactMatchRoute('sitemapindex.html', $this, '', new RedirectRenderDecorator('sitemap.html'));
  		}
  		return $ret; 		
  	}
@@ -50,6 +52,10 @@ class GsitemapController extends ControllerBase {
  	 * @return mixed
  	 */
 	public function action_gsitemap_site($page_data) {
+		// Somehat hackish. Let two routes work on same path
+		if ($page_data->get_get()->count() == 0) {
+ 			return $this->action_gsitemap_index($page_data); 
+		}
 		$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/site', $page_data);
 		$ret = $this->gsitemap_site($page_data, $view);
  		if ($ret === self::OK) {
@@ -76,7 +82,11 @@ class GsitemapController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
 	public function action_gsitemap_site_html($page_data) {
- 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'core::gsitemap/site_html', $page_data);
+		// Somehat hackish. Let two routes work on same path
+		if ($page_data->get_get()->count() == 0) {
+ 			return $this->action_gsitemap_index_html($page_data); 
+		}
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'core::gsitemap/site_html', $page_data);
  		$ret = $this->gsitemap_site($page_data, $view);
  		if ($ret === self::OK) {
  			$view->render();
