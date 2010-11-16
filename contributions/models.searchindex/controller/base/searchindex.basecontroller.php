@@ -23,6 +23,7 @@ class SearchIndexBaseController extends ControllerBase {
  	 * @param $page_data PageData
  	 */
  	public function action_searchindex_search($page_data) {
+ 		$page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
 		$page_data->breadcrumb = array(tr('Search', 'searchindex'));
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'searchindex/search', $page_data);
  		$terms = trim($this->get_terms($page_data));
