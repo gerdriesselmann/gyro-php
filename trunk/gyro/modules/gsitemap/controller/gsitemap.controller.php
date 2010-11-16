@@ -109,14 +109,7 @@ class GsitemapController extends ControllerBase {
 			$arrret = array_merge($arrret, self::build_sitemap_index_for_model($model));
 		}
  		EventSource::Instance()->invoke_event('gsitemap_index', null, $arrret);
- 		$view->assign('files', $arrret); 		
- 		
- 		$arrNow = getdate();
- 		$timeUpdate = mktime($arrNow['hours'], 5, 0, $arrNow['mon'], $arrNow['mday'], $arrNow['year']);
- 		if ($timeUpdate > time()) {
- 			$timeUpdate = $timeUpdate - 60 * 60; // - 1 hour
- 		}
- 		$view->assign('timestamp', $timeUpdate); 		 		
+ 		$view->assign('files', $arrret); 
  	}
  
  	/**
