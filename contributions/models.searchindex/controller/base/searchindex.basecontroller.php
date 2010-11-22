@@ -28,6 +28,20 @@ class SearchIndexBaseController extends ControllerBase {
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'searchindex/search', $page_data);
  		$terms = trim($this->get_terms($page_data));
 		if ($terms !== '') {
+			if (!String::check_encoding($terms)) {
+				// Convert. Since autodection is not really good, try most probable encoding
+				// manually: Latin1
+				if (String::check_encoding($terms, 'ISO-8859-1')) {
+					$newterms = String::convert($terms, 'ISO-8859-1');
+				}
+				else {
+					$newterms = String::convert($terms);
+				}
+				if ($newterms != $terms) {
+					Url::current()->replace_query_parameter('q', $newterms)->redirect();
+				}
+			}
+			
 			$page_data->head->title = tr('Search »%terms«', 'searchindex', array('%terms' => $terms));
 			$page_data->head->description = tr('Search results for query »%terms«.', 'searchindex', array('%terms' => $terms));
 			
