@@ -7,6 +7,22 @@
  */
 function users_load_translations($languages) {
 	return array(
+		'UNCONFIRMED' => array(
+			'en' => 'Unconfirmed',
+			'de' => 'Unbestätigt'
+		),
+		'ACTIVE' => array(
+			'en' => 'Active',
+			'de' => 'Aktiv'
+		),
+		'DISABLED' => array(
+			'en' => 'Disabled',
+			'de' => 'Inaktiv'
+		),
+		'DELETED' => array(
+			'en' => 'Deleted',
+			'de' => 'Gelöscht'
+		),	
 		'E-mail' => array(
 			'de' => 'E-Mail'
 		),
@@ -23,6 +39,9 @@ function users_load_translations($languages) {
 		'Activation code could not be created' => array(
 			'en' => 'Activation code could not be created. Please try again',
 			'de' => 'Aktivierungscode konnte nicht erzeugt werden. Bitte versuchen Sie es noch einmal.'
+		),
+		'An user with this username already exists' => array(
+			'de' => 'Ihr gewählter Benutzername ist leider bereits vergeben'
 		),
 		'No password' => array(
 			'en' => 'Please enter a password',
