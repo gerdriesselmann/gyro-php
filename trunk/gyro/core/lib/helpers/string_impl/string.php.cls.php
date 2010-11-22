@@ -4,6 +4,19 @@
  */
 class StringPHP {
 	/**
+	 * Check if given string matches current encoding
+	 * 
+	 * @param string $value Value to check
+	 * @param string $encoding Encoding to check against. Use FALSE for current encoding
+	 * @return bool
+	 * 
+	 * @attention This will work with MBString onyl!
+	 */
+	public function check_encoding($value, $encoding = false) {
+		return true; 
+	}
+	
+	/**
 	 * Convert input to current charset
 	 * 
 	 * @param string $value Input to convert

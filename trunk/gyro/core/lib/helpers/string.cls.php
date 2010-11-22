@@ -51,6 +51,17 @@ class String {
 	}
 	
 	/**
+	 * Check if given string matches current encoding
+	 * 
+	 * @param string $value Value to check
+	 * @param string $encoding Encoding to check against. Use FALSE for current encoding
+	 * @return bool
+	 */
+	public static function check_encoding($value, $encoding = false) {
+		return self::$impl->check_encoding($value, $encoding); 
+	}
+	
+	/**
 	 * Convert input charset
 	 * 
 	 * @attention 
