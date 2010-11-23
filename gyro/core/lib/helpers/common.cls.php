@@ -265,8 +265,7 @@ class Common {
 		// Compare time the content was last modified with client cache
 		if ($date <= $modifiedSince) {
  			// Save on some bandwidth!
- 			Common::header_remove('Cache-Control');
- 			Common::header_remove('Pragma');
+ 			header_remove();
 			Common::send_status_code(304); // Not modified
  			exit; 		
  		}
@@ -283,8 +282,7 @@ class Common {
 		$match_tag = Arr::get_item($_SERVER, 'HTTP_IF_NONE_MATCH', '');
 		if ($match_tag && $match_tag == $etag) {
  			// Save on some bandwidth!
- 			Common::header_remove('Cache-Control');
- 			Common::header_remove('Pragma');
+ 			header_remove();
  			Common::send_status_code(304); // Not modified
  			exit; 		
  		}
