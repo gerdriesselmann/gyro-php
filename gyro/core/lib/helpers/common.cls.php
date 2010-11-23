@@ -98,7 +98,7 @@ class Common {
 			$value = array_shift($tmp);
 		}
 		else {
-			$header = $name . ': ' . $value;
+			$header = $name . ':' . $value;
 		}
 		if ($override || !self::is_header_sent($name)) {
 			header($header);
@@ -109,7 +109,12 @@ class Common {
 	 * Remove given header
 	 */
 	public static function header_remove($name) {
-		self::header($name, '', true);
+		if (function_exists('header_remove')) {
+			header_remove($name);
+		}
+		else {
+			self::header($name, '', true);
+		}
 	}
 
 	/**
@@ -265,7 +270,7 @@ class Common {
 		// Compare time the content was last modified with client cache
 		if ($date <= $modifiedSince) {
  			// Save on some bandwidth!
- 			header_remove();
+ 			// self::header_restore(array());
 			Common::send_status_code(304); // Not modified
  			exit; 		
  		}
@@ -282,7 +287,7 @@ class Common {
 		$match_tag = Arr::get_item($_SERVER, 'HTTP_IF_NONE_MATCH', '');
 		if ($match_tag && $match_tag == $etag) {
  			// Save on some bandwidth!
- 			header_remove();
+ 			//self::header_restore(array());
  			Common::send_status_code(304); // Not modified
  			exit; 		
  		}
