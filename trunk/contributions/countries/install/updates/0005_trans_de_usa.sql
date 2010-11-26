@@ -1,0 +1,1 @@
+UPDATE countriestranslations SET name = 'Vereinigte Staaten (USA)' WHERE id_country = 'US' and lang = 'de';
