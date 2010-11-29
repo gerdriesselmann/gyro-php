@@ -96,16 +96,25 @@ class DBField implements IDBField {
 	public function validate($value) {
 		$ret = new Status();
 		if ($this->is_null($value) && !$this->has_default_value() && !$this->get_null_allowed()) {
-			$translations = array('global');
-			$table = $this->get_table();
-			if ($table) {
-				array_unshift($translations, $table->get_table_name());
-			}
-			$field_tr = tr($this->get_field_name(), $translations);
+			$field_tr = $this->get_field_name_translation();
 			$msg = tr('%field may not be empty', 'core', array('%field' => $field_tr));
 			$ret->append($msg);
 		}
 		return $ret;
+	}
+	
+	/**
+	 * Translate field name
+	 * 
+	 * @return string
+	 */
+	protected function get_field_name_translation() {
+		$translations = array('global');
+		$table = $this->get_table();
+		if ($table) {
+			array_unshift($translations, $table->get_table_name());
+		}
+		return tr($this->get_field_name(), $translations);
 	}
 	
 	/**
