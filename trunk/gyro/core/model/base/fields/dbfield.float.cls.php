@@ -32,7 +32,7 @@ class DBFieldFloat extends DBField {
 						'%field must be a positive number', 
 						'core', 
 						array(
-							'%field' => tr($this->get_field_name(), 'global')
+							'%field' => $this->get_field_name_translation()
 						)
 					));
 				}
