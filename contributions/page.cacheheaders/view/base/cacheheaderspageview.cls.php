@@ -22,7 +22,7 @@ class CacheHeadersPageView extends PageViewBase {
 		switch (Config::get_value(ConfigCacheHeaders::CACHE_POLICY)) {
 			case ConfigCacheHeaders::RIGID_FRESHNESS:
 			default:
-				Common::header('Cache-Control', "private, must-revalidate, no-cache", false);		
+				Common::header('Cache-Control', "private, must-revalidate, no-cache, max-age=0, pre-check=0", false);		
 		}		
 	}
 }
