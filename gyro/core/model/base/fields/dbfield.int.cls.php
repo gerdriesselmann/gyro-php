@@ -59,7 +59,7 @@ class DBFieldInt extends DBField {
 						'%field must be a positive integer', 
 						'core', 
 						array(
-							'%field' => tr($this->get_field_name(), 'global')
+							'%field' => $this->get_field_name_translation()
 						)
 					));
 				}
@@ -69,7 +69,7 @@ class DBFieldInt extends DBField {
 					'%field must be an integer', 
 					'core', 
 					array(
-						'%field' => tr($this->get_field_name(), 'global')
+						'%field' => $this->get_field_name_translation()
 					)
 				));
 			}

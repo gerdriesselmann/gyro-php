@@ -32,7 +32,7 @@ class DBFieldEnum extends DBField {
 					'Value %val not allowed on %field',
 					'core',
 					array(
-						'%field' => tr($this->get_field_name(), 'global'),
+						'%field' => $this->get_field_name_translation(),
 						'%val' => $value
 					)
 				));

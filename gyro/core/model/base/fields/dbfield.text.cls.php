@@ -37,7 +37,7 @@ class DBFieldText extends DBField {
 				'%field may have no more than %num character', 
 				'core', 
 				array(
-					'%field' => tr($this->get_field_name(), 'global'),
+					'%field' => $this->get_field_name_translation(),
 					'%num' => $this->length
 				)
 			));
@@ -47,7 +47,7 @@ class DBFieldText extends DBField {
 				'%field may not be empty', 
 				'core', 
 				array(
-					'%field' => tr($this->get_field_name(), 'global'),
+					'%field' => $this->get_field_name_translation(),
 				)
 			));
 		}

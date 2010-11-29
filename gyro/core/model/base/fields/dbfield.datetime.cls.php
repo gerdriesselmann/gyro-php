@@ -78,7 +78,7 @@ class DBFieldDateTime extends DBField {
 					'%field must be a date and time value', 
 					'core', 
 					array(
-						'%field' => tr($this->get_field_name(), 'global')
+						'%field' => $this->get_field_name_translation()
 					)
 				));
 			}
