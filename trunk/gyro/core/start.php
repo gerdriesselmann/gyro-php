@@ -78,6 +78,8 @@ if (Config::has_feature(Config::FORCE_FULL_DOMAINNAME)) {
 
 // Load all helpers
 Load::directories('lib/helpers');
+// Sync headers
+GyroHeaders::sync();
 // Load all interfaces
 Load::directories('lib/interfaces');
 

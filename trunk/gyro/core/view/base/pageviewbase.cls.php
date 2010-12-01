@@ -90,22 +90,15 @@ class PageViewBase extends ViewBase {
 			$this->send_status();
 
 			// Send default headers, if not already sent
-			Common::header('Pragma', 'no-cache', false);
-			Common::header('Cache-Control', 'no-cache,no-store,private,max-age=0,must-revalidate', false);
-			Common::header('Last-Modified', '', false);
-			Common::header('Expires', GyroDate::http_date(time() - GyroDate::ONE_DAY), false);
+			GyroHeaders::set('Pragma', 'no-cache', false);
+			GyroHeaders::set('Cache-Control', 'no-cache,no-store,private,max-age=0,must-revalidate', false);
+			GyroHeaders::set('Last-Modified', '', false);
+			GyroHeaders::set('Expires', GyroDate::http_date(time() - GyroDate::ONE_DAY), false);
 			
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
-				Common::header('Content-Encoding', 'deflate', true);
-				// Magic! Actually gzencode usually is used, but there is no
-				// decode < PHP 6, so it won't work with cache compression.
-				// gzcompress, which is used here, needs this magic bytes 
-				// to look like gzencode	
-				//$rendered_content = gzuncompress($rendered_content);
-				//$rendered_content = gzencode($rendered_content);
-				
-				//$rendered_content =  "\x1f\x8b\x08\x00\x00\x00\x00\x00" . $rendered_content;
+				GyroHeaders::set('Content-Encoding', 'deflate', true);
 			}
+			GyroHeaders::send();
 		}
 	}
 	
@@ -193,7 +186,7 @@ class PageViewBase extends ViewBase {
 		if ($cache) {
 			$cache_data = $cache->get_data();
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
-				Common::header($header, false, true);
+				GyroHeaders::set($header, false, true);
 			}
 			$etag = Arr::get_item($cache_data, 'etag', '');
 			$this->send_cache_headers($cache->get_creationdate(), $cache->get_expirationdate(), 600, $etag);
@@ -223,11 +216,11 @@ class PageViewBase extends ViewBase {
 	 */
 	protected function send_cache_headers($lastmodified, $expires, $max_age = 600, $etag = '') {
 		$max_age = intval($max_age);
-		Common::header('Pragma', '', false);
-		Common::header('Cache-Control', "private, must-revalidate, max-age=$max_age", false);
-		Common::header('Last-Modified', GyroDate::http_date($lastmodified), false);
-		Common::header('Expires', GyroDate::http_date($expires), false);
-		Common::header('Etag', $etag, true);		
+		GyroHeaders::set('Pragma', '', false);
+		GyroHeaders::set('Cache-Control', "private, must-revalidate, max-age=$max_age", false);
+		GyroHeaders::set('Last-Modified', GyroDate::http_date($lastmodified), false);
+		GyroHeaders::set('Expires', GyroDate::http_date($expires), false);
+		GyroHeaders::set('Etag', $etag, true);		
 	}
 
 	/**
