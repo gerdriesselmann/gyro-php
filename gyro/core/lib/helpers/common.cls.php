@@ -90,90 +90,54 @@ class Common {
 	 * @param bool If FALSE, header will not be send, if header with same name was already sent
 	 */
 	public static function header($name, $value = false, $override = true) {
-		$header = '';
-		if ($value === false) {
-			$tmp = self::split_header($name);
-			$header = $name;
-			$name = array_shift($tmp);
-			$value = array_shift($tmp);
-		}
-		else {
-			$header = $name . ':' . $value;
-		}
-		if ($override || !self::is_header_sent($name)) {
-			header($header);
-		}
+		GyroHeaders::set($name, $value, $override);
 	}
 	
 	/**
 	 * Remove given header
+	 * 
+	 * @deprecated Use GyroHeaders instead
 	 */
 	public static function header_remove($name) {
-		if (function_exists('header_remove')) {
-			header_remove($name);
-		}
-		else {
-			self::header($name, '', true);
-		}
+		GyroHeaders::remove($name);
 	}
 
 	/**
 	 * Split header into array with name as first element, and value as second
 	 *  
+	 * @deprecated Use GyroHeaders instead
 	 * @since 0.5.1
 	 * 
 	 * @return array
 	 */
 	public static function split_header($header) {
-		$ret = explode(':', $header, 2);
-		if (count($ret) == 1) {
-			$ret = explode(' ', $header, 2);
-		}
-		if (count($ret) == 1) {
-			$ret[] = '';
-		}
-		array_walk($ret, 'trim');
-		return $ret;
+		return GyroHeaders::split($header);
 	}
 	
 	/**
 	 * Returns TRUE, if header with given name was alreday sent
 	 * 
+	 * @deprecated Use GyroHeaders instead
 	 * @since 0.5.1
 	 * 
 	 * @param string $name
 	 * @return bool
 	 */
 	public static function is_header_sent($name) {
-		$ret = false;
-		
-		$name = strtolower($name) . ':';
-		$l = strlen($name);
-		foreach(headers_list() as $header) {
-			$header = strtolower($header);
-			if (substr($header, 0, $l) == $name) {
-				$ret = true;
-				break;
-			}	
-		}
-		return $ret;
+		return GyroHeaders::is_set($name);
 	}
 
 	/**
 	 * Get all send headers as assoziative array with (lower case) header name as key
 	 * and full header as value
 	 * 
+	 * @deprecated Use GyroHeaders instead
 	 * @since 0.5.1
 	 * 
 	 * @return array
 	 */
 	public static function get_headers() {
-		$ret = array();
-		foreach(headers_list() as $header) {
-			$tmp = self::split_header($header);
-			$ret[strtolower($tmp[0])] = $header;
-		}
-		return $ret;
+		return GyroHeaders::headers();
 	}
 	
 	/**
@@ -181,17 +145,12 @@ class Common {
 	 * 
 	 * Headers not in passed array wil be removed, headers fro marray will be set
 	 * 
+	 * @deprecated Use GyroHeaders instead
+	 * 
 	 * @param $arr_headers Array of headers retrieved by Common::get_headers()
 	 */
 	public static function header_restore($arr_headers) {
-		$current = self::get_headers();
-		// array_diff_key exists as of PHP 5.1.0 only
-		foreach(array_diff(array_keys($current), array_keys($arr_headers)) as $name) {
-			self::header_remove($name);
-		}
-		foreach($arr_headers as $name => $value) {
-			self::header($value, '', true);
-		}
+		GyroHeaders::restore($arr_headers);
 	}
 	
 	/**
