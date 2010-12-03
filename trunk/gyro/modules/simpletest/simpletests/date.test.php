@@ -148,5 +148,19 @@ class DateTest extends GyroUnitTestCase {
 		$date_test = GyroDate::add_workdays($date, 0); 
 		$this->assertEqual($date, $date_test);
 	}
+	
+	public function test_add_days() {
+		$date = GyroDate::datetime('2008/02/27');
+		$date_test = GyroDate::add_days($date, 1); 
+		$this->assertEqual('2008/02/28', date('Y/m/d', $date_test));
+		$date_test = GyroDate::add_workdays($date, 2); // Set to Friday
+		$this->assertEqual('2008/02/29', date('Y/m/d', $date_test));
+		
+		// Now substract
+		$date_test = GyroDate::substract_days($date, 1); 
+		$this->assertEqual('2008/02/26', date('Y/m/d', $date_test));
+		$date_test = GyroDate::substract_days($date, 2); // Set to Monday
+		$this->assertEqual('2008/02/25', date('Y/m/d', $date_test));
+	}
 } 
 ?>
