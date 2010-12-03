@@ -272,6 +272,40 @@ class GyroDate {
 	}
 	
 	/**
+	 * Static. Adds the number of months to given date
+	 *
+	 * @param int Timestamp
+	 * @param int Number of Days
+	 *
+	 * @return int Timestamp
+	 */
+	public static function add_days($date, $days) {
+		if ($days === 0) {
+			return $date;
+		}
+		
+		$newDate = strtotime("+$days days", $date);
+		return $newDate;
+	}
+	
+	/**
+	 * Static. Substracts the number of days from given date
+	 *
+	 * @param int Timestamp
+	 * @param int Number of days
+	 *
+	 * @return int Timestamp
+	 */
+	public static function substract_days($date, $days) {
+		if ($days === 0) {
+			return $date;
+		}
+
+		$newDate = strtotime("-$days days", $date);
+		return $newDate;
+	}
+	
+	/**
 	 * Returns days since 1.1.2000
 	 */
 	public static function convert_to_days($timestamp) {
