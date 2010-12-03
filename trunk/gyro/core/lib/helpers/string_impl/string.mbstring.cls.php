@@ -31,7 +31,7 @@ class StringMBString {
 		$ret = $value;
 		if (empty($from)) {
 			// Autodetecting
-			if ($this->check_encoding($value, $to)) {
+			if (!$this->check_encoding($value, $to)) {
 				$ret = mb_convert_encoding($value, $to);
 			}
 		}
