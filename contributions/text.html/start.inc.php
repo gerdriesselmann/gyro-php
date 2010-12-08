@@ -4,7 +4,7 @@ EventSource::Instance()->register(new TextHtmlEventSink());
 
 
 /**
- * @group Html
+ * @defgroup Html
  * @ingroup Text
  * @author Gerd Riesselmann
  * 
