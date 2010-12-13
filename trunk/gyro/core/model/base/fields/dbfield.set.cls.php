@@ -114,7 +114,7 @@ class DBFieldSet extends DBFieldEnum {
 	 */
 	public static function set_has_value($set, $value) {
 		$ret = false;
-		if (!is_null($set) || !$set instanceof DBNull) {
+		if (!is_null($set) && !$set instanceof DBNull) {
 			$ret = in_array($value, $set);
 		}
 		return $ret;
