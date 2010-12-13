@@ -83,6 +83,7 @@ class DBFieldSet extends DBFieldEnum {
 	 */
 	public static function set_set_value(&$set, $value) {
 		if (!self::set_has_value($set, $value)) {
+			self::set_force_array($set);
 			$set[] = $value;
 		}
 	}
@@ -95,6 +96,7 @@ class DBFieldSet extends DBFieldEnum {
 	 */
 	public static function set_clear_value(&$set, $value) {
 		$new_set = array();
+		self::set_force_array($set);
 		foreach($set as $v) {
 			if ($v !== $value) {
 				$new_set[] = $v;
@@ -111,6 +113,16 @@ class DBFieldSet extends DBFieldEnum {
 	 * @return bool
 	 */
 	public static function set_has_value($set, $value) {
-		return in_array($value, $set);
+		$ret = false;
+		if (!is_null($set) || !$set instanceof DBNull) {
+			$ret = in_array($value, $set);
+		}
+		return $ret;
+	}
+	
+	private static function set_force_array(&$set) {
+		if (is_null($set) || $set instanceof DBNull) {
+			$set = array();
+		}
 	}
 }
