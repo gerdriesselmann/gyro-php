@@ -21,14 +21,23 @@ class DigestNotificationssettingsCommand extends CommandBase {
 		/* @var $settings DAONotificationssettings */
 		$settings = $this->get_instance();
 		$user = $settings->get_user();
+		$nots = array();
 		$dao = NotificationsSettings::create_digest_adapter($settings);
-		if ($dao->count()) {
+		$dao->find();
+		while($dao->fetch()) {
+			$n = clone($dao);
+			$nots[] = $n;
+			$n->add_sent_as(Notifications::DELIVER_DIGEST);
+			$cmd = CommandsFactory::create_command($n, 'update', array());
+			$cmd->execute();
+		}
+		if (count($nots)) {
 			$cmd = new MailCommand(
 				tr('Your %appname Notifications', 'notifications', array('%appname' => Config::get_value(Config::TITLE))),
 				$user->email,
 				'notifications/mail/digest',
 				array(
-					'notifications' => $dao->execute(),
+					'notifications' => $nots,
 					'user' => $user,
 					'settings' => $settings
 				)

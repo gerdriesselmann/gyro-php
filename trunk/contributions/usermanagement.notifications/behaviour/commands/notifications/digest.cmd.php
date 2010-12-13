@@ -22,6 +22,7 @@ class DigestNotificationsCommand extends CommandBase {
 		$possible_digests = NotificationsSettings::create_possible_digest_adapter();
 		$possible_digests->find();
 		while($possible_digests->fetch()) {
+			// Calls notificationssettings/digest
 			$cmd = CommandsFactory::create_command(clone($possible_digests), 'digest', false);
 			$ret->merge($cmd->execute());
 		}

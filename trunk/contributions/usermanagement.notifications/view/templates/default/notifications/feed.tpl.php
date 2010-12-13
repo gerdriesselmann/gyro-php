@@ -14,9 +14,9 @@ foreach($notifications as $n) {
 	/* @var $n DAONotifications */
 	$item = new FeedWriterItem();
 	$item->author_name = Notifications::translate_source($n->source);
-	$item->content = $n->message;
+	$item->content = $n->get_message(Notifications::READ_FEED);
 	$item->description = ConverterFactory::decode($n->message, ConverterFactory::HTML);
-	$item->link = ActionMapper::get_url('view', $n);
+	$item->link = ActionMapper::get_url('view', $n) . '?src=' . Notifications::READ_FEED;
 	$item->baseurl = $feed_title->generator;
 	$item->guid = $item->link;
 	$item->pubdate = $n->creationdate;
