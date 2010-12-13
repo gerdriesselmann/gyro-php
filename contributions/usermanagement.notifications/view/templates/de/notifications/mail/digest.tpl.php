@@ -7,7 +7,7 @@ Folgendes ist seit <?php print GyroDate::local_date($settings->digest_last_sent)
 
 <?php foreach($notifications as $n):?>
 -- <?php print $n->get_title();?> --
-<?php print wordwrap(ConverterFactory::decode($n->message, ConverterFactory::HTML_EX), 65); ?>
+<?php print wordwrap(ConverterFactory::decode($n->get_message(Notifications::DELIVER_DIGEST), ConverterFactory::HTML_EX), 65); ?>
   
 <?php endforeach;?>
 <?php else: ?>

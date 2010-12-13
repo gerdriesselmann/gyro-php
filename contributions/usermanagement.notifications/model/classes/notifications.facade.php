@@ -9,6 +9,19 @@ class Notifications {
 	const STATUS_NEW = 'NEW';
 	const STATUS_READ = 'READ';
 	
+	const DELIVER_MAIL = 'MAIL';
+	const DELIVER_DIGEST = 'DIGEST';
+	const DELIVER_FEED = 'FEED';
+	
+	const READ_UNKNOWN = 'UNKNOWN';
+	const READ_MARK_MANUALLY = 'MANUALLY'; // Explcitly marked read in UI
+	const READ_MARK_AUTO = 'AUTO'; // Automatically marked read in UI
+	const READ_MARK_ALL = 'ALL'; // Mark all as read button clicked
+	const READ_MAIL = 'MAIL'; 
+	const READ_DIGEST = 'DIGEST';
+	const READ_FEED = 'FEED';
+	const READ_CONTENT = 'CONTENT'; // User browsed to notified content without clicking a notification link
+		
 	/**
 	 * return given Notification
 	 * 
@@ -29,6 +42,37 @@ class Notifications {
 			self::STATUS_READ => tr(self::STATUS_READ, 'notifications')
 		);
 	}
+	
+	/**
+	 * Returns all possible status
+	 * 
+	 * @return array
+	 */
+	public static function get_delivery_methods() {
+		return array(
+			self::DELIVER_MAIL => tr(self::DELIVER_MAIL, 'notifications'),
+			self::DELIVER_FEED => tr(self::DELIVER_FEED, 'notifications'),
+			self::DELIVER_DIGEST => tr(self::DELIVER_DIGEST, 'notifications'),
+		);
+	}
+	
+	/**
+	 * Returns all possible status
+	 * 
+	 * @return array
+	 */
+	public static function get_read_sources() {
+		return array(
+			self::READ_UNKNOWN => tr(self::READ_UNKNOWN, 'notifications'),
+			self::READ_MARK_MANUALLY => tr(self::READ_MARK_MANUALLY, 'notifications'),
+			self::READ_MARK_AUTO => tr(self::READ_MARK_AUTO, 'notifications'),
+			self::READ_MARK_ALL => tr(self::READ_MARK_ALL, 'notifications'),
+			self::READ_MAIL => tr(self::READ_MAIL, 'notifications'),
+			self::READ_FEED => tr(self::READ_FEED, 'notifications'),
+			self::READ_DIGEST => tr(self::READ_DIGEST, 'notifications'),
+			self::READ_CONTENT => tr(self::READ_CONTENT, 'notifications'),			
+		);
+	}	
 	
 	/**
 	 * Finds all notifications for given user
@@ -90,13 +134,12 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_single_user(DAOUsers $user, $message, $title = '', $source = 'app') {
+	public static function notify_single_user(DAOUsers $user, $message, $title = '', $source = 'app', $params = array()) {
 		$ret = new Status();
-		$params = array(
-			'title' => self::compute_title($message, $title),
-			'message' => $message,
-			'source' => $source
-		);
+		$params['title'] = self::compute_title($message, $title);
+		$params['message'] = $message;
+		$params['source'] = $source;
+
 		$cmd = CommandsFactory::create_command($user, 'notify', $params);
 		if ($cmd->can_execute($user)) {
 			$ret->merge($cmd->execute());
@@ -112,14 +155,14 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_some_users($arr_users, $message, $title = '', $source = 'app') {
+	public static function notify_some_users($arr_users, $message, $title = '', $source = 'app', $params = array()) {
 		$ret = new Status();
 		$already_notified_ids = array();
 		$title = self::compute_title($message, $title);
 		foreach($arr_users as $user) {
 			$user_id = $user->id;
 			if (!in_array($user_id, $already_notified_ids)) {
-				$ret->merge(self::notify_single_user($user, $message, $title, $source));
+				$ret->merge(self::notify_single_user($user, $message, $title, $source, $params));
 				if ($ret->is_error()) {
 					break;
 				}	
@@ -136,12 +179,10 @@ class Notifications {
 	 * @param string $title If title is empty a title will be computed from message
 	 * @return Status
 	 */
-	public static function notify_all_users($message, $title = '', $source = 'app') {
-		$params = array(
-			'title' => self::compute_title($message, $title),
-			'message' => $message,
-			'source' => $source
-		);		
+	public static function notify_all_users($message, $title = '', $source = 'app', $params = array()) {
+		$params['title'] = self::compute_title($message, $title);
+		$params['message'] = $message;
+		$params['source'] = $source;
 		$cmd = CommandsFactory::create_command('users', 'notifyall', $params);
 		return $cmd->execute();		
 	}
@@ -191,5 +232,54 @@ class Notifications {
 				break;
 		}
 		return $ret;
+	}
+	
+	/**
+	 * Returns Notiifcation, if a notification with given params already exists
+	 * 
+	 * Checked are id_user, source and source_id (which must be non-empty!)
+	 * 
+	 * @return DAONotifications Existing instance or false if none
+	 */
+	public static function existing($params) {
+		$ret = false;
+		$source_id = Arr::get_item($params, 'source_id', false);
+		$id_user = Arr::get_item($params, 'id_user', false);
+		$source =  Arr::get_item($params, 'source', false);
+		if ($source_id && $id_user && $source) {
+			$dao = new DAONotifications();
+			$dao->id_user = $id_user;
+			$dao->source = $source;
+			$dao->source_id = $source_id;
+			$dao->status = self::STATUS_NEW;
+			if ($dao->find(DataObjectBase::AUTOFETCH)) {
+				$ret = $dao;
+			}
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Mark matching notifications as read
+	 * 
+	 * @return void
+	 */
+	public static function mark_as_read_by_source_id($id_user, $source, $source_id, $read_through = self::READ_CONTENT, $read_action = '') {
+		if ($source_id && $id_user && $source) {
+			$params = array(
+				'read_through' => $read_through,
+				'read_action' => $read_action 
+			);
+			$dao = new DAONotifications();
+			$dao->id_user = $id_user;
+			$dao->source = $source;
+			$dao->source_id = $source_id;
+			$dao->status = self::STATUS_NEW;
+			$dao->find();
+			while($dao->fetch()) {
+				$cmd = CommandsFactory::create_command(clone($dao), 'markread', $params);
+				$cmd->execute();
+			}
+		}
 	}
 }

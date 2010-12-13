@@ -16,6 +16,8 @@ class NotificationsController extends ControllerBase {
 			new ParameterizedRoute('https://notifications/{id:ui>}/', $this, 'notifications_view', new AccessRenderDecorator()),
 			// Ajax
 			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
+			// Clicktracking
+			new ParameterizedRoute('https://notifications/{id:ui>}/click/', $this, 'notifications_clicktrack', new AccessRenderDecorator()),
 			// Command Line 
 			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator()),
 			// COmmands
@@ -57,9 +59,41 @@ class NotificationsController extends ControllerBase {
 			return self::ACCESS_DENIED;
 		}
 		
+		$src = $page_data->get_get()->get_item('src', false);
+		if ($src) {
+			$src = strtoupper($src);
+			if (key_exists($src, Notifications::get_read_sources())) {
+				$cmd = CommandsFactory::create_command($n, 'markread', array('read_through' => $src, 'read_action' => 'click'));
+				$cmd->execute(); 
+			}
+		}
+		
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'notifications/view', $page_data);
 		$view->assign('notification', $n);
 		$view->render();
+	}
+	
+	/**
+	 * Track links inside notifications messages
+	 */
+	public function action_notifications_clicktrack(PageData $page_data, $id) {
+		Load::models('notifications');
+		$n = Notifications::get($id);
+		if ($n === false) {
+			return self::ACCESS_DENIED;
+		}
+		
+		$url = $page_data->get_get()->get_item('url', '');
+		$src = $page_data->get_get()->get_item('src', false);
+		$token = $page_data->get_get()->get_item('token', '');
+		if ($token != $n->click_track_fingerprint($src, $url)) {
+			return self::ACCESS_DENIED;
+		}
+		
+		$cmd = CommandsFactory::create_command($n, 'markread', array('read_through' => $src, 'read_action' => 'click'));
+		$cmd->execute(); 
+		
+		Url::create($url)->redirect(Url::TEMPORARY);
 	}
 	
 	/**
@@ -125,9 +159,18 @@ class NotificationsController extends ControllerBase {
 
 		// Find notifications
 		$dao = NotificationsSettings::create_feed_adapter($settings);
+		$nots = array();
+		$dao->find();
+		while($dao->fetch()) {
+			$n = clone($dao);
+			$nots[] = $n;
+			$n->add_sent_as(Notifications::DELIVER_FEED);
+			$cmd = CommandsFactory::create_command($n, 'update', array());
+			$cmd->execute();
+		}
 		
 		$view = ViewFactory::create_view(ViewFactoryMime::MIME, 'notifications/feed', $page_data);
-		$view->assign('notifications', $dao->execute());
+		$view->assign('notifications', $nots);
 		$view->render();
 	}
 	

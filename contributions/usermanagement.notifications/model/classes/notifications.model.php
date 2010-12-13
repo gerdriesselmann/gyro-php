@@ -1,5 +1,29 @@
 <?php
 /**
+ * Helper class for click track injction
+ */
+class ClickTrackInjecter {
+	private $source;
+	private $notification;
+	
+	public function __construct($notification, $source) {
+		$this->notification = $notification;
+		$this->source = $source;
+	}
+	
+	public function callback($matches)  {
+		// $matches[2] => URL
+		$old_url = $matches[2]; 
+		$new_url = Url::create(ActionMapper::get_url('clicktrack', $this->notification));
+		$new_url->replace_query_parameter('src', $this->source);
+		$new_url->replace_query_parameter('url', $old_url);
+		$new_url->replace_query_parameter('token', $this->notification->click_track_fingerprint($this->source, $old_url));
+		$new_url = $new_url->build();
+		return "<a{$matches[1]}href=\"$new_url\"{$macthes[3]}>";		
+	}
+}
+
+/**
  * Model for notifications
  */
 class DAONotifications extends DataObjectTimestampedCached implements ISelfDescribing, IStatusHolder {
@@ -8,6 +32,11 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 	public $title;
 	public $message;
 	public $source;
+	public $source_id;
+	public $source_data;
+	public $sent_as;
+	public $read_through;
+	public $read_action;
 	public $status;
 	
 	/**
@@ -22,6 +51,11 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 				new DBFieldText('title', 200, null, DBField::NOT_NULL),
 				new DBFieldText('message', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NOT_NULL),
 				new DBFieldText('source', 100, Notifications::SOURCE_APP, DBField::NOT_NULL),
+				new DBFieldInt('source_id', null, DBFieldInt::UNSIGNED), // Null allowed!
+				new DBFieldSerialized('source_data', DBFieldSerialized::BLOB_LENGTH_SMALL, null, DBField::NONE),
+				new DBFieldSet('sent_as', array_keys(Notifications::get_delivery_methods()), null, DBField::NONE),
+				new DBFieldEnum('read_through', array_keys(Notifications::get_read_sources()), Notifications::READ_UNKNOWN, DBField::NOT_NULL),
+				new DBFieldText('read_action', 30, null, DBField::NONE),
 				new DBFieldEnum('status', array_keys(Notifications::get_status()), Notifications::STATUS_NEW, DBField::NOT_NULL),
 				), $this->get_timestamp_field_declarations()
 			),
@@ -32,6 +66,48 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 				DBRelation::NONE // null allowed!
 			)
 		);		
+	}
+	
+	/**
+	 * Add a sent as 
+	 */
+	public function add_sent_as($val) {
+		DBFieldSet::set_set_value($this->sent_as, $val);
+	}
+	
+	/**
+	 * Returns message
+	 * 
+	 * @param string $click_track_source 
+	 *   If set, all Links are turned into click tracking links for given source 
+	 *   (one of the DELIVER_* constants)
+	 * @return string         
+	 */
+	public function get_message($click_track_source = false) {
+		$ret = $this->message;
+		if ($click_track_source) {
+			$injector = new ClickTrackInjecter($this, $click_track_source);
+			$reg = '@<a(.*?)href="(.*?)"(.*?)>@';
+			$ret = String::preg_replace_callback($reg, array($injector, 'callback'), $ret);	
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Return a fingerprint for given source and url
+	 * 
+	 * Used for click tracking, to protect it from beeing spoofed 
+	 */
+	public function click_track_fingerprint($source, $url) {
+		return sha1(
+			$this->id .
+			$this->id_user .
+			$this->message .
+			$source .
+			$this->creationdate .
+			$url .
+			$this->title
+		);
 	}
 	
 	/**
