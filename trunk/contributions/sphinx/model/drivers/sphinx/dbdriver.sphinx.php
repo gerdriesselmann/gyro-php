@@ -27,6 +27,22 @@ class DBDriverSphinx implements IDBDriver {
 	 * $query->sphinx_features[DBDriverSphinx::FEATURE_MATCH_MODE] = DBDriverSphinx::MATCH_OR;
 	 */
 	const FEATURE_MATCH_MODE = 'match_mode';
+	/**
+	 * Query more than one index
+	 * 
+	 * $query->sphinx_features[DBDriverSphinx::FEATURE_SUBINDEXES] = array('main', 'delta');
+	 * $query->sphinx_features[DBDriverSphinx::FEATURE_SUBINDEXES] = array('main' => 1, 'delta' => 2);
+	 * 
+	 * If set, the given indexes are search. Note that naming rules still apply, that is the index
+	 * name is build using APP_SPHINX_DB_NAME + table name + sub index name.
+	 * 
+	 * E.g. with a DB Name of "app_", a table named "seachindex" and two subindexes "main" and "delta", the 
+	 * indexes queried must be named "app_searchindexmain" and "app_searchindexdelta".
+	 * 
+	 * If an associative array is passed, the key is interpreted as subindex name and the value as weight. The 
+	 * data gets passed to Sphinx SetIndexWeights function 
+	 */
+	const FEATURE_SUBINDEXES = 'subindexes';
 	
 	/**
 	 * BOOLEAN match mode
@@ -189,7 +205,6 @@ class DBDriverSphinx implements IDBDriver {
 		$arr_query = unserialize($query);
 		$features = Arr::get_item($arr_query, 'features', false);
 		
-		$index_name = $this->connect_params['dbname'] . $arr_query['from'];
 		$terms = Arr::get_item_recursive($arr_query, 'conditions[query]', '');
 		if (Arr::get_item($features, self::FEATURE_STRIP_OPERATORS, false)) {
 			$terms = self::strip_operators($terms);
@@ -241,6 +256,25 @@ class DBDriverSphinx implements IDBDriver {
 				break;				
 		}
 		$this->client->SetMatchMode($matchmode);
+		
+		// Fetch indexes
+		$index_base_name = $this->connect_params['dbname'] . $arr_query['from'];
+		$index_names = array();
+		$index_weight = array();
+		foreach(Arr::get_item($features, self::FEATURE_SUBINDEXES, array()) as $key => $value) {
+			if (is_numeric($key)) {
+				$subindex_name = $index_base_name . $value;
+			}
+			else {
+				$subindex_name = $index_base_name . $key;
+				$index_weight[$subindex_name] = $value;
+			}
+			$index_names[] = $subindex_name; 
+		}
+		$index_name = count($index_names) ? implode(',', $index_names) : $index_base_name;
+		if (count($index_weight)) {
+			$this->client->SetIndexWeights($index_weight);
+		}
 		$result = $this->client->Query($terms, $index_name);
 		
 		$ret = false;
