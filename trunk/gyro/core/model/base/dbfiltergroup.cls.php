@@ -119,6 +119,8 @@ class DBFilterGroup implements IDBQueryModifier {
 	
 	/**
 	 * Returns current filter
+	 * 
+	 * @return DBFilterColumn
 	 */
 	public function get_current_filter() {
 		$ret = $this->get_filter($this->get_current_key());
