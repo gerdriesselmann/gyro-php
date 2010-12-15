@@ -4,6 +4,13 @@ if (Load::is_module_loaded('javascript.jquery')) {
 	$page_data->head->add_js_file('js/notifications.js', true);
 }
 ?>
-<?php foreach($notifications as $notification): ?>
-	<?php gyro_include_template('notifications/inc/item')?>
-<?php endforeach; ?> 
+<?php 
+foreach($notifications as $notification) {
+	$templates = array(
+		'notifications/inc/item_' . strtolower($notification->source),
+		'notifications/inc/item'
+	);
+	$v = ViewFactory::create_view(IViewFactory::MESSAGE, $templates, false);
+	$v->assign('notification', $notification);
+	print $v->render();
+}

@@ -14,11 +14,7 @@ class ClickTrackInjecter {
 	public function callback($matches)  {
 		// $matches[2] => URL
 		$old_url = $matches[2]; 
-		$new_url = Url::create(ActionMapper::get_url('clicktrack', $this->notification));
-		$new_url->replace_query_parameter('src', $this->source);
-		$new_url->replace_query_parameter('url', $old_url);
-		$new_url->replace_query_parameter('token', $this->notification->click_track_fingerprint($this->source, $old_url));
-		$new_url = $new_url->build();
+		$new_url = $this->notification->create_click_track_link($this->source, $old_url);
 		return "<a{$matches[1]}href=\"$new_url\"{$macthes[3]}>";		
 	}
 }
@@ -108,6 +104,17 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 			$url .
 			$this->title
 		);
+	}
+
+	/**
+	 * Turn given URL into a clicktracked URL
+	 */
+	public function create_click_track_link($source, $url) {
+		$new_url = Url::create(ActionMapper::get_url('clicktrack', $this));
+		$new_url->replace_query_parameter('src', $source);
+		$new_url->replace_query_parameter('url', $url);
+		$new_url->replace_query_parameter('token', $this->click_track_fingerprint($source, $url));
+		return $new_url->build();
 	}
 	
 	/**

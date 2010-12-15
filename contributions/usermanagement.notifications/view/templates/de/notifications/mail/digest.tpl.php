@@ -5,11 +5,17 @@ Sie haben regelmäßige Benachrichtigungen für Ereignisse auf <?php print $appn
 <?php if (count($notifications)): ?>
 Folgendes ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> geschehen:  
 
-<?php foreach($notifications as $n):?>
--- <?php print $n->get_title();?> --
-<?php print wordwrap(ConverterFactory::decode($n->get_message(Notifications::DELIVER_DIGEST), ConverterFactory::HTML_EX), 65); ?>
-  
-<?php endforeach;?>
+<?php 
+	foreach($notifications as $n) {
+		$templates = array(
+			'notifications/mail/digest_item_' . strtolower($n->source),
+			'notifications/mail/digest_item'
+		);
+		$v = ViewFactory::create_view(IViewFactory::MESSAGE, $templates, false);
+		$v->assign('notification', $n);
+		print $v->render();
+	}
+?>  
 <?php else: ?>
 Leider ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> nichts geschehen.
 <?php endif?> 
