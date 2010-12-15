@@ -4,6 +4,9 @@ Load::components('mailmessage');
 /**
  * Generic class for sending a mail
  * 
+ * The class gets passed a template which then is rendered. Within the template
+ * the command itself is available as $mailcmd.
+ * 
  * @author Gerd Riesselmann
  * @ingroup Behaviour
  */ 
@@ -16,6 +19,8 @@ class MailBaseCommand extends CommandBase {
 	protected $subject;
 	/** Email address */
 	protected $email = '';
+	/** HTML or not? */
+	protected $html_mail = false;
 	
 	/** Error obejct */
 	protected $err = null;
@@ -66,7 +71,7 @@ class MailBaseCommand extends CommandBase {
 		$attachments = $this->get_attachments();
 		
 		if ($this->err->is_ok()) {
-			$mail = new MailMessage($subject, $message, $to);
+			$mail = $this->create_mail_message($subject, $message, $to);
 			foreach(Arr::force($attachments, false) as $a) {
 				$mail->add_attachment($a);
 			}
@@ -78,10 +83,27 @@ class MailBaseCommand extends CommandBase {
 	}
 	
 	/**
+	 * Create the mail message instance
+	 * 
+	 * @return MailMessage
+	 */
+	protected function create_mail_message($subject, $message, $to) {
+		$content_type = $this->html_mail ? 'text/html; charset=%charset' : '';
+		return new MailMessage($subject, $message, $to, '', $content_type);
+	}
+	
+	/**
 	 * Set an error message
 	 */
 	protected function set_error($message) {
 		$this->err->append($message);
+	}
+	
+	/**
+	 * Create Mail Subject
+	 */
+	public function set_subject($subject) {
+		$this->subject = $subject;
 	}
 	
 	/**
@@ -101,6 +123,7 @@ class MailBaseCommand extends CommandBase {
 				$view->assign($name, $value);
 			}	
 			$view->assign('to', $this->get_to());
+			$view->assign('mailcmd', $this);
 			return $view->render();
 		} 
 		else {
@@ -127,6 +150,18 @@ class MailBaseCommand extends CommandBase {
 	 */
 	protected function get_attachments() {
 		return array();
-	} 
+	}
+
+	/**
+	 * Set if this is a HTML mail or not. 
+	 * 
+	 * Can be set through template:
+	 * 
+	 * @code
+	 * $mailcmd->set_is_html(true);
+	 * @endcode
+	 */
+	public function set_is_html($yesno) {
+		$this->html_mail = $yesno;
+	}
 }
-?>
