@@ -17,7 +17,7 @@ class NotificationsController extends ControllerBase {
 			// Ajax
 			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
 			// Clicktracking
-			new ParameterizedRoute('https://notifications/{id:ui>}/click/', $this, 'notifications_clicktrack', new AccessRenderDecorator()),
+			new ParameterizedRoute('https://notifications/{id:ui>}/click/', $this, 'notifications_clicktrack'),
 			// Command Line 
 			new ExactMatchRoute('notifications/digest', $this, 'notifications_digest', new ConsoleOnlyRenderDecorator()),
 			// COmmands
@@ -80,14 +80,14 @@ class NotificationsController extends ControllerBase {
 		Load::models('notifications');
 		$n = Notifications::get($id);
 		if ($n === false) {
-			return self::ACCESS_DENIED;
+			return self::NOT_FOUND;
 		}
 		
 		$url = $page_data->get_get()->get_item('url', '');
 		$src = $page_data->get_get()->get_item('src', false);
 		$token = $page_data->get_get()->get_item('token', '');
 		if ($token != $n->click_track_fingerprint($src, $url)) {
-			return self::ACCESS_DENIED;
+			return self::NOT_FOUND;
 		}
 		
 		$cmd = CommandsFactory::create_command($n, 'markread', array('read_through' => $src, 'read_action' => 'click'));

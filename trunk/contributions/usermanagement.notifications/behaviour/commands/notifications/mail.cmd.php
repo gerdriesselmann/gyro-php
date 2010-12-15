@@ -18,10 +18,14 @@ class MailNotificationsCommand extends CommandChain {
 	
 	protected function create_mail_command($notification) {
 		Load::commands('generics/mail');
+		$templates = array(
+			'notifications/mail/single_' . strtolower($notification->source),
+			'notifications/mail/single'
+		);
 		$cmd = new MailCommand(
 			$notification->get_title(),
 			$notification->get_user()->email,
-			'notifications/mail/single',
+			$templates,
 			array(
 				'notification' => $notification
 			)
