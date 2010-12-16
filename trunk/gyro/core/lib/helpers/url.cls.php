@@ -32,19 +32,23 @@ class Url {
 	 * 
 	 * @param string The URL to wrap around
 	 */
-	public function __construct($url = '') {
-		$this->parse($url);
+	public function __construct($url = '', $fallback_host = '') {
+		$this->parse($url, $fallback_host);
 	}
 	
 	/**
 	 * This wraps PHP parse_url.
 	 *
 	 * @param string $url
+	 * @param string $fallback_host host to use if URL is relative
 	 * @return array
 	 */
-	protected function do_parse_url($url) {
+	protected function do_parse_url($url, $fallback_host = '') {
 		// Make http default protocol
 		if (strpos($url, '://') === false) {
+			if (substr($url, 0, 1) == '/') {
+				$url = $fallback_host . $url;
+			}
 			$url = 'http://' . $url; 
 		}
 		$ret = false;
@@ -64,11 +68,11 @@ class Url {
 	/**
 	 * Parse URL into Urls 
 	 */
-	protected function parse($url) {
+	protected function parse($url, $fallback_host = '') {
 		$url = trim($url);
 		$data = array();
 		if (!empty($url)) {
-			$data = $this->do_parse_url($url);
+			$data = $this->do_parse_url($url, $fallback_host);
 		}
 		
 		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
@@ -172,7 +176,7 @@ class Url {
 	}
 	
 	/**
-	 * Returns true if the URL is empty
+	 * Returns true if the URL is empty (that is no host is specified)
 	 */
 	public function is_empty() {
 		return $this->data['host'] === '';
@@ -199,6 +203,17 @@ class Url {
 	 */
 	public static function create($url) {
 		return new Url($url);
+	}
+	
+	/**
+	 * Create new Url instance. If url's host is empty use the given one
+	 * 
+	 * @param string Path
+	 * @param string Fallback host
+	 * @return Url
+	 */
+	public static function create_with_fallback_host($url, $host) {
+		return new Url($url, $host);
 	}
 		
 	/**
@@ -589,6 +604,10 @@ class Url {
 		$this->data['path'] = String::plain_ascii($ret);
 		return $this;	
 	}
+	
+	/**
+	 * 
+	 */
 	
 	/**
 	 * Redirect to this Url
