@@ -172,5 +172,13 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertFalse($a->equals('http://www.example.net/some/path/?a=b&c=d#hash'));
 		$this->assertFalse($a->equals('https://www.example.org/some/path/?a=b&c=d#hash'));
 	}
+	
+	public function test_fallback_host() {
+		$a = Url::create_with_fallback_host('http://www.example.org/some/path/?a=b&c=d', 'localhost');
+		$this->assertTrue($a->equals('http://www.example.org/some/path/?a=b&c=d#hash'));
+		
+		$a = Url::create_with_fallback_host('/some/path/?a=b&c=d', 'localhost');
+		$this->assertTrue($a->equals('http://localhost/some/path/?a=b&c=d#hash'));
+	}
 }
 
