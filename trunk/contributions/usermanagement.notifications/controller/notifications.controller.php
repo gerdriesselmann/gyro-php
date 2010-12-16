@@ -93,7 +93,7 @@ class NotificationsController extends ControllerBase {
 		$cmd = CommandsFactory::create_command($n, 'markread', array('read_through' => $src, 'read_action' => 'click'));
 		$cmd->execute(); 
 		
-		Url::create($url)->redirect(Url::TEMPORARY);
+		Url::create_with_fallback_host($url, Config::get_value(Config::URL_DOMAIN))->redirect(Url::TEMPORARY);
 	}
 	
 	/**
