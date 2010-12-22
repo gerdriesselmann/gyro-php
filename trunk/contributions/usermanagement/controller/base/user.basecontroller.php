@@ -258,6 +258,7 @@ class UserBaseController extends ControllerBase {
 
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'core::users/login', $page_data);
 		$formhandler->prepare_view($view);
+		$view->assign('goto', Session::peek('login_goto'));
  		$view->render();
 
  		$page_data->in_history = false;
@@ -595,9 +596,16 @@ class UserBaseController extends ControllerBase {
 
 			$err->merge(Users::login($post->get_array(), $permanent));
 			if ($err->is_ok()) {
-				if ($this->has_feature(self::SUPPORT_DASHBOARD)) {
+				$goto = $post->get_item('goto', '');
+				if ($goto) {
+					// Go to specific URL (force it to be same domain, though!)
+					$goto_url = Url::create($goto)->set_host(Config::get_value(Config::URL_DOMAIN));
+					History::push($goto_url->build(Url::ABSOLUTE));
+				}
+				else if ($this->has_feature(self::SUPPORT_DASHBOARD)) {
 					History::push(Config::get_url(ConfigUsermanagement::DEFAULT_PAGE));
 				}
+				Session::pull('login_goto');
 			}
 		}
 		$formhandler->finish($err, tr('Welcome! You are now logged in.', 'users'));

@@ -417,7 +417,13 @@ function users_load_translations($languages) {
 		'Your changes have been saved' => array(
 			'de' => 'Ihre Änderungen wurden gespeichert',
 			'pt' => 'As suas alterações foram guardadas'
-		)		
+		),
+		'Please provide a user name for login' => array(
+			'de' => 'Bitte geben Sie einen Benuutzernamen ein.'			
+		),
+		'Please provide a password for login' => array(
+			'de' => 'Bitte geben Sie ein Passwort ein.'
+		)
 	);
 }
 ?>

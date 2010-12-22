@@ -1,4 +1,5 @@
 <?php print $form_validation; ?>
+<?php if ($goto) { print WidgetInput::output('goto', '', $goto, WidgetInput::HIDDEN); }?>
 
 <?php print WidgetInput::output('name', tr('Username:', 'users'), $form_data); ?>
 <?php print WidgetInput::output('password', tr('Password:', 'users'), $form_data, WidgetInput::PASSWORD); ?>
