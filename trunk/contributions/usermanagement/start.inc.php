@@ -112,6 +112,8 @@ class ConfigUsermanagement {
 	 * 
 	 * - DENY: (default) Just show a 403 page and message
 	 * - REDIRECT_LOGIN: Redirect to login page 
+	 * 
+	 * @deprecated Use AccessDeniedRedirectRenderDecorator instead
 	 */
 	const BEHAVIOUR_403 = 'USER_403_BEHAVIOUR';
 	const USER_403_BEHAVIOUR = 'USER_403_BEHAVIOUR';
