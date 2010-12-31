@@ -206,14 +206,15 @@ class String {
 	 * Return string depending on value of $num
 	 * 
 	 * If $num is 1, $singuar is returned
-	 * If $num is not 1, $plural is returned
-	 * If $num is 0, and $none is not FALSE, $none is returned, else $plural is returned
+	 * If $num is not 1, $plural is returned (%num gets replaced by $num)
+	 * If $num is 0, and $none is not FALSE, $none is returned, else $plural is returned (%num gets replaced by $num)
 	 *  
 	 * @since 0.5.1
 	 * 
 	 * @return string
 	 */
 	public static function singular_plural($num, $singular, $plural, $none = false) {
+		$plural = str_replace('%num', $num, $plural);
 		switch ($num) {
 			case 1:
 				return $singular;
