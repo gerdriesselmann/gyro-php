@@ -36,7 +36,9 @@ class FetchTweetsCommand extends CommandChain {
 			
 			Load::components('httprequest');
 			$json = HttpRequest::get_content($url, $err);
-			$data = ConverterFactory::decode($json, CONVERTER_JSON);
+			if ($err->is_ok()) {
+				$data = ConverterFactory::decode($json, CONVERTER_JSON);
+			}
 		}
 		return $data;
 	}
