@@ -79,7 +79,11 @@ class FetchTweetsCommand extends CommandChain {
 		$message = ConverterFactory::decode($s->text, CONVERTER_TWITTER);
 		$tweet->message = $message;
 		$tweet->message_html = ConverterFactory::encode($message, CONVERTER_TWITTER, $policy);
-		$tweet->title = String::substr_word($message, 0, 120);
+		$title = String::substr_word($message, 0, 120);
+		if ($title = '') {
+			$title = String::substr($message, 0, 120);
+		}
+		$tweet->title = $title;
 		
 		$tweet->username = $s->user->screen_name; 
 		$tweet->creationdate = GyroDate::datetime($s->created_at);
