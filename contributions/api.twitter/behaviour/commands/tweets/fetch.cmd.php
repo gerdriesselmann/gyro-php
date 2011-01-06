@@ -80,7 +80,7 @@ class FetchTweetsCommand extends CommandChain {
 		$tweet->message = $message;
 		$tweet->message_html = ConverterFactory::encode($message, CONVERTER_TWITTER, $policy);
 		$title = String::substr_word($message, 0, 120);
-		if ($title = '') {
+		if ($title == '') {
 			$title = String::substr($message, 0, 120);
 		}
 		$tweet->title = $title;
