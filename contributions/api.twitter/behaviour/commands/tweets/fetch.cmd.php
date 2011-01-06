@@ -19,6 +19,9 @@ class FetchTweetsCommand extends CommandChain {
 		$data = $this->fetch_tweets($twitter_user, $ret);
 		if ($ret->is_ok()) {
 			$ret->merge($this->insert_tweets($data, $policy));
+			if ($ret->is_error()) {
+				$ret->append('Inserting tweets of "' , $twitter_user . '" failed');
+			}
 		}
 		return $ret;
 	}
