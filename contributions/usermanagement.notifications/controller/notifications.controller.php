@@ -68,6 +68,13 @@ class NotificationsController extends ControllerBase {
 			}
 		}
 		
+		$page_data->head->title = $n->get_title();
+		$page_data->breadcrumb = WidgetBreadcrumb::output(array(
+			WidgetActionLink::output(tr('Your Notifications', 'notifications'), 'users_notifications'),
+			$title
+		));
+		
+		
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'notifications/view', $page_data);
 		$view->assign('notification', $n);
 		$view->render();
