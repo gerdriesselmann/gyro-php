@@ -169,11 +169,13 @@ class NotificationsController extends ControllerBase {
 		$nots = array();
 		$dao->find();
 		while($dao->fetch()) {
-			$n = clone($dao);
-			$nots[] = $n;
-			$n->add_sent_as(Notifications::DELIVER_FEED);
-			$cmd = CommandsFactory::create_command($n, 'update', array());
-			$cmd->execute();
+			if ($settings->should_notification_be_processed($dao, NotificationsSettings::TYPE_FEED)) {
+				$n = clone($dao);
+				$nots[] = $n;
+				$n->add_sent_as(Notifications::DELIVER_FEED);
+				$cmd = CommandsFactory::create_command($n, 'update', array());
+				$cmd->execute();
+			}
 		}
 		
 		$view = ViewFactory::create_view(ViewFactoryMime::MIME, 'notifications/feed', $page_data);

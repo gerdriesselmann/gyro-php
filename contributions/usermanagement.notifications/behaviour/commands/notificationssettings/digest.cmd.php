@@ -25,11 +25,13 @@ class DigestNotificationssettingsCommand extends CommandBase {
 		$dao = NotificationsSettings::create_digest_adapter($settings);
 		$dao->find();
 		while($dao->fetch()) {
-			$n = clone($dao);
-			$nots[] = $n;
-			$n->add_sent_as(Notifications::DELIVER_DIGEST);
-			$cmd = CommandsFactory::create_command($n, 'update', array());
-			$cmd->execute();
+			if ($settings->should_notification_be_processed($dao, NotificationsSettings::TYPE_DIGEST)) {
+				$n = clone($dao);
+				$nots[] = $n;
+				$n->add_sent_as(Notifications::DELIVER_DIGEST);
+				$cmd = CommandsFactory::create_command($n, 'update', array());
+				$cmd->execute();
+			}
 		}
 		if (count($nots)) {
 			$cmd = new MailCommand(
