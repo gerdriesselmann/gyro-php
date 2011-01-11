@@ -14,6 +14,7 @@ class NotificationsController extends ControllerBase {
 			new ExactMatchRoute('https://user/notifications/settings/', $this, 'notifications_settings', new AccessRenderDecorator()),
 			new ParameterizedRoute('https://notifications/feeds/{id_user:ui>}/{feed_token:s:40}', $this, 'notifications_feed', new NoCacheCacheManager()),
 			new ParameterizedRoute('https://notifications/{id:ui>}/', $this, 'notifications_view', new AccessRenderDecorator()),
+			new NotificationsExcludeRoute('https://notifications/exclude/{source:s}/{source_id:ui>}/{token:s}/', $this, 'notifications_exclude', new AccessRenderDecorator()),
 			// Ajax
 			new ExactMatchRoute('https://ajax/notifications/toggle', $this, 'notifications_ajax_toggle', new AccessRenderDecorator()),
 			// Clicktracking
@@ -181,6 +182,25 @@ class NotificationsController extends ControllerBase {
 		$view = ViewFactory::create_view(ViewFactoryMime::MIME, 'notifications/feed', $page_data);
 		$view->assign('notifications', $nots);
 		$view->render();
+	}
+	
+	/**
+	 * Exclude items
+	 */
+	public function action_notifications_exclude(PageData $page_data, $source, $source_id, $token) {
+		$data = array('source' => $source, 'source_id' => $source_id);
+		$user = Users::get_current_user();
+		if ($token != $user->create_token('exclude', $data)) {
+			return self::NOT_FOUND;
+		}
+		
+		$data['id_user'] = $user->id;
+		$cmd = CommandsFactory::create_command('notificationsexceptions', 'create', $data);
+		$err = $cmd->execute();
+		if ($err->is_ok()) {
+			$err = new Message(tr('Notifications have been disabled for the given item', 'notifications'));
+		}
+		History::go_to(0, $err, ActionMapper::get_url('users_notifications'));
 	}
 	
 	/**

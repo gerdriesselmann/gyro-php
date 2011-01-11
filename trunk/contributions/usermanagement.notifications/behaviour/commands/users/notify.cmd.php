@@ -14,10 +14,15 @@ class NotifyUsersCommand extends CommandTransactional {
 	 * Aktually do something :)
 	 */
 	protected function do_execute() {
-		Load::models('notifications');
+		$ret = new Status();
+
+		Load::models('notifications', 'notificationsexceptions');
 		$user = $this->get_instance();
 		$params = $this->get_params();
 		$created = false;
-		return Notifications::create($user, $params, $created);
+		if (!NotificationsExceptions::excluded($user->id, Arr::get_item($params, 'source', ''), Arr::get_item($params, 'source_id', ''))) {
+			$ret->merge(Notifications::create($user, $params, $created));
+		}
+		return $ret;
 	}
-} 
+}
