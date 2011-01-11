@@ -21,6 +21,21 @@ class Users {
 	public static function get_current_user() {
 		return AccessControl::get_current_aro();
 	}
+
+	/**
+	 * Returns the id of the user logged in or false, if no user is logged in
+	 * 
+	 * @return int
+	 */
+	public static function get_current_user_id() {
+		$ret = false;
+		$user = self::get_current_user();
+		if ($user) {
+			$ret = $user->id;
+		}
+		return $ret;
+	}
+	
 	
 	/**
 	 * Returns true, if an user is logged in, else false 
