@@ -8,7 +8,7 @@ class MailNotificationsCommand extends CommandChain {
 		$n = $this->get_instance();
 		Load::models('notificationssettings');
 		$settings = NotificationsSettings::get_for_user($n->id_user);
-		if ($settings === false || $settings->source_matches($n->source, NotificationsSettings::TYPE_MAIL)) {
+		if ($settings === false || $settings->should_notification_be_processed($n, NotificationsSettings::TYPE_MAIL)) {
 			$this->append($this->create_mail_command($n));
 			$n->add_sent_as(Notifications::DELIVER_MAIL);
 			$this->append(CommandsFactory::create_command($n, 'update', array()));

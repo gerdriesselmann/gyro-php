@@ -107,6 +107,16 @@ class DAONotificationssettings extends DataObjectCached {
 	}
 	
 	/**
+	 * Returns true if given notifications should be processed for given
+	 * type (FEED, MAIL, DIGEST)
+	 */
+	public function should_notification_be_processed(DAONotifications $n, $type) {
+		$ret = $this->source_matches($n->source, $type);
+		
+		return $ret;
+	}
+	
+	/**
 	 * Returns true if given source is part of settings for given type
 	 */
 	public function source_matches($source, $type) {
@@ -135,5 +145,14 @@ class DAONotificationssettings extends DataObjectCached {
 			$seed .= $user->password . $user->creationdate;
 		}
 		return sha1(uniqid($seed, true));			
+	}
+	
+	/**
+	 * Returns true, if feed is enabled and valid
+	 * 
+	 * @return bool
+	 */
+	public function is_feed_enabled() {
+		return $this->feed_enable && $this->feed_token;
 	}
 }

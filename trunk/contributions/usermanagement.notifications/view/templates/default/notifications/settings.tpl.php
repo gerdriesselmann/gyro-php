@@ -31,7 +31,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(array(
 	<legend><?=tr('Feed', 'notifications')?></legend>
 	<?php
 	print WidgetInput::output('feed_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
-	if ($settings && $settings->feed_enable && $settings->feed_token) {
+	if ($settings && $settings->is_feed_enabled()) {
 		print html::info(String::escape(
 			tr('Your feed url is %url', 'notifications', array('%url' => ActionMapper::get_url('notifications_feed', $settings)))
 		));
