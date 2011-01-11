@@ -26,6 +26,9 @@ class NotificationsAccessControl extends AccessControlBase {
 				case 'status':
 					$ret =  $this->to_result($item->id_user == $user->id); 
 					break;
+				case 'exclude':
+					$ret = $this->to_result(!empty($item->source_id));
+					break;
 			}
 		} else if ($item instanceof DAOUsers) {
 			switch ($action) {
