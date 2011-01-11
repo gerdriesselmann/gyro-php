@@ -59,6 +59,27 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 	protected function get_allowed_status() {
 		return Users::get_statuses(); 	
 	}
+	
+	/**
+	 * Create a user (and seed ) specific token
+	 * 
+	 * @param string $creator Module or class (or more wider: name of) creating the token. Is is part of the seed
+	 * @param string|array $data Data passed into seed  
+	 */
+	public function create_token($creator, $data) {
+		$src = '';
+		$src .= $this->email;
+		$src .= $this->password;
+		$src .= $this->creator;
+		$src .= $this->id;
+		if (is_array($data)) {
+			$data = Arr::implode('§', $data, '~');
+		}
+		$src .= $data;
+		$src .= $this->get_modification_date();
+		$src .= $this->name;
+		return sha1($src);
+	}
  	
  	
 	// ***********************************************
