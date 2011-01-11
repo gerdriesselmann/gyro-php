@@ -137,7 +137,7 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 			$desc = tr('Set ' . $state); 
 			$ret[$cmd] = $desc;
 		}
-		$ret['exclude'] = tr('No further notifications on this', 'notifications');
+		$ret['exclude'] = tr('End notification', 'notifications');
 		return $ret;
 	}	
 	

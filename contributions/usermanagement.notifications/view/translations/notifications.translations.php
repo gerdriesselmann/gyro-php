@@ -94,8 +94,8 @@ function notifications_load_translations($languages) {
 		'Notifications have been disabled for the given item' => array(
 			'de' => 'Die Benachrichtigungen für das gewünschte Element wurden abgestellt.'
 		),
-		'No further notifications on this' => array(
-			'de' => 'Hierzu keine weiteren Benachrichtigungen'
+		'End notification' => array(
+			'de' => 'Benachrichtigung abbestellen'
 		)
 	);
 }
