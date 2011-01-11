@@ -72,7 +72,7 @@ class NotificationsController extends ControllerBase {
 		$page_data->head->title = $n->get_title();
 		$page_data->breadcrumb = WidgetBreadcrumb::output(array(
 			WidgetActionLink::output(tr('Your Notifications', 'notifications'), 'users_notifications'),
-			$title
+			$n
 		));
 		
 		
