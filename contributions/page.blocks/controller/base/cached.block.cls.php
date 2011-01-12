@@ -45,6 +45,7 @@ class CachedBlock extends BlockBase {
 			$this->cache_read = true;
 			$content = '';
 			$data = array();
+			DB::start_trans();
 			$cache = Cache::read($this->cache_id);
 			if ($cache) {
 				$content = $cache->get_content_plain();
@@ -59,6 +60,7 @@ class CachedBlock extends BlockBase {
 				);
 				Cache::store($this->cache_id, $content, $this->life_time, $data, false);
 			}
+			DB::commit();
 			$this->set_content($content);
 			$this->set_title(Arr::get_item($data, 'title', ''));
 			$this->set_name(Arr::get_item($data, 'name', ''));
