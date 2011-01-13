@@ -488,7 +488,7 @@ class Url {
 	}
 	
 	public function set_port($port) {
-		$this->data['port'] = ($port) ? Cast::int($port) : $port;
+		$this->data['port'] = ($port) ? intval($port) : $port;
 		return $this;
 	}
 	
