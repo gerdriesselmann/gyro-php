@@ -231,8 +231,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  		$driver = $this->get_table_driver();
  		if ($driver->has_feature(IDBDriver::FEATURE_REPLACE)) {
  			$query = $this->create_replace_query();
- 			$connection = $query->get_table()->get_table_driver();
-			$ret->merge(DB::execute($query->get_sql(), $connection));
+ 			$ret->merge(DB::execute($query, $driver));
  		}
 		else {
 			$ret->merge($this->replace_manual());
