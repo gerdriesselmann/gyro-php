@@ -167,9 +167,9 @@ class RequestInfo {
 			$ret = Arr::get_item($this->data, 'REMOTE_HOST', '');
 		}
 		if ($ret === '') {
-			$ip = $this->remote_address();
-			if ($ip) {
-				$ret = gethostbyaddr($this->remote_address());
+			$ret = $this->remote_address();
+			if ($ret) {
+				$ret = @gethostbyaddr();
 			}
 		}
 		return $ret;
