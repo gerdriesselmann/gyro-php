@@ -169,7 +169,7 @@ class RequestInfo {
 		if ($ret === '') {
 			$ret = $this->remote_address();
 			if ($ret) {
-				$ret = @gethostbyaddr();
+				$ret = @gethostbyaddr($ret);
 			}
 		}
 		return $ret;
