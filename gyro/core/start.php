@@ -16,7 +16,7 @@ date_default_timezone_set(date_default_timezone_get());
 define ('GYRO_CORE_DIR', dirname(__FILE__) . '/');
 define ('GYRO_ROOT_DIR', GYRO_CORE_DIR . '../');
 require_once GYRO_CORE_DIR . 'config.cls.php';
-Config::set_value(Config::VERSION, 0.5);
+Config::set_value(Config::VERSION, 0.6);
 require_once GYRO_CORE_DIR . 'constants.inc.php';
 require_once GYRO_CORE_DIR . 'lib/includes.inc.php';
 // Include "Load" class
@@ -25,7 +25,6 @@ Load::add_module_base_dir(GYRO_ROOT_DIR . 'modules/');
 //Load::directories('lib/helpers');
 
 // Set error reporting settings
-error_reporting(E_ALL ^ E_NOTICE);
 if (Common::constant('APP_TESTMODE')) {
 	ini_set('display_errors', 1);
 	ini_set('log_errors', 1);
@@ -34,6 +33,12 @@ if (Common::constant('APP_TESTMODE')) {
 else {
 	ini_set('display_errors', 0);
 	ini_set('log_errors', 1);
+	if (defined(E_DEPRECATED)) {
+		// PHP 5.3
+		error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+	} else {
+		error_reporting(E_ALL ^ E_NOTICE);
+	}
 }
 
 // Set locales
