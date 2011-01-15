@@ -144,14 +144,18 @@ class RequestInfo {
 	 * @return string
 	 */
 	public function remote_address() {
+		$ret = '';
 		// Check for X-Forwarded-For use REMOTE_ADDR as fallback
-		$ret = Arr::get_item($this->data, 'HTTP_X_FORWARDED_FOR', Arr::get_item($this->data, 'REMOTE_ADDR', ''));
-		if ($ret) {
-			// Comma separeted List
-			$arr_ips = explode(',', $ret);
-			$first_ip = array_shift($arr_ips);
-			// Replace all non-ASCI with "." - TODO IPV6 uses ":"?
-			$ret = String::plain_ascii(trim($first_ip), '.');
+		$in = Arr::get_item($this->data, 'HTTP_X_FORWARDED_FOR', Arr::get_item($this->data, 'REMOTE_ADDR', ''));
+		if ($in) {
+			// May be comma separeted list (in case of proxies involved)
+			$arr_ips = explode(',', $in);
+			foreach($arr_ips as $ip) {
+				if (Validation::is_ip($ip)) {
+					$ret = $ip;
+					break;
+				}
+			}
 		}
 		return $ret;
 	}
