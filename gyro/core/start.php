@@ -33,7 +33,7 @@ if (Common::constant('APP_TESTMODE')) {
 else {
 	ini_set('display_errors', 0);
 	ini_set('log_errors', 1);
-	if (defined(E_DEPRECATED)) {
+	if (defined('E_DEPRECATED')) {
 		// PHP 5.3
 		error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 	} else {
