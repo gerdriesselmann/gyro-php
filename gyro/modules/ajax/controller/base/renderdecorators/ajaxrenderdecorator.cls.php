@@ -22,6 +22,6 @@ class AjaxRenderDecorator extends RenderDecoratorBase {
 		$content_render_decorator->render_content($page_data);
 		$page_data->router->postprocess($page_data);
 		$page_data->in_history = false;
-		return $view->render();	
+		return $view->render($policy);	
 	}
 }
