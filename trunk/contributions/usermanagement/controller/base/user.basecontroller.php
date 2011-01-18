@@ -428,6 +428,9 @@ class UserBaseController extends ControllerBase {
 		if ($user == false) {
 			return self::NOT_FOUND;
 		}
+		foreach($user->get_roles() as $role) {
+			$user->roles[] = $role->id;
+		}	
 		
 		$formhandler = new FormHandler('edit_account');
 		if ($page_data->has_post_data()) {
@@ -441,6 +444,7 @@ class UserBaseController extends ControllerBase {
 		$roleOptions = Users::get_user_roles();
 		$view->assign('role_options', $roleOptions);	
 		$view->assign('user', $user);
+		
 		$formhandler->prepare_view($view, $user);
 		
 		$view->render();

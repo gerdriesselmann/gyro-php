@@ -17,14 +17,5 @@
 
 	<p><?php print tr('Leave these fields empty to not change the password.',  'users')?></p> 
 
-	<?php
-	if ($context != 'create') { 
-		if (!isset($form_data['roles'])) {
-			foreach($user->get_roles() as $role) {
-				$form_data['roles'][] = $role->id;
-			}
-		}	
-	}	
-	?>
 	<?php print WidgetInput::output('roles', tr('Roles:', 'users'), $form_data, WidgetInput::MULTISELECT, array('options' => $role_options))?>
 	</fieldset>
