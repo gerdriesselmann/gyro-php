@@ -110,9 +110,15 @@ class HtmlText {
 	 * @return string Converted text
 	 */
 	public static function apply_conversion($type, $text, $model = self::CONVERSION_DEFAULT) {
-		$conversions = self::get_conversion($type, $model, true);
-		$chain = ConverterFactory::create_chain($conversions);
-		return $chain->encode($text);
+		$key = array($model, sha1($text));
+		$ret = RuntimeCache::get($key, null);
+		if (is_null($ret)) {
+			$conversions = self::get_conversion($type, $model, true);
+			$chain = ConverterFactory::create_chain($conversions);
+			$ret = $chain->encode($text);
+			RuntimeCache::set($key, $ret);
+		}
+		return $ret;
 	}
 	
 	/**
