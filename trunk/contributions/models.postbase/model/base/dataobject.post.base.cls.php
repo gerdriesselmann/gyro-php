@@ -28,12 +28,10 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 				array(
 					new DBFieldInt('id', null, DBFieldInt::PRIMARY_KEY),
 					new DBFieldText('title', 200, null, DBField::NOT_NULL),
-					new DBFieldText('teaser', DBFieldText::BLOB_LENGTH_SMALL, null, $this->get_teaser_field_policy()),
 					new DBFieldTextHtml('text', DBFieldText::BLOB_LENGTH_LARGE, null, $this->get_text_field_policy()),
-					new DBFieldText('meta_title', 200, null, DBField::NONE),
-					new DBFieldText('meta_keywords', 255, null, DBField::NONE),
-					new DBFieldText('meta_description', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NONE),
 				),
+				$this->get_teaser_field(),
+				$this->get_meta_tag_fields(),
 				$this->get_global_field_definitions(),
 				$this->get_timestamp_field_declarations(),
 				$this->get_additional_field_definitions()	
@@ -103,6 +101,31 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	protected function get_global_field_definitions() {
 		return self::$global_extensions;
 	}
+
+	/**
+	 * Returns fields for meta tag information
+	 * 
+	 * @return array
+	 */
+	protected function get_meta_tag_fields() {
+		return array(
+			new DBFieldText('meta_title', 200, null, DBField::NONE),
+			new DBFieldText('meta_keywords', 255, null, DBField::NONE),
+			new DBFieldText('meta_description', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NONE),
+		);
+	}
+	
+	/**
+	 * Returns teaser field
+	 * 
+	 * @return array
+	 */
+	protected function get_teaser_field() {
+		return array(
+			new DBFieldText('teaser', DBFieldText::BLOB_LENGTH_SMALL, null, $this->get_teaser_field_policy()),
+		);
+	}
+	
 	
 	// -- Getters ---
 	
@@ -116,17 +139,26 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	}
 	
 	/**
+	 * Get text for this instance. Text is converted using HtmlText::OUTPUT chains
+	 *  
+	 * @return string 
+	 */
+	public function get_teaser() {
+		return ($this->teaser) ? $this->teaser : String::substr_word(String::clear_html($this->text), 0, 300);
+	}
+	
+	/**
 	 * Returns meta title
 	 */
 	public function get_meta_title() {
-		return $this->meta_title ? $this->meta_title : $this->title;
+		return $this->meta_title ? $this->meta_title : $this->get_title();
 	}
 	
 	/**
 	 * Returns meta description
 	 */
 	public function get_meta_description() {
-		return $this->meta_description ? $this->meta_description : $this->teaser;
+		return $this->meta_description ? $this->meta_description : $this->get_teaser();
 	}
 	
 	// **************************************
