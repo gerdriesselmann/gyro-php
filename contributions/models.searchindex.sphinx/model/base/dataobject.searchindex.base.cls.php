@@ -176,6 +176,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 			$found = $this->find();
 		}
 		catch (Exception $ex) {
+			// This is a fallback, if combination of operators caus an error 
 			$this->set_sphinx_feature(DBDriverSphinx::FEATURE_STRIP_OPERATORS, true);
 			$found = $this->find();
 		}	
@@ -210,7 +211,8 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 * @param int $policy
 	 */
 	protected function configure_select_query($query, $policy) {
-    	$this->set_sphinx_feature(DBDriverSphinx::FEATURE_WEIGHTS, array('title' => 5, 'teaser' => 3, 'text' => 1));
+    	$this->set_field_weights();
+    	$this->sphinx_all_fields = $this->preprocess_query($this->sphinx_all_fields);
  		switch($this->matching) {
 			case self::MATCH_WIDE:
 				$this->set_sphinx_feature(DBDriverSphinx::FEATURE_MATCH_MODE, DBDriverSphinx::MATCH_OR);
@@ -225,6 +227,25 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 			'*',
 			$this->compute_relevance_w() => 'relevance_w'
 		));		
+	}
+	
+	/**
+	 * Preprocess query string
+	 * 
+	 * @param string $query
+	 * @return string
+	 */
+	protected function preprocess_query($query) {
+		// replace "a-b" by "a b", like in 'ad-hoc'
+		$query = String::preg_replace('@(\w)\-@', '$1 ', $query);
+		return $query;
+	}
+	
+	/**
+	 * Set weights for columns
+	 */
+	protected function set_field_weights() {
+		$this->set_sphinx_feature(DBDriverSphinx::FEATURE_WEIGHTS, array('title' => 5, 'teaser' => 3, 'text' => 1));
 	}
 	
 	/**
