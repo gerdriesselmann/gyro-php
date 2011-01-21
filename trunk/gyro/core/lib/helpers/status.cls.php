@@ -164,7 +164,15 @@ class Status {
 	 * @return bool
 	 */
 	public function is_empty() {
-		return (count($this->messages) == 0);
+		return ($this->count() == 0);
+	}
+	
+	/**
+	 * Returns number of error messages
+	 * @return int
+	 */
+	public function count() {
+		return count($this->messages);
 	}
 	
 	/**
