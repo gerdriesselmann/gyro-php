@@ -61,17 +61,20 @@ class ProcessSchedulerBaseCommand extends CommandChain {
 	protected function on_error($task, $err) {
 		$ret = new Status();
 
-		Load::commands('generics/mail');
-		$cmd_admin = new MailCommand(
-			tr('Task "%t" failed', 'scheduler', array('%t' => $task->name)),
-			Config::get_value(Config::MAIL_ADMIN),
-			'scheduler/mail/error_admin',
-			array(
-				'error' => $err,
-				'task' => $task			
-			)
-		);
-		$this->append($cmd_admin);
+		if (Config::has_feature(ConfigScheduler::SEND_ERROR_MAIL)) {
+			Load::commands('generics/mail');
+			$cmd_admin = new MailCommand(
+				tr('Task "%t" failed', 'scheduler', array('%t' => $task->name)),
+				Config::get_value(Config::MAIL_ADMIN),
+				'scheduler/mail/error_admin',
+				array(
+					'error' => $err,
+					'task' => $task			
+				)
+			);
+			$this->append($cmd_admin);
+		}
+		
 		return $ret;
 	}
 
