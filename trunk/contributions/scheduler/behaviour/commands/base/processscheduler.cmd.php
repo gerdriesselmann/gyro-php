@@ -10,13 +10,13 @@ class ProcessSchedulerBaseCommand extends CommandChain {
 		$ret = new Status();
 		$task = $this->get_params();
 		$err_task = $this->run_task($task);
+		$this->append(CommandsFactory::create_command($task, 'reschedule', $err_task));
 		if ($err_task->is_error()) {
 			$ret->merge($this->on_error($task, $err_task));
 		}
 		else {
 			$ret->merge($this->on_success($task, $err_task));
 		}
-		$this->append(CommandsFactory::create_command($task, 'reschedule', $err_task));
 		return $ret;
 	} 
 	
