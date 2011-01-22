@@ -57,13 +57,13 @@ class SimpleTestController extends ControllerBase {
  		$err = new Status();
  		Load::components('mailmessage');
  		// 1. TextMail
- 		$text = 'This is a text-message with ümlauts';
- 		$mail = new MailMessage('Testmail 1', $text, Config::get_value(Config::MAIL_ADMIN));
+ 		$text = 'This is a text message with ümlauts';
+ 		$mail = new MailMessage('Testmail 1 (Plain)', $text, Config::get_value(Config::MAIL_ADMIN));
  		$err->merge($mail->send());
  		
  		// 2. HTML Mail
- 		$text = html::h('Heading', 1) . html::p('This is a text-message with ümlauts');
- 		$mail = new MailMessage('Testmail 1', $text, Config::get_value(Config::MAIL_ADMIN), '', 'text/html; charset=%charset');
+ 		$text = html::h('Heading', 1) . html::p('This is a HTML message with ümlauts');
+ 		$mail = new MailMessage('Testmail 2 (HTML)', $text, Config::get_value(Config::MAIL_ADMIN), '', 'text/html; charset=%charset');
  		$err->merge($mail->send());
 
  		if ($err->is_ok()) {
