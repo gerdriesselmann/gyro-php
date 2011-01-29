@@ -406,6 +406,54 @@ class String {
 		return $ret;
 	}
 	
+	/**
+	 * Get substr, but respect sentence boundaries
+	 * 
+	 * Calls substr_word, if no sentence ends within given range.
+	 * 
+	 * @attention This function in general is rather stupid. Should recognize if a dot is used 
+	 *   within sentence, e.g. within an URL or as thousands seperator, but will fail on stuff like "etc.".
+	 * 
+	 * @param string $val 
+	 * @param int $start Start of substr (usually 0)
+	 * @param int $max_length Maximum length of substring
+	 * @param bool $elipsis Append "..." to the string
+	 */
+	public static function substr_sentence($val, $start, $max_length, $elipsis = false) {
+		$val_temp = $val . ' ';
+		$pos = false;
+		$ret = self::substr($val_temp, $start, $max_length);
+		$punctuations = array('?', '!', '.');
+		foreach($punctuations as $punc) {
+			$pos_temp = self::strrpos($ret, $punc);
+			//var_dump($ret, $punc, $pos_temp);
+			if ($pos_temp !== false && $pos_temp > $pos) {
+				// There is a punctuation character and it seems to be the last (up to now),
+				// so check if there is a space following it
+				$test = self::substr($val_temp, $pos_temp + 1, 1);
+				if ($test === ' ' || $test === '') {
+					$pos = $pos_temp;
+				} 	
+			}
+		}
+		if ($pos === false) {
+			// Check if a punctuation follows substring
+			$test = self::substr($val_temp, $start + $max_length, 1);
+			if (!in_array($test, $punctuations)) {
+				$ret = self::substr_word($val, $start, $max_length, false);
+			}
+		}
+		else {
+			$ret = self::substr($ret, 0, $pos + 1);
+		}
+		
+		if ($elipsis && $ret) {
+			$ret .= '...';
+		}
+
+		return $ret;
+	}	
+	
 	public static function right($val, $count) {
 		return self::substr($val, -$count, $count);
 	}

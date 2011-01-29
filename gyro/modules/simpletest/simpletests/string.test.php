@@ -215,6 +215,40 @@ class StringTest extends GyroUnitTestCase {
 		$this->assertEqual('is is', String::substr_word($val, 2, 6));		
 		$this->assertEqual('is is', String::substr_word($val, 2, 7));
 	}
+
+	function test_substr_sentence() {
+		$val = 'This is a normal sentence';
+		// Test substr_word fallback
+		$this->assertEqual($val, String::substr_sentence($val, 0, 1000));
+		$this->assertEqual(' is a normal sentence', String::substr_sentence($val, 4, 1000));
+		$this->assertEqual('This', String::substr_sentence($val, 0, 5));		
+		$this->assertEqual('This', String::substr_sentence($val, 0, 4));
+		$this->assertEqual('', String::substr_sentence($val, 0, 3));
+		$this->assertEqual('This', String::substr_sentence($val, 0, 6));
+		$this->assertEqual('is', String::substr_sentence($val, 2, 5));
+		$this->assertEqual('is is', String::substr_sentence($val, 2, 6));		
+		$this->assertEqual('is is', String::substr_sentence($val, 2, 7));
+		
+		// Now see if the mthod itself works 
+		$val = 'This is a sentence. And another? Yes! Duh.';
+		$this->assertEqual($val, String::substr_sentence($val, 0, 1000));
+		$this->assertEqual('This is a', String::substr_sentence($val, 0, 17));
+		$this->assertEqual('This is a sentence', String::substr_sentence($val, 0, 18));
+		$this->assertEqual('This is a sentence.', String::substr_sentence($val, 0, 19)); 
+		$this->assertEqual('This is a sentence.', String::substr_sentence($val, 0, 20));
+		$this->assertEqual('This is a sentence.', String::substr_sentence($val, 0, 21));
+		
+		$this->assertEqual('This is a sentence. And another?', String::substr_sentence($val, 0, 32));
+		$this->assertEqual('This is a sentence. And another?', String::substr_sentence($val, 0, 33));
+		
+		$this->assertEqual('This is a sentence. And another? Yes!', String::substr_sentence($val, 0, 37));
+		$this->assertEqual('This is a sentence. And another? Yes!', String::substr_sentence($val, 0, 38));
+		
+		// Some weird stuff
+		$val = "Test date: 20.20.2020, and url: www.example.org. New sentence!";
+		$this->assertEqual('Test date: 20.20.2020, and', String::substr_sentence($val, 0, 29));
+		$this->assertEqual('Test date: 20.20.2020, and url: www.example.org.', String::substr_sentence($val, 0, 56));
+	}
 	
 	function test_left() {
 		$val = 'ich hätte gerne ein äöüß oder ÄÖÜ';
