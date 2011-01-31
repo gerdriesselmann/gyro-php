@@ -40,13 +40,16 @@ class History {
 		}
 		if (Session::is_started()) {
 			$arr = Session::peek('history');
-			if (is_array($arr)) {
+			$new = array();
+			if (is_array($arr) && count($arr) > 0) {
 				if (!$url instanceof Url) {
 					$url = Url::create($url);
 				}
 				$compare = $url->build();
-				$new = array();
 				while($cur = array_shift($arr)) {
+					if (!$cur instanceof  Url) {
+						$cur = Url::create($cur);
+					}
 					if ($cur->build() !== $compare) {
 						$new[] = $cur;
 					}
