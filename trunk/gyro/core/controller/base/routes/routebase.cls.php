@@ -256,7 +256,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	protected function check_action_func($controller, $funcname) {
 		if (method_exists($controller, $funcname) == false) {
 			throw new Exception(
-				tr('Action %a on controller %c not found', 'core', array('%a' => $this->action, '%c' => get_class($this->controller)))
+				tr('Action %a on controller %c not found', 'core', array('%a' => $funcname, '%c' => get_class($this->controller)))
 			);
 		}
 	}
