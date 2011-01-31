@@ -21,7 +21,7 @@ class StaticPagesController extends ControllerBase {
 			$ret[] = new StaticPageRoute(STATICPAGES_PREPEND, $path, STATICPAGES_APPEND, $template, $this, 'static');
 		}
 		// This allows using a parameterized syntax: ActionMapper::get_path('static', array('page' => 'somedir/somefile.html') 
-		$ret[] = new ParameterizedRoute(STATICPAGES_PREPEND . '{page:s}' . STATICPAGES_APPEND, $this, 'static');
+		$ret[] = new StaticPageParamterizedRoute(STATICPAGES_PREPEND . '{page:s}' . STATICPAGES_APPEND, $this, 'static');
 
 		return $ret;
 	}
