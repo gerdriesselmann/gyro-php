@@ -15,13 +15,14 @@ class StaticPagesController extends ControllerBase {
  	 */
 	public function get_routes() {
 		$templates = $this->collect_templates();
-		$pages_enum = implode(',', $templates);
-		$ret = array(
-			new ParameterizedRoute(STATICPAGES_PREPEND . "{page:e:$pages_enum}" . STATICPAGES_APPEND, $this, 'static')
-		);
-		foreach ($templates as $page) {
-			$ret[] = new StaticPageRoute(STATICPAGES_PREPEND, $page, STATICPAGES_APPEND, $this, 'static');
+		$ret = array();
+		foreach ($templates as $template => $path) {
+			// Generates actions with fixed action like ActionMapper::get_path('static_somedir/somefile.html')
+			$ret[] = new StaticPageRoute(STATICPAGES_PREPEND, $path, STATICPAGES_APPEND, $template, $this, 'static');
 		}
+		// This allows using a parameterized syntax: ActionMapper::get_path('static', array('page' => 'somedir/somefile.html') 
+		$ret[] = new ParameterizedRoute(STATICPAGES_PREPEND . '{page:s}' . STATICPAGES_APPEND, $this, 'static');
+
 		return $ret;
 	}
 	
@@ -56,13 +57,34 @@ class StaticPagesController extends ControllerBase {
 			$this->cache_templates = array();
 			$dirs = TemplatePathResolver::get_template_paths();
 			foreach($dirs as $dir) {
-				foreach(gyro_glob($dir . 'static/*.tpl.php') as $file) {
-					$tpl = basename(substr($file, 0, -8));
-					$this->cache_templates[$tpl] = $tpl;
+				$statics_dir = $dir . 'static';
+				if (is_dir($statics_dir)) {
+					$this->collect_templates_in_dir($statics_dir, '');
 				}
 			}
 		}
 		return $this->cache_templates;
+	}
+	
+	protected function collect_templates_in_dir($dir_path, $template_prefix) {
+		$it = new DirectoryIterator($dir_path);
+		foreach($it as $fileinfo) {
+			if (!$fileinfo->isDot()) {
+				$file = $fileinfo->getFilename();
+				if ($fileinfo->isDir()) {
+					$this->collect_templates_in_dir($fileinfo->getPathname(), $template_prefix . $file . '/');
+				}
+				else if(substr($file, -8, 8) === '.tpl.php') {
+					$file = basename(substr($file, 0, -8));
+					$tpl = $template_prefix . $file;
+					$path = $template_prefix;
+					if ($file != 'index') {
+						$path .= $file;
+					}
+					$this->cache_templates[$tpl] = $path;
+				}
+			}
+		}
 	}
 	
 	/**
