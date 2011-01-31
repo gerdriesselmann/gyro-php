@@ -3,8 +3,8 @@
  * This routes a static page to action_static() 
  */
 class StaticPageRoute extends ExactMatchRoute {
-	protected $page;
-	protected $action;
+	protected $org_page;
+	protected $org_action;
 	
 	/**
 	 * Contructor
@@ -16,10 +16,10 @@ class StaticPageRoute extends ExactMatchRoute {
 	 * @param string $action The function to invoke on controller
 	 * @param mixed Array or single instance of IRouteDecorator 
 	 */
-	public function __construct($prefix, $page, $postfix, $controller, $action, $decorators = null) {
-		$this->page = $page;
-		$this->action = $action;
-		$page_action = 'static_' . String::plain_ascii($page, '_');
+	public function __construct($prefix, $page, $postfix, $template, $controller, $action, $decorators = null) {
+		$this->org_page = $template;
+		$this->org_action = $action;
+		$page_action = 'static_' . $page;
 		parent::__construct($prefix . $page . $postfix, $controller, $page_action, $decorators);			
 	}
 	
@@ -33,8 +33,8 @@ class StaticPageRoute extends ExactMatchRoute {
 	 * @return mixed Status
 	 */
 	protected function invoke_action_func($controller, $funcname, $page_data) {
-		$funcname = $this->action;
+		$funcname = $this->get_action_func_name($this->org_action);
 		$this->check_action_func($controller, $funcname);
-		return $this->controller->$funcname($page_data, $this->page);		
+		return $this->controller->$funcname($page_data, $this->org_page);		
 	}	
 }
