@@ -2,13 +2,29 @@
 /**
  * Print a breadcrumb
  * 
+ * The breadcrumb is passed an array that may contain different types of content, 
+ * namely:
+ * 
+ * @li a string, which is printed as is (that is: it is not escaped, so you can pass HTML)
+ * @li a data object which is translated to the path to the VIEW action. The object must
+ *     implement the ISelfDescribing interface. If it implements the IHierarchic interface, too,
+ *     its parent will be added to the crumb, also (and its parent's parent, and so on)
+ * @li the name of an action as key and a data object as value. This is treated like the object above 
+ *     except the VIEW action is replaced by the given one
+ *     
+ * As usual, you may substitute the array by a single element.
+ *     
  * @author Gerd Riesselmann
  * @ingroup View
  */
 class WidgetBreadcrumb implements IWidget {
+	/**
+	 * Link Last Element. If not set (default), the last element will be unlinked
+	 */
 	const LINK_LAST = 128;
 	const USE_PREFIX = 256;
 	const BLOCK = 512;
+	/** @deprecated */
 	const UNLINK_LAST = 1024;
 	 
 	public $source;
@@ -31,23 +47,10 @@ class WidgetBreadcrumb implements IWidget {
 	public function render($policy = self::NONE) {
 		$src = $this->to_array($this->source);
 		$crumb = array();
-		$link_this = Common::flag_is_set($policy, self::LINK_LAST);
-		$unlink_this = Common::flag_is_set($policy, self::UNLINK_LAST);
+		$unlink_this = !Common::flag_is_set($policy, self::LINK_LAST);
 		foreach($src as $item) {
-			$text = '';
-			$descr = '';
-			if ($item instanceof ISelfDescribing) {
-				$text = String::escape($item->get_title());
-				$descr = $item->get_description();
-			}
-			else {
-				$text = @strval($item);
-				$link_this = false;
-			}
-			$link = ($link_this) ? html::a($text, ActionMapper::get_path($this->action, $item), $descr) : $text;
-			$link = ($unlink_this) ? preg_replace('|<a.*?>(.*?)</a>|', '$1', $link) : $link;
+			$link = ($unlink_this) ? preg_replace('|<a.*?>(.*?)</a>|', '$1', $item) : $item;
 			array_unshift($crumb, $link);
-			$link_this = true;
 			$unlink_this = false;
 		}
 		$home = html::a(Config::get_value(Config::TITLE), $this->url_home, tr('Go to home page', 'app'));
@@ -67,20 +70,30 @@ class WidgetBreadcrumb implements IWidget {
 	 * @param mixed $source
 	 * @return array
 	 */
-	protected function to_array($source) {
+	protected function to_array($item, $key = false) {
 		$arr_ret = array();
-		if ($source instanceof IHierarchic) {
-			$arr_ret[] = $source;
-			$arr_ret = array_merge($arr_ret, $this->to_array($source->get_parent()));
+		if ($item instanceof IHierarchic) {
+			$arr_ret[] = $this->instance2string($item, $key);
+			$arr_ret = array_merge($arr_ret, $this->to_array($item->get_parent(), $key));
 		}
-		elseif (is_array($source)) {
-			foreach($source as $item) {
-				$arr_ret = array_merge($this->to_array($item), $arr_ret);			
+		elseif (is_array($item)) {
+			foreach($item as $subkey => $subitem) {
+				$arr_ret = array_merge($this->to_array($subitem, $subkey), $arr_ret);			
 			}
 		}
-		else if (!empty($source)) {
-			$arr_ret[] = $source;
+		else if (!empty($item)) {
+			$arr_ret[] = @strval($item);
 		}
 		return $arr_ret;	
+	}
+	
+	/**
+	 * Turn a data obejct into a (link) string 
+	 */
+	protected function instance2string($instance, $action) {
+		if (empty($action) || is_numeric($action)) {
+			$action = $this->action;
+		}
+		return WidgetActionLink::output($instance, $action, $instance);
 	}
 }
