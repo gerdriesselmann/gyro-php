@@ -18,6 +18,10 @@ class WidgetTree implements IWidget {
 	 * "roots" parameter name
 	 */
 	const P_ROOTS = 'roots';
+	/**
+	 * Action to use to create links
+	 */
+	const P_ACTION = 'action';
 	
 	public $params = array();
 	
@@ -37,6 +41,8 @@ class WidgetTree implements IWidget {
 		
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/tree');
 		$view->assign('tree', $tree);
+		$view->assign('action', Arr::get_item($this->params, self::P_ACTION, 'view'));
+		$view->assign('params', $this->params);
 		return $view->render();
 	}
 	
