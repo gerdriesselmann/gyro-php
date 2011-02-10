@@ -10,21 +10,21 @@
  * On install, the module copies JQuery UI Javascript and CSS files folders below web root.
  * 
  * To define the version of JQueryUI to use, use the constant APP_JQUERYUI_VERSION. 
- * Valid values are  "1.7" for JQueryUI 1.7.2, and "1.8" for JQueryUI 1.8.4. 
- * Default is "1.7":
+ * Valid values are  "1.7" for JQueryUI 1.7.2, and "1.8" for JQueryUI 1.8.9. 
+ * Default is "1.8":
  * 
  * @code
  * define('APP_JQUERYUI_VERSION', '1.8');
  * @endcode
+ * 
+ * @attention The default version policy changed to "newest", so if you do not define a JQuery UI version,
+ *            you will automaticalyy get the latest release
  * 
  * @attention 
  *   Note that javascript and css files get prefixed by "jquery." since version 1.8. For example 
  *   "ui.accordion" became "jquery.ui.accordion". When updating from 1.7 to a higher version,
  *   make sure to delete the old files. 
  *
- * If version is set to "1.8", this modules will try to set the JQuery version to "1.4", if
- * not yet defined by the application.
- * 
  * To enable components, you may call JQueryUI::enable_components() and pass either an array 
  * or a single component:
  * 
@@ -82,11 +82,6 @@ class ConfigJQueryUI {
 	const JQUERYUI_VERSION = 'JQUERYUI_VERSION';
 }
 
-Config::set_value_from_constant(ConfigJQueryUI::JQUERYUI_VERSION, 'APP_JQUERYUI_VERSION', '1.7');
-
-// Force JQuery 1.4 if JQueryUI is 1.8
-if (Config::get_value(ConfigJQueryUI::JQUERYUI_VERSION) == '1.8' && !defined('APP_JQUERY_VERSION')) {
-	Config::set_value(ConfigJQuery::JQUERY_VERSION, '1.4');
-}
+Config::set_value_from_constant(ConfigJQueryUI::JQUERYUI_VERSION, 'APP_JQUERYUI_VERSION', '1.8');
 
 JQueryUI::enable_locales(GyroLocale::get_language());
