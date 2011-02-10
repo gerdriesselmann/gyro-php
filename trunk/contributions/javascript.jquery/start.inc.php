@@ -15,8 +15,11 @@
  * 'js/jquery.js' manually where approbiate.  
  * 
  * To define the version of JQuery to use, you must specify a version to use by defining
- * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, and "1.4" for JQuery 1.4.2. 
- * The default is "1.3".
+ * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, "1.4" for JQuery 1.4.4,
+ * and "1.5" for JQuery 1.5. The default is "1.5".
+ * 
+ * @attention The default version policy changed to "newest", so if you do not define a jquery version,
+ *            you will automaticalyy get the latest release
  * 
  * @code
  * define('APP_JQUERY_VERSION', '1.4');
@@ -40,5 +43,5 @@ class ConfigJQuery {
 	const JQUERY_ON_EVERY_PAGE = 'JQUERY_ON_EVERY_PAGE';
 }
 
-Config::set_value_from_constant(ConfigJQuery::JQUERY_VERSION, 'APP_JQUERY_VERSION', '1.3');
+Config::set_value_from_constant(ConfigJQuery::JQUERY_VERSION, 'APP_JQUERY_VERSION', '1.4');
 Config::set_feature_from_constant(ConfigJQuery::JQUERY_ON_EVERY_PAGE, 'APP_JQUERY_ON_EVERY_PAGE', true);
