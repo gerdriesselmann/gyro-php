@@ -76,7 +76,10 @@ class WidgetBreadcrumb implements IWidget {
 			$arr_ret[] = $this->instance2string($item, $key);
 			$arr_ret = array_merge($arr_ret, $this->to_array($item->get_parent(), $key));
 		}
-		elseif (is_array($item)) {
+		else if ($item instanceof ISelfDescribing) {
+			$arr_ret[] = $this->instance2string($item, $key);
+		}
+		else if (is_array($item)) {
 			foreach($item as $subkey => $subitem) {
 				$arr_ret = array_merge($this->to_array($subitem, $subkey), $arr_ret);			
 			}
