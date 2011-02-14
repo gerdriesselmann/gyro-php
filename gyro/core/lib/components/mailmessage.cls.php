@@ -1,9 +1,6 @@
 <?php
 define('MAIL_LF', "\n"); // "\r\n"
 
-require_once 'Mail.php';
-require_once 'Mail/mime.php';
-
 /**
  * Encapsulates an e-mail message, allowing attachments
  * 
@@ -13,6 +10,11 @@ require_once 'Mail/mime.php';
  * @ingroup Lib
  */
 class MailMessage {
+	/** Plain text mime content type */
+	const MIME_TEXT_PLAIN = 'text/plain; charset=%charset';
+	/** HTML mime content type */
+	const MIME_HTML = 'text/html; charset=%charset';
+	
 	/**
 	 * Receipient
 	 *
@@ -38,6 +40,12 @@ class MailMessage {
 	 * Message
 	 */
 	private $message = '';
+	/**
+	 * Alternative message (e.g. plain text for HTML mails)
+	 * 
+	 * Will be always treated as plain text
+	 */
+	private $message_alt = '';
 
 	/**
 	 * CC
@@ -62,14 +70,13 @@ class MailMessage {
 		$this->to = $to;
 		$this->from = $from;
 		if (empty($content_type)) {
-			$this->content_type = 'text/plain; charset=%charset'; 
+			$this->content_type = self::MIME_TEXT_PLAIN; 
 		}
 		else {
 			$this->content_type = $content_type;
 		}
-		$this->content_type = str_replace('%charset', GyroLocale::get_charset(), $this->content_type);  
 	}
-
+	
 	/**
 	 * Sends email
 	 *
@@ -84,69 +91,74 @@ class MailMessage {
 		
 		$headers = array(
 			'From' => empty($this->from) ? Config::get_value(Config::MAIL_SENDER, true) : $this->from,
-			'Subject' => $this->subject,
 		);
 		if ($this->cc != '') {
 			$headers['Bcc'] = $this->cc;
 		}
-		$headers['Content-Type'] = $this->content_type;
 		
-		$msg = new Mail_Mime(MAIL_LF);
-		foreach($this->files_to_attach as $name => $file) {
-			$msg->addAttachment($file, $this->get_attachment_mime($file), $name);
-		}
-		$msg->setTXTBody($this->message);
-
-		$params = array(
-			'text_charset' => GyroLocale::get_charset(),
-			'head_charset' => GyroLocale::get_charset(),
-		);		
-		$body = $msg->get($params);
-		$hdrs = $msg->headers($headers, true);
+		$builder = $this->create_builder();
+		$headers['Content-Type'] = $builder->get_mail_mime();
+		$body = $builder->get_body();
 		
-		$mail = $this->create_mailer();
-		if ($mail) {
-			$ret->merge($mail->send($this->to, $hdrs, $body));
-		}
-		else {
-			$ret->append('Konnte keinen Mailer erzeugen');
+		$headers = $this->encode_headers($headers);
+		$subject = $this->encode_header_value($this->subject);
+		if (!mail($this->to, $subject, $body, Arr::implode("\n", $headers, ': '))) {
+			$ret->append(tr('Could not send mail', 'core'));
 		}
 
 		return $ret;
 	}
 	
-	/**
-	 * Create Mailer
-	 */
-	protected function create_mailer() {
-		switch (Config::get_value(Config::MAILER_TYPE)) {
-			case 'smtp':
-				$params = array ();
-				$params['host'] = Config::get_value(Config::MAILER_SMTP_HOST, true);
-				if (Config::get_value(Config::MAILER_SMTP_USER)) {
-					$params['auth'] = true;
-					$params['username'] = Config::get_value(Config::MAILER_SMTP_USER);
-    				$params['password'] = Config::get_value(Config::MAILER_SMTP_PASSWORD);
-				}
-				return Mail::factory('smtp', $params);
-				break;
-			default:
-				return Mail::factory('mail');
-				break;
+	protected function encode_headers($headers) {
+		$ret = array();
+		foreach($headers as $name => $value) {
+			$ret[$name] = $this->encode_header_value($value);
 		}
+		return $ret;
 	}
-
-	/**
-	 * Figure out content mime type of file
-	 * 
-	 * @param string Filename
-	 * @return string Mime Type
-	 */	
-	private function get_attachment_mime($file) {
-		if (function_exists('mime_content_type')) {
-			return mime_content_type($file);
+	
+	protected function encode_header_value($value) {
+		//?iso-8859-1?Q?Flugh=E4fen_Kuba?=
+		$ret = '';
+		$escaped = false;
+		$l = strlen($value);
+		for ($i = 0; $i < $l; $i++) {
+			$c = ord(substr($value, $i, 1));
+			if ($c >= 32) {
+				if ($c > 128) {
+					$c = '=' . strtoupper(dechex($c));
+					$escaped = true;
+				}
+				else {
+					$c = chr($c);
+				}
+				$ret .= $c;		
+			}
 		}
-		return 'application/octet-stream';
+		if ($escaped) {
+			$ret = '=?' . GyroLocale::get_charset() . '?Q?' . $ret . '?=';
+		}
+		return $ret;			
+	}
+	
+	/**
+	 * Return builder suited for config
+	 * 
+	 * @return IMailMessageBuilder
+	 */
+	protected function create_builder() {
+		$ret = false;
+		Load::directories('lib/components/mailmessagebuilder');
+		$msg_builder = ($this->message_alt) 
+			? new AlternativeMessageBuilder($this->message, $this->content_type, $this->message_alt)
+			: new SingleMessageBuilder($this->message, $this->content_type);
+		if (count($this->files_to_attach)) {
+			$ret = new AttachmentsBuilder($msg_builder, $this->files_to_attach);
+		}
+		else {
+			$ret = $msg_builder;
+		}
+		return $ret;		 
 	}
 	
 	/**
@@ -160,7 +172,7 @@ class MailMessage {
 	}
 
 	/**
-	 * Clears from, subject, cc and to data to avaoid header injection
+	 * Clears from, subject, cc and to data to avoid header injection
 	 * http://www.anders.com/projects/sysadmin/formPostHijacking/
 	 */
 	public function preprocess_header() {
@@ -168,6 +180,13 @@ class MailMessage {
 		$this->from = $this->safety_preprocess_header_field($this->from);
 		$this->subject = $this->safety_preprocess_header_field($this->subject);
 		$this->cc = $this->safety_preprocess_header_field($this->cc);
+	}
+	
+	/**
+	 * Set alternative message
+	 */
+	public function set_alt_message($msg) {
+		$this->message_alt = $msg;
 	}
 
 	/**
