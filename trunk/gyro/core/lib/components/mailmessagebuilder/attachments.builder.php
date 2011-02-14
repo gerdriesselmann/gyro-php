@@ -77,7 +77,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	 * Return seperator 
 	 */
 	protected function start_seperator($boundary) {
-		return "\n--" . $boundary . "\n";
+		return "\n\n--" . $boundary . "\n";
 	}
 	
 	/**
@@ -110,7 +110,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 		} 	
 		$header[] = '';
 		
-		$ret = implode("\n", $header) . $content;
+		$ret = implode("\n", $header) . "\n" . $content;
 		return $ret;
 	}
 	
