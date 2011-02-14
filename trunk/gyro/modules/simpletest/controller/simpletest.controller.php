@@ -24,25 +24,20 @@ class SimpleTestController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
  	public function action_run_tests($page_data) {
- 		error_reporting(error_reporting() & ~E_STRICT);
-		ob_start();
- 		require_once APP_SIMPLETEST_DIR . 'unit_tester.php';
-		require_once APP_SIMPLETEST_DIR . 'reporter.php';
-		require_once APP_SIMPLETEST_DIR . 'mock_objects.php';
-		
+ 		ob_start();
 		Load::components('GyroUnitTestCase');
 		
 		// load all test classes
-		$suite = new GroupTest('Gyro Tests');
+		$suite = new TestSuite('Gyro Tests');
 		$base_dirs = Load::get_base_directories();
 		foreach($base_dirs as $dir) {
 			foreach (gyro_glob($dir . 'simpletests/*.test.php') as $inc) {
-				$suite->addTestFile($inc);
+				$suite->addFile($inc);
 			}
 		}
 		
 		Load::directories('simpletests/mocks');
-		$suite->run(new HtmlReporter());
+		$suite->run(new DefaultReporter());
 		ob_flush();
 		exit(); 		
  	} 		 	 			 	

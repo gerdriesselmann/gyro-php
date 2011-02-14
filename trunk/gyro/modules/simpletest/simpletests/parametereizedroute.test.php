@@ -225,45 +225,45 @@ class ParameterizedRouteTest extends GyroUnitTestCase {
 	function test_build_url() {
 		$token1 = new ParameterizedRoute('some/{url}/{path:s}*', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'path' => 'path'));
-		$this->assertEqual('/some/url/path', $url);
+		$this->assertEqualsPath('/some/url/path', $url);
 
 		$url = $token1->build_url(false, array('url' => 'url'));
-		$this->assertEqual('/some/url/', $url);
+		$this->assertEqualsPath('/some/url/', $url);
 
 		$token1 = new ParameterizedRoute('some/{url}/{path:s}%', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'path' => 'path'));
-		$this->assertEqual('/some/url/path', $url);
+		$this->assertEqualsPath('/some/url/path', $url);
 
 		$url = $token1->build_url(false, array('url' => 'url'));
-		$this->assertEqual('/some/url/{path:s}%', $url);
+		$this->assertEqualsPath('/some/url/{path:s}%', $url);
 
 		$token1 = new ParameterizedRoute('some/{url}/{path:s}*', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'path' => 'some/path%'));
-		$this->assertEqual('/some/url/some/path%25', $url);
+		$this->assertEqualsPath('/some/url/some/path%25', $url);
 
 		$token1 = new ParameterizedRoute('some/{url}/{path:s}-*', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'path' => 'path'));
-		$this->assertEqual('/some/url/path-*', $url);		
+		$this->assertEqualsPath('/some/url/path-*', $url);		
 		
 		$token1 = new ParameterizedRoute('some/{url}/{path:s}!', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'path' => 'path'));
-		$this->assertEqual('/some/url/path', $url);
+		$this->assertEqualsPath('/some/url/path', $url);
 
 		$url = $token1->build_url(false, array('url' => 'url'));
-		$this->assertEqual('/some/url/', $url);
+		$this->assertEqualsPath('/some/url/', $url);
 		
 		$token1 = new ParameterizedRoute('some/{url}/{url_path:s}!', null, '');
 		$url = $token1->build_url(false, array('url' => 'url', 'url_path' => 'path'));
-		$this->assertEqual('/some/url/path', $url);
+		$this->assertEqualsPath('/some/url/path', $url);
 	}
 	
 	function test_build_url_sp() {
 		$token1 = new ParameterizedRoute('some/{test:sp}', null, '');
 		
 		$url = $token1->build_url(false, array('test' => '_test'));
-		$this->assertEqual('/some/_test', $url);
+		$this->assertEqualsPath('/some/_test', $url);
 
 		$url = $token1->build_url(false, array('test' => '!test-ö!'));
-		$this->assertEqual('/some/test-oe', $url);
+		$this->assertEqualsPath('/some/test-oe', $url);
 	}
 } 

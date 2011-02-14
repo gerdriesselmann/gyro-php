@@ -71,11 +71,11 @@ class RouteBaseTest extends GyroUnitTestCase {
 	
 	public function test_build_url() {
 		$route = new RouteBase('path', new RouteTestController(), 'action');
-		$this->assertEqual(Config::get_url(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
+		$this->assertEqualsPath(Config::get_url(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
 		$this->assertEqual(Config::get_url(Config::URL_BASEURL) . 'path', $route->build_url(RouteBase::ABSOLUTE));
 
-		$this->assertEqual(Config::get_value(Config::URL_BASEDIR) . 'path/some/params', $route->build_url(RouteBase::RELATIVE, array('some', 'params')));
-		$this->assertEqual(Config::get_value(Config::URL_BASEDIR) . 'path/a_param', $route->build_url(RouteBase::RELATIVE, 'a_param'));
+		$this->assertEqualsPath(Config::get_value(Config::URL_BASEDIR) . 'path/some/params', $route->build_url(RouteBase::RELATIVE, array('some', 'params')));
+		$this->assertEqualsPath(Config::get_value(Config::URL_BASEDIR) . 'path/a_param', $route->build_url(RouteBase::RELATIVE, 'a_param'));
 
 		$this->assertEqual(Config::get_url(Config::URL_BASEURL) . 'path/some/params', $route->build_url(RouteBase::ABSOLUTE, array('some', 'params')));
 		$this->assertEqual(Config::get_url(Config::URL_BASEURL) . 'path/a_param', $route->build_url(RouteBase::ABSOLUTE, 'a_param'));
@@ -83,16 +83,16 @@ class RouteBaseTest extends GyroUnitTestCase {
 		// Test HTTPS stuff
 		$route = new RouteBase('https://path', new RouteTestController(), 'action');
 		if (Config::has_feature(Config::ENABLE_HTTPS)) {
-			$this->assertEqual(Config::get_url(Config::URL_BASEURL_SAFE) . 'path', $route->build_url(RouteBase::RELATIVE));
+			$this->assertEqualsPath(Config::get_url(Config::URL_BASEURL_SAFE) . 'path', $route->build_url(RouteBase::RELATIVE));
 			$this->assertEqual(Config::get_url(Config::URL_BASEURL_SAFE) . 'path', $route->build_url(RouteBase::ABSOLUTE));
 		}
 		else {
-			$this->assertEqual(Config::get_value(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
+			$this->assertEqualsPath(Config::get_value(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
 			$this->assertEqual(Config::get_url(Config::URL_BASEURL) . 'path', $route->build_url(RouteBase::ABSOLUTE));			
 		}
 
 		$route = new RouteBase('http://path', new RouteTestController(), 'action');
-		$this->assertEqual(Config::get_value(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
+		$this->assertEqualsPath(Config::get_value(Config::URL_BASEDIR) . 'path', $route->build_url(RouteBase::RELATIVE));
 		$this->assertEqual(Config::get_url(Config::URL_BASEURL) . 'path', $route->build_url(RouteBase::ABSOLUTE));
 	}
 } 
