@@ -56,16 +56,30 @@ class SimpleTestController extends ControllerBase {
  	public function action_simpletest_send_test_mail(PageData $page_data) {
  		$err = new Status();
  		Load::components('mailmessage');
+ 		
  		// 1. TextMail
  		$text = 'This is a text message with ümlauts';
- 		$mail = new MailMessage('Testmail 1 (Plain)', $text, Config::get_value(Config::MAIL_ADMIN));
+ 		$mail = new MailMessage('Testmail 1 (Plain) with Ümlauts', $text, Config::get_value(Config::MAIL_ADMIN));
  		$err->merge($mail->send());
  		
  		// 2. HTML Mail
  		$text = html::h('Heading', 1) . html::p('This is a HTML message with ümlauts');
- 		$mail = new MailMessage('Testmail 2 (HTML)', $text, Config::get_value(Config::MAIL_ADMIN), '', 'text/html; charset=%charset');
+ 		$mail = new MailMessage('Testmail 2 (HTML)', $text, Config::get_value(Config::MAIL_ADMIN), '', MailMessage::MIME_HTML);
  		$err->merge($mail->send());
 
+ 		// 3. HTML Mail with attachment
+ 		$text = html::h('Heading', 1) . html::p('This is a HTML message with ümlauts and 1 Attachment');
+ 		$mail = new MailMessage('Testmail 3 (HTML + Attachment)', $text, Config::get_value(Config::MAIL_ADMIN), '', MailMessage::MIME_HTML);
+ 		$mail->add_attachment(dirname(__FILE__) . '/test.pdf', 'a_test.pdf');
+ 		$err->merge($mail->send());
+ 		
+ 		// 4. Alternative Message + attachment
+ 		$text = html::h('Heading', 1) . html::p('This is the HTML part of a alternate message');
+ 		$mail = new MailMessage('Testmail 4 (HTML + Alternate + Attachment)', $text, Config::get_value(Config::MAIL_ADMIN), '', MailMessage::MIME_HTML);
+ 		$mail->set_alt_message('This is the plain text alternative text.');
+ 		$mail->add_attachment(dirname(__FILE__) . '/test.pdf', 'a_test.pdf');
+ 		$err->merge($mail->send());
+ 		
  		if ($err->is_ok()) {
  			$err = new Message('OK. Mail was probably send successful');
  		}
