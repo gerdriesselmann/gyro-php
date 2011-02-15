@@ -128,6 +128,9 @@ function core_load_translations($languages) {
 		),
 		'Please choose...' => array(
 			'de' => 'Bitte auswählen...'
+		),
+		'Could not send mail' => array(
+			'de' => 'Mail konnte nicht gesendet werden'
 		)
 	);
 }

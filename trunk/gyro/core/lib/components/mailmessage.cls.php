@@ -101,7 +101,7 @@ class MailMessage {
 		$body = $builder->get_body();
 		
 		$headers = $this->encode_headers($headers);
-		$subject = $this->encode_header_value($this->subject);
+		$subject = ConverterFactory::encode($this->subject, ConverterFactory::MIMEHEADER);
 		if (!mail($this->to, $subject, $body, Arr::implode("\n", $headers, ': '))) {
 			$ret->append(tr('Could not send mail', 'core'));
 		}
@@ -112,33 +112,9 @@ class MailMessage {
 	protected function encode_headers($headers) {
 		$ret = array();
 		foreach($headers as $name => $value) {
-			$ret[$name] = $this->encode_header_value($value);
+			$ret[$name] = ConverterFactory::encode($value, ConverterFactory::MIMEHEADER);
 		}
 		return $ret;
-	}
-	
-	protected function encode_header_value($value) {
-		//?iso-8859-1?Q?Flugh=E4fen_Kuba?=
-		$ret = '';
-		$escaped = false;
-		$l = strlen($value);
-		for ($i = 0; $i < $l; $i++) {
-			$c = ord(substr($value, $i, 1));
-			if ($c >= 32) {
-				if ($c > 128) {
-					$c = '=' . strtoupper(dechex($c));
-					$escaped = true;
-				}
-				else {
-					$c = chr($c);
-				}
-				$ret .= $c;		
-			}
-		}
-		if ($escaped) {
-			$ret = '=?' . GyroLocale::get_charset() . '?Q?' . $ret . '?=';
-		}
-		return $ret;			
 	}
 	
 	/**

@@ -92,7 +92,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	 */
 	protected function create_attachment_block($name, $file) {
 		return $this->create_block(
-			$this->get_attachment_mime($file) . '; name=' . $name,
+			$this->get_attachment_mime($file) . '; name=' . ConverterFactory::encode($name, ConverterFactory::MIMEHEADER),
 			'base64',
 			base64_encode(file_get_contents($file))
 		);		
