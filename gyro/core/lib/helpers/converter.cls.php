@@ -9,6 +9,7 @@ class ConverterFactory {
 	const HTML = 'html';
 	const HTML_EX = 'htmlex';
 	const CALLBACK = 'callback';
+	const MIMEHEADER = 'mimeheader';
 	const NONE = 'none';
 			
 	/**
@@ -34,6 +35,10 @@ class ConverterFactory {
 			case self::HTML_EX:
 				require_once dirname(__FILE__) . '/converters/htmlex.converter.php';
 				$ret = new ConverterHtmlEx();
+				break;
+			case self::MIMEHEADER:
+				require_once dirname(__FILE__) . '/converters/mimeheader.converter.php';
+				$ret = new ConverterMimeHeader();
 				break;
 			case self::CALLBACK:
 				require_once dirname(__FILE__) . '/converters/callback.converter.php';
