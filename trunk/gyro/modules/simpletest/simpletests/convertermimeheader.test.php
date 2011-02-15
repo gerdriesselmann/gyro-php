@@ -12,8 +12,8 @@ class ConverterMimeHeaderTest extends GyroUnitTestCase {
 		$expect = $test;
 		$this->assertEqual($c->encode($test, $e), $expect);
 		
-		$test = 'Ümlauts! 09azAZ';
-		$expect = '=?UTF-8?Q?=C3=9Cmlauts=21_09azAZ?=';
+		$test = 'Ümlauts! 09azAZ =?';
+		$expect = '=?UTF-8?Q?=C3=9Cmlauts=21_09azAZ_=3D=3F?=';
 		$this->assertEqual($c->encode($test, $e), $expect);
 	}
 }
