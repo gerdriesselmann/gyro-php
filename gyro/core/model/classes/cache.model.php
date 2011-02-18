@@ -113,4 +113,15 @@ class DAOCache extends DataObjectBase implements ICacheItem {
 			'id'			
 	    );
 	}
+
+
+	/**
+	 * Configure an insert query
+	 *
+	 * @param DBQueryInsert $query
+	 */
+	protected function configure_insert_query($query) {
+		$query->set_policy(DBQueryInsert::IGNORE);
+		parent::configure_insert_query($query);
+	}
 }
