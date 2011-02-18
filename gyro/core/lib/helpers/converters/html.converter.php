@@ -9,6 +9,7 @@ class ConverterHtml implements IConverter {
 	public function encode($value, $params = false) {
 		$value = $this->decode($value);
 		$value = str_replace("\r", "\n", $value);
+		//var_dump(str_replace("\n", '\n', $value));
 		$arr_paragraphs = explode("\n", $value);
 		$c = count($arr_paragraphs);
 		$arr_result = array();
@@ -20,7 +21,9 @@ class ConverterHtml implements IConverter {
 		 	
 			$arr_result[] = $this->process_paragraph($tmp, $params);
 		}
-		return implode("\n", $arr_result);
+		$ret = implode("\n", $arr_result);
+		$ret = String::preg_replace('| +|', ' ', $ret);
+		return $ret;
 	}
 	
 	/**
