@@ -25,6 +25,9 @@ class MailBaseCommand extends CommandBase {
 	/** Error obejct */
 	protected $err = null;
 	
+	protected $alt_message = '';
+	protected $files_to_attach = array();
+	
 	/**
 	 * Constructor
 	 * 
@@ -68,14 +71,27 @@ class MailBaseCommand extends CommandBase {
 		
 		$subject = $this->get_subject();
 		
-		$attachments = $this->get_attachments();
-		
-		if ($this->err->is_ok()) {
+		if ($this->err->is_ok()) {			
 			$mail = $this->create_mail_message($subject, $message, $to);
-			foreach(Arr::force($attachments, false) as $a) {
+
+			// Set alternative message
+			if ($this->alt_message instanceof IView) {
+				$this->alt_message = $this->alt_message->render();
+			}
+			$this->alt_message = ConverterFactory::decode($this->alt_message, ConverterFactory::HTML_EX);			
+			$mail->set_alt_message($this->alt_message);
+			
+			// Set custom attachments
+			foreach($this->files_to_attach as $filename => $name) {
+				$mail->add_attachment($filename, $name);
+			}
+			
+			// Set overlaoded attachments
+			foreach(Arr::force($this->get_attachments(), false) as $a) {
 				$mail->add_attachment($a);
 			}
 			
+			// Send
 			$this->err->merge($mail->send());
 		}
 		
@@ -163,5 +179,27 @@ class MailBaseCommand extends CommandBase {
 	 */
 	public function set_is_html($yesno) {
 		$this->html_mail = $yesno;
+	}
+	
+	/**
+	 * Set alternative message
+	 * @param string $alt_message
+	 * 
+	 */
+	public function set_alt_message($alt_message) {		
+		$this->alt_message = $alt_message;		
+	}
+	
+	/**
+	 * Get alternative message
+	 * 
+	 * @return string $alt_message
+	 */
+	public function get_alt_message() {
+		return $this->alt_message;	
+	}	
+	
+	public function add_attachment($file_name, $name) { 
+		$this->files_to_attach[$file_name] = $name;
 	}
 }
