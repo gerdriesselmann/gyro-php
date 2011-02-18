@@ -11,6 +11,11 @@ class HistoryTest extends GyroUnitTestCase {
 		Session::start();
 		Session::pull('history');
 	} 
+	
+	public function tearDown() {
+		History::clear();
+		Session::pull('history'); // Clear
+	}
 
 	public function test_get_empty() {
 		$url = History::get(0);
@@ -53,7 +58,7 @@ class HistoryTest extends GyroUnitTestCase {
 	
 			// Check if history respects limits		
 			for ($i = 0; $i < HISTORY_NUMBER_OF_ITEMS; $i++) {
-				History::push(Url::create('http://www.example.org/flood.html'));
+				History::push(Url::create('http://www.example.org/this-url-was-put-in-history-by-gyro-simpletest.html'));
 			}
 			
 			$url = History::get(HISTORY_NUMBER_OF_ITEMS);
