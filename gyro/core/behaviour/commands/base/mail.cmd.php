@@ -7,6 +7,25 @@ Load::components('mailmessage');
  * The class gets passed a template which then is rendered. Within the template
  * the command itself is available as $mailcmd.
  * 
+ * The template may set title, content-type, alternate messages and attachments.
+ * 
+ * Subclasses can be specialized to provide attachments and a mail footer for every mail.
+ * 
+ * @section HTML HTML Mail
+ * 
+ * A template may contain HTML. If so, it should call 
+ * 
+ * @code
+ * $mailcmd->set_is_html(true);
+ * @endcode
+ * 
+ * HTML should have a plain text fallback. The easies ways to achieve this, is to
+ * pass the view itself, which will autmatically get converted to plain text:
+ * 
+ * @code
+ * $mailcmd->set_alt_message($self);
+ * @endcode
+ * 
  * @author Gerd Riesselmann
  * @ingroup Behaviour
  */ 
@@ -22,8 +41,14 @@ class MailBaseCommand extends CommandBase {
 	/** HTML or not? */
 	protected $html_mail = false;
 	
-	/** Error obejct */
+	/** Error object */
 	protected $err = null;
+	
+	/**
+	 * The view. Made a member to be comparable to $alt_message
+	 * @var IView
+	 */
+	protected $view;
 	
 	protected $alt_message = '';
 	protected $files_to_attach = array();
@@ -70,16 +95,14 @@ class MailBaseCommand extends CommandBase {
 		}
 		
 		$subject = $this->get_subject();
+		$this->html_mail = false;
+		$message = ConverterFactory::decode($message, ConverterFactory::HTML_EX, array('p' => "\n\n", 'a' => '$url$'));
 		
 		if ($this->err->is_ok()) {			
 			$mail = $this->create_mail_message($subject, $message, $to);
 
 			// Set alternative message
-			if ($this->alt_message instanceof IView) {
-				$this->alt_message = $this->alt_message->render();
-			}
-			$this->alt_message = ConverterFactory::decode($this->alt_message, ConverterFactory::HTML_EX);			
-			$mail->set_alt_message($this->alt_message);
+			$mail->set_alt_message($this->compute_alt_message($message));
 			
 			// Set custom attachments
 			foreach($this->files_to_attach as $filename => $name) {
@@ -109,6 +132,27 @@ class MailBaseCommand extends CommandBase {
 	}
 	
 	/**
+	 * Compute the alternate message
+	 * 
+	 * @param string $org_message Original message. Converted to plain text, if the alt message is the current view
+	 */
+	protected function compute_alt_message($org_message) {
+		$ret = '';
+		if ($this->alt_message instanceof IView) {
+			if ($this->alt_message == $this->view) {
+				$ret = $org_message; // Prevent view from beeing rendered twice
+				if ($this->is_html()) {
+					$ret = ConverterFactory::decode($ret, ConverterFactory::HTML_EX, array('p' => "\n\n", 'a' => '$url$'));
+				}
+				
+			} else {
+				$ret = $this->alt_message->render();
+			}
+		}
+		return $ret;		
+	} 
+	
+	/**
 	 * Set an error message
 	 */
 	protected function set_error($message) {
@@ -133,14 +177,14 @@ class MailBaseCommand extends CommandBase {
 	 * Return mail message
 	 */
 	protected function get_message() {
-		$view = ViewFactory::create_view(IViewFactory::MESSAGE, $this->template);
-		if ($view) {
+		$this->view = ViewFactory::create_view(IViewFactory::MESSAGE, $this->template);
+		if ($this->view) {
 			foreach(Arr::force($this->template_args) as $name => $value) {
-				$view->assign($name, $value);
+				$this->view->assign($name, $value);
 			}	
-			$view->assign('to', $this->get_to());
-			$view->assign('mailcmd', $this);
-			return $view->render();
+			$this->view->assign('to', $this->get_to());
+			$this->view->assign('mailcmd', $this);
+			return $this->view->render();
 		} 
 		else {
 			$this->set_error(tr('Mail message view not created', 'commands'));			
@@ -182,6 +226,15 @@ class MailBaseCommand extends CommandBase {
 	}
 	
 	/**
+	 * Returns wether this is a HTML mail or not
+	 * 
+	 * @return bool
+	 */
+	protected function is_html() {
+		return $this->html_mail;
+	}
+	
+	/**
 	 * Set alternative message
 	 * @param string $alt_message
 	 * 
@@ -199,7 +252,13 @@ class MailBaseCommand extends CommandBase {
 		return $this->alt_message;	
 	}	
 	
-	public function add_attachment($file_name, $name) { 
+	/**
+	 * Add an attachment
+	 * 
+	 * @param string $file_name Absolute path to file
+	 * @param string $name Optional name of attachment
+	 */
+	public function add_attachment($file_name, $name = '') { 
 		$this->files_to_attach[$file_name] = $name;
 	}
 }
