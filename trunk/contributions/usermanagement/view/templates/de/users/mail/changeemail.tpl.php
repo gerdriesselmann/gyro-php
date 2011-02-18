@@ -1,21 +1,25 @@
-Hallo,
+<?php 
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+?>
 
-Sie haben eine Änderung Ihrer E-Mail Adresse für Ihr Benutzerkonto bei <?php print $appname ?> beantragt.
+<p><b>Hallo,</b></p>
 
-Ihre neue E-Mail Adresse lautet  
+<p>Sie haben eine Änderung Ihrer E-Mail Adresse für Ihr Benutzerkonto bei <?=$appname ?> beantragt.</p>
 
-<?php print $confirmation->data; ?>
+<p>Ihre neue E-Mail Adresse lautet</p>
 
+<p><b><?=$confirmation->data; ?></b><p>
 
-Bitte besuchen Sie
+<p>Bitte besuchen Sie</p>
 
-<?php print ActionMapper::get_url('confirm', $confirmation); ?>
+<p><a href="<?=ActionMapper::get_url('confirm', $confirmation); ?>"><?=ActionMapper::get_url('confirm', $confirmation); ?></a></p>
 
+<p>um Ihre neue Adresse zu bestätigen.</p>
 
-um Ihre neue Adresse zu bestätigen.
+<p>Bitte beachten Sie das obige Seite nur 24 Stunden gültig ist.</p>
 
-Bitte beachten Sie das obige Seite nur 24 Stunden gültig ist.
-
-Mit freundlichen Grüßen,
-Das Team von <?php print $appname?>
-
+<p>
+Mit freundlichen Grüßen,<br />
+Das Team von <?=$appname?>
+</p>
