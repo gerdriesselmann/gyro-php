@@ -7,8 +7,8 @@
  * This view can not return anything!
  */
 
-/* @var $pager_calculator WidgetPagerCalculator */
-/* @var $page_data PageData */
+/** @var $pager_calculator WidgetPagerCalculator */
+/** @var $page_data PageData */
 $page = $pager_calculator->get_data_item('page', 1);
 if ($page > 1) {
 	if (!$pager_calculator->has_policy(WidgetPager::DONT_ADD_BREADCRUMB)) {
