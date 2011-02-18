@@ -9,7 +9,7 @@ class ConverterHtmlTest extends GyroUnitTestCase {
 	
 	public function test_encode() {
 		$test = "abc  def \nghi\nabc";
-		$expected = "<p>abc  def</p>\n<p>ghi</p>\n<p>abc</p>";
+		$expected = "<p>abc def</p>\n<p>ghi</p>\n<p>abc</p>";
 		$result = ConverterFactory::encode($test, ConverterFactory::HTML);
 		$this->assertEqual($result, $expected);		
 	}
