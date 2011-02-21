@@ -95,8 +95,6 @@ class MailBaseCommand extends CommandBase {
 		}
 		
 		$subject = $this->get_subject();
-		$this->html_mail = false;
-		$message = ConverterFactory::decode($message, ConverterFactory::HTML_EX, array('p' => "\n\n", 'a' => '$url$'));
 		
 		if ($this->err->is_ok()) {			
 			$mail = $this->create_mail_message($subject, $message, $to);
