@@ -1,21 +1,23 @@
-Hello,
+<?php 
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+?>
+<p><b>Hello,</b></p>
 
-You requested to change your e-mail address for your account on <?php print $appname ?>.
+<p>You requested to change your e-mail address for your account on <?=$appname ?>.</p>
 
-Your new e-mail will be  
+<p>Your new e-mail will be</p>
+  
+<p><?=$confirmation->data; ?></p>
 
-<?php print $confirmation->data; ?>
+<p>Please visit</p>
 
+<p><a href="<?=ActionMapper::get_url('confirm', $confirmation); ?>"><?=ActionMapper::get_url('confirm', $confirmation); ?></a></p>
 
-Please visit
+<p>to confirm the new address.</p>
 
-<?php print ActionMapper::get_url('confirm', $confirmation); ?>
+<p>Please note that the url above is only valid for 24 hours.</p>
 
-
-to confirm the new address.
-
-Please note that the url above is only valid for 24 hours.
-
-Best regards,
-The team of <?php print $appname?>
+<p>Best regards,<br />
+The team of <?=$appname?></p>
 
