@@ -927,7 +927,12 @@ class DataObjectBase implements IDataObject, IActionSource {
     	if (!Common::flag_is_set($policy, self::WHERE_ONLY)) {
     		$recent_values = $this->get_field_values();
     		foreach($recent_values as $column => $value) {
-    			$query->add_where($column, '=', $value);	
+    			if (is_null($value)) {
+    				$query->add_where($column, DBWhere::OP_IS_NULL);
+    			}
+    			else {
+    				$query->add_where($column, '=', $value);
+    			}	
     		}
     	}
     	
