@@ -1,16 +1,20 @@
-Hello,
+<?php 
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+?>
+<p><b>Hello,</b></p>
 
-You requested an automatic one time login on <?php print $appname?>. Perhaps because 
-you forgot your password. 
+<p>You requested an automatic one time login on <?=$appname?>. Perhaps because 
+you forgot your password. </p>
 
-Please visit
+<p>Please visit</p>
 
-<?php print ActionMapper::get_url('confirm', $confirmation); ?>
+<p><a href="<?=ActionMapper::get_url('confirm', $confirmation); ?>"><?=ActionMapper::get_url('confirm', $confirmation); ?></a></p>
 
-to automatically get logged in once. You then can - for example - change your password.
+<p>to automatically get logged in once. You then can - for example - change your password.</p>
 
-Please note that the web site above is only valid for 24 hours.
+<p>Please note that the web site above is only valid for 24 hours.</p>
 
-Best regards,
-The team of <?php print $appname?>
+<p>Best regards,<br />
+The team of <?=$appname?></p>
 

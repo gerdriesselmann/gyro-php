@@ -1,17 +1,21 @@
-Hello,
+<?php 
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+?>
+<p><b>Hello,</b></p>
 
-welcome to <?php print $appname; ?>. You registered with the following data:
+<p>welcome to <?=$appname; ?>. You registered with the following data:</p>
 
-Username: <?php print $user->name ?> 
-E-Mail: <?php print $user->email; ?>
+<p>Username: <b><?=$user->name ?></b><br/> 
+E-Mail: <b><?=$user->email; ?></b></p>
 
-If you didn't register on <?php print $appname; ?>, please ignore this mail 
-or contact us to report the abusing of our services. Else please visit 
+<p>If you didn't register on <?=$appname; ?>, please ignore this mail 
+or contact us to report the abusing of our services. Else please visit</p> 
 
-<?php print ActionMapper::get_url('confirm', $confirmation); ?>
+<p><a href="<?=ActionMapper::get_url('confirm', $confirmation); ?>"><?=ActionMapper::get_url('confirm', $confirmation); ?></a></p>
 
-to finish your registration.
+<p>to finish your registration.</p>
 
-Best regards,
-The team of <?php print $appname?>
+<p>Best regards,<br />
+The team of <?=$appname?></p>
 

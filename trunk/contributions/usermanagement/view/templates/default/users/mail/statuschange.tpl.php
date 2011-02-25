@@ -1,9 +1,13 @@
-Hello,
+<?php 
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+?>
+<p><b>Hello,</b></p>
 
-Your account on <?php print $appname; ?> was set to "<?php print tr($new_status, 'users'); ?>".
+<p>Your account on <?=$appname; ?> was set to "<?=tr($new_status, 'users'); ?>".</p>
 
-<?php if ($new_status == Users::STATUS_ACTIVE): ?>You can log in here: <?php print ActionMapper::get_url('login'); ?><?php endif; ?>
+<?php if ($new_status == Users::STATUS_ACTIVE): ?><p>You can log in here: <a href="<?=ActionMapper::get_url('login'); ?>"><?=ActionMapper::get_url('login'); ?></a></p><?php endif; ?>
 
-Best regards,
-The team of <?php print $appname?>
+<p>Best regards,<br />
+The team of <?=$appname?></p>
 
