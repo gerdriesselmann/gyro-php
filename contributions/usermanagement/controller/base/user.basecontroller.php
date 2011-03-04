@@ -498,6 +498,7 @@ class UserBaseController extends ControllerBase {
 	 */
 	public function action_users_edit_self($page_data) {
 		// User exists, since Route is for logged in only
+		Users::reload_current();
 		$user = Users::get_current_user();
 		$formhandler = new FormHandler('edit_account_self');
 		if ($page_data->has_post_data()) {
