@@ -59,7 +59,11 @@ function users_load_translations($languages) {
 		),
 		'Change e-mail address' => array(
 			'de' => 'E-Mail-Adresse ändern',
-			'de' => 'Mudar o endereço e-mail'
+			'pt' => 'Mudar o endereço e-mail'
+		),
+		'Confirm new e-mail address' => array(
+			'de' => 'Neue E-Mail-Adresse bestätigen',
+			'pt' => 'Confirmar endereço eletrônico'
 		),
 		'Administer catalogue' => array(
 			'de' => 'Katalog verwalten',
@@ -417,6 +421,10 @@ function users_load_translations($languages) {
 		'Your changes have been saved' => array(
 			'de' => 'Ihre Änderungen wurden gespeichert',
 			'pt' => 'As suas alterações foram guardadas'
+		),
+		'Your e-mail address has been changed' => array(
+			'de' => 'Ihre E-Mail-Adresse wurde geändert',
+			'pt' => 'O seu endereço eletrônico foi alterado.'
 		),
 		'Please provide a user name for login' => array(
 			'de' => 'Bitte geben Sie einen Benuutzernamen ein.'			
