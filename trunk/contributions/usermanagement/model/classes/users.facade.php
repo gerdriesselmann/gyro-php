@@ -70,6 +70,21 @@ class Users {
 		}
 		return false;
 	}
+	
+	/**
+	 * Reload current user (which is stored in session)
+	 */
+	public static function reload_current() {
+		if (self::is_logged_in()) {
+			$user = self::get(self::get_current_user_id());
+			if ($user) {
+				self::do_login($user);
+			}
+			else {
+				self::logout();
+			}
+		}
+	}
 
 	/**
 	 * Returns user with given ID or false if not found
