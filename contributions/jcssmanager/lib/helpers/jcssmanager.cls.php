@@ -110,10 +110,12 @@ class JCSSManager {
 				"ForceType \"text/css;charset=$charset\"",
 				'</FilesMatch>',
 				'<IfModule mod_expires.c>',
-				'ExpiresActive On',				
+				'ExpiresActive On',			
+				'<FilesMatch "^compressed">',
 				"ExpiresByType text/css 'access plus 2 years'",
 				"ExpiresByType text/javascript 'access plus 2 years'",
 				"ExpiresByType application/x-javascript 'access plus 2 years'",
+				'</FilesMatch>',
 				'</IfModule>'				
 			); 
 			$htc_rewrite = array(
@@ -128,4 +130,53 @@ class JCSSManager {
 		return $err;		
 	}
 	
+	public static function concat_css_files($arr_files) {
+		$ret = '';
+		foreach($arr_files as $file) {
+			$ret .= self::transform_css_file($file);
+		}
+		return $ret;
+	}
+	
+	public static function transform_css_file($file) {
+		$ret = '';
+		if (substr($file, 0, 1) !== '/') {
+			$file = Config::get_value(Config::URL_ABSPATH) . $file;
+		}
+		$handle = fopen($file, 'r');
+		$regex = '@(url\s*\(\s*"?)([\w.][^"\)]*)@';
+		$rel_path = str_replace(Config::get_value(Config::URL_ABSPATH), '/', realpath($file));
+		$replace = '$1' .  dirname($rel_path) . '/$2'; 
+		while(($line = fgets($handle)) !== false) {
+			// Works around a bug in WebKit, which dislikes two charset declarations in one file
+			$line = trim($line);
+			$token = substr($line, 0, 7);
+			if ($token === '@charse') {
+				continue;
+			}
+			// Resolve imports			
+			if ($token === '@import') {
+				$start = strpos($line, '(', 7);
+				if ($start !== false) {
+					$end = strpos($line, ')', $start);
+					if ($end !== false) {
+						$start++;
+						$file_to_include = trim(substr($line, $start, $end - $start), "'\" \t");
+						if (substr($file_to_include, 0, 1) !== '/') {
+							$file_to_include = dirname($file) . '/' . $file_to_include;
+						}
+						else {
+							$file_to_include = JCSSManager::make_absolute($file_to_include);
+						}
+						$line = self::transform_css_file($file_to_include);
+					}
+				}
+			}
+			// Set all url(..) stuff absolute
+			$line = preg_replace($regex, $replace, $line);
+			$ret .= $line;
+		}
+
+		return $ret;		
+	}
 }
