@@ -52,7 +52,7 @@ interface IDBTable {
  	/**
  	 * Returns array of keys
  	 * 
- 	 * @return array Associative array with column name as key and IDField instance as value
+ 	 * @return array Associative array with column name as key and IDBField instance as value
  	 */
  	public function get_table_keys();
  	
