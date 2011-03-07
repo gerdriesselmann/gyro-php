@@ -80,6 +80,24 @@ class DB {
 		
 		throw new Exception(tr('Model %s not found', 'core', array('%s' => $model)));
 	}
+
+	/**
+	 * Returns (and caches) instance for given table, with haven given value on primary key
+	 * 
+	 * @attention Works for models with one primary key only
+	 * 
+	 * @return mixed Object or false 
+	 */
+	public static function get_item_by_pk($table, $value) {
+		$model = self::create($table); // Throws!
+		/* @var $model IDataObject */
+		$pks = $model->get_table_keys();
+		if (count($pks) != 1) {
+			throw new Exception(tr('No or more than 1 keys on model %s: get_item_by_pk() cannot be applied', 'core', array('%s' => $table)));
+		}
+		$pk_name = array_shift(array_keys($pks));
+		return self::get_item($table, $pk_name, $value);			
+	}
 	
 	/**
 	 * Returns (and caches) instance for given table, with haven given value on given colum
