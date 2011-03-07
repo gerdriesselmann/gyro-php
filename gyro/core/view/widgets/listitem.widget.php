@@ -20,11 +20,13 @@ class WidgetListItem implements IWidget {
 	
 	public function render($policy = self::NONE) {
 		$ret = '';
-		$model = $this->item->get_table_name();
-		$view = $this->create_item_view($model);
-		$view->assign('item', $this->item);
-		$view->assign('policy', $policy);
-		$ret = $view->render();
+		if ($this->item instanceof IDataObject) {
+			$model = $this->item->get_table_name();
+			$view = $this->create_item_view($model);
+			$view->assign('item', $this->item);
+			$view->assign('policy', $policy);
+			$ret = $view->render();
+		}
 		return $ret;
 	}
 	
