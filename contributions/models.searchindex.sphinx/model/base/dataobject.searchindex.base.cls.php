@@ -185,8 +185,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 				$model = $this->resolve_model($this->item_model);
 				$p = false;
 				if ($model) {
-					//@TODO PK is not necessarily named "id"
-					$p = DB::get_item($model, 'id', $this->item_id);
+					$p = DB::get_item_by_pk($model, $this->item_id);
 				}
 				if ($p) {
 					$p->relevance_w = $this->relevance_w;
