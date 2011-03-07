@@ -7,7 +7,7 @@
 	<?php 
 	// Example how to include CSS
 	$page_data->head->add_css_file('css/style.css'); 
-	$page_data->head->render(HeadData::ALL);
+	print $page_data->head->render(HeadData::ALL);
 	?> 
 </head>
 <body>
