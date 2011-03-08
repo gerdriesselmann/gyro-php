@@ -2,7 +2,7 @@
 function core_check_preconditions() {
 	$ret = new Status();
 	
-	$tempdir = realpath(Config::get_value(Config::TEMP_DIR));
+	$tempdir = realpath(Config::get_value(Config::TEMP_DIR)) . '/';
 	$subdirs = array(
 		'',
 		'log', 
