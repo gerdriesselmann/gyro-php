@@ -2,7 +2,7 @@
 $mailcmd->set_is_html(true);
 $mailcmd->set_alt_message($self);
 ?>
-<p><b>Hallo,</b></p>
+<p><b>Hallo!</b></p>
 
 <p>Ihr Account bei <?=$appname; ?> wurde auf "<?=tr($new_status, 'users'); ?>" gesetzt.</p>
 
@@ -10,5 +10,5 @@ $mailcmd->set_alt_message($self);
 
 <p>Mit freundlichen Grüßen,</p>
 
-<p><?=$appname?></p>
+<p><b><?=$appname?></b></p>
 
