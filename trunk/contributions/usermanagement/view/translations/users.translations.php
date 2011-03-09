@@ -134,6 +134,10 @@ function users_load_translations($languages) {
 			'de' => 'Ihre Registrierung wurde angelegt. Eine E-Mail mit Ihren Zugangsdaten sowie einem Bestätigungslink ist unterwegs.',
 			'pt' => 'O seu cadastro foi criado. Um e-mail com os seus dados de login assim como um link de confirmação lhe foi enviado.'
 		),
+		'Your registration has been confirmed' => array(
+			'de' => 'Sie haben Ihre Registrierung erfolgreich bestätigt.',
+			'pt' => 'O seu cadastro foi confirmado.'
+		),
 		'Your changes have been stored' => array(
 			'de' => 'Ihre Änderungen wurden gespeichert',
 			'pt' => 'As suas alterações foram salvadas'
