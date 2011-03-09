@@ -1,3 +1,7 @@
+<li>
 <?php
-print '-- ' . $notification->get_title(). " --\n";
-print wordwrap(ConverterFactory::decode($notification->get_message(Notifications::DELIVER_DIGEST), ConverterFactory::HTML_EX), 65); 
+$l = ActionMapper::get_url('view', $notification) . '?src=' . Notifications::DELIVER_DIGEST;
+print html::a(String::escape($notification->get_title()), $l, '');
+?>
+</li>
+ 

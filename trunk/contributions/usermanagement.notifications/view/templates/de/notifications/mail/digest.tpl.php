@@ -1,28 +1,48 @@
-Hallo,
+<?php
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+$link_settings = ActionMapper::get_url('notifications_settings')
+?>
+<p><b>Hallo!</b></p>
 
-Sie haben regelmäßige Benachrichtigungen für Ereignisse auf <?php print $appname ?> angefordert.
+<p>
+Sie erhalten diese Benachrichtigung, weil sie tägliche E-Mail-Zusammenfassungen der 
+Ereignisse auf <?php print $appname ?> angefordert haben.
+</p>
 
 <?php if (count($notifications)): ?>
-Folgendes ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> geschehen:  
-
-<?php 
-	foreach($notifications as $n) {
-		$templates = array(
-			'notifications/mail/digest_item_' . strtolower($n->source),
-			'notifications/mail/digest_item'
-		);
-		$v = ViewFactory::create_view(IViewFactory::MESSAGE, $templates, false);
-		$v->assign('notification', $n);
-		print $v->render();
-	}
-?>  
+	<p>
+	Folgendes ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> geschehen:
+	</p>  
+	
+	<ul>
+	<?php 
+		foreach($notifications as $n) {
+			$templates = array(
+				'notifications/mail/digest_item_' . strtolower($n->source),
+				'notifications/mail/digest_item'
+			);
+			$v = ViewFactory::create_view(IViewFactory::MESSAGE, $templates, false);
+			$v->assign('notification', $n);
+			print $v->render();
+		}
+	?>  
+	</ul>
 <?php else: ?>
-Leider ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> nichts geschehen.
+	<p>
+	Seit der letzen Benachrichtigung vom <?php print GyroDate::local_date($settings->digest_last_sent)?> ist 
+	jedoch nichts passiert.
+	</p>
 <?php endif?> 
 
-Um Ihre Einstellungen für Benachrichtigungen zu ändern loggen Sie sich bei <?php print $appname ?> ein und besuchen Sie
-<?php print ActionMapper::get_url('notifications_settings')?>.
+<p>
+Durch den folgenden Link können Sie Ihre Benachrichtigungseinstellungen ändern:
+</p>
 
-Mit freundlichen Grüßen,
-Das Team von <?php print $appname?>
+<p>
+<a href="<?=$link_settings?>"><?=$link_settings?></a>
+</p>
 
+<p><br />Mit freundlichen Grüßen,</p>
+
+<p><b><?=$appname?></b></p>

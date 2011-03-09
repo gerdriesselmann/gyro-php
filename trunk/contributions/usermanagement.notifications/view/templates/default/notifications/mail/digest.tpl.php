@@ -1,3 +1,8 @@
+<?php
+$mailcmd->set_is_html(true);
+$mailcmd->set_alt_message($self);
+$link_settings = ActionMapper::get_url('notifications_settings')
+?>
 Hello,
 
 You requested to be informed about some events at <?php print $appname ?>.
