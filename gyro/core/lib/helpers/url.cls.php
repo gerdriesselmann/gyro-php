@@ -519,12 +519,15 @@ class Url {
 	 */
 	public function is_valid() {
 		$ret = !$this->is_empty();
-		$ret = $ret && (preg_match('|^([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+$|i', $this->get_host()) != 0);
 		
-		if ($ret) {
-			$host = $this->parse_host();
-			$ret = $ret && !empty($host['tld']);
-			$ret = $ret && !empty($host['domain']); 
+		$src_host = $this->get_host();
+		if ($ret && !Validation::is_ip($src_host)) {
+			$ret = $ret && (preg_match('|^([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+$|i', $src_host) != 0);
+			if ($ret) {
+				$host = $this->parse_host();
+				$ret = $ret && !empty($host['tld']);
+				$ret = $ret && !empty($host['domain']); 
+			}
 		}
 				
 		return $ret; 
