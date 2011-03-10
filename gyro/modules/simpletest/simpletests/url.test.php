@@ -180,5 +180,10 @@ class UrlTest extends GyroUnitTestCase {
 		$a = Url::create_with_fallback_host('/some/path/?a=b&c=d', 'localhost');
 		$this->assertTrue($a->equals('http://localhost/some/path/?a=b&c=d#hash'));
 	}
+	
+	public function test_with_ip() {
+		$a = Url::create('127.0.0.1/test');
+		$this->assertTrue($a->is_valid());
+	}
 }
 
