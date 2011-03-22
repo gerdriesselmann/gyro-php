@@ -323,6 +323,9 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 				case 'https':
 					$ret = Config::get_url(Config::URL_BASEURL_SAFE);
 					break;
+				case 'any':
+					$ret = Url::create(Config::get_url(Config::URL_BASEURL))->set_scheme(Url::current()->get_scheme())->build(Url::ABSOLUTE);
+					break;
 				default:
 					$ret = Config::get_url(Config::URL_BASEURL);
 					break;
