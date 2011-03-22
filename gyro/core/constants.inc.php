@@ -156,3 +156,9 @@ Config::set_value_from_constant(Config::QUERY_PARAM_PATH_INVOKED, 'APP_QUERY_PAR
  * DB Slow Query threshold
  */
 Config::set_value_from_constant(Config::DB_SLOW_QUERY_THRESHOLD, 'APP_DB_SLOW_QUERY_THRESHOLD', 0.0100);
+
+/**
+ * Cache headers
+ */
+Config::set_value_from_constant(Config::CACHEHEADER_CLASS_CACHED, 'APP_CACHEHEADER_CLASS_CACHED', 'PrivateRigid');
+Config::set_value_from_constant(Config::CACHEHEADER_CLASS_UNCACHED, 'APP_CACHEHEADER_CLASS_UNCACHED', 'NoCache');

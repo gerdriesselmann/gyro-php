@@ -39,7 +39,7 @@ class ViewBase implements IView, ICache {
 	}
 	
 	/**
-	 * Creates a view of type IViewFactory::MESSAGE and given templaet
+	 * Creates a view of type IViewFactory::MESSAGE and given template
 	 * and copies all variables set on this view  
 	 * 
 	 * @param string $template 
@@ -54,8 +54,8 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Pass a variable to the view
 	 *
-	 * @param $var The name of the variable as string
-	 * @param $value The value
+	 * @param string $var The name of the variable as string
+	 * @param mixed $value The value
 	 */
 	public function assign($var, $value) {
 		$this->vars[$var] = $value;
@@ -64,7 +64,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Pass an associative array to the view
 	 *
-	 * @param $vars Associative array of variable names and values
+	 * @param array $vars Associative array of variable names and values
 	 */
 	public function assign_array($vars) {
 		$this->vars = array_merge($this->vars, $vars);
@@ -73,7 +73,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Retrieve a variable from the view
 	 *
-	 * @param $var The name of the variable as string
+	 * @param string $var The name of the variable as string
 	 * @return mixed The Value
 	 */
 	public function retrieve($var) {
@@ -110,7 +110,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Set cache id
 	 *
-	 * @param $cacheid A cache id, a string or an array
+	 * @param string|array $cacheid A cache id, a string or an array
 	 */
 	public function set_cache_id($cacheid) {
 		$this->cache_id = $cacheid;
@@ -157,26 +157,42 @@ class ViewBase implements IView, ICache {
 
 	/**
 	 * Process view and returnd the created content
+	 * 
+	 *  The control flow on rendering is as follows:
+	 * 
+	 * A) If item is not cached or caching is disabled
+	 * 
+	 * 1. render_preprocess
+	 * 2. render_from_cache
+	 * 3. do_render 
+	 *   3.1 before_render
+	 *   3.2 render_content
+	 *   3.3 after_render
+	 * 4. update_cache
+	 *   4.1 store_cache (if item should be cached)
+	 * 5. render_postprocess
+	 * 
+	 * B) If item is cached and caching is enabled
+	 * 
+	 * 1. render_preprocess
+	 * 2. render_from_cache 
+	 * 2.1  do_render_cache 
+	 * 3. update_cache
+	 * 4. render_postprocess
 	 *
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 * @return string The rendered content
 	 */
 	public function render($policy = self::NONE) {
 		$this->render_preprocess($policy);
 		
 		$ret = '';
-		$cache_enabled = !Common::flag_is_set($policy, self::NO_CACHE); 
-		if ($cache_enabled && $this->is_cached()) {
-			$chache = $this->get_cache_object();
-			$ret = $this->do_render_cache($this->get_cache_object(), $policy);
-		}
+		$ret = $this->render_from_cache($policy);
 		// Cache may be empty, so check that
 		if (empty($ret)) {
 			$ret = $this->do_render($policy);
-			if ($cache_enabled && $this->should_cache()) {
-				$this->store_cache($this->cache_id, $ret, $this->get_cache_lifetime(), $policy);
-			}			
 		}
+		$this->update_cache($ret, $policy);
 		$this->render_postprocess($ret, $policy);
 		
 		if (Common::flag_is_set($policy, self::DISPLAY)) {
@@ -186,9 +202,38 @@ class ViewBase implements IView, ICache {
 	}
 	
 	/**
+	 * Retrieve item from cache, if cached and caching is enabled
+	 * 
+	 * @param int $policy
+	 * @return mixed
+	 */
+	protected function render_from_cache($policy) {
+		$ret = '';
+		if (!Common::flag_is_set($policy, self::NO_CACHE) && $this->is_cached()) {
+			$ret = $this->do_render_cache($this->get_cache_object(), $policy);
+		}
+		return $ret;
+	}
+	
+	/**
+	 * Store item in cache, if required
+	 * 
+	 * @param string $data
+	 * @param int $policy
+	 */
+	protected function update_cache(&$data, $policy) {
+		if (!Common::flag_is_set($policy, self::NO_CACHE)
+			&& !$this->is_cached() 
+			&& $this->should_cache()) 
+		{
+			$this->store_cache($this->cache_id, $data, $this->get_cache_lifetime(), $policy);
+		}		
+	}
+	
+	/**
 	 * Render
 	 *
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 * @return mixed
 	 */
 	protected function do_render($policy) {
@@ -224,8 +269,8 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Called before content is rendered, but not if content is taken from cache
 	 * 
-	 * @param $rendered_content The content rendered
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param string $rendered_content The content rendered
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 * @return void
 	 */
 	protected function before_render(&$rendered_content, $policy) {
@@ -235,8 +280,8 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Called after content is rendered, but not if content is taken from cache
 	 * 
-	 * @param $rendered_content The content rendered
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param string $rendered_content The content rendered
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 * @return void
 	 */
 	protected function after_render(&$rendered_content, $policy) {
@@ -246,8 +291,8 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Sets content
 	 * 
-	 * @param $rendered_content The content rendered
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param string $rendered_content The content rendered
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 * @return void
 	 */
 	protected function render_content(&$rendered_content, $policy) {
@@ -260,7 +305,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Splites templates into engine and resource
 	 *
-	 * @param $template String of type engine:resource
+	 * @param string $template String of type engine:resource
 	 */
 	protected function split_template($template) {
 		$arr_ret = array(
@@ -285,7 +330,7 @@ class ViewBase implements IView, ICache {
 	 * "myengine::template" will use "myengine". If the protocol is ommitet, 
 	 * DEFAULT_TEMPLATE_ENGINE is used.
 	 *
-	 * @param $engine A string specifying the engine
+	 * @param string $engine A string specifying the engine
 	 * @return ITemplateEngine
 	 */
 	protected function create_template_engine($engine) {
@@ -298,9 +343,9 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Write content to cache
 	 *
-	 * @param $cache_key Either a string or an array
-	 * @param $content Content to cache as string
-	 * @param $lifetime Lifetime in seconds
+	 * @param string|array $cache_key Either a string or an array
+	 * @param string $content Content to cache as string
+	 * @param int $lifetime Lifetime in seconds
 	 */
 	protected function store_cache($cache_key, $content, $lifetime, $policy) {
 		Cache::store($cache_key, $content, $lifetime);
@@ -309,7 +354,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Retrieve ressource from cache
 	 *
-	 * @param $cache_key Either a string or an array
+	 * @param string $cache_key Either a string or an array
 	 * @return ICacheItem
 	 */
 	protected function read_cache($cache_key) {
@@ -319,8 +364,8 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Read content from cache object
 	 *
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
-	 * @param $cache ICacheItem instance
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param ICacheItem $cache ICacheItem instance
 	 * @return mixed
 	 */
 	protected function do_render_cache($cache, $policy) {
@@ -330,7 +375,7 @@ class ViewBase implements IView, ICache {
 	/**
 	 * Assign all default vars
 	 *
-	 * @param $policy If set to IView::DISPLAY, content is printed, if false it is returned only
+	 * @param int $policy If set to IView::DISPLAY, content is printed, if false it is returned only
 	 */
 	protected function assign_default_vars($policy) {
 		$this->assign('self', $this);

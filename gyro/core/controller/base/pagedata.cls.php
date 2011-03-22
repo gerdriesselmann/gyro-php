@@ -107,6 +107,7 @@ class PageData {
 		//if (empty($this->status)) {
 		//	$this->status = new Status();
 		//}
+		if (empty($cache_manager)) { $cache_manager = new NoCacheCacheManager(); } 
 		$this->set_cache_manager($cache_manager);
 		$this->pathstack = new PathStack();
 		
@@ -124,13 +125,13 @@ class PageData {
 	}
 	
 	public function __clone() {
-        // Force a copy of this->object, otherwise
-        // it will point to same object.
-        $this->cache_manager = clone($this->cache_manager);
-        $this->get = clone($this->get);
-        $this->post = clone($this->post);
-        $this->head = clone($this->head);
-        $this->pathstack = clone($this->pathstack);
+		// Force a copy of this->object, otherwise
+		// it will point to same object.
+		$this->cache_manager = clone($this->cache_manager);
+		$this->get = clone($this->get);
+		$this->post = clone($this->post);
+		$this->head = clone($this->head);
+		$this->pathstack = clone($this->pathstack);
 		if ($this->status) {
 			$this->status = clone($this->status);
 		}        

@@ -10,6 +10,11 @@ class GyroDate {
 	const ONE_HOUR = 3600; // 60 * 60 sec 
 	const ONE_DAY = 86400; // 60 * 60 * 24 sec
 	
+	/** 30 days */
+	const ONE_MONTH = 2592000; // 60 * 60 * 24 * 30 sec
+	/** 365 days */
+	const ONE_YEAR = 31536000; // 60 * 60 * 24 * 365 sec 
+	
 	const MONDAY = 1;
 	const TUESDAY = 2;
 	const WEDNESDAY = 3;

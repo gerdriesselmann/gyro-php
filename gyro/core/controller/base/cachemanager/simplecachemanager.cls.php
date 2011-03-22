@@ -22,6 +22,6 @@ class SimpleCacheManager extends ConstantCacheManager {
 		}
 		$cache_id[] = $path;			
 		$cache_id[] = $url->get_query();
-		parent::__construct($cache_id, $duration);
+		parent::__construct($cache_id, $duration, CacheHeaderManagerFactory::create(Config::get_value(Config::CACHEHEADER_CLASS_CACHED)));
 	}
 }

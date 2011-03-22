@@ -29,6 +29,20 @@ interface ICacheManager {
 	public function set_cache_id($id);
 	
 	/**
+	 * Returns the datetime this cache has been created
+	 *
+	 * @return timestamp
+	 */
+	public function get_creation_datetime();
+	
+	/**
+	 * Sets the datetime this cache has been created
+	 *
+	 * @param timestamp $datetime
+	 */
+	public function set_creation_datetime($datetime);	
+	
+	/**
 	 * Returns the datetime this cache expires
 	 *
 	 * @return timestamp
@@ -48,4 +62,16 @@ interface ICacheManager {
 	 * @param int $seconds
 	 */
 	public function set_cache_duration($seconds);
+	
+	/**
+	 * Set cache header manager
+	 */
+	public function set_cache_header_manager(ICacheHeaderManager $manager);
+	
+	/**
+	 * Get cache header manager
+	 * 
+	 * @return ICacheHeaderManager
+	 */
+	public function get_cache_header_manager();
 }
