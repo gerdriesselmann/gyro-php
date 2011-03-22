@@ -60,35 +60,42 @@ class MimeView extends ContentViewBase {
 		
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
 			$mimetype = $this->retrieve(self::MIMETYPE);
-			Common::header('Cache-Control', 'maxage=3600', true); //Fix for IE in SSL 
-			Common::header('Pragma', 'public', true);
-			// This leads to trouuble in IE and Safari
-			// Possibly a gzip-issue?
-			//header('Content-Length: ') . strlen($rendered_content);
+			
+			// GR: Disabled, since this is too generic. Left to app to handle
+			//if (RequestInfo::current()->is_ssl()) {
+			//	Common::header('Cache-Control', 'maxage=3600', true); //Fix for IE in SSL 
+			//}
+			
 			if (strpos($mimetype, 'charset') === false) {
 				$mimetype .= '; charset=' . GyroLocale::get_charset();
 			}			
-			Common::header('Content-Type', $mimetype, true);
+			GyroHeaders::set('Content-Type', $mimetype, true);
 			
 			// Expires Header
 			$ex = $this->retrieve(self::EXPIRES);
 			if ($ex) {
-				if ($ex < GyroDate::ONE_DAY * 3650) {
+				if ($ex < 10 * GyroDate::ONE_YEAR) {
 					// $ex is a duration
 					$ex = time() + $ex;
 				}
-				Common::header('Expires', GyroDate::http_date($ex), true);
+				$this->page_data->get_cache_manager()->set_expiration_datetime($ex);
 			}
 		}
 	}	
 	
+	/**
+	 * Send given File to the browser
+	 * 
+	 * @param string $file Path to file
+	 */
 	public function display_file($file) {
 		if (file_exists($file)) {
 			$modification = filemtime($file);
 			if ($modification) {
-				Common::header('Last-Modified', GyroDate::http_date($modification), true);
+				$this->page_data->get_cache_manager()->set_creation_datetime($modification);
 			}
-			$this->assign('data', file_get_contents($file));
+			
+			// Detect mime type
 			$mime_type = 'application/octect-stream';
 			if (function_exists('finfo_open')) {
 				$handle = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
@@ -115,6 +122,8 @@ class MimeView extends ContentViewBase {
 				}				
 			}
 			$this->assign(self::MIMETYPE, $mime_type);
+
+			$this->assign('data', file_get_contents($file));
 		}
 	}
 }
