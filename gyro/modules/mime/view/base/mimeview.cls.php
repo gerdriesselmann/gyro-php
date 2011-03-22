@@ -20,7 +20,13 @@
  * $view->render();
  * @endcode
  * 
- * Mime views are normally cached, like any other content.
+ * Mime views are normally cached, like any other content. When using a mime view, the according route 
+ * therefor should disable server side caching, but enable it at client side. The simplest way to 
+ * fullfill this is to use the MimeCacheManager. 
+ * 
+ * Not caching on client side may lead to trouble in IE 6 when downloading data with SSL encryption. 
+ * 
+ * @see http://support.microsoft.com/kb/815313/en-us 
  * 
  * @author Gerd Riesselmann
  * @ingroup Mime

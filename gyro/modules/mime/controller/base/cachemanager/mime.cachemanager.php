@@ -1,6 +1,9 @@
 <?php
 /**
  * Caches content client side, but not server side
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup Mime
  */
 class MimeCacheManager extends ConstantCacheManager {
 	/**
