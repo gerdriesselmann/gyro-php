@@ -150,6 +150,13 @@ class ConfigUsermanagement {
 	 * @since 0.5.1
 	 */
 	const PERMANENT_LOGIN_DURATION = 'USER_PERMANENT_LOGIN_DURATION';
+	
+	/**
+	 * CacheHeaderManager policy for logged in users. 
+	 * 
+	 * Class name without CacheHeaderManager, e.g. NoCache for NoCacheCacheHeaderManager
+	 */
+	const CACHEHEADER_CLASS_LOGGEDIN = 'USER_CACHEHEADER_CLASS_LOGGEDIN';
 }
 
 
@@ -179,6 +186,8 @@ Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_ROLE, 'APP_USER_DE
 Config::set_value_from_constant(ConfigUsermanagement::BEHAVIOUR_403, 'APP_USER_403_BEHAVIOUR', 'DENY');
 Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_TYPE', 'md5');
 Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
+
+Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';
