@@ -8,7 +8,13 @@ require_once dirname(__FILE__) . '/constantcachemanager.cls.php';
  * @ingroup Controller
  */
 class NoCacheCacheManager extends ConstantCacheManager {
-	public function __construct() {
-		parent::__construct('', -GyroDate::ONE_DAY);
+	/**
+	 * Constructor
+	 *
+	 * @param int $duration Cache duration , defaults to 2 hours
+	 * @param ICacheHeaderManager $header_manager Defaults to NoCacheCacheHeaderManager
+	 */
+	public function __construct($duration = 7200, $header_manager = false) {
+		parent::__construct('', $duration, $header_manager);
 	}
 }
