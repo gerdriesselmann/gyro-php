@@ -23,7 +23,7 @@ class BinariesBaseController extends ControllerBase {
  	 * @return mixed
  	 */
  	protected function get_route_decorators() {
- 		return array();
+ 		return array(new BinariesCacheManager());
  	}
  	
 	/**
