@@ -210,29 +210,32 @@ class Common {
 	
 	/**
 	 * Checks if Modified-Since is sended and sends a 304, if larger then passed date.
-	 * Returns true if header was send
+	 * 
+	 * Exits application if header was send
 	 */
 	public static function check_not_modified($date) {
-		// Get client headers - Apache only
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
- 			// Split the If-Modified-Since (Netscape < v6 gets this wrong)
- 			$modifiedSince = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
-
- 			// Turn the client request If-Modified-Since into a timestamp
- 			$modifiedSince = strtotime($modifiedSince[0]);
-		} 
-		else {
- 			// Set modified since to 0
- 			$modifiedSince = 0;
+		if ($date) {
+			// Get client headers - Apache only
+			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+	 			// Split the If-Modified-Since (Netscape < v6 gets this wrong)
+	 			$modifiedSince = explode(';', $_SERVER['HTTP_IF_MODIFIED_SINCE']);
+	
+	 			// Turn the client request If-Modified-Since into a timestamp
+	 			$modifiedSince = strtotime($modifiedSince[0]);
+			} 
+			else {
+	 			// Set modified since to 0
+	 			$modifiedSince = 0;
+			}
+	
+			// Compare time the content was last modified with client cache
+			if ($date <= $modifiedSince) {
+	 			// Save on some bandwidth!
+	 			// self::header_restore(array());
+				Common::send_status_code(304); // Not modified
+	 			exit; 		
+	 		}
 		}
-
-		// Compare time the content was last modified with client cache
-		if ($date <= $modifiedSince) {
- 			// Save on some bandwidth!
- 			// self::header_restore(array());
-			Common::send_status_code(304); // Not modified
- 			exit; 		
- 		}
  		
  		return false;
 	}

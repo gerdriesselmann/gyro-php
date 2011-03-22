@@ -129,6 +129,11 @@ class Config {
 	
 	const PAGER_NUM_LINKS = 'PAGER_NUM_LINKS';
 
+	/** CacheHeaderManager policy for cached stuff. Class name without CacheHeaderManager, e.g. FullCache for FullCacheCacheHeaderManager */
+	const CACHEHEADER_CLASS_CACHED = 'CACHEHEADER_CLASS_CACHED';
+	/** CacheHeaderManager policy for uncached stuff. Class name without CacheHeaderManager, e.g. NoCache for NoCacheCacheHeaderManager */
+	const CACHEHEADER_CLASS_UNCACHED = 'CACHEHEADER_CLASS_UNCACHED'; 
+	
 	/**
 	 * Features array
 	 *

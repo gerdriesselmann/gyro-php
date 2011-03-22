@@ -1,5 +1,6 @@
 <?php
 Load::directories('controller/base/cachemanager');
+Load::directories('controller/base/cachemanager/headermanager');
 Load::directories('controller/base/renderdecorators');
 require_once dirname(__FILE__) . '/../renderer/rendererchain.cls.php';
 
