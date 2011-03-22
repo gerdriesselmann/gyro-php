@@ -1,18 +1,26 @@
 <?php
-$mailcmd->set_is_html(true);
-$mailcmd->set_alt_message($self);
+//$mailcmd->set_is_html(true);
+//$mailcmd->set_alt_message($self);
 $link_settings = ActionMapper::get_url('notifications_settings')
 ?>
-Hello,
+<p><b>Hello!</b></p>
 
-Something has happened at <?php print $appname ?>.
+<p>
+Something has happened at <?=$appname?>.
+</p>
 
--- <?php print $notification->get_title();?> --
-<?php print wordwrap(ConverterFactory::decode($notification->get_message(Notifications::DELIVER_MAIL), ConverterFactory::HTML_EX), 65); ?> 
+<p><b><?=$notification->get_title()?></b></p>
+<?php print $notification->get_message(Notifications::DELIVER_MAIL)?> 
 
-To change your notification settings, log in to <?php print $appname ?> and visit
-<?php print ActionMapper::get_url('notifications_settings')?>.  
+<p>
+To change your notification settings, log in to <?=$appname?> and visit
+</p>
 
-Best regards,
-The team of <?php print $appname?>
+<p>
+<a href="<?=$link_settings?>"><?=$link_settings?></a>
+</p>
+
+<p><br />Best regards,</p>
+<p><b>The team of <?=$appname?></b></p>
+
 

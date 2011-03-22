@@ -7,12 +7,12 @@ $link_settings = ActionMapper::get_url('notifications_settings')
 
 <p>
 Sie erhalten diese Benachrichtigung, weil sie tägliche E-Mail-Zusammenfassungen der 
-Ereignisse auf <?php print $appname ?> angefordert haben.
+Ereignisse auf <?=$appname?> angefordert haben.
 </p>
 
 <?php if (count($notifications)): ?>
 	<p>
-	Folgendes ist seit <?php print GyroDate::local_date($settings->digest_last_sent)?> geschehen:
+	Folgendes ist seit <?=GyroDate::local_date($settings->digest_last_sent)?> geschehen:
 	</p>  
 	
 	<ul>
@@ -30,7 +30,7 @@ Ereignisse auf <?php print $appname ?> angefordert haben.
 	</ul>
 <?php else: ?>
 	<p>
-	Seit der letzen Benachrichtigung vom <?php print GyroDate::local_date($settings->digest_last_sent)?> ist 
+	Seit der letzen Benachrichtigung vom <?=GyroDate::local_date($settings->digest_last_sent)?> ist 
 	jedoch nichts passiert.
 	</p>
 <?php endif?> 
