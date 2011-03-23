@@ -37,8 +37,14 @@ class AjaxView extends PageViewBase {
 				$data['error'] = tr('Server error', 'core');
 				break;
 			default:
-				$is_error = false;
-				$data['result'] = $this->page_data->ajax_data;
+				if ($this->page_data->status instanceof Status && $this->page_data->status->is_error()) {
+					$is_error = true;
+					$data['error'] = $this->page_data->status->to_string(Status::OUTPUT_PLAIN);
+				}	
+				else {
+					$is_error = false;
+					$data['result'] = $this->page_data->ajax_data;
+				}
 				break;
 		} 
 		$data['is_error'] = $is_error;
