@@ -60,7 +60,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 		} 		
 		return 
 			$this->start_seperator($this->boundary) .
-			implode($this->start_seperator($this->boundary), $blocks) .
+			implode("\n" . $this->start_seperator($this->boundary), $blocks) .
 			$this->end_seperator($this->boundary);
 	}
 	
@@ -77,7 +77,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	 * Return seperator 
 	 */
 	protected function start_seperator($boundary) {
-		return "\n\n--" . $boundary . "\n";
+		return "--" . $boundary . "\n";
 	}
 	
 	/**
@@ -108,9 +108,8 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 		if ($encoding) {
 			$header[] = 'Content-Transfer-Encoding: ' . $encoding;
 		} 	
-		$header[] = '';
 		
-		$ret = implode("\n", $header) . "\n" . $content;
+		$ret = implode("\n", $header) . "\n\n" . $content;
 		return $ret;
 	}
 	

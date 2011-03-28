@@ -46,7 +46,7 @@ class AlternativeMessageBuilder extends AttachmentsBuilder {
 		$blocks[] = $this->create_block($this->message_builder->get_mail_mime(), false, $this->message_builder->get_body());
 		return 
 			$this->start_seperator($this->boundary) .
-			implode($this->start_seperator($this->boundary), $blocks) .
+			implode("\n" . $this->start_seperator($this->boundary), $blocks) .
 			$this->end_seperator($this->boundary);
 	}	
 }
