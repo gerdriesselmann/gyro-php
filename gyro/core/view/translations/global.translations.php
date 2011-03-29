@@ -76,5 +76,11 @@ function global_load_translations($languages) {
 		'No filter' => array(
 			'de' => 'Filterung aufheben'
 		),
+		'title' => array(
+			'de' => 'Die Überschrift'
+		),
+		'text' => array(
+			'de' => 'Der Inhalt'
+		),
 	);
 }
