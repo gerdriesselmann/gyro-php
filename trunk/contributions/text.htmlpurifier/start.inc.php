@@ -51,7 +51,7 @@
  * 
  * HTML Purifier is released under GNU Lesser General Public License.
  * 
- * The version contained within this module is 4.1.1.
+ * The version contained within this module is 4.2
  * 
  * @see http://htmlpurifier.org/
  *   
