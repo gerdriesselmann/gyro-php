@@ -34,7 +34,16 @@ interface IImageTools {
 	 * 
 	 * @return IImageInformation
 	 */
-	public function crop(IImageInformation $src, $x, $y, $width, $height);	
+	public function crop(IImageInformation $src, $x, $y, $width, $height);
+
+	/**
+	 * Fit image in given height and width. If image is larger than given size, it
+	 * will be downsampled. If it is smaller, it will be untouched. Background
+	 * is filled with $backgroundcolor 
+	 * 
+	 * @return IImageInformation False on failure
+	 */
+	public function fit(IImageInformation $src, $width, $height, $backgroundcolor = 0xFFFFFF);
 	
 	/**
 	 * Add a Watermark

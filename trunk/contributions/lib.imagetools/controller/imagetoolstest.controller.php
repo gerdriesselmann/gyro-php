@@ -13,7 +13,7 @@ class ImagetoolstestController extends ControllerBase {
 		if (Config::has_feature(ConfigImageTools::IS_TEST_CONTROLLER_ENABLED)) {
 			$ret = array(
 				new ExactMatchRoute('imagetools/test/', $this, 'imagetools_test_index', new NoCacheCacheManager()),
-				new ParameterizedRoute('imagetools/test/image-{type:e:src,resize,crop,watermark}', $this, 'imagetools_test_image', new NoCacheCacheManager())
+				new ParameterizedRoute('imagetools/test/image-{type:e:src,resize,crop,watermark,fit}', $this, 'imagetools_test_image', new NoCacheCacheManager())
 			);
 		}
 		return $ret;
@@ -75,6 +75,9 @@ class ImagetoolstestController extends ControllerBase {
 		
 		$watermark = $tools->watermark($src);
 		$watermark->save_to_file($tmp_dir . 'imgtooltest-watermark');
+
+		$resized = $tools->fit($src, 300, 100);
+		$resized->save_to_file($tmp_dir . 'imgtooltest-fit');
 	}
 	
 	/**

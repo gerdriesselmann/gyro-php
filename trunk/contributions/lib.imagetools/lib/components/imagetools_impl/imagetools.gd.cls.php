@@ -74,6 +74,36 @@ class ImageToolsGD implements IImageTools {
 	}
 	
 	/**
+	 * Fit image in given height and width. If image is larger than given size, it
+	 * will be downsampled. If it is smaller, it will be untouched. Background
+	 * is filled with $backgroundcolor 
+	 * 
+	 * @return IImageInformation False on failure
+	 */
+	public function fit(IImageInformation $src, $width, $height, $backgroundcolor = 0xFFFFFF) {
+		$handle = imagecreatetruecolor($width, $height);
+		imagefill($handle, 0, 0, $backgroundcolor);
+		
+		$w_src = $src->get_width();
+		$h_src = $src->get_height();
+		$w_target = min($w_src, $width);
+		$h_target = min($h_src, $height);
+		
+		$x_ratio = $w_target / $w_src;
+		$y_ratio = $h_target / $h_src;
+		$ratio = min($x_ratio, $y_ratio);
+		
+		$w_target = $w_src * $ratio;
+		$h_target = $h_src * $ratio;
+		
+		$x_target = ($width - $w_target) / 2;
+		$y_target = ($height - $h_target) / 2; 
+		
+		imagecopyresampled($handle, $src->handle, $x_target, $y_target, 0, 0, $w_target, $h_target, $w_src, $h_src);
+		return new ImageInformationGD($handle, $src->type);
+	}	
+	
+	/**
 	 * Add a Watermark
 	 * 
 	 * @param IImageInformation $src Image to add watermark to
