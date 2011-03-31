@@ -16,7 +16,7 @@
  * 
  * To define the version of JQuery to use, you must specify a version to use by defining
  * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, "1.4" for JQuery 1.4.4,
- * and "1.5" for JQuery 1.5.1. The default is "1.5".
+ * and "1.5" for JQuery 1.5.2. The default is "1.5".
  * 
  * @attention The default version policy changed to "newest", so if you do not define a jquery version,
  *            you will automaticalyy get the latest release
