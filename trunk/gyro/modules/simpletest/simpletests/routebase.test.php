@@ -32,7 +32,7 @@ class RouteBaseTest extends GyroUnitTestCase {
 		$data->set_path('some/url/to/process');
 		$token->initialize($data);
 		
-		$this->assertNull($data->get_cache_manager());
+		$this->assertNotNull($data->get_cache_manager());
 		$this->assertEqual('to', $data->get_pathstack()->current());
 	}
 
