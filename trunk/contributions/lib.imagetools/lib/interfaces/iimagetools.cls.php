@@ -28,6 +28,15 @@ interface IImageTools {
 	 * @return IImageInformation False on failure
 	 */
 	public function resize(IImageInformation $src, $width, $height);
+
+	/**
+	 * Resize given image. Image is not streched, so ratio is not changed.
+	 * 
+	 * Resizing an image of 200 x 100 to 100 x 100 will result in a image of size 100 x 50
+	 * 
+	 * @return IImageInformation False on failure
+	 */
+	public function resize_fit(IImageInformation $src, $width, $height);
 	
 	/**
 	 * Cuts portion of image
@@ -38,8 +47,8 @@ interface IImageTools {
 
 	/**
 	 * Fit image in given height and width. If image is larger than given size, it
-	 * will be downsampled. If it is smaller, it will be untouched. Background
-	 * is filled with $backgroundcolor 
+	 * will be downsampled. If it is smaller, it will be untouched. Ratio is not changed.
+	 * Background is filled with $backgroundcolor 
 	 * 
 	 * @return IImageInformation False on failure
 	 */
