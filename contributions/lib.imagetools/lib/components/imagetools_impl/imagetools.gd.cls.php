@@ -63,6 +63,21 @@ class ImageToolsGD implements IImageTools {
 	}
 	
 	/**
+	 * Resize given image. Image is not streched, so ratio is not changed.
+	 * 
+	 * Resizing an image of 200 x 100 to 100 x 100 will result in a image of size 100 x 50
+	 * 
+	 * @return IImageInformation False on failure
+	 */
+	public function resize_fit(IImageInformation $src, $width, $height) {
+		Load::components('imagetoolscalculator');
+		$rect = ImageToolsCalculator::fit($src->get_width(), $src->get_height(), $width, $height);
+		$handle = imagecreatetruecolor($rect->width, $rect->height);
+		imagecopyresampled($handle, $src->handle, 0, 0, 0, 0, $rect->width, $rect->height, $src->get_width(), $src->get_height());
+		return new ImageInformationGD($handle, $src->type);
+	}	
+	
+	/**
 	 * Cuts portion of image
 	 * 
 	 * @return IImageInformation
@@ -84,22 +99,11 @@ class ImageToolsGD implements IImageTools {
 		$handle = imagecreatetruecolor($width, $height);
 		imagefill($handle, 0, 0, $backgroundcolor);
 		
-		$w_src = $src->get_width();
-		$h_src = $src->get_height();
-		$w_target = min($w_src, $width);
-		$h_target = min($h_src, $height);
+		Load::components('imagetoolscalculator');
+		$rect = ImageToolsCalculator::fit($src->get_width(), $src->get_height(), $width, $height);
+		$rect = ImageToolsCalculator::center($rect->width, $rect->height, $width, $height);
 		
-		$x_ratio = $w_target / $w_src;
-		$y_ratio = $h_target / $h_src;
-		$ratio = min($x_ratio, $y_ratio);
-		
-		$w_target = $w_src * $ratio;
-		$h_target = $h_src * $ratio;
-		
-		$x_target = ($width - $w_target) / 2;
-		$y_target = ($height - $h_target) / 2; 
-		
-		imagecopyresampled($handle, $src->handle, $x_target, $y_target, 0, 0, $w_target, $h_target, $w_src, $h_src);
+		imagecopyresampled($handle, $src->handle, $rect->x, $rect->y, 0, 0, $rect->width, $rect->height, $src->get_width(), $src->get_height());
 		return new ImageInformationGD($handle, $src->type);
 	}	
 	

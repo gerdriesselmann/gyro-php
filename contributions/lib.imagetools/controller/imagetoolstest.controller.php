@@ -13,7 +13,7 @@ class ImagetoolstestController extends ControllerBase {
 		if (Config::has_feature(ConfigImageTools::IS_TEST_CONTROLLER_ENABLED)) {
 			$ret = array(
 				new ExactMatchRoute('imagetools/test/', $this, 'imagetools_test_index', new NoCacheCacheManager()),
-				new ParameterizedRoute('imagetools/test/image-{type:e:src,resize,crop,watermark,fit}', $this, 'imagetools_test_image', new NoCacheCacheManager())
+				new ParameterizedRoute('imagetools/test/image-{type:e:src,resize,crop,watermark,fit,resize-fit}', $this, 'imagetools_test_image', new NoCacheCacheManager())
 			);
 		}
 		return $ret;
@@ -70,6 +70,9 @@ class ImagetoolstestController extends ControllerBase {
 		$resized = $tools->resize($src, 300, 100);
 		$resized->save_to_file($tmp_dir . 'imgtooltest-resize');
 
+		$resized = $tools->resize_fit($src, 300, 100);
+		$resized->save_to_file($tmp_dir . 'imgtooltest-resize-fit');
+		
 		$resized = $tools->crop($src, ($src->get_width() - 100) / 2, ($src->get_height() - 100) / 2, 100, 100);
 		$resized->save_to_file($tmp_dir . 'imgtooltest-crop');		
 		

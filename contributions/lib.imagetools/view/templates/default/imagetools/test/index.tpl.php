@@ -4,7 +4,6 @@ $page_data->head->title = $title;
 $page_data->breadcrumb = array($title);
 $page_data->head->robots_index = ROBOTS_NOINDEX;
 ?>
-
 <h1><?=$title?></h1>
 
 <form enctype="multipart/form-data" action="<?=ActionMapper::get_path('imagetools_test_index')?>" method="post">
@@ -18,6 +17,9 @@ Upload an image to see imagetool's results: <input name="upload" type="file" /><
 
 <p>This is file resized to 300x100: </p>
 <div><img src="<?=ActionMapper::get_path('imagetools_test_image', array('type' => 'resize'))?>" alt="Resized to 300x100" /></div>
+
+<p>This is file resized-fitted to 300x100: </p>
+<div><img src="<?=ActionMapper::get_path('imagetools_test_image', array('type' => 'resize-fit'))?>" alt="Resized-Fitted to 300x100" /></div>
 
 <p>This is file fitted to 300x100: </p>
 <div><img src="<?=ActionMapper::get_path('imagetools_test_image', array('type' => 'fit'))?>" alt="Fitted to 300x100" /></div>
