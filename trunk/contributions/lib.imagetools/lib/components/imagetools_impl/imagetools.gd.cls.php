@@ -41,13 +41,13 @@ class ImageToolsGD implements IImageTools {
 	 */
 	public function create_from_binary_data($data) {
 		$ret = false;
-		$tmp = tempnam(Config::get_value(Config::TEMP_DIR), 'img');
+		$tmp = tempnam(Config::get_value(Config::TEMP_DIR), 'imgi');
 		if ($tmp) {
 			if (file_put_contents($tmp, $data) !== false) {
 				$ret = $this->create_from_file($tmp);
 			}
-			unlink($tmp);
 		}
+		unlink($tmp);
 		return $ret;
 	}
 	
@@ -170,11 +170,10 @@ class ImageInformationGD implements IImageInformation {
 	public function get_binary_data() {
 		$ret = false;
 		$tmp = tempnam(Config::get_value(Config::TEMP_DIR), 'imgo');
-		$tmp .= '.' . $this->get_extension();
 		if ($this->save_to_file($tmp, false)) {
 			$ret = file_get_contents($tmp);
-			unlink($tmp);
 		}
+		unlink($tmp);
 		return $ret;
 	}
 	
