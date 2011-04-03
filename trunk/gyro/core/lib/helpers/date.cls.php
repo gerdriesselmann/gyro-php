@@ -367,6 +367,38 @@ class GyroDate {
 	}
 	
 	/**
+	 * Returns day of given date
+	 * 
+	 * @param date $date
+	 * @return int 0 on error
+	 */
+	public static function get_day($date) {
+		return intval(date('j', $date));
+	}
+	
+	/**
+	 * Returns number of month of given date
+	 * 
+	 * 1 = January, 2 = February etc
+	 * 
+	 * @param date $date
+	 * @return int 0 on error
+	 */
+	public static function get_month($date) {
+		return intval(date('n', $date));
+	}
+	
+	/**
+	 * Returns year of given date
+	 * 
+	 * @param date $date
+	 * @return int 0 on error
+	 */
+	public static function get_year($date) {
+		return intval(date('Y', $date));
+	}
+	
+	/**
 	 * Returns true if given date is a holiday. 
 	 * 
 	 * Attention: This method will not necessarily recognize Sundays as holidays! It only 
