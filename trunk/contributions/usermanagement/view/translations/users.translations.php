@@ -23,6 +23,18 @@ function users_load_translations($languages) {
 			'en' => 'Deleted',
 			'de' => 'Gelöscht'
 		),	
+		'CONFIRMED' => array(
+			'en' => 'Confirmed',
+			'de' => 'Bestätitgt'
+		),	
+		'EXPIRED' => array(
+			'en' => 'Expired',
+			'de' => 'Abgelaufen'
+		),	
+		'BOUNCED' => array(
+			'en' => 'Bounced',
+			'de' => 'Unzustellbar'
+		),	
 		'E-mail' => array(
 			'de' => 'E-Mail',
 			'pt' => 'e-mail'
@@ -343,7 +355,7 @@ function users_load_translations($languages) {
 			'pt' => 'gerenciar conteúdo'
 		),
 		'User Menu' => array(
-			'de' => 'Benutzermenu',
+			'de' => 'Benutzermenü',
 			'pt' => 'menu do usuário'
 		),
 		'You have been logged out' => array(
