@@ -43,6 +43,9 @@ class ConfirmUserDataRenderDecorator extends RenderDecoratorBase {
 	protected function confirm_data_if_required($user, PageData $page_data) {
 		if ($user->confirmed_email() == false || $user->confirmed_tos() == false) {
 			if (!$this->is_allowed_route($page_data->router->get_route_id())) {
+				if ($page_data->status) {
+					$page_data->status->persist();
+				}
 				Url::create(ActionMapper::get_url('users_confirm'))->redirect(Url::TEMPORARY);
 				exit;
 			}
