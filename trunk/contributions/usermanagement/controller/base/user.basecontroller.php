@@ -64,6 +64,7 @@ class UserBaseController extends ControllerBase {
  		}
  		if ($this->has_feature(self::SUPPORT_CONFIRM_DATA)) {
  			$ret['confirm'] = new ExactMatchRoute('https://user/confirm', $this, 'users_confirm', new AccessRenderDecorator());
+ 			$ret['confirm_mail'] = new ExactMatchRoute('https://user/confirm/mail', $this, 'users_confirm_mail', new AccessRenderDecorator());
  		}
  		return $ret;
  	}
@@ -561,11 +562,22 @@ class UserBaseController extends ControllerBase {
 		}
 		
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm', $page_data);
+ 		$this->prepare_confirm_view($view, $formhandler, $user);
+		$view->render();
+	}
+	
+	/**
+	 * Prepare confirmation view
+	 * 
+	 * @param IView $view
+	 * @param FormHandler $formhandler
+	 * @param DAOUsers $user
+	 */
+	protected function prepare_confirm_view($view, $formhandler, $user) {
 		$formhandler->prepare_view($view, $user);
 		$view->assign('user', $user);
 		$view->assign('do_tos', $this->has_feature(self::SUPPORT_TOS) && !$user->confirmed_tos());
-		$view->assign('do_email', !$user->confirmed_email());
-		$view->render();
+		$view->assign('do_email', !$user->confirmed_email());		
 	}
 	
  	/**
@@ -580,26 +592,7 @@ class UserBaseController extends ControllerBase {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
 			$post = $page_data->get_post();
-			// Check for TOS
-			if($this->has_feature(self::SUPPORT_TOS) && !$user->confirmed_tos() && !$post->get_item('tos')) {
-				$err->append(tr('Please agree to the Terms of Service.', 'users'));				
-			}
-			// Validate
-			$params = $user->unset_internals($post->get_array());
-			$params['tos_version'] = Config::get_value(ConfigUsermanagement::TOS_VERSION);
-			$err->merge($this->validate_password($params));
-			
-			// If email is not validated, validate it
-			$email = $post->get_item('email');
-			if (!$user->confirmed_email() && ($user->email == $email) && Validation::is_email($email)) {
-				// Send email validation request
-				$params = array(
-					'id_item' => $user->id,
-					'action' => 'validateemail',
-					'data' => $email
-				);
-				$validate_email_cmd = CommandsFactory::create_command('confirmations', 'create', $params);
-			}
+			$err->merge($this->process_confirm_data($post->get_array(), $post->get_item('tos'), $user, $validate_email_cmd));
 			
 			// Update
 			if ($err->is_ok()) {
@@ -612,6 +605,46 @@ class UserBaseController extends ControllerBase {
 		}
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
  	}
+ 	
+ 	protected function process_confirm_data(&$params, $tos, $user, &$validate_email_cmd) {
+ 		$err = new Status();
+ 		
+		// Check for TOS
+		if($this->has_feature(self::SUPPORT_TOS) && !$user->confirmed_tos() && !$tos) {
+			$err->append(tr('Please agree to the Terms of Service.', 'users'));				
+		}
+		// Validate
+		$params = $user->unset_internals($params);
+		$params['tos_version'] = Config::get_value(ConfigUsermanagement::TOS_VERSION);
+		$err->merge($this->validate_password($params));
+		
+		// If email is not validated, validate it
+		$email = Arr::get_item($params, 'email', '');
+		if (!$user->confirmed_email() && ($user->email == $email) && Validation::is_email($email)) {
+			// Send email validation request
+			$params = array(
+				'id_item' => $user->id,
+				'action' => 'validateemail',
+				'data' => $email
+			);
+			Session::push('user_confirm_mail_send', true);
+			$validate_email_cmd = CommandsFactory::create_command('confirmations', 'create', $params);
+		}
+		
+ 		return $err;
+ 	}
+
+	/**
+	 * Showe page stating email verification mail has been sent 
+	 */
+	public function action_users_confirm_mail($page_data) {
+ 		// User exists, since Route is for logged in only
+		Users::reload_current();
+		$user = Users::get_current_user();
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm_mail', $page_data);
+ 		$view->assign('user' , $user);
+ 		$view->render();
+	} 	
  	
 	/**
 	 * List all user data

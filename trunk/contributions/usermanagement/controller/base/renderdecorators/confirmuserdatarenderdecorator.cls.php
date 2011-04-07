@@ -46,7 +46,12 @@ class ConfirmUserDataRenderDecorator extends RenderDecoratorBase {
 				if ($page_data->status) {
 					$page_data->status->persist();
 				}
-				Url::create(ActionMapper::get_url('users_confirm'))->redirect(Url::TEMPORARY);
+				if (Session::pull('user_confirm_mail_send')) {
+					Url::create(ActionMapper::get_url('users_confirm_mail'))->redirect(Url::TEMPORARY);
+				}
+				else {
+					Url::create(ActionMapper::get_url('users_confirm'))->redirect(Url::TEMPORARY);
+				}
 				exit;
 			}
 		}
@@ -61,6 +66,7 @@ class ConfirmUserDataRenderDecorator extends RenderDecoratorBase {
 	protected function is_allowed_route($route_id) {
 		$allowed = self::get_allowed_route_ids();
 		$allowed[] = 'UsersController::users_confirm';
+		$allowed[] = 'UsersController::users_confirm_mail';
 		$allowed[] = 'UsersController::logout';
 		return in_array($route_id, $allowed);
 	}
