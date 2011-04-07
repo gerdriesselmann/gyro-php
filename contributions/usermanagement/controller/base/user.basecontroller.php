@@ -16,6 +16,15 @@ class UserBaseController extends ControllerBase {
 	const ALLOW_LOGIN = 8;
 	const SUPPORT_DASHBOARD = 16;
 	
+	/**
+	 * Force user to confirm data, if TOS or email is not up to date
+	 */
+	const SUPPORT_CONFIRM_DATA = 32;
+	/**
+	 * Display a TOS checkbox on register
+	 */
+	const SUPPORT_TOS = 64;
+	
 	const ALL_FEATURES = 255;
 	
 	/**
@@ -53,6 +62,9 @@ class UserBaseController extends ControllerBase {
  		if ($this->has_feature(self::SUPPORT_DASHBOARD)) {
  			$ret['dashboard'] = new ExactMatchRoute('https://user', $this, 'dashboard', new AccessRenderDecorator());
  		}
+ 		if ($this->has_feature(self::SUPPORT_CONFIRM_DATA)) {
+ 			$ret['confirm'] = new ExactMatchRoute('https://user/confirm', $this, 'users_confirm', new AccessRenderDecorator());
+ 		}
  		return $ret;
  	}
  	
@@ -62,7 +74,7 @@ class UserBaseController extends ControllerBase {
  	 * @return int
  	 */
 	protected function get_features_policy() {
-		return self::ALL_FEATURES;
+		return self::ALL_FEATURES ^ self::SUPPORT_TOS;
 	}
 	
 	protected function has_feature($feature) {
@@ -310,6 +322,7 @@ class UserBaseController extends ControllerBase {
 
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/register', $page_data);
  		$view->assign('feature_resend', $this->has_feature(self::ALLOW_RESEND_REGISTRATION));
+ 		$view->assign('feature_tos', $this->has_feature(self::SUPPORT_TOS));
 
 		$formhandler->prepare_view($view);
  		$view->render();
@@ -532,7 +545,74 @@ class UserBaseController extends ControllerBase {
 		}
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
  	}
+ 	
+	/**
+	 * Confirm account settings
+	 */
+	public function action_users_confirm($page_data) {
+ 		$page_data->in_history = false;
+		
+ 		// User exists, since Route is for logged in only
+		Users::reload_current();
+		$user = Users::get_current_user();
+		$formhandler = new FormHandler('users_confirm');
+		if ($page_data->has_post_data()) {
+			$this->do_confirm($formhandler, $user, $page_data);
+		}
+		
+ 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm', $page_data);
+		$formhandler->prepare_view($view, $user);
+		$view->assign('user', $user);
+		$view->assign('do_tos', $this->has_feature(self::SUPPORT_TOS) && !$user->confirmed_tos());
+		$view->assign('do_email', !$user->confirmed_email());
+		$view->render();
+	}
 	
+ 	/**
+ 	 * Change account data of current user
+ 	 * 
+ 	 * @param FormHandler $formhandler
+ 	 * @param DAOUsers $user
+ 	 * @param PageData $page_data
+ 	 */
+ 	protected function do_confirm($formhandler, $user, $page_data) {
+ 		$validate_email_cmd = false;
+		$err = $formhandler->validate();
+		if ($err->is_ok()) {
+			$post = $page_data->get_post();
+			// Check for TOS
+			if($this->has_feature(self::SUPPORT_TOS) && !$user->confirmed_tos() && !$post->get_item('tos')) {
+				$err->append(tr('Please agree to the Terms of Service.', 'users'));				
+			}
+			// Validate
+			$params = $user->unset_internals($post->get_array());
+			$params['tos_version'] = Config::get_value(ConfigUsermanagement::TOS_VERSION);
+			$err->merge($this->validate_password($params));
+			
+			// If email is not validated, validate it
+			$email = $post->get_item('email');
+			if (!$user->confirmed_email() && ($user->email == $email) && Validation::is_email($email)) {
+				// Send email validation request
+				$params = array(
+					'id_item' => $user->id,
+					'action' => 'validateemail',
+					'data' => $email
+				);
+				$validate_email_cmd = CommandsFactory::create_command('confirmations', 'create', $params);
+			}
+			
+			// Update
+			if ($err->is_ok()) {
+				$err->merge(Users::update($user, $params));
+			}			 
+			
+			if ($validate_email_cmd && $err->is_ok()) {
+				$err->merge($validate_email_cmd->execute());	
+			}
+		}
+		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
+ 	}
+ 	
 	/**
 	 * List all user data
 	 */
@@ -655,6 +735,10 @@ class UserBaseController extends ControllerBase {
 			$pwd2 = $post->get_item('pwd2');
 			if ($pwd1 != $pwd2) {
 				$err->append(tr('Password and password confirmation are different', 'users'));
+			}
+			
+			if ($this->has_feature(self::SUPPORT_TOS) && !$post->get_item('tos')) {
+				$err->append(tr('Please agree to the Terms of Service.', 'users'));
 			}
 			
 			if ($err->is_ok()) {

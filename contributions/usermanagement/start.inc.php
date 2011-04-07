@@ -157,8 +157,14 @@ class ConfigUsermanagement {
 	 * Class name without CacheHeaderManager, e.g. NoCache for NoCacheCacheHeaderManager
 	 */
 	const CACHEHEADER_CLASS_LOGGEDIN = 'USER_CACHEHEADER_CLASS_LOGGEDIN';
+	
+	/**
+	 * Current version of TOS. Only integer values allowed.
+	 * 
+	 * 0 means there are no TOS, and this is the default 
+	 */
+	const TOS_VERSION = 'USER_TOS_VERSION';
 }
-
 
 
 if (!defined('USER_ROLE_USER')) define('USER_ROLE_USER', 'user');
@@ -186,7 +192,7 @@ Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_ROLE, 'APP_USER_DE
 Config::set_value_from_constant(ConfigUsermanagement::BEHAVIOUR_403, 'APP_USER_403_BEHAVIOUR', 'DENY');
 Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_TYPE', 'md5');
 Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
-
+Config::set_value_from_constant(ConfigUsermanagement::TOS_VERSION, 'APP_USER_TOS_VERSION', 0);
 Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
 
 // We add new variables to each view...

@@ -12,7 +12,10 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 	public $name;
 	public $password;                        // string(50)  
 	public $hash_type;
-	public $email;                           // string(100)  
+	public $email;                           // string(100)
+	public $emailconfirmationdate; 
+	public $emailstatus;
+	public $tos_version; 
 	public $status;                          // string(11)  not_null enum
 	
 	// now define your table structure.
@@ -26,6 +29,9 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 				new DBFieldTextEmail('email', null, DBField::NOT_NULL),
 				new DBFieldText('password', 100, null, DBField::NOT_NULL),
 				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL | DBField::INTERNAL),
+				new DBFieldDateTime('emailconfirmationdate', null, DBField::NONE | DBField::INTERNAL), 
+				new DBFieldEnum('emailstatus', array_keys(Users::get_email_statuses()), Users::EMAIL_STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
+				new DBFieldInt('tos_version', 0, DBFieldInt::UNSIGNED | DBField::NOT_NULL | DBField::INTERNAL), 
 				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
 				), $this->get_timestamp_field_declarations()
 			),
@@ -80,7 +86,24 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 		$src .= $this->name;
 		return sha1($src);
 	}
- 	
+
+	/**
+	 * Returns true, if the user confirmed the latest tos
+	 * 
+	 * @return bool
+	 */
+	public function confirmed_tos() {
+		return $this->tos_version >= Config::get_value(ConfigUsermanagement::TOS_VERSION);
+	}
+	
+	/**
+	 * Returns true if the email is confirmed
+	 * 
+	 * @return bool
+	 */
+	public function confirmed_email() {
+		return $this->emailstatus == Users::EMAIL_STATUS_CONFIRMED;
+	}
  	
 	// ***********************************************
 	// Self-Describing

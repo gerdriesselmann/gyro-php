@@ -20,6 +20,7 @@ class CreateaccountConfirmationHandler extends ConfirmationHandlerBase {
 			if ($user) {
 				$cmd = CommandsFactory::create_command($user, 'status', Users::STATUS_ACTIVE);
 				$ret = $cmd->execute();
+				$ret->merge(Users::confirm_email($user));
 				if ($ret->is_ok()) {
 					return new Message(tr('Your registration has been confirmed', 'users'));
 				}

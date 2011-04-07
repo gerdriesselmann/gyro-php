@@ -77,6 +77,10 @@ function users_load_translations($languages) {
 			'de' => 'Neue E-Mail-Adresse bestätigen',
 			'pt' => 'Confirmar endereço eletrônico'
 		),
+		'Confirm your e-mail address' => array(
+			'de' => 'E-Mail-Adresse bestätigen',
+			'pt' => 'Confirmar endereço eletrônico'
+		),
 		'Administer catalogue' => array(
 			'de' => 'Katalog verwalten',
 			'pt' => 'Administrar o catálogo'
@@ -225,6 +229,9 @@ function users_load_translations($languages) {
 		'Edit your account settings' => array(
 			'de' => 'Benutzername und Password ändern',
 			'pt' => 'Alterar nome de usuário e senha'
+		),	
+		'Confirm your account settings' => array(
+			'de' => 'Zugangsdaten bestätigen',
 		),	
 		'An user with this email address already exists' => array (
 			'de' => 'Es existiert bereits ein Benutzer mit dieser E-Mail-Adresse.',
@@ -447,6 +454,12 @@ function users_load_translations($languages) {
 		),
 		'Please provide a password for login' => array(
 			'de' => 'Bitte geben Sie ein Passwort ein.'
+		),
+		'Please agree to the Terms of Service.' => array(
+			'de' => 'Bitte stimmen Sie den Allgemeinen Geschäftsbedingungen zu.'
+		),
+		'Your e-mail address has been successfully validated' => array(
+			'de' => 'Ihre E-Mail-Adresse wurde erfolgreich bestätigt.'
 		)
 	);
 }

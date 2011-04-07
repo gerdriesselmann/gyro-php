@@ -12,6 +12,11 @@ class Users {
 	const STATUS_DELETED = 'DELETED';
 	const STATUS_DISABLED = 'DISABLED';
 	const STATUS_UNCONFIRMED = 'UNCONFIRMED';
+
+	const EMAIL_STATUS_UNCONFIRMED = 'UNCONFIRMED';
+	const EMAIL_STATUS_CONFIRMED = 'CONFIRMED';
+	const EMAIL_STATUS_EXPIRED = 'EXPIRED';
+	const EMAIL_STATUS_BOUNCED = 'BOUNCED';
 	
 	/**
 	 * Returns the user logged in or null, if no user is logged in
@@ -106,6 +111,20 @@ class Users {
 			self::STATUS_DELETED => tr(self::STATUS_DELETED, 'users'),
 			self::STATUS_DISABLED => tr(self::STATUS_DISABLED, 'users'),
 			self::STATUS_UNCONFIRMED => tr(self::STATUS_UNCONFIRMED, 'users'),
+		);
+	}
+	
+	/**
+	 * Return all possible email status
+	 * 
+	 * @return array
+	 */
+	public static function get_email_statuses() {
+		return array(
+			self::EMAIL_STATUS_UNCONFIRMED => tr(self::EMAIL_STATUS_UNCONFIRMED, 'users'),
+			self::EMAIL_STATUS_CONFIRMED => tr(self::EMAIL_STATUS_CONFIRMED, 'users'),
+			self::EMAIL_STATUS_EXPIRED => tr(self::EMAIL_STATUS_EXPIRED, 'users'),
+			self::EMAIL_STATUS_BOUNCED => tr(self::EMAIL_STATUS_BOUNCED, 'users'),
 		);
 	}
 	
@@ -402,5 +421,15 @@ class Users {
 		$algo = self::create_hash_algorithm($hash_type);
 		return $algo->hash($source);
 	}
-	
+
+	/**
+	 * Confirm the email address of given user
+	 * 
+	 * @param DAOUsers $user
+	 * @return Status
+	 */
+	public static function confirm_email($user) {
+		$cmd = CommandsFactory::create_command($user, 'confirmemail', false);
+		return $cmd->execute();
+	}
 }
