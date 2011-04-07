@@ -639,6 +639,7 @@ class UserBaseController extends ControllerBase {
 	 */
 	public function action_users_confirm_mail($page_data) {
  		// User exists, since Route is for logged in only
+ 		$page_data->in_history = false;
 		Users::reload_current();
 		$user = Users::get_current_user();
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm_mail', $page_data);
