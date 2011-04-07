@@ -81,6 +81,7 @@ class CreateUsersBaseCommand extends CommandChain {
 	 * @return array
 	 */
 	protected function preprocess_params($params) {
+		$params['tos_version'] = Config::get_value(ConfigUsermanagement::TOS_VERSION);
 		// Encrypt password
 		$params['hash_type'] = Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5');
 		$this->preprocess_hash_password($params);

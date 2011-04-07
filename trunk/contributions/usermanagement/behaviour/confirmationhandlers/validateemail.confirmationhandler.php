@@ -1,11 +1,11 @@
 <?php
 /**
- * Confirm onetime login (lost password)
+ * Confirm current email address
  * 
  * @author Gerd Riesselmann
  * @ingroup Usermanagement
  */
-class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
+class ValidateemailConfirmationHandler extends ConfirmationHandlerBase  {
 	/**
 	 * Template method to be overloaded by subclasses to do what should be done
 	 * on successfull confirmation
@@ -18,16 +18,12 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 		if ($success == self::SUCCESS) {
 			$user = Users::get($confirmation->id_item);
 			if ($user && $user->is_active()) {
-				Users::confirm_email($user);
-				if (Users::do_login($user)) {
-					$msg = new Message(tr('You have been automatically logged in. You now can change your password.', 'users'));
-					$msg->persist();
-					$redirect = ActionMapper::get_url('edit_self', $user); 
-					Url::create($redirect)->redirect();
-					exit;					
-				}
-				else {
-					return new Status(tr('Automatically login in failed', 'users'));
+				$cmd = CommandsFactory::create_command($user, 'confirmemail', $confirmation->data);
+				$ret = $cmd->execute();
+				if ($ret->is_ok()) {
+					return new Message(tr('Your e-mail address has been successfully validated', 'users'));
+				} else {
+					return $ret;
 				}
 			}
 			else {
@@ -38,6 +34,7 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 			return parent::do_confirm($confirmation, $success);
 		}
 	}
+	
 	
 	/**
 	 * Template method to be overloaded by subclasses to do what should be done
@@ -54,18 +51,17 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 		if ($user) {
 			Load::commands('generics/mail');
 			$cmd = new MailCommand(
-				tr('One time login', 'users'),
-				$user->email,
-				'users/mail/onetimelogin',
+				tr('Confirm your e-mail address', 'users'),
+				$confirmation->data,
+				'users/mail/validateemail',
 				array('confirmation' => $confirmation)
 			);
 			$ret->merge($cmd->execute());
 		}
 		else {
-			$ret->append(tr('Unkown User set on one time login confirmation', 'users'));	
+			$ret->append(tr('Unkown User set on email validation confirmation', 'users'));	
 		}
 		
 		return $ret;
-	}		
-	
+	}			
 }

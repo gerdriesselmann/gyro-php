@@ -17,4 +17,8 @@
 <?php if ($feature_resend): ?>
 <p><?print WidgetActionLink::output(tr('Registered but got no e-mail?', 'users'), 'resend_registration_mail'); ?></p>
 <?php endif; ?>
+
+<?php if ($feature_tos): ?>
+<?php gyro_include_template('users/inc/toswidgets')?>
+<?php endif; ?>
 </fieldset>

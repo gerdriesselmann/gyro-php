@@ -18,9 +18,13 @@ class ChangeemailConfirmationHandler extends ConfirmationHandlerBase  {
 		if ($success == self::SUCCESS) {
 			$user = Users::get($confirmation->id_item);
 			if ($user && $user->is_active()) {
-				$user->email = $confirmation->data;
-				$user->update();
-				return new Message(tr('Your e-mail address has been changed', 'users'));
+				$cmd = CommandsFactory::create_command($user, 'confirmemail', $confirmation->data);
+				$ret = $cmd->execute();
+				if ($ret->is_ok()) {
+					return new Message(tr('Your e-mail address has been changed', 'users'));
+				} else {
+					return $ret;
+				}
 			}
 			else {
 				return new Status(tr('No matching user account was found', 'users'));
