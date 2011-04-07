@@ -34,6 +34,12 @@ class MarkreadNotificationsCommand extends CommandChain {
 			Arr::clean($update_params, $this->get_params());
 			$this->append(CommandsFactory::create_command($notification, 'status', Notifications::STATUS_READ));
 			$this->append(CommandsFactory::create_command($notification, 'update', $update_params));
+			
+			// Confirm email, if click came from email 
+			if ($update_params['read_through'] == Notifications::READ_MAIL) {
+				$user = $notification->get_user();
+				Users::confirm_email($user);
+			}
 		}
 		return $ret;
 	}
