@@ -642,9 +642,14 @@ class UserBaseController extends ControllerBase {
  		$page_data->in_history = false;
 		Users::reload_current();
 		$user = Users::get_current_user();
-		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm_mail', $page_data);
- 		$view->assign('user' , $user);
- 		$view->render();
+		if ($user->confirmed_email()) {
+			History::go_to(0);
+		}
+		else {
+			$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/confirm_mail', $page_data);
+	 		$view->assign('user' , $user);
+	 		$view->render();
+		}
 	} 	
  	
 	/**

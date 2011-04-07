@@ -464,8 +464,8 @@ function users_load_translations($languages) {
 		'Waiting for e-mail verification' => array(
 			'de' => 'E-Mail-Bestätigung steht noch aus'
 		),
-		'An e-mail has been send to <strong>%email</strong>. Please <strong>click the link inside the mail</strong> to confirm your e-mail address.' => array(
-			'de' => 'Es wurde eine E-Mail an die Adress <strong>%email</strong> geschickt. Bitte <strong>klicken Sie auf den Link in der Mail</strong>, um die E-Mail-Adresse zu bestätigen.'
+		'An e-mail has been send to <strong>%email</strong>. Please <strong>click the link inside the mail</strong> to confirm your e-mail address. <strong>Refresh this page</strong> afterwards.' => array(
+			'de' => 'Es wurde eine E-Mail an die Adress <strong>%email</strong> geschickt. Bitte <strong>klicken Sie auf den Link in der Mail</strong>, um die E-Mail-Adresse zu bestätigen. Anschließend <strong>laden Sie die Seite neu</strong>.'
 		)
 	);
 }
