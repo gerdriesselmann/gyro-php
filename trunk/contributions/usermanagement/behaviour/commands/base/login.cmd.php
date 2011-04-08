@@ -61,9 +61,7 @@ class LoginUsersBaseCommand extends CommandChain {
 	protected function check_password_hash(DAOUsers $user, $params) {
 		$ret = new Status();
 		$password = $this->params_extract_password($params);
-		$algo = Users::create_hash_algorithm($user->hash_type);
-		
-		if (!$algo->check($password, $user->password)) {
+		if (!$user->password_match($password)) {
 			$ret->append($this->do_get_default_error_message()); 
 		}
 		else if ($user->hash_type != Config::get_value(ConfigUsermanagement::HASH_TYPE)) {

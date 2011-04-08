@@ -104,6 +104,14 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 	public function confirmed_email() {
 		return $this->emailstatus == Users::EMAIL_STATUS_CONFIRMED;
 	}
+	
+	/**
+	 * Check if password matches the user's one
+	 */
+	public function password_match($pwd) {
+		$algo = Users::create_hash_algorithm($this->hash_type);
+		return $algo->check($pwd, $this->password);
+	}
  	
 	// ***********************************************
 	// Self-Describing
