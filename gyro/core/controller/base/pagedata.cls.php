@@ -275,7 +275,7 @@ class PageData {
 	}
 	
 	/**
-	 * Add a render decorator to overload defazlt render behaviour
+	 * Add a render decorator to overload default render behaviour
 	 *
 	 * @param string $dec Class name of render decorator
 	 */
