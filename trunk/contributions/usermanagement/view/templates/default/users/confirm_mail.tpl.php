@@ -10,8 +10,3 @@ $page_data->head->title = $title;
 	'users',
 	array('%email' => String::escape($user->email))
 )?></p>
-
-<p><?php print tr(
-	'Reload this page afterwards', 
-	'users');
-?></p>
