@@ -9,7 +9,7 @@ class Arr {
 	/**
 	 * Return value for key, if available, else return default value
 	 */
-	public static function get_item($arr, $key, $default) {
+	public static function get_item($arr, $key, $default = false) {
 		if (isset($arr[$key])) {
 			return $arr[$key];
 		}
@@ -25,7 +25,7 @@ class Arr {
 	 * @param string|array $key
 	 * @param mixed $default  
 	 */
-	public static function get_item_recursive($arr, $key, $default) {
+	public static function get_item_recursive($arr, $key, $default = false) {
 		$ret = $default;
 		$arr_keys = self::extract_array_keys($key);
 		
