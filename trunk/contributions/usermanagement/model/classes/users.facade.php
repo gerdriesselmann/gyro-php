@@ -432,4 +432,16 @@ class Users {
 		$cmd = CommandsFactory::create_command($user, 'confirmemail', false);
 		return $cmd->execute();
 	}
+	
+	/**
+	 * Returns wether a given username is unique or not
+	 * 
+	 * @return bool
+	 */
+	public static function is_unique_username($name) {
+		$user = new DAOUsers();
+		$user->add_where('status', '!=', Users::STATUS_DELETED);
+		$user->name = $name;
+		return ($user->count() == 0);				
+	}
 }
