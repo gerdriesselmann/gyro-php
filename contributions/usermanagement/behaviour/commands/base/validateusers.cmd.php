@@ -70,14 +70,9 @@ class ValidateUsersBaseCommand extends CommandComposite {
 	 */
 	protected function validate_username($name) {
 		$ret = new Status();
-		$user = new DAOUsers();
-		$user->add_where('status', '!=', Users::STATUS_DELETED);
-		$user->name = $name;
-		$c = $user->count();
-		if ($c > 0) {
+		if (!Users::is_unique_username($name)) {
 			$ret->append(tr('An user with this username already exists', 'users'));
 		}
 		return $ret;
 	}
-	
 } 
