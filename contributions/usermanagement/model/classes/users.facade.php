@@ -221,6 +221,17 @@ class Users {
 
 		return $err;		
 	}
+
+	/**
+	 * Prepare DAO instance for retrieving users (that are ACTIVE)
+	 * 
+	 * @return DAOUsers
+	 */
+	public static function create_adapter() {
+		$users = new DAOUsers();	
+		$users->status = self::STATUS_ACTIVE;
+		return $users;
+	} 
 	
 	/**
 	 * Prepare DAO instance for retrieving all user
