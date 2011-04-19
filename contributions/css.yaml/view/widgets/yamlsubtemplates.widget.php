@@ -4,23 +4,23 @@
  */
 class WidgetYAMLSubtemplates implements IWidget {
 	/**
-	 * Two cols � 50%
+	 * Two cols à 50%
 	 */
 	const SLOTS_2_50 = '2';
 	/**
-	 * Two cols � 25% and 75%
+	 * Two cols à 25% and 75%
 	 */
 	const SLOTS_2_25_75 = '25_75';
 	/**
-	 * Two cols � 75% and 25%
+	 * Two cols à 75% and 25%
 	 */
 	const SLOTS_2_75_25 = '75_25';
 	/**
-	 * Two cols � 33% and 66%
+	 * Two cols à 33% and 66%
 	 */
 	const SLOTS_2_33_66 = '33_66';
 	/**
-	 * Two cols � 33% and 66%
+	 * Two cols à 33% and 66%
 	 */
 	const SLOTS_2_66_33 = '66_33';
 	/**
@@ -32,13 +32,18 @@ class WidgetYAMLSubtemplates implements IWidget {
 	 */
 	const SLOTS_2_GOLDEN_RATIO_RIGHT = 'golden_ratio_right';
 	/**
-	 * Three cols � 33%
+	 * Three cols à 33%
 	 */
 	const SLOTS_3_33 = '3';
 	/**
-	 * Four cols � 25%
+	 * Four cols à 25%
 	 */
 	const SLOTS_4_25 = '4';
+	/**
+	 * Five cols à 20%
+	 */
+	const SLOTS_5_20 = '5';
+	
 	
 	protected $slotwidths;
 	protected $data;
@@ -83,7 +88,9 @@ class WidgetYAMLSubtemplates implements IWidget {
 			case self::SLOTS_3_33:
 				return array(33, 33, 33);
 			case self::SLOTS_4_25:
-				return array(25, 25, 25, 25);		
+				return array(25, 25, 25, 25);
+			case self::SLOTS_5_20:
+				return array(20, 20, 20, 20, 20);		
 			case self::SLOTS_2_50:
 			default:
 				return array(50, 50);		
