@@ -8,11 +8,12 @@ foreach($actions as $action) {
 	$view = ($action instanceof ICommand) ? $command_view : $action_view; 
 	$view->assign('action', $action);
 	$view->assign('form_validation', $form_validation);
-	$items[] = $view->render();
+	$items[$action->get_name()] = $view->render();
 }
 $c = count($items) - 1;
 $i = 0;
-foreach($items as $item) {
+foreach($items as $name => $item) {
+	$name = String::plain_ascii($name);
 	$cls = array($class);
 	if ($i === 0) {
 		$cls[] = "{$class}_first";
@@ -20,6 +21,7 @@ foreach($items as $item) {
 	if ($i === $c) {
 		$cls[] = "{$class}_last";
 	}
+	$cls[] = "{$class}_{$name}"; 
 	print html::tag('li', $item, array('class' => implode(' ', $cls)));
 	$i++;
 }
