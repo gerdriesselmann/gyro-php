@@ -68,6 +68,7 @@ class ConfirmUserDataRenderDecorator extends RenderDecoratorBase {
 		$allowed[] = 'UsersController::users_confirm';
 		$allowed[] = 'UsersController::users_confirm_mail';
 		$allowed[] = 'UsersController::logout';
+		$allowed[] = 'ConfirmationsController::confirm';
 		return in_array($route_id, $allowed);
 	}
 	
