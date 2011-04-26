@@ -14,15 +14,8 @@ class CreateConfirmationsCommand extends CommandChain {
 		$ret = new Status();
 
 		$confirmation = new DAOConfirmations();
-		$found = 1;
-		while ($found > 0) {
-			$code = sha1(uniqid(mt_rand(), true)); 
-			$confirmation->code = $code;
-			$found = $confirmation->count();
-		}
-		
 		$params = $this->get_params();
-		$params['code'] = $code;
+		$params['code'] = Common::create_token(); // Tokens must not be unique!
 		$params['expirationdate'] = Arr::get_item($params, 'expirationdate', time() + GyroDate::ONE_DAY); // 24 hours default expiration
 		
 		Load::commands('generics/create');
