@@ -3,7 +3,7 @@ Load::enable_module('status');
 Load::enable_module('console');
 
 /**
- * @devgroup Scheduler
+ * @defgroup Scheduler
  * @ingroup Contributions
  * 
  * The scheduler allows (repeated) execution of arbitrary many tasks, as long as they can be 
