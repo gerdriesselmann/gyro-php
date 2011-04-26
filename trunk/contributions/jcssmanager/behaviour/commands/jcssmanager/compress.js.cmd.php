@@ -1,24 +1,25 @@
 <?php
-Load::commands('jcssmanager/compress.base');
-
-class JCSSManagerCompressJSCommand extends JCSSManagerCompressBaseCommand {
+/**
+ * Compress JS 
+ * 
+ * Delegates to algorithm defines as ConfigJCSSManager::JS_COMPRESSOR
+ * 
+ * @author Gerd Riesselmann
+ * @ingroup JCSSManager
+ */
+class JCSSManagerCompressJSCommand extends CommandDelegate {
+	
 	/**
-	 * Invoke YUICOmpressor
-	 * 
-	 * @param string $in_file
-	 * @param string $out_file
-	 * @return Status 
+	 * COnstructor
+	 *  
+	 * @param $in_files array
+	 * @param $out_file string
+	 * @return void
 	 */
-	protected function invoke_yui($in_file, $out_file) {
-		return $this->run_yui($in_file, $out_file, 'js');
-	}
-
-	/**
-	 * Returns type of compressed file
-	 *   
-	 * @return string One of TYPE_X constants
-	 */
-	protected function get_db_type() {
-		return JCSSManager::TYPE_JS;
-	}
+	public function __construct($in_files, $out_file) {
+		$compressor = strtolower(Config::get_value(ConfigJCSSManager::JS_COMPRESSOR));
+		Load::commands("jcssmanager/$compressor/compress.js");
+		$cls = 'JCSSManagerCompressJS' . Load::filename_to_classname($compressor, 'Command'); 
+		parent::__construct(new $cls($in_files, $out_file));
+	}	
 }
