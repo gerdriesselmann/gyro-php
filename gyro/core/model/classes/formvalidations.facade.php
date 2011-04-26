@@ -12,7 +12,7 @@ class FormValidations {
 	public static function create_token($name) {
 		self::remove_expired();
 		
-		$token = sha1(uniqid(mt_rand(), true));
+		$token = Common::create_token();
 		
 		$validations = new DAOFormvalidations();
 		$validations->name = $name;
