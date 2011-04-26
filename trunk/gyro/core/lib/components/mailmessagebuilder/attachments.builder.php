@@ -35,7 +35,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	public function __construct(IMailMessageBuilder $msg_builder, $attachments) {
 		$this->message_builder = $msg_builder;
 		$this->attachments = $attachments;
-		$this->boundary = 'GYROMAILSEP-' . sha1(uniqid());
+		$this->boundary = 'GYROMAILSEP-' . Common::create_token();
 	}
 	
 	/**
@@ -54,7 +54,9 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	 */
 	public function get_body() {
 		$blocks = array();
-		$blocks[] = $this->create_block($this->message_builder->get_mail_mime(), false, $this->message_builder->get_body());
+		$blocks[] = $this->create_block(
+			$this->message_builder->get_mail_mime(), false, $this->message_builder->get_body(), $this->message_builder->get_additional_headers()
+		);
 		foreach($this->attachments as $name => $file) {
 			$blocks[] = $this->create_attachment_block($name, $file);
 		} 		
@@ -104,12 +106,12 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	protected function create_block($mime_type, $encoding, $content, $more_headers = array()) {
 		$ret = '';
 		$header = $more_headers;
-		$header[] = 'Content-type: ' . $mime_type;
+		$header['Content-Type'] = $mime_type;
 		if ($encoding) {
-			$header[] = 'Content-Transfer-Encoding: ' . $encoding;
+			$header['Content-Transfer-Encoding'] = $encoding;
 		} 	
 		
-		$ret = implode("\n", $header) . "\n\n" . $content;
+		$ret = Arr::implode("\n", $header, ': ') . "\n\n" . $content;
 		return $ret;
 	}
 	
@@ -124,5 +126,16 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 			return mime_content_type($file);
 		}
 		return 'application/octet-stream';
+	}	
+
+	/**
+	 * Return additional mail headers
+	 * 
+	 * @attention Content-Type header is already added
+	 * 
+	 * @return $headers Associative array with header name as key
+	 */
+	public function get_additional_headers() {
+		return array();
 	}	
 }

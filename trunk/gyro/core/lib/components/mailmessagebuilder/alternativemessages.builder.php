@@ -42,8 +42,12 @@ class AlternativeMessageBuilder extends AttachmentsBuilder {
 	public function get_body() {
 		$blocks = array();
 		$altbuilder = new SingleMessageBuilder($this->alt_message, MailMessage::MIME_TEXT_PLAIN);
-		$blocks[] = $this->create_block($altbuilder->get_mail_mime(), false, $altbuilder->get_body());
-		$blocks[] = $this->create_block($this->message_builder->get_mail_mime(), false, $this->message_builder->get_body());
+		$blocks[] = $this->create_block(
+			$altbuilder->get_mail_mime(), false, $altbuilder->get_body(), $altbuilder->get_additional_headers()
+		);
+		$blocks[] = $this->create_block(
+			$this->message_builder->get_mail_mime(), false, $this->message_builder->get_body(), $this->message_builder->get_additional_headers()
+		);
 		return 
 			$this->start_seperator($this->boundary) .
 			implode("\n" . $this->start_seperator($this->boundary), $blocks) .

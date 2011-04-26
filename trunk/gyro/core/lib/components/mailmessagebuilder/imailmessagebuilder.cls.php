@@ -16,4 +16,13 @@ interface IMailMessageBuilder {
 	 * @return string
 	 */
 	public function get_body();
+	
+	/**
+	 * Return additional mail headers
+	 * 
+	 * @attention Content-Type header is already added
+	 * 
+	 * @return $headers Associative array with header name as key
+	 */
+	public function get_additional_headers();	
 }
