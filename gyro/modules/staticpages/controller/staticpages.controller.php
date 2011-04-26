@@ -96,10 +96,10 @@ class StaticPagesController extends ControllerBase {
 	public function on_event($name, $params, &$result) {
 		if ($name == 'gsitemap_site' && $params == 'main') {
 			$arr = $this->collect_templates();
-			foreach($arr as $item) {
+			foreach($arr as $template => $path) {
 				$result[] = array(
-					'url' => ActionMapper::get_url('static', array('page' => $item)),
-					'lastmod' => filemtime(TemplatePathResolver::resolve('static/' . $item)) 
+					'url' => ActionMapper::get_url('static', array('page' => $path)),
+					'lastmod' => filemtime(TemplatePathResolver::resolve('static/' . $template)) 
 				);
 			}
 		}
