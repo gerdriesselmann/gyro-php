@@ -144,7 +144,7 @@ class DAONotificationssettings extends DataObjectCached {
 		if ($user) {
 			$seed .= $user->password . $user->creationdate;
 		}
-		return sha1(uniqid($seed, true));			
+		return Common::create_token($seed);			
 	}
 	
 	/**
