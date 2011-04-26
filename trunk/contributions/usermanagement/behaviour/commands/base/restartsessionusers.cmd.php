@@ -21,7 +21,7 @@ class RestartsessionUsersBaseCommand extends CommandChain {
 		/* @var $user DAOUsers */
 		$user = $this->get_instance();
 		$salt = $user->creationdate . $user->email . $user->id . $user->password . $user->modificationdate;
-		$sess_id = sha1(uniqid($salt, true));
+		$sess_id = Common::create_token($salt);
 		Session::restart($sess_id);
 		return $ret;
 	}	
