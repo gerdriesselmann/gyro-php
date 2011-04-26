@@ -16,7 +16,7 @@ class String {
 	public static $impl;
 	
 	/**
-	 * Static. Preprocesses a string to strip of HTML and quotes. Avoids injection attacks
+	 * Static. processes a string to strip of HTML and quotes. Avoids injection attacks
 	 *
 	 * @param String The text to process
 	 * @return String The cleaned text
@@ -322,7 +322,7 @@ class String {
 	/**
 	 * Modifies a regex pattern, if encoding id Unicode
 	 * 
-	 * Supports the \w and \W classes
+	 * Supports the \w and \W, \s and \S and \ and \D classes
 	 * Supports the \b assertion, but only as 
 	 *  - \b{<} (Word boundary before), 
 	 *  - \b{>} (Word boundary after), and 
@@ -349,6 +349,10 @@ class String {
 					$regex = str_replace('\b{<>}', '(?!\w)(?<!\w)', $regex);
 					$regex = str_replace('\W', '[^\pL\pN]', $regex);
 					$regex = str_replace('\w', '[\pL\pN]', $regex);
+					$regex = str_replace('\s', '[\pZ]', $regex);
+					$regex = str_replace('\S', '[\PZ]', $regex);
+					$regex = str_replace('\d', '[\pN]', $regex);
+					$regex = str_replace('\D', '[\PN]', $regex);
 					$regex .= 'u';
 				}
 				else {
