@@ -11,9 +11,9 @@ define('MAIL_LF', "\n"); // "\r\n"
  */
 class MailMessage {
 	/** Plain text mime content type */
-	const MIME_TEXT_PLAIN = 'text/plain; charset=%charset';
+	const MIME_TEXT_PLAIN = 'text/plain; charset="%charset"';
 	/** HTML mime content type */
-	const MIME_HTML = 'text/html; charset=%charset';
+	const MIME_HTML = 'text/html; charset="%charset"';
 	
 	/**
 	 * Receipient
@@ -98,6 +98,7 @@ class MailMessage {
 		
 		$builder = $this->create_builder();
 		$headers['Content-Type'] = $builder->get_mail_mime();
+		$headers = array_merge($headers, $builder->get_additional_headers());
 		$body = $builder->get_body();
 		
 		$headers = $this->encode_headers($headers);

@@ -42,6 +42,17 @@ class SingleMessageBuilder implements IMailMessageBuilder {
 	 * @return string
 	 */
 	public function get_body() {
-		return $this->message;
+		return base64_encode($this->message);
+	}
+	
+	/**
+	 * Return additional mail headers
+	 * 
+	 * @attention Content-Type header is already added
+	 * 
+	 * @return $headers Associative array with header name as key
+	 */
+	public function get_additional_headers() {
+		return array('Content-Transfer-Encoding' => 'base64');
 	}
 }
