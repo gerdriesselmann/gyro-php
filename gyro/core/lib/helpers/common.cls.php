@@ -262,5 +262,14 @@ class Common {
 			return (strpos($_SERVER["HTTP_USER_AGENT"], "Googlebot") !== false);
 		else
 			return false;
-	}	
+	}
+
+	/**
+	 * Creates a token, which is 40 characters long 
+	 * 
+	 * @param string $salt Optional extra salt, if ommitted mt_rand() is used 
+	 */
+	public static function create_token($salt = false) {
+		return sha1(uniqid($salt ? $salt : mt_rand(), true));
+	}
 }
