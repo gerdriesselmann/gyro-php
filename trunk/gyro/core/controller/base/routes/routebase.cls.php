@@ -181,13 +181,11 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
  	 	//print 'WEIGHT: ' . $this->path . ' against ' . $path . ':';
 
 		$ret = self::WEIGHT_NO_MATCH;		
-		if (String::starts_with($path, $this->path) == false) {
-			return self::WEIGHT_NO_MATCH;
-		}
-		
-		$tmp = new PathStack($path);
-		if ($tmp->adjust($this->path)) {
-			$ret = $tmp->count_front();
+		if (String::starts_with($path, $this->path)) {
+			$tmp = new PathStack($path);
+			if ($tmp->adjust($this->path)) {
+				$ret = $tmp->count_front();
+			}
 		}
 		
 		//print $ret .'<br />';
