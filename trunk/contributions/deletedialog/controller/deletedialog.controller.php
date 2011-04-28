@@ -14,10 +14,71 @@ class DeleteDialogController extends ControllerBase {
 	public function get_routes() {
 		$ret = array(
 			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/delete', $this, 'deletedialog_cmd_handler'),
-			new ParameterizedRoute('https://deletedialog/approve/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve')
+			new ParameterizedRoute('https://deletedialog/approve/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve'),			
+			
+			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/status/DELETED', $this, 'deletedialog_status_cmd_handler'),								
+			new ParameterizedRoute('https://deletedialog/approve/status/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve_status'),
 		);
 		return $ret;
 	}
+	
+	/**
+	 * Handle the command, that is: Display an approval dialog
+	 *
+	 * @param PageData $page_data
+	 * @param string $model
+	 * @param string $id
+	 */
+	public function action_deletedialog_status_cmd_handler(PageData $page_data, $model, $id) {
+		$page_data->in_history = false;
+		$dao = $this->get_instance($model, $id);
+		if ($dao === false) {
+			return CONTROLLER_NOT_FOUND;
+		}
+		Url::create(ActionMapper::get_url('deletedialog_approve_status', $dao))->redirect();
+	}
+
+	/**
+	 * Handle link approval
+	 *
+	 * @param PageData $page_data
+	 * @param string $_model_
+	 * @param string $id
+	 */
+	public function action_deletedialog_approve_status(PageData $page_data, $_model_, $id) {
+		$page_data->in_history = false;
+		
+		$dao = $this->get_instance($_model_, $id);
+		if ($dao === false) {
+			return CONTROLLER_NOT_FOUND;
+		}
+		
+		$cmd = CommandsFactory::create_command($dao, 'status', 'DELETED');
+		if (!$cmd->can_execute(false)) {
+			return CONTROLLER_ACCESS_DENIED;
+		}
+		
+		$formhandler = $this->create_formhandler();
+		if ($page_data->has_post_data()) {
+			$err = $formhandler->validate();
+			if ($err->is_ok()) {
+				if ($page_data->get_post()->get_item('cancel', false) !== false) {
+					$err = new Message(tr('Deletion has been canceled by user', 'deletedialog'));
+				}
+				else {
+					$err->merge($cmd->execute());
+				}
+			}
+			$instance_string = 'instance';
+			$instance = $dao->get_table_name();
+			$instance_string =  substr($instance, 0, strlen($instance)-1);
+			$formhandler->finish($err, tr('The '.$instance_string.' has been deleted', 'deletedialog'));
+		}
+		else {
+			$this->render_view_status($page_data, $formhandler, $dao);	
+		}
+	}
+	
 	
 	/**
 	 * HAndle the command, that is: Display an approval dialog
@@ -120,4 +181,18 @@ class DeleteDialogController extends ControllerBase {
 		$view->assign('instance', $instance); 
 		$view->render();		
 	}
+	
+	/**
+	 * Create an render approval view
+	 *
+	 * @param FormHandler $formhandler
+	 * @param IDataObject $instance
+	 */
+	protected function render_view_status(PageData $page_data, FormHandler $formhandler, $instance) {
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'deletedialog/approve_status', $page_data);
+		$formhandler->prepare_view($view);
+		$view->assign('instance', $instance); 
+		$view->render();		
+	}
+	
 }
