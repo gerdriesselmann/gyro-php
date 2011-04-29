@@ -9,12 +9,14 @@ class DAOSystemupdates extends DataObjectBase {
 	public $component;
 	public $version;
 	
+	public $connection = DB::DEFAULT_CONNECTION;
+	
 	/**
 	 * Return table definition
 	 *
 	 * @return IDBTable
 	 */
-	function create_table_object() {
+	public function create_table_object() {
 		return new DBTable(
 			'systemupdates',
 			array(
@@ -24,5 +26,22 @@ class DAOSystemupdates extends DataObjectBase {
 			'component'
 		);
 	}
-		
+	
+	/**
+ 	 * Returns DB driver fro this table
+ 	 *  
+ 	 * @return IDBDriver
+ 	 */
+ 	public function get_table_driver() {
+ 		return DB::get_connection($this->connection);
+ 	}
+ 	
+	/**
+	 * Returns name of table, but escaped
+	 * 
+	 * @return string
+	 */
+	public function get_table_name_escaped() {
+		return $this->get_table_driver()->escape_database_entity($this->get_table_name(), IDBDriver::TABLE);
+	}	 	
 }
