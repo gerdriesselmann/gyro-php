@@ -44,7 +44,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	
  	public function __construct() {
  		$this->table = $this->init_table_object();
- 		$this->where = new DBWhereGroup($this->table); 
+ 		$this->where = new DBWhereGroup($this); 
  	}
  	
  	/**
@@ -77,7 +77,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	
  	public function __clone() {
  		$this->resultset = null;
- 		$this->where = new DBWhereGroup($this->table);
+ 		$this->where = new DBWhereGroup($this);
  		$this->limit = array(0,0);
  		$this->order_by = array();
  	}
@@ -96,7 +96,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 
     public function __wakeup() {
  		$this->table = $this->create_table_object();
- 		$this->where = new DBWhereGroup($this->table);
+ 		$this->where = new DBWhereGroup($this);
     } 	
     
     public function __toString() {
@@ -128,7 +128,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * Sets all default values on instance. Previous values are overwritten! 
 	 */
 	public function set_default_values() {
- 		foreach($this->table->get_table_fields() as $column => $field) {
+ 		foreach($this->get_table_fields() as $column => $field) {
  			$this->$column = $field->get_field_default();
  		}
  	}
@@ -142,7 +142,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	 */
  	public function save() {
  		$bInsert = true;
-		foreach($this->table->get_table_keys() as $column => $field) {
+		foreach($this->get_table_keys() as $column => $field) {
  			$bInsert = $bInsert && empty($this->$column);
  		}
  		if ($bInsert) {
@@ -172,7 +172,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	 */
  	protected function set_last_insert_id($connection) {
 		// find insert id
-		$table_keys = $this->table->get_table_keys();
+		$table_keys = $this->get_table_keys();
 		$id_field = array_shift($table_keys);
 		if ($id_field && $id_field instanceof DBFieldInt && $id_field->has_policy(DBFieldInt::AUTOINCREMENT)) {
 			$fieldname = $id_field->get_field_name();
@@ -188,7 +188,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	protected function get_field_values($only_set = true) {
  		$b_all = !$only_set; 
  		$ret = array();
- 		foreach($this->table->get_table_fields() as $column => $field) {
+ 		foreach($this->get_table_fields() as $column => $field) {
  			if ($b_all || isset($this->$column)) {
 				$v = $this->$column;
 				if ($v instanceof DBNull) {
@@ -209,7 +209,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	 * @return Status 
  	 */
  	public function replace() {
- 		$arr_keys = $this->table->get_table_keys();
+ 		$arr_keys = $this->get_table_keys();
  		$b_keys_complete = true;
  		foreach($arr_keys as $key_column => $field) {
  			// All keys empty => Insert
@@ -248,10 +248,10 @@ class DataObjectBase implements IDataObject, IActionSource {
  	 * @return Status 
  	 */
  	protected function replace_manual() {
- 		$arr_keys = $this->table->get_table_keys();
+ 		$arr_keys = $this->get_table_keys();
  		
 		// Retrieve old value
-		$query = new DBQuerySelect($this->table, DBQuerySelect::FOR_UPDATE);
+		$query = new DBQuerySelect($this, DBQuerySelect::FOR_UPDATE);
 		foreach($arr_keys as $key_column => $field) {
  			$query->add_where($key_column, '=', $this->$key_column);
  		} 		
@@ -298,7 +298,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  	 * @param array $values Associative array with property name as key and property value as value 
  	 */
  	public function read_from_array($values) {
- 		foreach($this->table->get_table_fields() as $prop => $field) {
+ 		foreach($this->get_table_fields() as $prop => $field) {
  			$value = $field->read_from_array($values);
  			if (!is_null($value)) {
  				$this->$prop = $value;
@@ -380,14 +380,14 @@ class DataObjectBase implements IDataObject, IActionSource {
  	public function get($column_or_value, $value = null) {
  		if (empty($value)) {
  			$value = $column_or_value;
- 			$keys = array_keys($this->table->get_table_keys());
+ 			$keys = array_keys($this->get_table_keys());
  			$column_or_value = Arr::get_item($keys, 0, false);	
  		}
  		if (empty($column_or_value)) {
  			throw new Exception(tr('No column set for get', 'core'));
  		}
  		
-    	$query = new DBQuerySelect($this->table);
+    	$query = new DBQuerySelect($this);
     	$query->add_where($column_or_value, '=', $value);
     	$query->set_limit(1);
 
@@ -909,7 +909,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQuerySelect
 	 */
 	public function create_select_query($policy = self::NORMAL) {
-		$query = new DBQuerySelect($this->table, DBQuerySelect::NONE);
+		$query = new DBQuerySelect($this, DBQuerySelect::NONE);
     	$this->configure_select_query($query, $policy);
     	$this->execute_query_hooks($query);
     	return $query;
@@ -969,7 +969,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQueryInsert
 	 */
 	public function create_insert_query() {
- 		$query = new DBQueryInsert($this->table);
+ 		$query = new DBQueryInsert($this);
  		$this->configure_insert_query($query);
  		$this->execute_query_hooks($query);
  		return $query;
@@ -982,7 +982,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 */
 	protected function configure_insert_query($query) {
 		$fields = $this->get_field_values();
-		//foreach($this->table->get_table_keys() as $column => $field) {
+		//foreach($this->get_table_keys() as $column => $field) {
 		//	unset($fields[$column]);	 		
 		//}
  		
@@ -996,7 +996,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQueryUpdate
 	 */
 	public function create_update_query($policy = self::NORMAL) {
- 		$query = new DBQueryUpdate($this->table);
+ 		$query = new DBQueryUpdate($this);
  		$this->configure_update_query($query, $policy);
  		$this->execute_query_hooks($query);
  		return $query;
@@ -1015,7 +1015,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  		$where->add_where_object($this->where);
 
  		if (!Common::flag_is_set($policy, self::WHERE_ONLY)) {
-			foreach($this->table->get_table_keys() as $column => $field) {
+			foreach($this->get_table_keys() as $column => $field) {
 				if (!isset($fields[$column])) {
 					// Prevent unwanted mass updates...
 					throw new Exception(tr('Trying to UPDATE without all keys set. If intended, use WHERE_ONLY policy', 'core'));
@@ -1035,7 +1035,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQueryInsert
 	 */
 	public function create_replace_query() {
- 		$query = new DBQueryReplace($this->table);
+ 		$query = new DBQueryReplace($this);
  		$this->configure_replace_query($query);
  		$this->execute_query_hooks($query);
  		return $query;
@@ -1058,7 +1058,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQueryDelete
 	 */
 	public function create_delete_query($policy = self::NORMAL) {
- 		$query = new DBQueryDelete($this->table);
+ 		$query = new DBQueryDelete($this);
  		$this->configure_delete_query($query, $policy);
  		$this->execute_query_hooks($query);
     	return $query;	
@@ -1076,7 +1076,7 @@ class DataObjectBase implements IDataObject, IActionSource {
  		
  		if (!Common::flag_is_set($policy, self::WHERE_ONLY)) {
 			$fields = $this->get_field_values();
- 			foreach($this->table->get_table_keys() as $column => $field) {
+ 			foreach($this->get_table_keys() as $column => $field) {
 				if (!isset($fields[$column])) {
 					// Prevent unwanted mass updates...
 					throw new Exception(tr('Trying to DELETE without all keys set. If intended, use WHERE_ONLY policy', 'core'));
@@ -1100,7 +1100,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * @return DBQuerySelect
 	 */
 	public function create_count_query($policy = self::NORMAL) {
-		$query = new DBQueryCount($this->table);
+		$query = new DBQueryCount($this);
 		$this->configure_count_query($query, self::NORMAL);
 		$this->execute_query_hooks($query);
 		return $query;
