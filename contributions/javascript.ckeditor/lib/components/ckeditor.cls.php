@@ -57,6 +57,15 @@ class CKEditor {
 		}
 		return $ret;
 	}
+	
+	/**
+	 * Returns all configs
+	 * 
+	 * @return array Array with config names as keys and CKEditorConfig instances as values
+	 */
+	public static function get_all_configs() {
+		return self::$configs;
+	}
 }
 
 /**
