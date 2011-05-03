@@ -19,9 +19,15 @@ class JavascriptCKEditorEventSink implements IEventSink {
 		if ($event_name == 'jcssmanager_compress') {
 			switch($event_params) {
 				case JCSSManager::TYPE_JS:
-					$result['ckeditor'][] = 'js/ckeditor/ckeditor.js';
-					if (Load::is_module_loaded('javascript.jquery')) {
-						$result['ckeditor'][] = 'js/ckeditor/adapters/jquery.js';
+					Load::components('ckeditor');
+					// Create a compressed file for each config
+					foreach(CKEditor::get_all_configs() as $name => $config) {
+						$compressed_name = 'ckeditor.' . $name;
+						$result[$compressed_name][] = 'js/ckeditor/ckeditor.js';
+						if (Load::is_module_loaded('javascript.jquery')) {
+							$result[$compressed_name][] = 'js/ckeditor/adapters/jquery.js';
+						}
+						$result[$compressed_name][] = $config->init_file;
 					}
 					break;
 			}
