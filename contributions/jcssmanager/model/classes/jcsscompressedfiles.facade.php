@@ -46,4 +46,14 @@ class JCSSCompressedFiles {
 		
 		return $dao;
 	}
+	
+	/**
+	 * Remove a compression from DB
+	 */
+	public static function remove($type, $out_filename) {
+		$dao = new DAOJcsscompressedfiles();
+		$dao->type = $type;
+		$dao->filename = $out_filename;
+		return $dao->delete();
+	}
 }
