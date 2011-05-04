@@ -172,10 +172,15 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 */
 	public function execute() {
 		$ret = array();
+		$log_fail = Config::has_feature(Config::LOG_FAILED_QUERIES);
 		try {
+			// Disable logging failed queries, since this is allowed to fail
+			Config::set_feature(Config::LOG_FAILED_QUERIES, false);
 			$found = $this->find();
+			Config::set_feature(Config::LOG_FAILED_QUERIES, $log_fail);
 		}
 		catch (Exception $ex) {
+			Config::set_feature(Config::LOG_FAILED_QUERIES, $log_fail);
 			// This is a fallback, if combination of operators caus an error 
 			$this->set_sphinx_feature(DBDriverSphinx::FEATURE_STRIP_OPERATORS, true);
 			$found = $this->find();
