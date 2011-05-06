@@ -185,8 +185,12 @@ class DB {
  	 * @param string $column The column on table
  	 */
  	public static function format($value, $table = null, $column = '') {
- 		$field = self::find_field($table, $column);
- 		return $field->format($value);
+ 		if ($value instanceof DBExpression) {
+ 			return $value->format();
+ 		} else {
+	 		$field = self::find_field($table, $column);
+	 		return $field->format($value);
+ 		}
  	}
  	
 	/**
