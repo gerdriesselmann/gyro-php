@@ -28,16 +28,14 @@ class InstanceReferenceSerializier {
 		$ret = false;
 		$table = array_shift($arr_inst);
 		$dao = DB::create($table);
+		$params = array();
 		if ($dao) {
 			foreach($dao->get_table_keys() as $key => $field) {
 				/* @var $field DBField */
-				$dao->$key = array_shift($arr_inst);
-			}
-			if ($dao->find(IDataObject::AUTOFETCH)) {
-				$ret = $dao;
+				$params[$key] = array_shift($arr_inst);
 			}
 		}
-		return $ret;
+		return DB::get_item_multi($table, $params);
 	}
 
 	/**
