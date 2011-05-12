@@ -34,7 +34,8 @@ class JCSSManagerCompressCSSYuiCommand extends JCSSManagerCompressBaseYuiCommand
 	 * @return Status 
 	 */
 	protected function invoke_yui($in_file, $out_file) {
-		return $this->run_yui($in_file, $out_file, 'css');
+		$ret = $this->run_yui($in_file, $out_file, 'css');
+		return $ret;
 	}
 	
 	/**

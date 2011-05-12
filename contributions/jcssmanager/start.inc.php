@@ -46,7 +46,8 @@ Config::set_feature_from_constant(ConfigJCSSManager::ALSO_GZIP, 'APP_JCSS_ALSO_G
  * 
  * JCSSManager currently supports:
  * 
- * @li YUI Compressor 2.4.2 (http://developer.yahoo.com/yui/compressor/) for both CSS and Javascript. YUI is default.
+ * @li YUI Compressor 2.4.2 (http://developer.yahoo.com/yui/compressor/) for both CSS and Javascript. Unfortunately, the current release 2.4.6 does not
+ *     work well with YAML CSS framework, so 2.4.2 is kept. YUI is default.
  * @li Closure Compiler 20100330 (http://code.google.com/closure/compiler/) for JavaScript only. Closure Compression Level is
  *     SIMPLE_OPTIMIZATIONS
  * @li CSS Tiry 1.3 (http://csstidy.sourceforge.net/index.php) for CSS compression. Compression level is default + removing last ";"
