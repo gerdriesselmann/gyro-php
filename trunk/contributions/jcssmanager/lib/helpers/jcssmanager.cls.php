@@ -106,6 +106,7 @@ class JCSSManager {
 				"ForceType \"text/javascript;charset=$charset\"",
 				'<IfModule mod_headers.c>',			
 				'Header append Vary "Accept-Encoding"',
+				'Header append "Accept-Ranges" none', // Works around a bug in chrome
 				'</IfModule>',
 				'</FilesMatch>',
 				'<FilesMatch .*\.css.gz$>',
@@ -113,6 +114,7 @@ class JCSSManager {
 				"ForceType \"text/css;charset=$charset\"",
 				'<IfModule mod_headers.c>',			
 				'Header append Vary "Accept-Encoding"',
+				'Header append "Accept-Ranges" none', // Works around a bug in chrome
 				'</IfModule>',
 				'</FilesMatch>',
 				'<IfModule mod_expires.c>',
