@@ -18,7 +18,7 @@ class JavascriptJQueryEventSink implements IEventSink {
 	public function on_event($event_name, $event_params, &$result) {
 		switch ($event_name) {
 			case 'jcssmanager_compress':
-				if ($event_params == JCSSManager::TYPE_JS) {
+				if ($event_params == JCSSManager::TYPE_JS && Config::get_value(ConfigJQuery::CDN) == '') {
 					array_unshift($result, 'js/jquery.js');
 				}
 				break;
