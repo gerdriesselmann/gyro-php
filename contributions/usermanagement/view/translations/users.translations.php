@@ -309,6 +309,14 @@ function users_load_translations($languages) {
 			'de' => 'Passwort:',
 			'pt' => 'Senha:'
 		),
+		'New password:' => array(
+			'de' => 'Neues Passwort:',
+			'pt' => 'Senha nova:'
+		),
+		'Old password:' => array(
+			'de' => 'Altes Passwort:',
+			'pt' => 'Senha actual:'
+		),
 		'Registered, but got no confirmation mail?' => array(
 			'de' => 'Registriert, aber noch keine Bestätigungs-Mail bekommen?',
 			'pt' => 'Cadastrado, mas ainda não reçebeu o e-mail de confirmação?'
@@ -425,6 +433,10 @@ function users_load_translations($languages) {
 			'de' => 'Passwort wiederholen:',
 			'pt' => 'Repita senha:'
 		),
+		'Repeat new password:' => array(
+			'de' => 'Neues Passwort wiederholen:',
+			'pt' => 'Repita senha nova:'
+		),
 		'Leave these fields empty to not change the password.' => array(
 			'de' => 'Lassen Sie diese Felder leer um das Passwort nicht zu ändern.',
 			'pt' => 'Deixe este campo vazio para não alterar o senha.'
@@ -472,8 +484,16 @@ function users_load_translations($languages) {
 		),
 		'You have been automatically logged in. You now can change your password.' => array(
 			'de' => 'Sie wurden automatisch angemeldet und können nun Ihr Passwort ändern.'
-		) 
-		
+		),
+		'Please confirm changes of the email address by entering the password:' => array(
+			'de' => 'Bitte Änderung der E-Mail Adresse mit Passwort bestätigen:'
+		),		
+		'The password entered for email change confirmation is not correct. Please try again.' => array(
+			'de' => 'Das Passwort für die Bestätigung der neuen E-Mail Adresse ist leider falsch. Bitte versuchen Sie es noch einmal.'
+		),
+		'The old password is not correct. Please try again.' => array(
+			'de' => 'Das alte Passwort ist leider falsch. Bitte versuchen Sie es noch einmal.'
+		),		
 	);
 }
 ?>
