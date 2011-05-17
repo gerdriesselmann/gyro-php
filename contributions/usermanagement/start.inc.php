@@ -158,12 +158,19 @@ class ConfigUsermanagement {
 	 */
 	const CACHEHEADER_CLASS_LOGGEDIN = 'USER_CACHEHEADER_CLASS_LOGGEDIN';
 	
+	
 	/**
 	 * Current version of TOS. Only integer values allowed.
 	 * 
 	 * 0 means there are no TOS, and this is the default 
 	 */
 	const TOS_VERSION = 'USER_TOS_VERSION';
+	
+	/**
+	 * User receives Mail when user status changes
+	 * Standard is true 
+	 */
+	const MAIL_STATUSCHANGE = 'USER_MAIL_STATUSCHANGE';
 }
 
 
@@ -194,6 +201,7 @@ Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_
 Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
 Config::set_value_from_constant(ConfigUsermanagement::TOS_VERSION, 'APP_USER_TOS_VERSION', 0);
 Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
+Config::set_value_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_USER_MAIL_STATUSCHANGE', TRUE);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';
