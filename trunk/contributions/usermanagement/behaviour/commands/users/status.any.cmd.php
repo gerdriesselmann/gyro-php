@@ -30,17 +30,20 @@ class StatusAnyUsersCommand extends StatusAnyCommand {
  	protected function do_execute() {
  		$ret = new Status();
  		$ret->merge(parent::do_execute());
- 		if ($ret->is_ok()) {
+ 		if ($ret->is_ok()) { 			
 	 		$user = $this->get_instance();
 	 		$new_status = tr($this->get_params(), 'users');
- 			Load::commands('generics/mail'); 
- 			$cmd = new MailCommand(
- 				tr('Your account was set to "%status%"', 'users', array('%status%' => $new_status)),
- 				$user->email,
- 				'users/mail/statuschange',
- 				array('new_status' => $new_status) 
- 			);
- 			$this->append($cmd);
+	 		//Cas: ist das hier korrekt?
+	 		if (Config::get_value(ConfigUsermanagement::MAIL_STATUSCHANGE)) {	 		
+	 			Load::commands('generics/mail'); 
+	 			$cmd = new MailCommand(
+	 				tr('Your account was set to "%status%"', 'users', array('%status%' => $new_status)),
+	 				$user->email,
+	 				'users/mail/statuschange',
+	 				array('new_status' => $new_status) 
+	 			);
+	 			$this->append($cmd);
+	 		}
  		}
  		return $ret;
  	}
