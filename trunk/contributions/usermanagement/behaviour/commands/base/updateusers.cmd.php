@@ -24,7 +24,8 @@ class UpdateUsersBaseCommand extends CommandChain {
 			$this->check_for_email_confirmation($user, $params);
 			
 			// HAsh password
-			$this->hash_password($user, $params);		
+			$this->hash_password($user, $params);
+			$this->check_for_pwd_confirmation($user, $params);
 	
 			// Chain next commands
 			Load::commands('generics/update');
@@ -57,7 +58,6 @@ class UpdateUsersBaseCommand extends CommandChain {
 	 */
 	protected function check_for_email_confirmation($user, &$params) {
 		$email = Arr::get_item($params, 'email', $user->email);
-		$ret = false;
 		if (!Users::current_has_role(USER_ROLE_ADMIN)) {
 			// None-admins cannot change mail directly!
 			if ($user->email !== $email) {
@@ -65,8 +65,23 @@ class UpdateUsersBaseCommand extends CommandChain {
 			} 
 			unset($params['email']);
 		}
-		return $ret;
 	}
+	
+	/**
+	 * Check if an password confirmation must be created (that is user changed password)
+	 * 
+	 * @since 0.6
+	 */
+	protected function check_for_pwd_confirmation($user, &$params) {
+		$pwd = Arr::get_item($params, 'password', $user->password);
+		if (!Users::current_has_role(USER_ROLE_ADMIN)) {
+			// None-admins cannot change mail directly!
+			if ($user->password !== $pwd) {
+				$this->send_pwd_notification($user, $pwd);
+			} 
+			unset($params['password']);
+		}
+	}	
 
 	/**
 	 * Create an email change notification
@@ -79,6 +94,21 @@ class UpdateUsersBaseCommand extends CommandChain {
 			'id_item' => $user->id,
 			'action' => 'changeemail',
 			'data' => $email
+		);
+		$this->append(CommandsFactory::create_command('confirmations', 'create', $params));
+	}
+
+	/**
+	 * Create a password change notification
+	 * 
+	 * @since 0.6
+	 */
+	protected function send_pwd_notification($user, $pwd) {
+		// Indirectly change mail, if desired
+		$params = array(
+			'id_item' => $user->id,
+			'action' => 'changepassword',
+			'data' => $pwd
 		);
 		$this->append(CommandsFactory::create_command('confirmations', 'create', $params));
 	}

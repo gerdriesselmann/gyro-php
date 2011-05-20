@@ -34,7 +34,7 @@ class StatusAnyUsersCommand extends StatusAnyCommand {
 	 		$user = $this->get_instance();
 	 		$new_status = tr($this->get_params(), 'users');
 	 		//Cas: ist das hier korrekt?
-	 		if (Config::get_value(ConfigUsermanagement::MAIL_STATUSCHANGE)) {	 		
+	 		if (Config::has_feature(ConfigUsermanagement::MAIL_STATUSCHANGE)) {	 		
 	 			Load::commands('generics/mail'); 
 	 			$cmd = new MailCommand(
 	 				tr('Your account was set to "%status%"', 'users', array('%status%' => $new_status)),

@@ -539,12 +539,30 @@ class UserBaseController extends ControllerBase {
 		if ($err->is_ok()) {
 			// Validate
 			$params = $user->unset_internals($page_data->get_post()->get_array());
+			$err->merge($this->validate_email_change($params, $user, $page_data->get_post()->get_item('pwd_mail')));
 			$err->merge($this->validate_password($params));
 			if ($err->is_ok()) {
 				$err->merge(Users::update($user, $params));
 			}
 		}
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
+ 	}
+
+ 	/**
+ 	 * Validate password for email change
+ 	 * 
+ 	 * @param array $params
+ 	 * @param DAOUsers $user
+ 	 * @param string $pwd
+ 	 */
+ 	protected function validate_email_change($params, $user, $pwd) {
+ 		$err = new Status();
+		if (Config::has_feature(ConfigUsermanagement::ENABLE_PWD_ON_EMAILCHANGE) && $params['email'] != $user->email) {
+ 			if (!Users::get_current_user()->password_match($pwd)) {
+ 				$err->append(tr('The password entered for email change confirmation is not correct. Please try again.', 'users'));	
+ 			}
+		} 	
+		return $err;	
  	}
  	
 	/**
