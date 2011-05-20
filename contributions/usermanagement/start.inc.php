@@ -171,6 +171,11 @@ class ConfigUsermanagement {
 	 * Standard is true 
 	 */
 	const MAIL_STATUSCHANGE = 'USER_MAIL_STATUSCHANGE';
+	
+	/**
+	 * Enable Passwordcheck when changing e-mail. Defaults to true
+	 */
+	const ENABLE_PWD_ON_EMAILCHANGE = 'USER_ENABLE_PWD_ON_EMAILCHANGE';
 }
 
 
@@ -201,7 +206,8 @@ Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_
 Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
 Config::set_value_from_constant(ConfigUsermanagement::TOS_VERSION, 'APP_USER_TOS_VERSION', 0);
 Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
-Config::set_value_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_USER_MAIL_STATUSCHANGE', TRUE);
+Config::set_feature_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_USER_MAIL_STATUSCHANGE', true);
+Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_PWD_ON_EMAILCHANGE, 'APP_USER_ENABLE_PWD_ON_EMAILCHANGE', true);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';

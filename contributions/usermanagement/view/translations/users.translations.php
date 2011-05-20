@@ -493,7 +493,16 @@ function users_load_translations($languages) {
 		),
 		'The old password is not correct. Please try again.' => array(
 			'de' => 'Das alte Passwort ist leider falsch. Bitte versuchen Sie es noch einmal.'
-		),		
+		),
+		'If the password changes, you will get a mail send to you to confirm this change.' => array(
+			'de' => 'Wenn Sie das Passwort ändern, erhalten Sie eine E-Mail, um die Änderung zu bestätigen.'
+		),
+		'Your password has been changed' => array(
+			'de' => 'Ihr Passwort wurde geändert'
+		),
+		'Confirm new password' => array(
+			'de' => 'Password-Änderung bestätigen'
+		)
 	);
 }
 ?>
