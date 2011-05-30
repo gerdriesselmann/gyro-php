@@ -60,7 +60,7 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  * 
  * - user/5/profile would be translated to id = 5 and path = 'profile'
  * - user/5/profile/images would be causing a 404 not found, unless you defined another matching route
- * - user/5/ would be causing a 404 not found, unless you defined another matching route
+ * - user/5/ would be translated to id = 5 and path = ''
  *
  *  
  * @author Gerd Riesselmann
