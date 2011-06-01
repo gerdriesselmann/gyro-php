@@ -104,10 +104,12 @@ class Pager implements IDBQueryModifier {
 		$page_total = $this->pager_data['pages_total'];		
 		if ($page_total > 1) {
 			if ($page > 1) {
+				$this->pager_data['first_link'] = $this->get_url_for_page(1);
 				$this->pager_data['previous_link'] = $this->get_url_for_page($page - 1);
 			}
 			if ($page < $page_total) {
 				$this->pager_data['next_link'] = $this->get_url_for_page($page + 1);
+				$this->pager_data['last_link'] = $this->get_url_for_page($page_total);
 			}
 		
 			for($i = 1; $i <= $page_total; $i++) {
