@@ -21,7 +21,8 @@ class LoginknownUsersBaseCommand extends CommandChain {
 		$ret = new Status();
 		$user = $this->get_instance();
 		if ($user && $user->is_active()) {
-			Session::push('current_user', clone($user));
+			Session::push('current_user_id', $user->id);
+			Session::pull('current_user');
 			AccessControl::set_current_aro($user);
 			
 			Load::commands('generics/triggerevent');
