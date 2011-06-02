@@ -8,12 +8,7 @@
 class WidgetPagerCalculator implements IPolicyHolder {
 	protected $data;
 	protected $policy;
-	
-	public function __construct($data, $policy) {
-		$this->data = $data;
-		$this->policy = $policy;
-	}
-	
+		
 	/**
 	 * Returns item from data array
 	 *
@@ -23,6 +18,16 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 */
 	public function get_data_item($key, $default) {
 		return Arr::get_item($this->data, $key, $default);
+	}
+
+	/**
+	 * Set pager data
+	 *
+	 * @param  array $data
+	 * @return void
+	 */
+	public function set_data($data) {
+		$this->data = $data;
 	}
 	
 	/**
@@ -310,7 +315,9 @@ class WidgetPager implements IWidget {
 		}
 		
 		$policy = $policy | ($this->data['policy'] * 2048); // Compatability
-		$calculator = new WidgetPagerCalculator($this->data, $policy);
+		$calculator = isset($this->data['calculator']) ? $this->data['calculator'] : new WidgetPagerCalculator();
+		$calculator->set_data($this->data);
+		$calculator->set_policy($policy);
 		
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/pager.meta');
 		$view->assign('pager_calculator', $calculator);
