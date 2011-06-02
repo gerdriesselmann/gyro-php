@@ -302,7 +302,14 @@ class Users {
 	 * Initialize user management, session et al
 	 */
 	public static function initialize() {
-		$current_user = Session::peek('current_user');
+		$current_user_id = Session::peek('current_user_id');
+		if (empty($current_user_id)) {
+			// Backward compatability
+			$current_user = Session::pull('current_user');
+		}
+		else {
+			$current_user = self::get($current_user_id);
+		}
 		
 		if (empty($current_user)) {
 			self::check_permanent_login();
