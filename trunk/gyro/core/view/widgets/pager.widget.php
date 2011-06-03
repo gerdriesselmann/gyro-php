@@ -205,6 +205,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 * @return array
 	 */
 	protected function strip_pages($pages_in, $current_page, $total_links, $policy) {
+		$gap = $this->create_page_array_item('');
 		$policy |= $this->policy;
 		$ret = array();
 		// $current_page is one based, while array $pages_in is 0-based!
@@ -241,7 +242,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 				$ret[] = $pages_in[0];			
 			}
 			if ($first_page_index > 1) {
-				$ret[] = $this->create_page_array_item('');
+				$ret[] = $gap;
 			}		
 		}
 
@@ -259,7 +260,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 		if ($strip) {
 			// Add link to last page and evetually some dots to mark the gap
 			if ($last_page_index < $total_pages_index - 1) {
-				$ret[] = $this->create_page_array_item('');			
+				$ret[] = $gap;
 			}
 			if ($last_page_index < $total_pages_index ) {
 				$ret[] = $pages_in[$total_pages_index];
