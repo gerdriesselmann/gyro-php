@@ -413,10 +413,10 @@ class ParameterizedRoute extends RouteBase {
 			}
 		}
 		
-		$reg = '#\{' . $key . ':.*?\}[*%]#';
-		$replace = implode('/', array_map(array($this, 'preprocess_replace_value'), explode('/', Cast::string($value)))); 
-		$path = preg_replace($reg, $replace, $path); 
-		$reg = '#\{' . $key . ':.*?\}[!]?#';
+		$reg = '#\{' . $key . ':[^}]*\}[*%]#';
+		$replace = implode('/', array_map(array($this, 'preprocess_replace_value'), explode('/', Cast::string($value))));
+		$path = preg_replace($reg, $replace, $path);
+		$reg = '#\{' . $key . ':[^}]*\}!?#';
 		$replace = $this->preprocess_replace_value($value);
 		$path = preg_replace($reg, $replace, $path); 
 
