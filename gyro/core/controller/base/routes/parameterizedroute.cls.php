@@ -98,7 +98,7 @@ class ParameterizedRoute extends RouteBase {
 	public function weight_against_path($path) {
 		$def_pathstack = new PathStack($this->path); // Definition
 		$url_pathstack = new PathStack($path);   // URL to process
-		
+
 		$ret = self::WEIGHT_NO_MATCH;
 		// Do some simple plausibility check
 		$simple_check = true;
@@ -413,8 +413,11 @@ class ParameterizedRoute extends RouteBase {
 			}
 		}
 		
-		$reg = '#\{' . $key . ':.*?\}[*%!]?#';
+		$reg = '#\{' . $key . ':.*?\}[*%]#';
 		$replace = implode('/', array_map(array($this, 'preprocess_replace_value'), explode('/', Cast::string($value)))); 
+		$path = preg_replace($reg, $replace, $path); 
+		$reg = '#\{' . $key . ':.*?\}[!]?#';
+		$replace = $this->preprocess_replace_value($value);
 		$path = preg_replace($reg, $replace, $path); 
 
 		return $path;
@@ -424,7 +427,7 @@ class ParameterizedRoute extends RouteBase {
 	 * Preprocess a value before it gets inserted into URL
 	 */
 	protected function preprocess_replace_value($value) {
-		return urlencode(Cast::string($value));
+		return str_replace('%2F', '%252F', urlencode(Cast::string($value)));
 	}
 	
 	// ---------------------------------------------
