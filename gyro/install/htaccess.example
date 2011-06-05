@@ -25,7 +25,11 @@ RewriteBase /
 RewriteCond $1 !^favicon.ico|^css|^js
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
+# Below is for Apache 2:
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA,B]
+# This is for Apache 1:
+#RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
+
 
 # On nginx, the rule would be this:
 # location / {
