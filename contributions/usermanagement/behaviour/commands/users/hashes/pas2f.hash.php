@@ -13,9 +13,9 @@ class Pas2fHash extends Pas2pHash {
 	/**
 	 * Return preconfigured instance of PasswordHash
 	 * 
-	 * @return PasswordHash
+	 * @return PasswordHash02
 	 */
 	protected function create_pass2_instance() {
-		return new PasswordHash(8, FALSE);		
+		return new PasswordHash02(8, FALSE);
 	}	
 }

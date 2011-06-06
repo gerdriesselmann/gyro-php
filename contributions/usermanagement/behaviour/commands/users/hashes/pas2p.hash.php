@@ -13,10 +13,10 @@ class Pas2pHash implements IHashAlgorithm {
 	/**
 	 * Return preconfigured instance of PasswordHash
 	 * 
-	 * @return PasswordHash
+	 * @return PasswordHash02
 	 */
 	protected function create_pass2_instance() {
-		return new PasswordHash(8, TRUE);		
+		return new PasswordHash02(8, TRUE);
 	}
 	
 	public function hash($source) {

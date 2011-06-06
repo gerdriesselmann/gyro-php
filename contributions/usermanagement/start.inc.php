@@ -125,11 +125,13 @@ class ConfigUsermanagement {
 	 *
 	 * Possible values are:
 	 * 
-	 * - md5: (default) The MD5 hash
+	 * - md5: The MD5 hash
 	 * - sha1: The SHA1 hash
 	 * - pas2f: phpass 0.2 in full mode 
 	 * - pas2p: phpass 0.2 in portable mode. This is a kind of salted md5.
-	 * 
+	 * - pas3f: phpass 0.3 in full mode
+	 * - pas3p: phpass 0.3 in portable mode. This is a kind of salted md5. (Default)
+	 *
 	 * @see http://www.openwall.com/phpass/
 	 * 
 	 * Modules or applications may add more algorithms
@@ -202,7 +204,7 @@ if (Config::get_value(Config::VERSION_MAX) < 0.6) {
 Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_PAGE, 'APP_USER_DEFAULT_PAGE', Config::get_url(Config::URL_BASEURL_SAFE) . 'user');
 Config::set_value_from_constant(ConfigUsermanagement::DEFAULT_ROLE, 'APP_USER_DEFAULT_ROLE', USER_ROLE_USER);
 Config::set_value_from_constant(ConfigUsermanagement::BEHAVIOUR_403, 'APP_USER_403_BEHAVIOUR', 'DENY');
-Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_TYPE', 'md5');
+Config::set_value_from_constant(ConfigUsermanagement::HASH_TYPE, 'APP_USER_HASH_TYPE', 'pas3p');
 Config::set_value_from_constant(ConfigUsermanagement::PERMANENT_LOGIN_DURATION, 'APP_USER_PERMANENT_LOGIN_DURATION', 14);
 Config::set_value_from_constant(ConfigUsermanagement::TOS_VERSION, 'APP_USER_TOS_VERSION', 0);
 Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
