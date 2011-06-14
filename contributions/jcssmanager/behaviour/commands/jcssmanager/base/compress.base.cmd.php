@@ -50,24 +50,28 @@ class JCSSManagerCompressBaseCommand extends CommandDelegate {
 				$ext = array_pop($arr);
 				$arr[] = $groupname;
 				$arr[] = $ext;
-				$out_file = implode('.', $arr);  
+				$out_file = implode('.', $arr);
 			}
-
-			$ret->merge($this->compress($in_files, $out_file, $files_to_unlink));
+			if (count($in_files)) {
+				$ret->merge($this->compress($in_files, $out_file, $files_to_unlink));
+			}
+			else {
+				file_put_contents($out_file, '');
+			}
 			if ($ret->is_ok()) {
 				$dao = JCSSCompressedFiles::update_db($this->get_db_type(), $out_file, $in_files, $ret);
 				if ($ret->is_ok()) {
 					$versioned_file_name = JCSSManager::make_absolute($dao->get_versioned_filename());
-					rename($out_file, $versioned_file_name);  	
-				}				
+					rename($out_file, $versioned_file_name);
+				}
 			}
-			
+
 			$gzip_file = false;
 			if ($versioned_file_name && $ret->is_ok()) {
 				$ret->merge($this->gzip($versioned_file_name, $gzip_file));
 			}
 		}
-			
+
 		foreach($files_to_unlink as $src) {
 			@unlink($src);
 		}
