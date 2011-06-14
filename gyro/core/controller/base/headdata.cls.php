@@ -267,6 +267,7 @@ class HeadData implements IRenderer {
 	 */
 	protected function render_css($css_files) {
 		$ret = '';
+		$css_files = array_unique($css_files);
 		foreach ($css_files as $file) {
 			$file = String::escape($this->escape_file($file));
 			$ret .= "<link rel=\"stylesheet\" type=\"text/css\"  href=\"$file\" />\n";
@@ -320,6 +321,7 @@ class HeadData implements IRenderer {
 	 * @return string
 	 */
 	protected function render_js($js_files) {
+		$js_files = array_unique($js_files);
 		$ret = '';
 		$ret .= $this->render_js_snippets($this->js_snippets['before']);
 		foreach ($js_files as $file) {
