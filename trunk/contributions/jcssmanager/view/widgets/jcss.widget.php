@@ -91,6 +91,7 @@ class WidgetJCSS implements IWidget {
 	 * Replace a bunch of files with their compressed version 
 	 */
 	protected function replace_by_compressed($type, $arr_files) {
+		$arr_files = array_unique($arr_files);
 		if (count($arr_files) == 0 || !Config::get_value(ConfigJCSSManager::USE_COMPRESSED)) {
 			return $arr_files;
 		}
