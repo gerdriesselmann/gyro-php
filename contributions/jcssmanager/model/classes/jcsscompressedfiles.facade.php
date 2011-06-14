@@ -6,6 +6,7 @@ class JCSSCompressedFiles {
 	public static function find($type) {
 		$dao = new DAOJcsscompressedfiles();
 		$dao->type = $type;
+		$dao->sort('num_sources', DataObjectBase::DESC);
 		return $dao->find_array();
 	}
 	
@@ -29,6 +30,7 @@ class JCSSCompressedFiles {
 		if ($dao->find(DataObjectBase::AUTOFETCH)) {
 			if ($dao->hash != $hash) {
 				$dao->hash = $hash;
+				$dao->num_sources = count($sources);
 				$dao->sources = $sources;
 				$dao->version++;
 				$err->merge($dao->update());
@@ -40,6 +42,7 @@ class JCSSCompressedFiles {
 			$dao->filename = $filename;
 			$dao->version = 1;
 			$dao->hash = $hash;
+			$dao->num_sources = count($sources);
 			$dao->sources = $sources;
 			$err->merge($dao->insert());	 
 		}	

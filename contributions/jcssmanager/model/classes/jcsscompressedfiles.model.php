@@ -3,6 +3,7 @@ class DAOJcsscompressedfiles extends DataObjectBase {
 	public $type;
 	public $filename;
 	public $hash;
+	public $num_sources;
 	public $sources;
 	public $version;
 	
@@ -17,6 +18,7 @@ class DAOJcsscompressedfiles extends DataObjectBase {
 				new DBFieldEnum('type', array_keys(JCSSManager::get_types()),  null, DBField::NOT_NULL),
 				new DBFieldText('filename', 255, null, DBField::NOT_NULL),
 				new DBFieldText('hash', 255, null, DBField::NOT_NULL),
+				new DBFieldInt('num_sources', 1, DBFieldInt::UNSIGNED | DBField::NOT_NULL),
 				new DBFieldSerialized('sources', DBFieldText::BLOB_LENGTH_SMALL, null, DBField::NOT_NULL),
 				new DBFieldInt('version', 1,DBFieldInt::UNSIGNED | DBField::NOT_NULL)
 			),
