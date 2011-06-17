@@ -41,19 +41,11 @@
 
   // getParent Element of Range
   function getParentOfRange(editor) {
-	var r = getRange(editor);
-	if ($.browser.msie) return r.parentElement()
-	return r.commonAncestorContainer
-  }
-  // getRange - gets the current text range object
-  function getRange(editor) {
-    if ($.browser.msie) return getSelection(editor).createRange();
-    return getSelection(editor).getRangeAt(0);
-  }
-
-  // getSelection - gets the current text range object
-  function getSelection(editor) {
-    if ($.browser.msie) return editor.doc.selection;
-    return editor.$frame[0].contentWindow.getSelection();
+	var r = $.cleditor.getRange(editor);
+	if ($.browser.msie) {
+		return r.parentElement();
+	} else {
+		return r.commonAncestorContainer
+	}
   }
 })(jQuery);
