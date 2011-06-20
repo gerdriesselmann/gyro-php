@@ -3,7 +3,7 @@
  * 
  * @see https://groups.google.com/forum/#!topic/cleditor/HZpWRNVy-ME/discussion
  */
-CLEDITOR_I18N = {
+var CLEDITOR_I18N = {
     "Bold": "Gras",
     "Italic": "Italique",
     "Underline": "Souligné",
@@ -36,4 +36,4 @@ CLEDITOR_I18N = {
     "Paste as text": "Coller en tant que texte",
     "Print": "Imprimer",
     "Show source": "Afficher la source"
-}
+};
