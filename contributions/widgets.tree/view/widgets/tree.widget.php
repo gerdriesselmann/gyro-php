@@ -1,6 +1,6 @@
 <?php
 /**
- * A widgets that prints a tree, sonsiting of nested <li>
+ * A widgets that prints a tree, consisting of nested <li>
  */
 class WidgetTree implements IWidget {
 	const OPEN_UNTIL_LEVEL = 512;
