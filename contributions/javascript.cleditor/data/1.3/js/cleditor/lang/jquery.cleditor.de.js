@@ -5,7 +5,7 @@
  * 
  * @see https://groups.google.com/forum/#!topic/cleditor/HZpWRNVy-ME/discussion
  */
-CLEDITOR_I18N = {
+var CLEDITOR_I18N = {
     "Bold": "Fett",
     "Italic": "Kursiv",
     "Underline": "Unterstrichen",
@@ -18,7 +18,7 @@ CLEDITOR_I18N = {
     "Text color": "Textfarbe",
     "Highlight color": "Hintergrundfarbe",
     "Remove formatting": "Formatierung entfernen",
-    "Unordered list": "Auflisting",
+    "Unordered list": "Auflistung",
     "Ordered list": "Aufzählung",
     "Outdent": "Ausrücken",
     "Indent": "Einrücken",
@@ -29,7 +29,7 @@ CLEDITOR_I18N = {
     "Undo": "Rückgängig",
     "Redo": "Wiederholen",
     "Insert horizontal rule": "Horizontale Linie",
-    "Insert image": "Bild eingügen",
+    "Insert image": "Bild einfügen",
     "Insert link": "Link einfügen",
     "Remove link": "Link entfernen",
     "Cut": "Auschneiden",
@@ -48,4 +48,4 @@ CLEDITOR_I18N = {
 	"Cols:": "Spalten:",
 	// Quote plugin
 	"Quote": "Zitieren"
-}
+};
