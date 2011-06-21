@@ -150,7 +150,15 @@ class GsitemapController extends ControllerBase {
  		if (count($arrret) == 0) {
  			return self::NOT_FOUND;
  		}
- 		$view->assign('files', $arrret); 	
+		$files = array();
+		foreach($arrret as $item) {
+			if (is_array($item)) {
+				$files[] = $item;
+			} else {
+				$files[] = array('url' => $item, 'lastmod' => 0);
+			}
+		}
+ 		$view->assign('files', $files);
  		return self::OK;
  	}  
  	
