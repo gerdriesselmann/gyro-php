@@ -76,13 +76,13 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 		$src = '';
 		$src .= $this->email;
 		$src .= $this->password;
-		$src .= $this->creator;
+		$src .= $creator;
 		$src .= $this->id;
 		if (is_array($data)) {
 			$data = Arr::implode('§', $data, '~');
 		}
 		$src .= $data;
-		$src .= $this->get_modification_date();
+		$src .= $this->get_creation_date(); // modificationdate ist not that stable
 		$src .= $this->name;
 		return sha1($src);
 	}
