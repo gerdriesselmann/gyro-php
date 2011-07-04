@@ -144,7 +144,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	public function initialize($page_data) {
 		if ($this->scheme != 'any' && Url::current()->get_scheme() != $this->scheme) {
 			// redirect to given scheme
-			Url::current()->set_scheme($this->scheme)->redirect();
+			Url::current()->set_scheme($this->scheme)->redirect(Url::PERMANENT);
 			exit;
 		}
 		
