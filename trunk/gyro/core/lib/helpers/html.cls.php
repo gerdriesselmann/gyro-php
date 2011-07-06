@@ -454,6 +454,19 @@ class html
 	}
 
 	/**
+	 * Create style tag with content
+	 *
+	 * @param string $content The CSS
+	 * @return string
+	 */
+	public static function style($content) {
+		$attrs = array(
+			'type' => 'text/css'
+		);
+		return html::tag('style', $content, $attrs);
+	}
+
+	/**
 	 * Creates META tag
 	 *
 	 * @param string $name

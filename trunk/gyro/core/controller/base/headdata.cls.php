@@ -44,6 +44,7 @@ class HeadData implements IRenderer {
 	public $js_files = array();
 	public $js_snippets = array('before' => array(), 'after' => array());
 	public $css_files = array();
+	public $css_snippets = array('before' => array(), 'after' => array());
 	public $conditional_css_files = array();
 	public $meta = array();
 	public $meta_http_equiv = array();
@@ -79,8 +80,10 @@ class HeadData implements IRenderer {
 			$ret .= $this->render_meta_http_equiv($this->meta_http_equiv);
 		}
 		if (Common::flag_is_set($policy, self::CSS_INCLUDES)) {
+			$ret .= $this->render_css_snippets($this->css_snippets['before']);
 			$ret .= $this->render_css($this->css_files);
 			$ret .= $this->render_conditional_css($this->conditional_css_files);
+			$ret .= $this->render_css_snippets($this->css_snippets['after']);
 		}
 		if (Common::flag_is_set($policy, self::JAVASCRIPT_INCLUDES)) {
 			$ret .= $this->render_js($this->js_files);
@@ -145,6 +148,23 @@ class HeadData implements IRenderer {
 		}
 	}
 		
+	/**
+	 * Add a CSS snippet
+	 *
+	 * @param string $snippet
+	 * @param bool $before_includes If true, the snippet is placed before included files
+	 * @return void
+	 */
+	public function add_css_snippet($snippet, $before_includes = false) {
+		if (!empty($snippet)) {
+			if ($before_includes) {
+				$this->css_snippets['before'][] = $snippet;
+			} else {
+				$this->css_snippets['after'][] = $snippet;
+			}
+		}
+	}
+
 	public function add_meta($name, $content, $override = false) {
 		if ($override || !isset($this->meta[$name]) ) {
 			$this->meta[$name] = $content;
@@ -336,6 +356,14 @@ class HeadData implements IRenderer {
 		$ret = '';
 		foreach($arr_snippets as $snippet) {
 			$ret .= html::script_js($snippet) . "\n";	
+		}
+		return $ret;
+	}
+
+	protected function render_css_snippets($arr_snippets) {
+		$ret = '';
+		foreach($arr_snippets as $snippet) {
+			$ret .= html::style($snippet) . "\n";
 		}
 		return $ret;
 	}
