@@ -17,10 +17,17 @@ class FormHandler {
 	 */
 	const TOKEN_POLICY_NONE = 0;
 	/**
-	 * Create a token for a form, but reuse it until it expires
+	 * Create a token for a form, but reuse it throughout the request (used for commands forms)
 	 */
 	const TOKEN_POLICY_REUSE = 2;	
-	
+	/**
+	 * Create a token for a form, and reuse it for several requests (until it expires).
+	 *
+	 * @attention Note this may lead to behaviours that users may find strange: tokens expiring after short time,
+	 *            invalidating of forms, if more than one browser window is opened etc.
+	 */
+	const TOKEN_POLICY_REUSE_ACROSS_REQUESTS = 3;
+
 	/**
 	 * Name of form. 
 	 */
@@ -73,12 +80,8 @@ class FormHandler {
  		if ($token) {
 	 		$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
 			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), array('value' => $this->name));
-			
-			if (Session::is_started()) {
-				// Note that token is key and form id is value
-				Session::push_to_array_assoc('formhandlertokens', $this->name, $token);
-			}
- 		}		
+
+ 		}
  		$view->assign('form_validation', $token_html);
 
 		if (!empty($data)) {
@@ -118,16 +121,11 @@ class FormHandler {
  			case self::TOKEN_POLICY_NONE:
  				break;
  			case self::TOKEN_POLICY_REUSE:
- 				if (Session::is_started()) {
- 					$formtokens = Session::peek('formhandlertokens_reuse');
-	 				$reuse_token = Arr::get_item($formtokens, $this->name, '');
-	 				$token = FormValidations::create_or_reuse_token($this->name, $reuse_token);
-	 				Session::push_to_array_assoc('formhandlertokens_reuse', $token, $this->name);
- 				}
-	 			else {
- 					$token = FormValidations::create_token($this->name);
- 				}
+ 				$token = FormValidations::create_or_reuse_token($this->name);
  				break;
+			case self::TOKEN_POLICY_REUSE_ACROSS_REQUESTS:
+				$token = FormValidations::create_or_reuse_token_across_requests($this->name);
+				break;
  			default:
  				$token = FormValidations::create_token($this->name);
  				break;						 				
@@ -152,14 +150,6 @@ class FormHandler {
 			// Validate if token is in DB
 			$success = $success && ($this->name == Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
 	 		$success = $success && FormValidations::validate_token($this->name, $token);
-	 		// Validate if token is in Session, too
-	 		if (Session::is_started()) {
-	 			$formtokens = Session::pull('formhandlertokens');
-	 			$success = $success && ($this->name == Arr::get_item($formtokens, $token, ''));
-	 			
-	 			unset($formtokens[$token]);
-	 			Session::push('formhandlertokens', $formtokens);
-	 		}	 		
  		}
  		if ($success == false) {
  			$ret->append(tr('Form verification token is too old. Please try again.', 'core'));
