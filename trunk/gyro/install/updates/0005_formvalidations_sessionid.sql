@@ -1,0 +1,1 @@
+ALTER TABLE `formvalidations` ADD COLUMN `sessionid` VARCHAR(60) NOT NULL DEFAULT '' AFTER `name`;
