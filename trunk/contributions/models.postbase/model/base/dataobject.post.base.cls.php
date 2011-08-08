@@ -24,21 +24,43 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	protected function create_table_object() {
 		return new DBTable(
 			$this->get_model_name(),
-			array_merge(
-				array(
-					new DBFieldInt('id', null, DBFieldInt::PRIMARY_KEY),
-					new DBFieldText('title', 200, null, DBField::NOT_NULL),
-					new DBFieldTextHtml('text', DBFieldText::BLOB_LENGTH_LARGE, null, $this->get_text_field_policy()),
-				),
-				$this->get_teaser_field(),
-				$this->get_meta_tag_fields(),
-				$this->get_global_field_definitions(),
-				$this->get_timestamp_field_declarations(),
-				$this->get_additional_field_definitions()	
-			),
+			$this->collect_field_definitions(),
 			'id',
 			$this->get_additional_relations()
 		);
+	}
+
+	/**
+	 * Collect all table fields
+	 *
+	 * Should be overloaded only by classes which single purpose is to be overloaded itself.
+	 * The rest should overload get_additional_field_definitions()
+	 *
+	 * @return array
+	 */
+	protected function collect_field_definitions() {
+		return array_merge(
+			array(
+				new DBFieldInt('id', null, DBFieldInt::PRIMARY_KEY),
+				new DBFieldText('title', 200, null, DBField::NOT_NULL),
+				new DBFieldTextHtml('text', DBFieldText::BLOB_LENGTH_LARGE, null, $this->get_text_field_policy()),
+			),
+			$this->get_teaser_field(),
+			$this->get_meta_tag_fields(),
+			$this->get_global_field_definitions(),
+			$this->get_timestamp_field_declarations(),
+			$this->get_additional_field_definitions()
+		);
+	}
+
+	/**
+	 * Should be overloaded only by classes which single purpose is to be overloaded itself.
+	 * The rest should overload get_additional_relations()
+	 *
+	 * @return array Array of DBRelation
+	 */
+	protected function collect_relations() {
+		return $this->get_additional_relations();
 	}
 	
 	/**
