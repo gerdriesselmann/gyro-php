@@ -14,7 +14,9 @@
  * 
  * 
  * By default a 213-template is installed. Use the YAML builder to create your own template
- * and CSS stubs: http://builder.yaml.de/ 
+ * and CSS stubs: http://builder.yaml.de/
+ *
+ * This module offers both YAML 3.2 and 3.3. Set APP_YAML_VERSION to either one of this. Default is "3.2".
  *
  * @section Forms Forms
  * 
