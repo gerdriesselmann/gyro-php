@@ -272,4 +272,35 @@ class Common {
 	public static function create_token($salt = false) {
 		return sha1(uniqid($salt ? $salt : mt_rand(), true));
 	}
+
+	/**
+	 * Reeturns temporary directory
+	 * @static
+	 * @return string
+	 */
+	public static function get_temp_dir() {
+		$ret = '';
+		if (function_exists('sys_get_temp_dir')) {
+			$ret = sys_get_temp_dir();
+		}
+
+		if (empty($ret)) {
+			foreach(array('TMP','TEMP','TMPDIR') as $env) {
+				$ret = getenc($env);
+				if ($ret) {
+					break;
+				}
+			}
+		}
+
+		if (empty($ret)) {
+			$ret = Config::get_value(Config::TEMP_DIR);
+		}
+
+		if ($ret) {
+			$ret = rtrim(realpath($ret), '/') . '/';
+		}
+		
+		return $ret;
+	}
 }
