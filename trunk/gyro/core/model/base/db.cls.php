@@ -129,6 +129,7 @@ class DB {
 			foreach($arr_values as $col => $value) {
 				$dao->$col = $value;
 			}
+			$dao->limit(1);
 			if ($dao->find(IDataObject::AUTOFETCH)) {
 				$ret = $dao;
 			}
