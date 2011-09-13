@@ -26,7 +26,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 			$this->get_model_name(),
 			$this->collect_field_definitions(),
 			'id',
-			$this->get_additional_relations()
+			$this->collect_relations()
 		);
 	}
 
