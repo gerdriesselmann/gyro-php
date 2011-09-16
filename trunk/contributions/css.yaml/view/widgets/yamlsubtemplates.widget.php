@@ -115,14 +115,15 @@ class WidgetYAMLSubtemplates implements IWidget {
 		$ret = array();
 		$c = count($slotwidths);
 		for($i = 0; $i < $c; $i++) {
-			$appendix = '';
+			$appendix = 'l';
+			$appendix_sub = '';
 			if ($i == ($c - 1)) {
 				$appendix = 'r';
-			} 
-			else {
-				$appendix = 'l';
+				$appendix_sub = 'r';
+			} else if ($i == 0) {
+				$appendix_sub = 'l';
 			}
-			$ret[] = array('cls' => 'c' . $slotwidths[$i] . $appendix, 'subc' => 'subc'. $appendix); 
+			$ret[] = array('cls' => 'c' . $slotwidths[$i] . $appendix, 'subc' => 'subc'. $appendix_sub);
 		}
 		return $ret;
 	} 
