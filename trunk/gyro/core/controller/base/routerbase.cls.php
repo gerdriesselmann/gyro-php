@@ -110,6 +110,9 @@ class RouterBase implements IEventSink {
  	 * Try to find matching controller 
  	 */
  	protected function find_route($path) {
+		 if ($path === '') {
+			 return null;
+		 }
  		$best_matching_route = null;
  		$best_weight = IRoute::WEIGHT_NO_MATCH;
  
@@ -136,9 +139,14 @@ class RouterBase implements IEventSink {
  	 * @return string The current path, e.g. path/to/page
  	 */
  	protected function get_path() {
-		$path = Arr::get_item($_GET, Config::get_value(Config::QUERY_PARAM_PATH_INVOKED), '.'); 
+		 // Check if index.php was invoked directly
+		 if (RequestInfo::current()->url_invoked(RequestInfo::RELATIVE) == Config::get_url(Config::URL_BASEDIR) . 'index.php') {
+			 return '';
+		 }
+
+		$path = Arr::get_item($_GET, Config::get_value(Config::QUERY_PARAM_PATH_INVOKED), '.');
 		//$path = trim(trim($path), '/');
-		if (empty($path) || $path == '/') {
+		if ($path == '/') {
 			$path = '.';
 		}
 		return $path;  		
