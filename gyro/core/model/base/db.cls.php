@@ -131,7 +131,7 @@ class DB {
 			}
 			$dao->limit(1);
 			if ($dao->find(IDataObject::AUTOFETCH)) {
-				$ret = $dao;
+				$ret = clone($dao); // Get rid of Query related properties
 			}
 			RuntimeCache::set($keys, $ret);
 		}
