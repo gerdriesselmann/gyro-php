@@ -18,6 +18,9 @@ class String {
 	/**
 	 * Static. processes a string to strip of HTML and quotes. Avoids injection attacks
 	 *
+	 * @attention Content is escaped after stripping tags, so you should not call this
+	 *            function just to strip tags. Use it to clean user input.
+	 *
 	 * @param String The text to process
 	 * @return String The cleaned text
 	 */
