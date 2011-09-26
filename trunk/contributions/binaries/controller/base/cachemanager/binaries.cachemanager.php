@@ -2,8 +2,8 @@
 /**
  * Caches content client side, but not server side
  */
-class BinariesCacheManager extends ConstantCacheManager {
-		/**
+class BinariesCacheManager extends NoCacheCacheManager {
+	/**
 	 * Constructor
 	 *
 	 * @param int $duration Cache duration , defaults to value set in ConfigBinaries::CLIENT_CACHE_DURATION
@@ -16,6 +16,6 @@ class BinariesCacheManager extends ConstantCacheManager {
 		if (empty($header_manager)) {
 			$header_manager = CacheHeaderManagerFactory::create(Config::get_value(ConfigBinaries::CACHEHEADER_CLASS));
 		}
-		parent::__construct('', $duration, $header_manager);
+		parent::__construct($duration, $header_manager);
 	}	
 }
