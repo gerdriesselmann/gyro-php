@@ -3,7 +3,7 @@
 require_once dirname(__FILE__) . '/routebase.cls.php';
 
 /**
- * Allows definig routes that contain wildcards
+ * Allows defining routes that contain wildcards
  *
  * A simple example: 
  * user/{id:ui>}/{page:ui}.html!
@@ -12,43 +12,65 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  * according controller action:
  * 
  * public function action_user($page_data, $id, $page = 0);
- * 
+ *
+ * You may also use parameters that are not handled by your actions. They will be silently ignored, when the action
+ * is called.
+ *
  * The wildcards are of type name[:type][:params] where type is optional and defauls to string. Params default to FALSE
- * 
+ *
  * The following types are supported:
- * 
+ *
  * i: integer
  * ui: unsigned integer
  * ui>: integer > 0
  * s: string (default). You can specify a length like so: s:2 - String of two ANSI characters
+ * sp: ASCII string. Value gets converted to plain ascii before substituting it. You can specify a length like so: sp:2.
  * e: enum. Usage is e:value1,value2,value3,..,valueN
- * 
+ *
+ *
  * Two meta types are available:
+ *
+ * _class_: Gets replaced by the class name of an instance passed as parameter
+ * _ model_: Gets replaced by te model name of an instance passed as parameter
+ *
+ * Both meta types cannot be bound to variables. You must use the string type "s"
+ *
+ *
+ * @code
+ * /user/{id:ui>}/{name:sp&}/
+ * @endcode
+ *
+ * The action function only must handle the id parameter. You should validate the URL using
+ *
+ * @code
+ * ActionHandler::validate_against_current()
+ * @endcode
+ *
+ * to avoid different URL for the same content.
  * 
- * _class_: Gets replaced by the class name of an instance passed as paramter
- * _ model_: Gets replaced by te model name of an instance passed as paramter
- *  
- * Both meta types cannot be bound to variables. You must use the string type "s" 
- * 
- * The parameterized route supports optional elements, but only at the end of the query
+ * The parametrized route supports optional elements, but only at the end of the query
  * 
  * A terminating ! means this part of the URL is optional. Be sure to define a default value in the 
  * controller action called. 
  * 
  * You may use the % to indicate arbitrary further path elements, or * if you want arbitrary many elements 
- * that additionaly are optional. 
+ * that additionally are optional.
  * 
  * This definition would match any URL that starts with "user" and an ID:
- * 
+ *
+ * @code
  * user/{id:ui>}/{path:s}*
+ * @endcode
  * 
  * For example 
  * - user/5/profile/images would be translated to id = 5 and path = 'profile/images'
  * - user/5/ would be translated to id = 5 and path = ''
  * 
  * This definition would behave different:
- * 
+ *
+ * @code
  * user/{id:ui>}/{path:s}%
+ * @endcode
  * 
  * For example 
  * - user/5/profile/images would be translated to id = 5 and path = 'profile/images'
@@ -56,7 +78,9 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  * 
  * If you use the exclamation mark, only one element is allowed
  * 
+ * @code
  * user/{id:ui>}/{path:s}!
+ * @endcode
  * 
  * - user/5/profile would be translated to id = 5 and path = 'profile'
  * - user/5/profile/images would be causing a 404 not found, unless you defined another matching route
