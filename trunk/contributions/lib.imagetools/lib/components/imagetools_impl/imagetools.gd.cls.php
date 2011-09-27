@@ -136,8 +136,24 @@ class ImageToolsGD implements IImageTools {
 		}		
 		return new ImageInformationGD($watermark, $src->type);	
 	}
+
+	/**
+	 * Rotate image
+	 *
+	 * @param IImageInformation $src Image to rotate
+	 * @param float $degrees Degrees to rotate (0-360)
+	 * @param int $backgroundcolor Backgroundcolor of new portions
+	 * @return IImageInformation False on failure
+	 */
+	public function rotate(IImageInformation $src, $degrees, $backgroundcolor = 0xFFFFFF) {
+		$rotated = imagerotate($src->handle, $degrees, $backgroundcolor);
+		return new ImageInformationGD($rotated, $src->type);
+	}
 }
 
+/**
+ * Implements IImageInformation for GD lib
+ */
 class ImageInformationGD implements IImageInformation {
 	public $handle;
 	public $type;
