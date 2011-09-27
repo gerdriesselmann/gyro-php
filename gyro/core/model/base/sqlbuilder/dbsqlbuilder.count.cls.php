@@ -51,12 +51,12 @@ class DBSqlBuilderCount extends DBSqlBuilderSelect {
 	protected function get_fieldnames($arr_fields, IDBTable $table) {
     	$count_fields = '*';
     	$fieldnames = array();
-//    	if (count($arr_fields) == 0) {
-//    		// * on joins is no good idea
-//	    	if (count($this->query->get_subqueries()) > 0) {
-//				$arr_fields = array_keys($table->get_table_keys());
-//	    	}
-//		}
+    	if (count($arr_fields) == 0) {
+    		// * on joins is no good idea
+	    	if (count($this->query->get_subqueries()) > 0) {
+				$arr_fields = array_keys($table->get_table_keys());
+	    	}
+		}
 		
 		foreach($arr_fields as $key => $name) {
 			if (is_numeric($key)) {
