@@ -62,5 +62,15 @@ interface IImageTools {
 	 * 
 	 * @return IImageInformation
 	 */
-	public function watermark(IImageInformation $src, $text = false);	
+	public function watermark(IImageInformation $src, $text = false);
+
+	/**
+	 * Rotate image
+	 *
+	 * @param IImageInformation $src Image to rotate
+	 * @param float $degrees Degrees to rotate (0-360)
+	 * @param int $backgroundcolor Backgroundcolor of new portions
+	 * @return IImageInformation False on failure
+	 */
+	public function rotate(IImageInformation $src, $degrees, $backgroundcolor = 0xFFFFFF);
 }
