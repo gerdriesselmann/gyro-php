@@ -144,7 +144,7 @@ class PageViewBase extends ViewBase {
 			'keep-alive',
 			'connection'			
 		);
-		foreach(Common::get_headers() as $name => $val) {
+		foreach(GyroHeaders::headers() as $name => $val) {
 			if (!in_array($name, $forbidden)) {
 				$headers[] = $val;
 			}
@@ -153,7 +153,7 @@ class PageViewBase extends ViewBase {
 			'status' => $this->page_data->status_code,
 			'in_history' => $this->page_data->in_history,
 			'headers' => $headers,
-			'cachemanager' => $this->cache_manager 
+			'cacheheadermanager' => $this->cache_manager->get_cache_header_manager()
 		);
 		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
 		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
@@ -173,8 +173,9 @@ class PageViewBase extends ViewBase {
 			foreach(Arr::get_item($cache_data, 'headers', array()) as $header) {
 				GyroHeaders::set($header, false, true);
 			}
-			$etag = Arr::get_item($cache_data, 'etag', '');
-			$this->cache_manager = Arr::get_item($cache_data, 'cachemanager', $this->cache_manager);
+			//$etag = Arr::get_item($cache_data, 'etag', '');
+			$cache_header_manager = Arr::get_item($cache_data, 'cacheheadermanager', $this->cache_manager->get_cache_header_manager());
+			$this->cache_manager->set_cache_header_manager($cache_header_manager);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
