@@ -590,7 +590,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 */
 	public function count() {
 		$query = $this->create_count_query();
-		$result = DB::query($query->get_sql(), $query->get_table()->get_table_driver());
+		$result = DB::query($query);
 		$ret = false;
 		if ($result->get_status()->is_ok()) {
 			$arr = $result->fetch();
