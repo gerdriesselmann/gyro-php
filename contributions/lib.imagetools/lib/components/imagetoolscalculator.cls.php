@@ -18,6 +18,10 @@ class ImageToolsCalculator {
 	 * @return ImageToolsRect
 	 */
 	public static function fit($src_width, $src_height, $dst_width, $dst_height) {
+		if (($src_width / $src_height) == ($dst_width / $dst_height)) {
+			return new ImageToolsRect($dst_width, $dst_height);
+		}
+		
 		$w_target = min($src_width, $dst_width);
 		$h_target = min($src_height, $dst_height);
 		
@@ -25,8 +29,8 @@ class ImageToolsCalculator {
 		$y_ratio = $h_target / $src_height;
 		$ratio = min($x_ratio, $y_ratio);
 		
-		$w_target = intval($src_width * $ratio);
-		$h_target = intval($src_height * $ratio);
+		$w_target = ceil($src_width * $ratio);
+		$h_target = ceil($src_height * $ratio);
 		
 		return new ImageToolsRect($w_target, $h_target);		
 	}
