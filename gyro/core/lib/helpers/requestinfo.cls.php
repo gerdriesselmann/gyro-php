@@ -49,7 +49,13 @@ class RequestInfo {
 	 * @return bool
 	 */
 	public function is_ssl() {
-		return Arr::get_item($this->data, 'HTTPS', 'off') != 'off';
+		$https = Arr::get_item($this->data, 'HTTPS', false);
+		if ($https === false) {
+			// Not set, e.g. by nginx
+			return (Arr::get_item($this->data, 'SERVER_PORT', '') == '443');
+		} else {
+			return $https != 'off';
+		}
 	}
 	
 	/**
