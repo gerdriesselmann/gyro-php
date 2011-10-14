@@ -18,7 +18,7 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	protected $controller = null;
 	protected $action = '';
 	protected $path = '';
-	protected $scheme = 'http';
+	protected $scheme = '';
 	protected $decorators = null;
 	protected $is_directory = false;
 	
@@ -37,10 +37,12 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 		$pos_scheme = strpos($path, '://');
 		if ($pos_scheme !== false) {
 			$this->scheme = substr($path, 0, $pos_scheme);
-			if ($this->scheme == 'https' && !Config::has_feature(Config::ENABLE_HTTPS)) {
-				$this->scheme = 'http';
-			}
 			$path = substr($path, $pos_scheme + 3);
+		} else {
+			$this->scheme = Config::get_value(Config::DEFAULT_SCHEME);
+		}
+		if ($this->scheme == 'https' && !Config::has_feature(Config::ENABLE_HTTPS)) {
+			$this->scheme = 'http';
 		}
 		$this->path = ($path !== '/') ? ltrim($path, '/') : $path;
 		$this->is_directory = (substr($path, -1) === '/');
