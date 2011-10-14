@@ -101,6 +101,11 @@ class Config {
 	const URL_DEFAULT_PAGE = 'URL_DEFAULT_PAGE';
 
 	/**
+	 * Default scheme (used unless specified in routes)
+	 */
+	const DEFAULT_SCHEME = 'DEFAULT_SCHEME';
+
+	/**
 	 * True to validate url on start 
 	 */
 	const VALIDATE_URL = 'VALIDATE_URL';
