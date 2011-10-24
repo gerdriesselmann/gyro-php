@@ -25,7 +25,7 @@ class GSiteMapModel extends PolicyHolder {
 	public $priority = 0.0;
 	public $changefreq = '';
 	
-	private $adapter;
+	protected $adapter;
 
 	/**
 	 * Constructor
@@ -126,12 +126,36 @@ class GSiteMapModel extends PolicyHolder {
 		}
 		return $ret;
  	}
- 	
- 	public function get_priority() {
+
+	/**
+	 * Return priority of this site
+	 *
+	 * @return float
+	 */
+	public function get_priority() {
  		return $this->priority;
  	}
- 	
- 	public function get_changefreq() {
+
+	/**
+	 * Return change frequency ofthis site
+	 * 
+	 * @return string
+	 */
+	public function get_changefreq() {
  		return $this->changefreq;
  	}
+
+	/**
+	 * Create Formatter
+	 * 
+	 * @param \IDataObject $dao
+	 * @return \GSiteMapItemFormatter
+	 */
+	public function create_formatter(IDataObject $dao) {
+		return new GSiteMapItemFormatter($this->get_url($dao), array(
+			'lastmod' => $this->get_lastmod($dao),
+			'changefreq' => $this->get_changefreq(),
+			'priority' => $this->get_priority()
+		));
+	}
 }

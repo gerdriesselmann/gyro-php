@@ -31,7 +31,7 @@ class GsitemapController extends ControllerBase {
 	 * Activates includes before action to reduce cache memory 
 	 */ 
 	public function before_action() {
-		Load::components('gsitemapmodel');
+		Load::components('gsitemapmodel', 'gsitemapitemformatter');
 	} 	 	
 
 	/**
@@ -135,10 +135,7 @@ class GsitemapController extends ControllerBase {
  		}
  		$arrret = array();
  		if ($p == 'main') {
- 			$arrret[] = array(
-				'url' => Config::get_url(Config::URL_BASEURL),
-				'lastmod' => 0 
-			);
+ 			$arrret[] = new GSiteMapItemFormatter(Config::get_url(Config::URL_BASEURL), array());
  		}
  		else {
 			$models = $this->collect_models();
@@ -150,15 +147,17 @@ class GsitemapController extends ControllerBase {
  		if (count($arrret) == 0) {
  			return self::NOT_FOUND;
  		}
-		$files = array();
+		$formatters = array();
 		foreach($arrret as $item) {
-			if (is_array($item)) {
-				$files[] = $item;
+			if ($item instanceof GSiteMapItemFormatter) {
+				$formatters[] = $item;
+			} else if (is_array($item)) {
+				$formatters[] = new GSiteMapItemFormatter($item['url'], $item);
 			} else {
-				$files[] = array('url' => $item, 'lastmod' => 0);
+				$formatters[] = new GSiteMapItemFormatter($item, array());
 			}
 		}
- 		$view->assign('files', $files);
+ 		$view->assign('items', $formatters);
  		return self::OK;
  	}  
  	
@@ -247,12 +246,7 @@ class GsitemapController extends ControllerBase {
 		
 			$dao->find();
 			while($dao->fetch()) {
-				$ret[] = array(
-					'url' => $model->get_url($dao),
-					'lastmod' => $model->get_lastmod($dao),
-					'changefreq' => $model->get_changefreq(),
-					'priority' => $model->get_priority()
-				);
+				$ret[] = $model->create_formatter($dao);
 			}
 		}
 		return $ret;
