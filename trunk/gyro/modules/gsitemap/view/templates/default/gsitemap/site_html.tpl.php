@@ -7,7 +7,7 @@ $page_data->head->robots = ROBOTS_NOINDEX_FOLLOW;
 <h1><?=$title?></h1>
 
 <ul>
-<?php foreach ($files as $map): ?>
-<li><a href="<?=$map['url']?>"><?=$map['url']?></a></li>
+<?php foreach ($items as $map): ?>
+<li><?php print $map->as_html();?></li>
 <?php endforeach; ?>
 </ul>
