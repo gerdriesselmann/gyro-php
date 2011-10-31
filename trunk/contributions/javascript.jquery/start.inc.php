@@ -61,8 +61,8 @@ Config::set_feature_from_constant(ConfigJQuery::ON_EVERY_PAGE, 'APP_JQUERY_ON_EV
 Config::set_value_from_constant(ConfigJQuery::CDN, 'APP_JQUERY_CDN', '');
 
 // To be changed on new releases
-Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.5');
-define('JQUERY_VERSION_1_6', '1.6.0');
+Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.6');
+define('JQUERY_VERSION_1_6', '1.6.4');
 define('JQUERY_VERSION_1_5', '1.5.2');
 
 define('JQUERY_VERSION_1_4', '1.4.4');
