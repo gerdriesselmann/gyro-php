@@ -16,7 +16,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(
 </p>
 <br />
 
-<form class="has_focus" id="frmlostpwd" name="frmlostpwd" action="<?ActionMapper::get_path('lost_password')?>" method="post">
+<form class="has_focus" id="frmlostpwd" name="frmlostpwd" action="<?=ActionMapper::get_path('lost_password')?>" method="post">
  	<?php print $form_validation; ?>
  	<p>
  	<?php
