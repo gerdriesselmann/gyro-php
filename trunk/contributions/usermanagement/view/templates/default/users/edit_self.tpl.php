@@ -32,7 +32,5 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(array(
 	<?php print tr('If the password changes, you will get a mail send to you to confirm this change.', 'users')?></p>
 	</fieldset>
 
-	<br />
-	
-	<input class="button right" type="submit" name="submit" value="<?=tr('Save', 'users')?>" />
+	<?php print WidgetInput::output('submit', '', tr('Save', 'users'), WidgetInput::SUBMIT); ?>
 </form>

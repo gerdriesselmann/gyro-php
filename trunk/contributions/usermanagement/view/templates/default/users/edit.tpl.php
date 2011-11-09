@@ -15,8 +15,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(
 <form class="has_focus" id="frmeditaccount" name="frmeditaccount" action="<?=$url_self?>" method="post">
 	<?php $context = 'edit'; ?>
 	<?php gyro_include_template('users/inc/editwidgets'); ?>
-	<br />	
-	<input class="button right" type="submit" name="submit" value="<?=tr('Save', 'users')?>" />
+	<?php print WidgetInput::output('submit', '', tr('Save', 'users'), WidgetInput::SUBMIT); ?>
 </form>
 
 <?php print WidgetItemMenu::output($user, 'edit') ?>
