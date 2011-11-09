@@ -39,6 +39,7 @@ cp $2/install/modules.php.example app/modules.php
 cp $2/install/htaccess.example app/www/.htaccess
 cp $2/install/index.php.example app/www/index.php
 cp $2/install/robots.txt.example app/www/robots.txt
+cp $2/install/favicon.ico app/www/favicon.ico
 cp $2/core/view/templates/default/page.tpl.php app/view/templates/default/
 # Modifiy copied files
 echo "\ndefine ('APP_GYRO_PATH', '$2/');" >> app/config.php.example
