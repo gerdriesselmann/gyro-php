@@ -683,7 +683,8 @@ class Url {
 		if ($path == Config::get_value(Config::URL_BASEDIR)) {
 			return;
 		} 
-		
+
+
 		//$pathclean = trim(str_replace('%20', '', $path), '/'); // created endless circles of redirects
 		//$pathclean = trim($path, '/');
 		$pathclean = str_replace('%20', '', $path);
@@ -702,8 +703,9 @@ class Url {
 			array_push($dirsclean, $dirs[$i]);
 		}
 		$pathclean = implode('/', $dirsclean);
-		if ($pathclean != $path) {
-			$url->set_path($pathclean)->redirect(self::PERMANENT);
+		$url->set_path($pathclean);
+		if ($url->build(Url::ABSOLUTE, Url::ENCODE_PARAMS) != RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE)) {
+			$url->redirect(self::PERMANENT);
 			exit();
 		} 
 		
