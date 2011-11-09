@@ -11,6 +11,8 @@ class Countries {
 	const GROUP_TYPE_POLITICAL = 'POLITICAL';
 	const GROUP_TYPE_GEOGRAPHICAL = 'GEOGRAPHICAL';
 	const GROUP_TYPE_CULTURAL = 'CULTURAL';
+
+	const GROUP_ID_EU = 1;
 	
 	/**
 	 * Return possible types for country groups
