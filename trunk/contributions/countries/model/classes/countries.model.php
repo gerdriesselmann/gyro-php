@@ -40,6 +40,19 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
     	return Countries::get_continent($this->id_continent);
     }
 
+	/**
+	 * Returns whether country is in group or not
+	 *
+	 * @param int $group_id ID of group
+	 * @return bool
+	 */
+	public function is_in_group($group_id) {
+		$link = new DAOCountries2countriesgroups();
+		$link->id_group = $group_id;
+		$link->id_country = $this->id;
+		return $link->count() > 0;
+	}
+
 	// ************************************
 	// ISelfDescribing
 	// ************************************
