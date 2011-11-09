@@ -49,7 +49,7 @@ class SystemUpdateExecutor {
 	 *
 	 * @return array
 	 */
-	protected function check_systemupdate_is_uptodate() {
+	protected function 	check_systemupdate_is_uptodate() {
 		$ret = array();
 		$component = 'systemupdate';
 		$dir = Load::get_module_dir('systemupdate');
