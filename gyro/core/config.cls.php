@@ -232,6 +232,7 @@ class Config {
 	 */
 	public static function get_url($feature) {
 		$url = self::get_value($feature, true);
+		$url = str_replace('%scheme%', self::get_value(self::DEFAULT_SCHEME), $url);
 		$url = str_replace('%domain%', self::get_value(self::URL_DOMAIN), $url);
 		$url = str_replace('%basedir%', self::get_value(self::URL_BASEDIR), $url);
 		return $url;

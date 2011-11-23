@@ -127,15 +127,15 @@ Config::set_feature(
  */
 Config::set_value(Config::URL_DOMAIN, APP_URL_DOMAIN);
 Config::set_value_from_constant(Config::URL_BASEDIR, 'APP_URL_BASEDIR', '/');
-Config::set_value_from_constant(Config::URL_SERVER, 'APP_URL_SERVER', 'http://%domain%');
-Config::set_value_from_constant(Config::URL_BASEURL, 'APP_URL_BASEURL', 'http://%domain%%basedir%');
+Config::set_value_from_constant(Config::URL_SERVER, 'APP_URL_SERVER', '%scheme%://%domain%');
+Config::set_value_from_constant(Config::URL_BASEURL, 'APP_URL_BASEURL', '%scheme%://%domain%%basedir%');
 if (Config::has_feature(Config::ENABLE_HTTPS)) {
 	Config::set_value_from_constant(Config::URL_SERVER_SAFE, 'APP_URL_SERVER_SAFE', 'https://%domain%');
 	Config::set_value_from_constant(Config::URL_BASEURL_SAFE, 'APP_URL_BASEURL', 'https://%domain%%basedir%');
 }
 else {
-	Config::set_value_from_constant(Config::URL_SERVER_SAFE, 'APP_URL_SERVER_SAFE', 'http://%domain%');
-	Config::set_value_from_constant(Config::URL_BASEURL_SAFE, 'APP_URL_BASEURL', 'http://%domain%%basedir%');
+	Config::set_value_from_constant(Config::URL_SERVER_SAFE, 'APP_URL_SERVER_SAFE', '%scheme%://%domain%');
+	Config::set_value_from_constant(Config::URL_BASEURL_SAFE, 'APP_URL_BASEURL', '%scheme%://%domain%%basedir%');
 }
 Config::set_value_from_constant(Config::URL_ABSPATH, 'APP_URL_ABSPATH', APP_INCLUDE_ABSPATH . 'www/');
 /**
@@ -146,7 +146,7 @@ Config::set_value_from_constant(Config::URL_IMAGES, 'APP_URL_IMAGES', '%basedir%
 /**
  * The default URL for users not logged in
  */
-Config::set_value_from_constant(Config::URL_DEFAULT_PAGE, 'APP_DEFAULT_PAGE', 'http://%domain%%basedir%');
+Config::set_value_from_constant(Config::URL_DEFAULT_PAGE, 'APP_DEFAULT_PAGE', '%scheme%://%domain%%basedir%');
 
 /**
  * The query parameter to hold the path orginally invoked
