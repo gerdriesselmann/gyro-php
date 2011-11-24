@@ -43,7 +43,10 @@ class WidgetYAMLSubtemplates implements IWidget {
 	 * Five cols à 20%
 	 */
 	const SLOTS_5_20 = '5';
-	
+	/**
+	 * Automatically detect (= 100/count(data))
+	 */
+	const SLOTS_AUTO = 'AUTO';
 	
 	protected $slotwidths;
 	protected $data;
@@ -73,6 +76,9 @@ class WidgetYAMLSubtemplates implements IWidget {
 	
 	protected function translate_slot($slot) {
 		switch ($slot) {
+			case self::SLOTS_AUTO:
+				$c = count($this->data);
+				return array_fill(0, $c, floor(100/$c));
 			case self::SLOTS_2_33_66:
 				return array(33, 66);
 			case self::SLOTS_2_66_33:
