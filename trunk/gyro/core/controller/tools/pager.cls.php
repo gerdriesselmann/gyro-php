@@ -50,14 +50,29 @@ class Pager implements IDBQueryModifier {
 		$this->pager_data['previous_link'] = '';
 		$this->pager_data['next_link'] = '';	
 		
-		// We asume an url like x/y/?page=2, where page=2 indicates page 2 of pagination		
-		$page = intval($this->adapter->get_current_page());
+		// We asume an url like x/y/?page=2, where page=2 indicates page 2 of pagination
+		$page_raw = $this->adapter->get_current_page();
+		$page = Cast::int($page_raw);
 		if ($page <= 0) {
 			// Oops, weirdo page param
-			// Redirect to first page
-			$url = $this->adapter->get_url_for_page(1);
-			$url->redirect(Url::TEMPORARY);
+			$page_test = intval($page_raw);
+			// Test for something like page=2b
+			if ($page_test != $page && $page_test > 0) {
+				// Redirect to page
+				$url = $this->adapter->get_url_for_page($page_test);
+				$url->redirect(Url::PERMANENT);
+			} else {
+				// Redirect to first page
+				$url = $this->adapter->get_url_for_page(1);
+				$url->redirect(Url::PERMANENT);
+			}
 			exit;			
+		} elseif ($page_raw == 1) {
+			$url = $this->adapter->get_url_for_page(1);
+			if ($url->build() != Url::current()->build()) {
+				$url->redirect(Url::PERMANENT);
+				exit;
+			}
 		}
 
 		$page_total = 0;
