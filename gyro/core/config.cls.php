@@ -133,6 +133,7 @@ class Config {
 	const FORMVALIDATION_EXPIRATION_TIME = 'FORMVALIDATION_EXPIRATION_TIME';
 	
 	const PAGER_NUM_LINKS = 'PAGER_NUM_LINKS';
+	const PAGER_CALCULATOR = 'PAGER_CALCULATOR';
 
 	/** CacheHeaderManager policy for cached stuff. Class name without CacheHeaderManager, e.g. FullCache for FullCacheCacheHeaderManager */
 	const CACHEHEADER_CLASS_CACHED = 'CACHEHEADER_CLASS_CACHED';
