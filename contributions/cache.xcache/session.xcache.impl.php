@@ -25,7 +25,7 @@ class XCacheSession implements ISessionHandler {
 		//A good place to do this is in your _close function
 		
 		// Since XCache takes care of life time, no gc is needed
-		//$this->gc(get_cfg_var('session.gc_maxlifetime'));
+		//$this->gc(ini_get('session.gc_maxlifetime'));
 		return true;
 	}
 	
@@ -49,7 +49,7 @@ class XCacheSession implements ISessionHandler {
 	 */
 	public function write($key, $value) {
 		try {
-			xcache_set($this->create_key($key), $value, get_cfg_var('session.gc_maxlifetime'));
+			xcache_set($this->create_key($key), $value, ini_get('session.gc_maxlifetime'));
 			return true;
 		}
 		catch(Exception $ex) {
