@@ -29,7 +29,7 @@ class MemcacheSession implements ISessionHandler {
 		//A good place to do this is in your _close function
 		
 		// Since Memcache takes care of life time, no gc is needed
-		//$this->gc(get_cfg_var('session.gc_maxlifetime'));
+		//$this->gc(ini_get('session.gc_maxlifetime'));
 		return true;
 	}
 	
@@ -55,7 +55,7 @@ class MemcacheSession implements ISessionHandler {
 	 */
 	public function write($key, $value) {
 		try {
-			GyroMemcache::set($this->create_key($key), $value, get_cfg_var('session.gc_maxlifetime'));
+			GyroMemcache::set($this->create_key($key), $value, ini_get('session.gc_maxlifetime'));
 			return true;
 		}
 		catch(Exception $ex) {

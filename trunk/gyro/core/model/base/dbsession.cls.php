@@ -26,7 +26,7 @@ class DBSession implements ISessionHandler {
 		//session handlers you'll need to explicitly call your _gc public function yourself.  
 		//A good place to do this is in your _close public function
 		
-		$this->gc(get_cfg_var('session.gc_maxlifetime'));
+		$this->gc(ini_get('session.gc_maxlifetime'));
 		return true;
 	}
 	
