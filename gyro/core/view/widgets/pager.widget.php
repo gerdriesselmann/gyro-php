@@ -8,6 +8,10 @@
 class WidgetPagerCalculator implements IPolicyHolder {
 	protected $data;
 	protected $policy;
+	/**
+	 * @var IPagerAdapter
+	 */
+	protected $adapter;
 		
 	/**
 	 * Returns item from data array
@@ -28,6 +32,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 */
 	public function set_data($data) {
 		$this->data = $data;
+		$this->adapter = $this->get_data_item('adapter', new PagerDefaultAdapter($data['page_data']));
 	}
 	
 	/**
@@ -110,7 +115,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 */
 	public function get_page_links_array($total = 0, $policy = WidgetPager::NONE, $gap = '...') {
 		// Build HTML
-		$pages = $this->strip_pages($this->data['pages'], $this->data['page'], $total, $policy);
+		$pages = $this->strip_pages($this->data['page'], $this->data['pages_total'], $total, $policy);
 		$ret = array();
 		foreach ($pages as $page) {
 			$text = String::escape($page['page']);
@@ -148,8 +153,11 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 * Returns URL for page $page
 	 */
 	public function get_page_url($page) {
-		$page_data = Arr::get_item($this->data['pages'], $page - 1, array());
-		return Arr::get_item($page_data, 'url', '');
+		if ($page != $this->get_data_item('page', 0)) {
+			return $this->adapter->get_url_for_page($page);
+		} else {
+			return '';
+		}
 	}
 	
 	/**
@@ -200,25 +208,24 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 *
 	 * @param array $pages_in
 	 * @param int $current_page
-	 * @param int $total_links,
+	 * @param int $num_extract,
 	 * @param int $policy
 	 * @return array
 	 */
-	protected function strip_pages($pages_in, $current_page, $total_links, $policy) {
+	protected function strip_pages($current_page, $total_pages, $num_extract, $policy) {
 		$gap = $this->create_page_array_item('');
 		$policy |= $this->policy;
 		$ret = array();
 		// $current_page is one based, while array $pages_in is 0-based!
 		$current_page_index = $current_page - 1;
-		$total_pages = count($pages_in);
 		$total_pages_index = $total_pages - 1;
 		
-		$total_links -= 1; // One is for current page!
+		$num_extract -= 1; // One is for current page!
 		// Using ceil and floor leads to for example to the following setting
-		// Given 10 links and current is 15: Links are 5 to 14 and 16 to 24 
+		// Given 10 links and current is 15: Links are 5 to 14 and 16 to 24
 		// (Thats how google does it)
-		$first_page_index = $current_page_index - ceil($total_links / 2.0);
-		$last_page_index = $current_page_index + floor($total_links / 2.0);
+		$first_page_index = $current_page_index - ceil($num_extract / 2.0);
+		$last_page_index = $current_page_index + floor($num_extract / 2.0);
 		
 		// Force total number of links, if wanted
 		if ( !Common::flag_is_set($policy, WidgetPager::NO_FORCE_TOTAL_LINKS)) {
@@ -239,7 +246,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 		if ($strip) {
 			// Add leading link to page 1 and evetually some dots to mark the gap
 			if ($first_page_index > 0) {
-				$ret[] = $pages_in[0];			
+				$ret[] = $this->create_page_link_array_item(1);
 			}
 			if ($first_page_index > 1) {
 				$ret[] = $gap;
@@ -248,13 +255,13 @@ class WidgetPagerCalculator implements IPolicyHolder {
 
 		// Pages before current
 		for ($i = $first_page_index; $i < $current_page_index; $i++) {
-			$ret[] = $pages_in[$i];
+			$ret[] = $this->create_page_link_array_item($i + 1);
 		}
 		// Current
 		$ret[] = $this->create_page_array_item($current_page);
 		// Pages after current
 		for ($i = $current_page_index + 1; $i <= $last_page_index; $i++) {
-			$ret[] = $pages_in[$i];
+			$ret[] = $this->create_page_link_array_item($i + 1);
 		}
 		
 		if ($strip) {
@@ -263,7 +270,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 				$ret[] = $gap;
 			}
 			if ($last_page_index < $total_pages_index ) {
-				$ret[] = $pages_in[$total_pages_index];
+				$ret[] = $this->create_page_link_array_item($total_pages_index + 1);
 			}		
 		}
 
@@ -281,7 +288,15 @@ class WidgetPagerCalculator implements IPolicyHolder {
 			'page' => $text,
 			'url' => ''
 		);
-	}	
+	}
+
+
+	protected function create_page_link_array_item($page) {
+		return array(
+			'page' => $page,
+			'url' => $this->get_page_url($page)
+		);
+	}
 }
 
 /**
