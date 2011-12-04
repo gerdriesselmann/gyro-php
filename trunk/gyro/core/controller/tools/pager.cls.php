@@ -46,9 +46,10 @@ class Pager implements IDBQueryModifier {
 		$this->pager_data['policy'] = (is_int($adapter)) ? $adapter : 0;
 		$this->pager_data['items_per_page'] = $items_per_page;
 		$this->pager_data['items_total'] = $items_total;
-		$this->pager_data['pages'] = array();
+		//$this->pager_data['pages'] = array();
 		$this->pager_data['previous_link'] = '';
-		$this->pager_data['next_link'] = '';	
+		$this->pager_data['next_link'] = '';
+		$this->pager_data['adapter'] = $this->adapter;
 		
 		// We asume an url like x/y/?page=2, where page=2 indicates page 2 of pagination
 		$page_raw = $this->adapter->get_current_page();
@@ -127,12 +128,12 @@ class Pager implements IDBQueryModifier {
 				$this->pager_data['last_link'] = $this->get_url_for_page($page_total);
 			}
 		
-			for($i = 1; $i <= $page_total; $i++) {
-				$this->pager_data['pages'][] = array(
-					'page' => $i,
-					'url' => $this->get_url_for_page($i)
-				); 
-			}
+//			for($i = 1; $i <= $page_total; $i++) {
+//				$this->pager_data['pages'][] = array(
+//					'page' => $i,
+//					'url' => $this->get_url_for_page($i)
+//				);
+//			}
 		}
 		$view->assign('pager_data', $this->pager_data);
 	}
@@ -179,7 +180,7 @@ class PagerDefaultAdapter implements IPagerAdapter {
 	protected $parameter;
 	protected $get;
 	
-	public function __construct(PageData $page_data, $parameter) {
+	public function __construct(PageData $page_data, $parameter = 'page') {
 		$this->parameter = $parameter;
 		$this->get = $page_data->get_get();
 	} 
