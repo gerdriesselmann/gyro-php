@@ -303,4 +303,15 @@ class Common {
 		
 		return $ret;
 	}
+
+	public static function create_temp_file($content) {
+		$ret = false;
+		$file = tempnam(self::get_temp_dir(), 'gyro');
+		if ($file !== false) {
+			if (file_put_contents($file, $content) !== false) {;
+				$ret = $file;
+			}
+		}
+		return $ret;
+	}
 }
