@@ -14,6 +14,6 @@ $mailcmd->set_alt_message($self);
 ?>
 <p><b>Hello,</b></p>
 
-<p><?=$name?> send the following message using the contact form on <?=$appname ?>.</p>
+<p><?=$name?> (<?=$email?>) send the following message using the contact form on <?=$appname ?>.</p>
 <hr />
 <?php print ConverterFactory::encode($message, ConverterFactory::HTML); ?>
