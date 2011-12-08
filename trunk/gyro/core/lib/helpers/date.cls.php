@@ -9,7 +9,7 @@ class GyroDate {
 	const ONE_MINUTE = 60; // 60 sec
 	const ONE_HOUR = 3600; // 60 * 60 sec 
 	const ONE_DAY = 86400; // 60 * 60 * 24 sec
-	
+	const ONE_WEEK = 604800; // 86400 * 7
 	/** 30 days */
 	const ONE_MONTH = 2592000; // 60 * 60 * 24 * 30 sec
 	/** 365 days */
@@ -331,6 +331,10 @@ class GyroDate {
 	public static function day($date) {
 		return self::set_time(GyroDate::datetime($date), 0);
 	}
+
+    public static function today() {
+        return self::day(time());
+    }
 
 	/**
 	 * Casts date to month (That is 1st, 0:00:00)
