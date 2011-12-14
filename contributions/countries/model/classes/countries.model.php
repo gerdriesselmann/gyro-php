@@ -8,6 +8,8 @@
 class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;
     public $id_continent;
+	public $code3;
+	public $codenum;
     public $name;
 
     /**
@@ -22,6 +24,8 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
                 new DBFieldText('id', 2, null, DBField::NOT_NULL),
                 new DBFieldText('id_continent', 2, null, DBField::NOT_NULL),
                 new DBFieldText('name', 50, null, DBField::NOT_NULL),
+                new DBFieldText('code3', 3, null, DBField::NONE),
+				new DBFieldInt('codenum', null, DBField::NONE)
             ),
             'id',
             new DBRelation(
