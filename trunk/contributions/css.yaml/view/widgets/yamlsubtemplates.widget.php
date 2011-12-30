@@ -78,7 +78,11 @@ class WidgetYAMLSubtemplates implements IWidget {
 		switch ($slot) {
 			case self::SLOTS_AUTO:
 				$c = count($this->data);
-				return array_fill(0, $c, floor(100/$c));
+				if ($c > 0) {
+					return array_fill(0, $c, floor(100/$c));
+				} else {
+					return array(50, 50);
+				}
 			case self::SLOTS_2_33_66:
 				return array(33, 66);
 			case self::SLOTS_2_66_33:
