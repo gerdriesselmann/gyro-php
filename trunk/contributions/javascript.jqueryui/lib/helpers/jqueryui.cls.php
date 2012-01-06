@@ -44,7 +44,10 @@ class JQueryUI {
 	
 	const CORE = 'ui.core';
 	const CORE_WIDGET = 'ui.widget';
-	
+
+	const CDN_GOOGLE = 'https://ajax.googleapis.com/ajax/libs/jqueryui/%version%/jquery-ui.min.js';
+	const CDN_MS = 'https://ajax.aspnetcdn.com/ajax/jquery.ui/%version_min%/jquery-ui.min.js';
+
 	/**
 	 * Componenents selected for current page
 	 * 
@@ -129,11 +132,13 @@ class JQueryUI {
 	 * Collect dependencies for given component
 	 */
 	private static function collect_dependencies($component, &$resolved, $dependencies, $localizations) {
-		$deps = Arr::get_item($dependencies, $component, array());
-		foreach($deps as $d) {
-			self::collect_dependencies($d, $resolved, $dependencies, $localizations);
+		if (!self::uses_cdn()) {
+			$deps = Arr::get_item($dependencies, $component, array());
+			foreach($deps as $d) {
+				self::collect_dependencies($d, $resolved, $dependencies, $localizations);
+			}
+			$resolved[$component] = $component;
 		}
-		$resolved[$component] = $component;
 		self::collect_localizations($component, $resolved, $localizations);
 	}
 	
@@ -148,6 +153,45 @@ class JQueryUI {
 				$resolves[$file] = $file;
 			}
 		}
+	}
+
+	/**
+	 * Returns true, if CDN should be used
+	 * @static
+	 * @return bool
+	 */
+	public static function uses_cdn() {
+		return Config::get_value(ConfigJQueryUI::CDN) != '';
+	}
+
+	public static function get_cdn_url() {
+		$cdn = trim(Config::get_value(ConfigJQueryUI::CDN));
+		if (empty($cdn)) {
+			return '';
+		}
+
+		// Resolve CDN
+		if ($cdn == 'google') { $cdn = self::CDN_GOOGLE; }
+		elseif ($cdn == 'ms') { $cdn = self::CDN_MS; }
+
+		$version = '';
+		switch(Config::get_value(ConfigJQueryUI::VERSION)) {
+			case '1.7':
+				$version = JQUERYUI_VERSION_1_7;
+				break;
+			case '1.8':
+				$version = JQUERYUI_VERSION_1_8;
+				break;
+		}
+		if (empty($version)) {
+			throw new Exception('Unknown JQueryUI Version ' . Config::get_value(ConfigJQueryUI::VERSION));
+		}
+
+		$cdn = str_replace('%version%', $version, $cdn);
+		$version_min = preg_replace('|\.0$|', '', $version);
+		$cdn = str_replace('%version_min%', $version_min, $cdn);
+
+		return $cdn;
 	}
 
 	/**
