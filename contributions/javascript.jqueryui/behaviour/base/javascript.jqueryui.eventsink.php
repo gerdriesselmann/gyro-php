@@ -19,6 +19,9 @@ class JavascriptJQueryUIEventSink implements IEventSink {
 		if ($event_name == 'jcssmanager_compress' || $event_name == 'jcssmanager_collect') {
 			switch($event_params) {
 				case JCSSManager::TYPE_JS:
+					if ($event_name == 'jcssmanager_collect' && JQueryUI::uses_cdn()) {
+						$result[] = JQueryUI::get_cdn_url();
+					}
 					foreach(JQueryUI::get_js_paths(JQueryUI::get_enabled_components()) as $js) {
 						$result[] = $js;
 					}

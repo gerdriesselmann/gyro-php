@@ -16,7 +16,7 @@
  * 
  * To define the version of JQuery to use, you must specify a version to use by defining
  * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, "1.4" for JQuery 1.4.4,
- * and "1.5" for JQuery 1.5.2. The default is "1.5".
+ * "1.5" for JQuery 1.5.2., "1.6" for 1.6.4 and "1.7" for 1.7.1 The default is "1.7".
  * 
  * @attention The default version policy changed to "newest", so if you do not define a jquery version,
  *            you will automaticalyy get the latest release
@@ -48,11 +48,14 @@ class ConfigJQuery {
 	const ON_EVERY_PAGE = 'JQUERY_ON_EVERY_PAGE';
 	
 	/**
-	 * JQuery CDN URL. Either an URL with %version% as placeholder for version OR "google" for the Google CDN
+	 * JQuery CDN URL. Either an URL with %version% as placeholder for version OR
+	 *
+	 * - "google" for the Google CDN
+	 * - "ms" for the Microsoft CDN
 	 * 
 	 * @attention %version% will be allways 3 digits (e.g. 1.6.0). Use %version_min% to force this to 1.6
 	 * 
-	 * Currently, only Google CDN is supported out of the box, since it's the only once with SSL support
+	 * Files will be loaded using https with both Google and Microsoft CDN
 	 */
 	const CDN = 'JQUERY_CDN';
 }
@@ -61,7 +64,8 @@ Config::set_feature_from_constant(ConfigJQuery::ON_EVERY_PAGE, 'APP_JQUERY_ON_EV
 Config::set_value_from_constant(ConfigJQuery::CDN, 'APP_JQUERY_CDN', '');
 
 // To be changed on new releases
-Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.6');
+Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.7');
+define('JQUERY_VERSION_1_7', '1.7.1');
 define('JQUERY_VERSION_1_6', '1.6.4');
 define('JQUERY_VERSION_1_5', '1.5.2');
 

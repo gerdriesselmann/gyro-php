@@ -79,9 +79,30 @@ EventSource::Instance()->register(new JavascriptJQueryUIEventSink());
  * @ingroup JQueryUI
  */
 class ConfigJQueryUI {
+	/** @deprecated Use VERSION instead */
 	const JQUERYUI_VERSION = 'JQUERYUI_VERSION';
+	const VERSION = 'JQUERYUI_VERSION';
+
+	/**
+	 * JQueryUI CDN URL. Either an URL with %version% as placeholder for version OR
+	 *
+	 * - "google" for the Google CDN
+	 * - "ms" for the Microsoft CDN
+	 *
+	 * @attention %version% will be always 3 digits (e.g. 1.6.0). Use %version_min% to force this to 1.6
+	 *
+	 * Using a CDN will always load the full jQueryUI but serve local styles and localizations
+	 *
+	 * Files will be loaded using https with both Google and Microsoft CDN
+	 */
+	const CDN = 'JQUERYUI_CDN';
 }
 
-Config::set_value_from_constant(ConfigJQueryUI::JQUERYUI_VERSION, 'APP_JQUERYUI_VERSION', '1.8');
+// To be changed on new releases
+define('JQUERYUI_VERSION_1_7', '1.7.3');
+define('JQUERYUI_VERSION_1_8', '1.8.16');
+
+Config::set_value_from_constant(ConfigJQueryUI::CDN, 'APP_JQUERYUI_CDN', '');
+Config::set_value_from_constant(ConfigJQueryUI::VERSION, 'APP_JQUERYUI_VERSION', '1.8');
 
 JQueryUI::enable_locales(GyroLocale::get_language());
