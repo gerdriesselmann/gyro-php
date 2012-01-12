@@ -101,6 +101,13 @@ class Status {
 	public function get_messages() {
 		return $this->messages;
 	}
+
+	/**
+	 * Clear all error messages, but retain error status
+	 */
+	public function clear_messages() {
+		$this->messages = array();
+	}
 	
 	/**
 	 * Append $text to the error message and turns this status into an error
