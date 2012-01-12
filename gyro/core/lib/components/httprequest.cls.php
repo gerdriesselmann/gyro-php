@@ -12,27 +12,40 @@
 class HttpRequest {
 	const NONE = 0;
 	const SSL_NO_VERIFY = 1;
-	
+	const NO_ERROR_ON_4XX_5XX = 2;
+
 	/**
 	 * Read content from given url
 	 *
+	 * @param string|Url $url URL to invoke
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
 	 */
-	public static function get_content ($url, $err = null, $timeout = 30, $policy = self::NONE) {
+	public static function get_content ($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
-		$ret = self::execute_curl($url, $options, $timeout, $err);
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
 
 	/**
 	 * Read content from given url using authentication
 	 *
+	 * @param string|Url $url URL to invoke
+	 * @param string $user Username for authentication
+	 * @param string $pwd Password for authentication
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
 	 */
-	public static function get_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE) {
+	public static function get_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
-		$ret = self::execute_curl($url, $options, $timeout, $err);
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
 	
@@ -85,6 +98,9 @@ class HttpRequest {
 			$ret[CURLOPT_FOLLOWLOCATION] =  1;
 		}
 		
+		if (Common::flag_is_set($policy, self::NO_ERROR_ON_4XX_5XX)) {
+			$ret[CURLOPT_FAILONERROR] = 0;
+		}
 		if (Common::flag_is_set($policy, self::SSL_NO_VERIFY)) {
 			$ret[CURLOPT_SSL_VERIFYHOST] = 0;
 			$ret[CURLOPT_SSL_VERIFYPEER] = 0;
@@ -102,7 +118,7 @@ class HttpRequest {
 	 * @param Status $status
 	 * @return string Content fetched or false on error
 	 */
-	private static function execute_curl($url, $options, $timeout, $err) {
+	private static function execute_curl($url, $options, $timeout, $err, &$info = false) {
 		$address = $url;
 		if ($url instanceof Url) {
 			$address = $url->build();
@@ -121,8 +137,9 @@ class HttpRequest {
 			$ch = curl_init();
 			if (curl_setopt_array($ch, $options)) {
 				$ret = curl_exec ($ch);
+				$info = curl_getinfo($ch);
 				if ($ret === false) {
-					$status->append($url . ': ' . curl_error($ch));
+					$status->append($address . ': ' . curl_error($ch));
 					$err_no = curl_errno($ch);
 				}				
 			}
@@ -130,11 +147,12 @@ class HttpRequest {
 		catch (Exception $e) {
 			// Do nothing special here
 			if ($ch) {
-				$status->append($url . ': ' . curl_error($ch));
+				$status->append($address . ': ' . curl_error($ch));
 				$err_no = curl_errno($ch);
+				$info = curl_getinfo($ch);
 			}
 			else {
-				$status->append($url . ': ' . $e->getMessage());
+				$status->append($address . ': ' . $e->getMessage());
 				$err_no = 999;
 			}
 			$ret = false;
