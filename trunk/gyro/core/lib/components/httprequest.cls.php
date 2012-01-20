@@ -9,7 +9,7 @@
  * @author Natalia Wehler
  * @ingroup Lib
  */
-class HttpRequest {
+class GyroHttpRequest {
 	const NONE = 0;
 	const SSL_NO_VERIFY = 1;
 	const NO_ERROR_ON_4XX_5XX = 2;
@@ -167,4 +167,8 @@ class HttpRequest {
 		}
 		return $ret;
 	}
+}
+
+if (!class_exists('HttpRequest')) {
+	class HttpRequest extends GyroHttpRequest {}
 }
