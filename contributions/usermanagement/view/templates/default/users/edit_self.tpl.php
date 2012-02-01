@@ -2,9 +2,7 @@
 /* @var $page_data PageData */
 $page_data->head->title = tr('Edit your account settings', 'users');
 $page_data->breadcrumb = WidgetBreadcrumb::output(array(
-	WidgetActionLink::output(tr('Users', 'users'), 'users_list_all'),
-	$user,
-	tr('Edit', 'users')
+	tr('Change Account Data', 'users')
 ))
 ?>
 <h1><?=tr('Change Account Data', 'users')?></h1>
