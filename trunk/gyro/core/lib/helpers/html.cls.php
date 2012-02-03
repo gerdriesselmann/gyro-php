@@ -34,12 +34,14 @@ class html
 		// horribly broken 
 		$url = str_replace(Config::get_url(Config::URL_SERVER), "", $href);
 		$url = str_replace(Config::get_url(Config::URL_SERVER_SAFE), "", $href);
-		$bIsActive = Url::current()->is_ancestor_of($url);
-	  		
-	  	if ($bIsActive) {
+
+		if (Url::current()->is_ancestor_of($url)) {
 	  		html::_appendClass($attrs, 'active');
 		}
-		
+		if (Url::current()->is_same_as($url)) {
+	  		html::_appendClass($attrs, 'self');
+		}
+
 		$attrs['href'] = $href;
 		if ($descr) {
 			$attrs['title'] = $descr;
