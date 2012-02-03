@@ -82,7 +82,42 @@ class GeoCoordinate {
 			$ret = GeoCalculator::distance($this->lat, $this->lon, $other->lat, $other->lon);
 		}
 		return $ret;
-	}	
+	}
+
+	/**
+	 * FInd center between two coordinates
+	 *
+	 * @param GeoCoordinate $other
+	 * @return bool|GeoCoordinate
+	 */
+	public function center_of($other) {
+		$ret = false;
+		if ($this->is_valid() && $other->is_valid()) {
+			$ret = new GeoCoordinate(
+				$this->lat + ($other->lat - $this->lat) / 2.0,
+				$this->lon + ($other->lon - $this->lon) / 2.0
+			);
+		}
+		return $ret;
+	}
+
+	/**
+	 * @param GeoCoordinate $coord1
+	 * @param GeoCoordinate $coord2
+	 */
+	public function is_within($coord1, $coord2) {
+		$ret = false;
+		if ($this->is_valid() && $coord1->is_valid() && $coord2->is_valid()) {
+			$max_lat = max($coord1->lat, $coord2->lat);
+			$min_lat = min($coord1->lat, $coord2->lat);
+			$max_lon = max($coord1->lon, $coord2->lon);
+			$min_lon = min($coord1->lon, $coord2->lon);
+			$ret =
+				$this->lat >= $min_lat && $this->lat <= $max_lat &&
+				$this->lon >= $min_lon && $this->lon <= $max_lon;
+		}
+		return $ret;
+	}
 
 	/**
 	 * Returns true, if this coordinate is valid
@@ -113,5 +148,27 @@ class GeoCoordinate {
 			'min' => new GeoCoordinate($arr['lat']['min'], $arr['lon']['min']),
 			'max' => new GeoCoordinate($arr['lat']['max'], $arr['lon']['max'])
 		);
-	}		
+	}
+
+	/**
+	 * Calculate a bounding box that contains all of coordinates passed
+	 *
+	 * @static
+	 * @param $arr_coordinates
+	 * @return array Array with two elements 'min' and 'max', containing a GeoCoordinate instance
+	 */
+	public static function boundig_box_of($arr_coordinates) {
+		$arr_data = array();
+		/* @var $coord GeoCoordinate */
+		foreach($arr_coordinates as $coord) {
+			if ($coord->is_valid()) {
+				$arr_data[] = array('lat' => $coord->lat, 'lon' => $coord->lon);
+			}
+		}
+		$arr = GeoCalculator::bounding_box_of($arr_data);
+		return $arr ? array(
+			'min' => new GeoCoordinate($arr['lat']['min'], $arr['lon']['min']),
+			'max' => new GeoCoordinate($arr['lat']['max'], $arr['lon']['max'])
+		) : false;
+	}
 }

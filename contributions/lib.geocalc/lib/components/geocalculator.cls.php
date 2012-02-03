@@ -56,4 +56,44 @@ class GeoCalculator {
 			'lon' => array('min' => $lon - $d_lon, 'max' => $lon + $d_lon)
 		);
 	}
+
+	/**
+	 * Compute bounding box of given coordinates
+	 *
+	 * @code
+	 * GeoCalculator::bounding_box_of(array(
+	 *   array('lat' => 50.96951, 'lon' => 7.0446),
+	 *   array('lat' => 50.92181, 'lon' => 6.9462)
+	 * );
+	 * @endcode
+	 *
+	 * @static
+	 * @param $arr_coordinates Array of associative array with keys "lat" and "lon"
+	 * @return array Array with two elements 'lat' and 'lon', each containing an array
+	 *               with two elements 'min' and 'max. False if $arr_coordinates is empty
+	 */
+	public static function bounding_box_of($arr_coordinates) {
+		$first = array_shift($arr_coordinates);
+		if ($first == false) {
+			return false;
+		}
+		$lat_min = Arr::get_item($first, 'lat', 0.0);
+		$lat_max = $lat_min;
+		$lon_min = Arr::get_item($first, 'lon', 0.0);
+		$lon_max = $lon_min;
+
+		foreach($arr_coordinates as $c) {
+			$lat = Arr::get_item($c, 'lat', 0.0);
+			$lon = Arr::get_item($c, 'lon', 0.0);
+			$lat_min = min($lat_min, $lat);
+			$lat_max = max($lat_max, $lat);
+			$lon_min = min($lon_min, $lon);
+			$lon_max = max($lon_max, $lon);
+		}
+
+		return array(
+			'lat' => array('min' => $lat_min, 'max' => $lat_max),
+			'lon' => array('min' => $lon_min, 'max' => $lon_max)
+		);
+	}
 }
