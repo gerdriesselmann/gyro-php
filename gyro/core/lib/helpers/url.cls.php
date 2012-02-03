@@ -651,14 +651,7 @@ class Url {
 	 * E.g. Checking an URL of /a/b/c against /a/b would return true, checking against /a/b/c/d would return false
 	 */
 	public function is_ancestor_of($path_to_check) {
-		foreach(array('?', '#') as $remove) {
-			$pos = strpos($path_to_check, $remove);
-			if ($pos !== false) {
-				$path_to_check = substr($path_to_check, 0, $pos);
-			}
-		}
-		
- 	 	$path_to_check = trim($path_to_check, "/");
+		$path_to_check = trim($this->clean_path_for_comparison($path_to_check), '/');
 		$current = trim($this->get_path(), '/');
   	
 	  	$ret = false; 
@@ -670,6 +663,31 @@ class Url {
 	  	}		
 	  	
 	  	return $ret;
+	}
+
+	/**
+	 * Returns true, if this URL is identical the given $path_to_check
+	 *
+	 * Query and fragment are ignored. Other than equals() this function works on a path or even a malformed
+	 * URL. It's similar to is_ancestor_of() in how it works.
+	 */
+	public function is_same_as($path_to_check) {
+ 	 	$path_to_check = $this->clean_path_for_comparison($path_to_check);
+		$current = ltrim($this->get_path(), '/');
+
+	  	return $current == $path_to_check;
+	}
+
+	protected function clean_path_for_comparison($path_to_check) {
+		foreach(array('?', '#') as $remove) {
+			$pos = strpos($path_to_check, $remove);
+			if ($pos !== false) {
+				$path_to_check = substr($path_to_check, 0, $pos);
+			}
+		}
+
+		$path_to_check = ltrim($path_to_check, "/");
+		return $path_to_check;
 	}
 	
 	public static function validate_current() {

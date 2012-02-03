@@ -185,5 +185,48 @@ class UrlTest extends GyroUnitTestCase {
 		$a = Url::create('127.0.0.1/test');
 		$this->assertTrue($a->is_valid());
 	}
+
+	public function test_is_ancestor_of() {
+		$a = Url::create('http://www.example.org/some/path/?a=b&c=d#f');
+		$this->assertFalse($a->is_ancestor_of('/some/path/deeper'));
+		$this->assertTrue($a->is_ancestor_of('/some/path/'));
+		$this->assertTrue($a->is_ancestor_of('/some/path/#g'));
+		$this->assertTrue($a->is_ancestor_of('/some/path/?blah=blubb'));
+		$this->assertTrue($a->is_ancestor_of('/some/path'));
+		$this->assertTrue($a->is_ancestor_of('/some/'));
+		$this->assertTrue($a->is_ancestor_of('/some'));
+		$this->assertFalse($a->is_ancestor_of('/'));
+		$this->assertFalse($a->is_ancestor_of(''));
+
+		$a = Url::create('http://www.example.org/#f');
+		$this->assertFalse($a->is_ancestor_of('/some/path/deeper'));
+		$this->assertFalse($a->is_ancestor_of('/some'));
+		$this->assertTrue($a->is_ancestor_of('/'));
+		$this->assertTrue($a->is_ancestor_of(''));
+	}
+
+	public function test_is_same_as() {
+		$a = Url::create('http://www.example.org/some/path/?a=b&c=d#f');
+		$this->assertFalse($a->is_same_as('/some/path/deeper'));
+		$this->assertTrue($a->is_same_as('/some/path/'));
+		$this->assertTrue($a->is_same_as('/some/path/?blah=blubb'));
+		$this->assertTrue($a->is_same_as('/some/path/#h'));
+		$this->assertFalse($a->is_same_as('/some/path'));
+		$this->assertFalse($a->is_same_as('/some/'));
+
+		$a = Url::create('http://www.example.org/some/path?a=b&c=d#f');
+		$this->assertFalse($a->is_same_as('/some/path/deeper'));
+		$this->assertTrue($a->is_same_as('/some/path'));
+		$this->assertTrue($a->is_same_as('/some/path?blah=blubb'));
+		$this->assertTrue($a->is_same_as('/some/path#h'));
+		$this->assertFalse($a->is_same_as('/some/path/'));
+		$this->assertFalse($a->is_same_as('/some/'));
+
+		$a = Url::create('http://www.example.org/#f');
+		$this->assertFalse($a->is_same_as('/some/path/deeper'));
+		$this->assertFalse($a->is_same_as('/some'));
+		$this->assertTrue($a->is_same_as('/'));
+		$this->assertTrue($a->is_same_as(''));
+	}
 }
 
