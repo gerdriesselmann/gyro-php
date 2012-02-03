@@ -8,6 +8,8 @@
  * @ingroup ImageTools
  */
 class ImageToolsFactory {
+	const IMPL_GD = 'gd';
+
 	/**
 	 * Create image tools
 	 * 
@@ -21,9 +23,19 @@ class ImageToolsFactory {
 		//	ImageTools::set_implementation(new ImageToolsIMagick());	
 		//}
 		//else {
-			require_once dirname(__FILE__) . '/imagetools_impl/imagetools.gd.cls.php';
+			self::load(self::IMPL_GD);
 			$ret = new ImageToolsGD();		
 		//}
 		return $ret;	
+	}
+
+	public static function load($implementation) {
+		switch ($implementation) {
+			case self::IMPL_GD:
+				require_once dirname(__FILE__) . '/imagetools_impl/imagetools.gd.cls.php';
+				break;
+			default:
+				break;
+		}
 	}
 }
