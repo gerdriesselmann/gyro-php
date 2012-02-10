@@ -1,6 +1,8 @@
 <?php
 /**
- * Provide a visual test page for image tools 
+ * Provide a visual test page for image tools
+ *
+ * @ingroup ImageTools
  */
 class ImagetoolstestController extends ControllerBase {
 	/**

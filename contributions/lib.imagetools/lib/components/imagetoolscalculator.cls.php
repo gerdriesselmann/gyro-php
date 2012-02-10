@@ -2,7 +2,9 @@
 Load::components('imagetoolsrect');
 
 /**
- * Offers some often used calculations for image resizing et al. 
+ * Offers some often used calculations for image resizing et al.
+ *
+ * @ingroup ImageTools
  */
 class ImageToolsCalculator {
 	/**

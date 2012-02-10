@@ -1,6 +1,8 @@
 <?php
 /**
  * Wrapper around common image operations based upon IMagick PECL extension
+ *
+ * @attention Non-Working stub!
  * 
  * @see http://pecl.php.net/package/imagick
  * 
@@ -19,6 +21,12 @@ class ImageToolsIMagick /* implements IImageToolsImpl */ {
 	}
 }
 
+/**
+ * Image information implementation for IMagick
+ *
+ * @author Gerd Riesselmann
+ * @ingroup ImageTools
+ */
 class ImageInformationIMagick implements IImageInformation {
 	private $img;
 	public function __construct($img) {
