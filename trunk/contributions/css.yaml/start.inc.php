@@ -10,13 +10,14 @@
  * @section Usage Usage
  * 
  * The module copies YAML css to the app/www directory. Core YAML files are overwritten on 
- * each systemupdate, while files below /app/www/css/ are only copied once.
- * 
+ * each systemupdate, while files below /app/www/css/ are only copied once. *
  * 
  * By default a 213-template is installed. Use the YAML builder to create your own template
  * and CSS stubs: http://builder.yaml.de/
  *
  * This module offers both YAML 3.2 and 3.3. Set APP_YAML_VERSION to either one of this. Default is "3.2".
+ *
+ * For YAML licencing see http://www.yaml.de/license.html.
  *
  * @section Forms Forms
  * 

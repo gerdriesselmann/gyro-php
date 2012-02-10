@@ -1,6 +1,8 @@
 <?php
 /**
  * A simple data structure representing a rectangle
+ *
+ * @ingroup ImageTools
  */
 class ImageToolsRect {
 	/**
