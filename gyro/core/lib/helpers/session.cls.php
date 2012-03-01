@@ -76,7 +76,7 @@ class Session {
 	 * @return void
 	 */
 	private static function do_start($id = false) {
-		$headers = Common::get_headers();
+		$headers = GyroHeaders::headers();
 		// This prevents headers sent on my system (PHP/5.2.4-2ubuntu5.10 with Suhosin-Patch)
 		// But I have no clue, how this behaves on other platforms or other PHP versions.
 		// At least it is not documented... 
@@ -84,7 +84,7 @@ class Session {
 			session_cache_limiter('');
 		} 
 		self::do_start_and_verify($id);
-		Common::header_restore($headers);
+		GyroHeaders::restore($headers);
 		// Cookie header may have gone lost.... So send it manually
 		$cookie_params = session_get_cookie_params();
 		if (!isset($cookie_params['httponly'])) {
@@ -184,12 +184,12 @@ class Session {
 				$_SESSION["cookiesenabled"] = true;
 				// Delete Cookie
 				setcookie("cookietest", "", time() - 3600);
-				Url::current().replace_query_paramter('cookietest', '').redirect();
+				Url::current()->replace_query_parameter('cookietest', '')->redirect();
 			}
 		}
 		else {
 			setcookie("cookietest", "Just a test to see if cookies are enabled", 0); //time() + 60);
-			Url::current().replace_query_paramter('cookietest', '1').redirect();
+			Url::current()->replace_query_parameter('cookietest', '1')->redirect();
 		}
 	}
 
