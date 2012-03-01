@@ -9,6 +9,7 @@ class DAOCountriestranslations extends DataObjectBase {
     public $id;
     public $lang;
     public $name;
+    public $capital;
 
     /**
      * Create table definition
@@ -22,6 +23,7 @@ class DAOCountriestranslations extends DataObjectBase {
                 new DBFieldText('id_country', 2, null, DBField::NOT_NULL),
                 new DBFieldText('lang', 5, null, DBField::NOT_NULL),
                 new DBFieldText('name', 50, null, DBField::NOT_NULL),
+                new DBFieldText('capital', 50, null, DBField::NONE),
             ),
             array('id_country', 'lang'),
             new DBRelation(

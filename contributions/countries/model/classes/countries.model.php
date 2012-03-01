@@ -11,6 +11,14 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 	public $code3;
 	public $codenum;
     public $name;
+    public $capital;
+    public $area;
+    public $population;
+    public $currency;
+    public $lat1;
+    public $lon1;
+	public $lat2;
+	public $lon2;
 
     /**
      * Create table definition
@@ -25,7 +33,15 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
                 new DBFieldText('id_continent', 2, null, DBField::NOT_NULL),
                 new DBFieldText('name', 50, null, DBField::NOT_NULL),
                 new DBFieldText('code3', 3, null, DBField::NONE),
-				new DBFieldInt('codenum', null, DBField::NONE)
+				new DBFieldInt('codenum', null, DBField::NONE),
+				new DBFieldText('capital', 50, null, DBField::NONE),
+				new DBFieldFloat('area', null, DBFieldFloat::UNSIGNED),
+				new DBFieldInt('population', null, DBFieldInt::UNSIGNED),
+				new DBFieldText('currency', 3, null, DBField::NONE),
+				new DBFieldFloat('lat1', null, DBField::NONE),
+				new DBFieldFloat('lon1', null, DBField::NONE),
+				new DBFieldFloat('lat2', null, DBField::NONE),
+				new DBFieldFloat('lon2', null, DBField::NONE),
             ),
             'id',
             new DBRelation(
@@ -55,6 +71,25 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 		$link->id_group = $group_id;
 		$link->id_country = $this->id;
 		return $link->count() > 0;
+	}
+
+	/**
+	 * Get bounding rectangle
+	 *
+	 * @return GeoRectangle
+	 */
+	public function get_bounding_rect() {
+		Load::components('georectangle');
+		return new GeoRectangle($this->lat1, $this->lon1, $this->lat2, $this->lon2);
+	}
+
+	/**
+	 * Get title for this class
+	 *
+	 * @return string
+	 */
+	public function get_capital() {
+		return tr($this->capital, 'countries');
 	}
 
 	// ************************************
