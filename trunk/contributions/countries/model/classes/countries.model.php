@@ -19,6 +19,8 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
     public $lon1;
 	public $lat2;
 	public $lon2;
+	public $lat_capital;
+	public $lon_capital;
 
     /**
      * Create table definition
@@ -42,6 +44,8 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 				new DBFieldFloat('lon1', null, DBField::NONE),
 				new DBFieldFloat('lat2', null, DBField::NONE),
 				new DBFieldFloat('lon2', null, DBField::NONE),
+				new DBFieldFloat('lat_capital', null, DBField::NONE),
+				new DBFieldFloat('lon_capital', null, DBField::NONE),
             ),
             'id',
             new DBRelation(
@@ -90,6 +94,30 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 	 */
 	public function get_capital() {
 		return tr($this->capital, 'countries');
+	}
+
+	/**
+	 * Return Coordinate of capital
+	 *
+	 * @return GeoCoordinate
+	 */
+	public function get_capital_coordinate() {
+		Load::components('geocoordinate');
+		return new GeoCoordinate($this->lat_capital, $this->lon_capital);
+	}
+
+	/**
+	 * Returns array of neighboring countries
+	 *
+	 * @return array Array of DAOCountries
+	 */
+	public function get_neighbors() {
+		Load::models('countries2neighbors');
+		$link = new DAOCountries2neighbors();
+		$link->id_country_1 = $this->id;
+		$countries = new DAOCountries();
+		$countries->join($link, new DBJoinCondition($link, 'id_country_2', $countries, 'id'));
+		return $countries->find_array();
 	}
 
 	// ************************************
