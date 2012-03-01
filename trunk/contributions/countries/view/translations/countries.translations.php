@@ -58,12 +58,16 @@ function countries_load_translations($languages) {
 	$dao_c->join($dao_t);
 	
 	$query = $dao_c->create_select_query();
-	$query->set_fields(array('countries.name' => 'source', 'countriestranslations.lang' => 'lang', 'countriestranslations.name' => 'translation'));
+	$query->set_fields(array('countries.name' => 'source', 'countries.capital' => 'source_capital', 'countriestranslations.lang' => 'lang', 'countriestranslations.name' => 'translation', 'countriestranslations.capital' => 'translation_capital'));
 	
 	$countries = array();
 	$result = DB::query($query->get_sql(), $dao_c->get_table_driver());
 	while($data = $result->fetch()) {
 		$countries[$data['source']][$data['lang']] = $data['translation'];
+		$tr_cap = $data['translation_capital'];
+		if ($tr_cap) {
+			$countries[$data['source_capital']][$data['lang']] = $tr_cap;
+		}
 	}
 	
 	$ret = array_merge($ret, $countries);
