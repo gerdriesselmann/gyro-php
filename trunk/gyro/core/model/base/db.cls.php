@@ -306,6 +306,9 @@ class DB {
 			while($query = self::extract_next_sql_statement($handle)) {
 				if ($query != ';') {
 					$status->merge($conn->execute($query));
+					if ($status->is_error()) {
+						break;
+					}
 				}
 			}
 			fclose($handle);
