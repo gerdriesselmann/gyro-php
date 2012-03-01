@@ -1,5 +1,5 @@
 <?php
-Load::components('geocalculator');
+Load::components('geocalculator', 'georectangle');
  
 /**
  * Class repersenting a coordinate
@@ -44,6 +44,15 @@ class GeoCoordinate {
 			$this->lat_to_string($precision, $system) .
 			$divider .
 			$this->lon_to_string($precision, $system);
+	}
+
+	public static function from_string($val, $divider = ', ', $system = false) {
+		$latlon = explode($divider, $val);
+		$lat = array_shift($latlon);
+		$lat = ($system) ? floatval($lat) : String::delocalize_number($lat);
+		$lon = array_shift($latlon);
+		$lon = ($system) ? floatval($lon) : String::delocalize_number($lon);
+		return new GeoCoordinate($lat, $lon);
 	}
 
 	/**
@@ -104,6 +113,7 @@ class GeoCoordinate {
 	/**
 	 * @param GeoCoordinate $coord1
 	 * @param GeoCoordinate $coord2
+	 * @return bool
 	 */
 	public function is_within($coord1, $coord2) {
 		$ret = false;
@@ -148,6 +158,22 @@ class GeoCoordinate {
 			'min' => new GeoCoordinate($arr['lat']['min'], $arr['lon']['min']),
 			'max' => new GeoCoordinate($arr['lat']['max'], $arr['lon']['max'])
 		);
+	}
+
+	/**
+	 * Compute bounding box
+	 *
+	 * @param float $ns_radius Radius of bound box in north to south direction
+	 * @param float $we_radius Radius of bound box in west to east direction
+	 *
+	 * @return GeoRectangle
+	 *
+	 * @attention The bounding box is a rectangle, so the distance to elements located within the
+	 *            corners of that rectangle may be larger than the radius passed.
+	 */
+	public function bounding_rect($ns_radius, $we_radius) {
+		$arr = GeoCalculator::bounding_box($this->lat, $this->lon, $ns_radius, $we_radius);
+		return new GeoRectangle($arr['lat']['min'], $arr['lon']['min'],$arr['lat']['max'], $arr['lon']['max']);
 	}
 
 	/**
