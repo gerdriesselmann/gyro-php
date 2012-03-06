@@ -427,7 +427,7 @@ class String {
 	 * @param bool $elipsis Append "..." to the string
 	 */
 	public static function substr_sentence($val, $start, $max_length, $elipsis = false) {
-		$val_temp = $val . ' ';
+		$val_temp = self::preg_replace('|\s+|', ' ', $val) . ' ';
 		$pos = false;
 		$ret = self::substr($val_temp, $start, $max_length);
 		$punctuations = array('?', '!', '.');
@@ -447,13 +447,14 @@ class String {
 			// Check if a punctuation follows substring
 			$test = self::substr($val_temp, $start + $max_length, 1);
 			if (!in_array($test, $punctuations)) {
-				$ret = self::substr_word($val, $start, $max_length, false);
+				$ret = self::substr_word($val_temp, $start, $max_length, false);
 			}
 		}
 		else {
 			$ret = self::substr($ret, 0, $pos + 1);
 		}
-		
+
+		$ret = rtrim($ret);
 		if ($elipsis && $ret) {
 			$ret .= '...';
 		}

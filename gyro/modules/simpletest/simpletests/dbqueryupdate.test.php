@@ -46,5 +46,16 @@ class DBQueryUpdateTest extends GyroUnitTestCase {
 			$query->get_sql()
 		);
 	}
+
+	public function test_db_null() {
+		$table = new MockIDBTable();
+
+		$query = new DBQueryUpdate($table);
+		$query->set_fields(array('col1' => new DBNull(), 'col2' => 'abc'));
+		$this->assertEqual(
+			"UPDATE `db`.`table` AS `alias` SET `alias`.`col1` = NULL, `alias`.`col2` = 'abc'",
+			$query->get_sql()
+		);
+	}
 }
 ?>
