@@ -50,6 +50,37 @@ class DataObjectTest extends GyroUnitTestCase {
 			$query->get_sql()
 		);
 	}
+
+	public function test_update_null() {
+		/* @var $dao DAOCoursesTest */
+		$dao = DB::create('coursestest');
+		$dao->id = 18;
+		$dao->title = 'Programming for Beginners';
+		$dao->id_teacher = 1;
+		$dao->id_room = 5;
+		$dao->description = new DBNull();
+		
+		$query = $dao->create_update_query();
+		$this->assertEqual(
+			"UPDATE `db`.`coursestest` AS `coursestest` SET `coursestest`.`id_room` = 5, `coursestest`.`id_teacher` = 1, `coursestest`.`title` = 'Programming for Beginners', `coursestest`.`description` = NULL WHERE (((`coursestest`.`id` = 18)))",
+			$query->get_sql()
+		);
+
+		$dao = DB::create('coursestest');
+		$params = array(
+			'id' => 18,
+			'title' => 'Programming for Beginners',
+			'id_teacher' => new DBNull(),
+			'id_room' => 5,
+			'description' => new DBNull()
+		);
+		$dao->read_from_array($params);
+		$query = $dao->create_update_query();
+		$this->assertEqual(
+			"UPDATE `db`.`coursestest` AS `coursestest` SET `coursestest`.`id_room` = 5, `coursestest`.`id_teacher` = NULL, `coursestest`.`title` = 'Programming for Beginners', `coursestest`.`description` = NULL WHERE (((`coursestest`.`id` = 18)))",
+			$query->get_sql()
+		);
+	}
 	
 	public function test_select_update_datetime() {
 		/* @var $student DAOStudentsTest */

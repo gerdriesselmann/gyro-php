@@ -20,7 +20,7 @@ class DAOCoursesTest extends DataObjectBase {
 				new DBFieldInt('id_room', null, DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
 				new DBFieldInt('id_teacher', null, DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),
 				new DBFieldText('title', 100, null, DBField::NOT_NULL),
-				new DBFieldText('description', DBFieldText::BLOB_LENGTH_SMALL, DBField::NOT_NULL) 
+				new DBFieldText('description', DBFieldText::BLOB_LENGTH_SMALL, DBField::NONE)
 			),
 			'id',
 			array(
