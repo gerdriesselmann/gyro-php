@@ -9,6 +9,11 @@ CREATE TABLE IF NOT EXISTS `tmp_c2p` (
 )
 ENGINE = InnoDB;
 
+INSERT INTO countries (id, id_continent, code3, codenum, name)
+  VALUES ('XK', 'EU', 'XXK', 381, 'Kosovo');
+
+INSERT INTO countriestranslations (id_country, lang, name)
+  VALUES ('XK', 'de', 'Kosovo');
 
 TRUNCATE tmp_c2p;
 
