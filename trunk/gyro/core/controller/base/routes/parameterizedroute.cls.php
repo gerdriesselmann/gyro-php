@@ -35,12 +35,7 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  *
  * Both meta types cannot be bound to variables. You must use the string type "s"
  *
- *
- * @code
- * /user/{id:ui>}/{name:sp&}/
- * @endcode
- *
- * The action function only must handle the id parameter. You should validate the URL using
+ * It is allowed fo the action function to only handle some, but not all parameter. You should validate the URL using
  *
  * @code
  * ActionHandler::validate_against_current()
@@ -86,7 +81,10 @@ require_once dirname(__FILE__) . '/routebase.cls.php';
  * - user/5/profile/images would be causing a 404 not found, unless you defined another matching route
  * - user/5/ would be translated to id = 5 and path = ''
  *
- *  
+ * Using the ActionMapper, variables are replaced by either an object's property of the same name or an
+ * array member of same key. If a variable name end on (), it is treated as a function, if ActionMapper is passed
+ * an object.
+ *
  * @author Gerd Riesselmann
  * @ingroup Controller
  */
@@ -367,6 +365,10 @@ class ParameterizedRoute extends RouteBase {
     	    if (array_key_exists($pname, $params)) {
         	    $real_params[] = $params[$pname];
         	}
+			else if (array_key_exists($pname . '()', $params)) {
+				// function calls
+				$real_params[] = $params[$pname . '()'];
+			}
         	else if ($param->isDefaultValueAvailable()) {
             	$real_params[] = $param->getDefaultValue();
         	}
@@ -389,18 +391,32 @@ class ParameterizedRoute extends RouteBase {
 	 */
 	protected function build_url_path($params) {
 		$path = $this->path;
-		if (is_array($params) || is_object($params)) {
-			foreach($params as $key => $value) {
-				$path = $this->replace_path_variable($path, $key, $value);
-			}
-		}
+		$variables = $this->extract_path_variables($path);
 		if (is_object($params)) {
 			$path = $this->replace_path_variable($path, '_class_', get_class($params));
 			if ($params instanceof IDBTable) {
 				$path = $this->replace_path_variable($path, '_model_', $params->get_table_name());
-			}	
+			}
+			unset($variables['_class_']);
+			unset($variables['_model_']);
+			foreach($variables as $v) {
+				if (substr($v, -2) == '()') {
+					$func_name = substr($v, 0, -2);
+					if (method_exists($params, $func_name)) {
+						$path = $this->replace_path_variable($path, $v, $params->$func_name());
+					}
+				} else {
+					$path = $this->replace_path_variable($path, $v, $params->$v);
+				}
+			}
+		} else if (is_array($params)) {
+			foreach($variables as $v) {
+				if (array_key_exists($v, $params)) {
+					$path = $this->replace_path_variable($path, $v, $params[$v]);
+				}
+			}
 		}
-		
+
 		// replace optional
 		$reg_optional_asterix = '#\{[^\}]*\}\*#';
 		$reg_optional_exklamation = '#\{[^\}]*\}\!#';
@@ -408,6 +424,23 @@ class ParameterizedRoute extends RouteBase {
 		$path = preg_replace($reg_optional_exklamation, '', $path);
 		
 		return $path;
+	}
+
+	/**
+	 * Get all variables from path
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	protected function extract_path_variables($path) {
+		$tag = '#\{([^\}]*)\}#';
+		$tags = array();
+		$ret = array();
+		preg_match_all($tag, $path, $tags);
+		foreach($tags[1] as $t) {
+			$ret[] = array_shift(explode(':', $t));
+		}
+		return array_unique($ret);
 	}
 
 	/**
@@ -422,12 +455,13 @@ class ParameterizedRoute extends RouteBase {
 		if (is_object($value) || is_array($value)) {
 			return $path;
 		}
-		
+
 		// Replace otional type with string type. Reduces RegExp complexity,
 		// since we now can force a ":" after key and before type
 		$path = str_replace('{' . $key . '}', '{' . $key . ':s}', $path);
-		
+
 		// Figure out type of $key
+		$key = preg_quote($key);
 		$reg = '#\{' . $key . ':([^:\}]*)[:]?.*?\}#';
 		$matches = array();
 		if (preg_match($reg, $path, $matches)) {

@@ -1,4 +1,8 @@
 <?php
+class ParameterizedRouteTestMockObject {
+	function test() { return 'test_'; }
+}
+
 /**
  * Created on 09.11.2006
  *
@@ -265,5 +269,15 @@ class ParameterizedRouteTest extends GyroUnitTestCase {
 
 		$url = $token1->build_url(false, array('test' => '!test-ö!'));
 		$this->assertEqualsPath('/some/test-oe', $url);
+	}
+
+	function test_function_parameter() {
+		$token1 = new ParameterizedRoute('some/{test():sp}', null, '');
+
+		$url = $token1->build_url(false, array('test()' => '_test'));
+		$this->assertEqualsPath('/some/_test', $url);
+
+		$url = $token1->build_url(false, new ParameterizedRouteTestMockObject());
+		$this->assertEqualsPath('/some/test_', $url);
 	}
 } 
