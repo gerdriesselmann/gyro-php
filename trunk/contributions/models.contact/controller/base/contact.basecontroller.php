@@ -75,7 +75,7 @@ class ContactBaseController extends ControllerBase {
 				$err->merge($cmd->execute());
 			}
 		}
-		$formhandler->finish($err, tr('Your message has been send successfully.', 'contact'));
+		$formhandler->finish($err, tr('Your message has been sent successfully.', 'contact'));
 	}
 
 }
