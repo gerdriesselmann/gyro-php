@@ -8,6 +8,10 @@
 class DAOContinents extends DataObjectBase implements ISelfDescribing, IHierarchic {
     public $id;
     public $name;
+	public $lat1;
+	public $lon1;
+	public $lat2;
+	public $lon2;
 
     /**
      * Create table definition
@@ -20,6 +24,10 @@ class DAOContinents extends DataObjectBase implements ISelfDescribing, IHierarch
             array(
                 new DBFieldText('id', 2, null, DBField::NOT_NULL),
                 new DBFieldText('name', 50, null, DBField::NOT_NULL),
+				new DBFieldFloat('lat1', null, DBField::NONE),
+				new DBFieldFloat('lon1', null, DBField::NONE),
+				new DBFieldFloat('lat2', null, DBField::NONE),
+				new DBFieldFloat('lon2', null, DBField::NONE),
             ),
             'id'
         );
@@ -33,6 +41,16 @@ class DAOContinents extends DataObjectBase implements ISelfDescribing, IHierarch
     	Countries::localize_adapter($adapter);
     	return $adapter->execute();
     }
+
+	/**
+	 * Get bounding rectangle
+	 *
+	 * @return GeoRectangle
+	 */
+	public function get_bounding_rect() {
+		Load::components('georectangle');
+		return new GeoRectangle($this->lat1, $this->lon1, $this->lat2, $this->lon2);
+	}
 
 	// ************************************
 	// ISelfDescribing
