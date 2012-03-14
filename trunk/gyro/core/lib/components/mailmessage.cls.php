@@ -3,9 +3,9 @@ define('MAIL_LF', "\n"); // "\r\n"
 
 /**
  * Encapsulates an e-mail message, allowing attachments
- * 
+ *
  * @note The class relies on the PEAR classes Mail and Mail_Mime
- * 
+ *
  * @author Gerd Riesselmann
  * @ingroup Lib
  */
@@ -14,7 +14,7 @@ class MailMessage {
 	const MIME_TEXT_PLAIN = 'text/plain; charset="%charset"';
 	/** HTML mime content type */
 	const MIME_HTML = 'text/html; charset="%charset"';
-	
+
 	/**
 	 * Receipient
 	 *
@@ -42,7 +42,7 @@ class MailMessage {
 	private $message = '';
 	/**
 	 * Alternative message (e.g. plain text for HTML mails)
-	 * 
+	 *
 	 * Will be always treated as plain text
 	 */
 	private $message_alt = '';
@@ -53,7 +53,7 @@ class MailMessage {
 	 * @private String
 	 */
 	private $cc = '';
-	
+
 	private $content_type = '';
 
 	/**
@@ -70,13 +70,13 @@ class MailMessage {
 		$this->to = $to;
 		$this->from = $from;
 		if (empty($content_type)) {
-			$this->content_type = self::MIME_TEXT_PLAIN; 
+			$this->content_type = self::MIME_TEXT_PLAIN;
 		}
 		else {
 			$this->content_type = $content_type;
 		}
 	}
-	
+
 	/**
 	 * Sends email
 	 *
@@ -88,45 +88,56 @@ class MailMessage {
 		if ($ret->is_error()) {
 			return $ret;
 		}
-		
+
 		$headers = array(
 			'From' => empty($this->from) ? Config::get_value(Config::MAIL_SENDER, true) : $this->from,
 		);
 		if ($this->cc != '') {
 			$headers['Bcc'] = $this->cc;
 		}
-		
+
 		$builder = $this->create_builder();
 		$headers['Content-Type'] = $builder->get_mail_mime();
 		$headers = array_merge($headers, $builder->get_additional_headers());
 		$body = $builder->get_body();
-		
+
+		$ret->merge($this->do_send($this->to, $this->subject, $body, $headers));
+		return $ret;
+	}
+
+	/**
+	 * Allow to override the :mail function
+	 *
+	 * @return Status
+	 */
+	protected function do_send($to, $subject, $body, $headers) {
+		$ret = new Status();
 		$headers = $this->encode_headers($headers);
-		$subject = ConverterFactory::encode($this->subject, ConverterFactory::MIMEHEADER);
-		if (!mail($this->to, $subject, $body, Arr::implode("\n", $headers, ': '))) {
+		$subject = ConverterFactory::encode($subject, ConverterFactory::MIMEHEADER);
+		if (!mail($to, $subject, $body, Arr::implode("\n", $headers, ': '))) {
 			$ret->append(tr('Could not send mail', 'core'));
 		}
 
 		return $ret;
 	}
-	
+
 	protected function encode_headers($headers) {
 		$ret = array();
-		foreach($headers as $name => $value) {
+		foreach ($headers as $name => $value) {
 			$ret[$name] = ConverterFactory::encode($value, ConverterFactory::MIMEHEADER);
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * Return builder suited for config
-	 * 
+	 *
 	 * @return IMailMessageBuilder
 	 */
 	protected function create_builder() {
 		$ret = false;
 		Load::directories('lib/components/mailmessagebuilder');
-		$msg_builder = ($this->message_alt) 
+		$msg_builder = ($this->message_alt)
 			? new AlternativeMessageBuilder($this->message, $this->content_type, $this->message_alt)
 			: new SingleMessageBuilder($this->message, $this->content_type);
 		if (count($this->files_to_attach)) {
@@ -135,9 +146,9 @@ class MailMessage {
 		else {
 			$ret = $msg_builder;
 		}
-		return $ret;		 
+		return $ret;
 	}
-	
+
 	/**
 	 * Append a file to attach
 	 */
@@ -158,7 +169,7 @@ class MailMessage {
 		$this->subject = $this->safety_preprocess_header_field($this->subject);
 		$this->cc = $this->safety_preprocess_header_field($this->cc);
 	}
-	
+
 	/**
 	 * Set alternative message
 	 */
@@ -170,7 +181,7 @@ class MailMessage {
 	 * Clears header field to avoid injection
 	 * http://www.anders.com/projects/sysadmin/formPostHijacking/
 	 */
-	private function safety_preprocess_header_field($value) {
+	protected function safety_preprocess_header_field($value) {
 		$ret = str_replace("\r", '', $value);
 		$ret = str_replace("\n", '', $ret);
 
@@ -185,7 +196,7 @@ class MailMessage {
 	/**
 	 * Clears from, subject, cc and to data to avaoid header injection
 	 */
-	 private function safety_validate_header() {
+	protected function safety_validate_header() {
 		$ret = new Status();
 		$ret->merge($this->safety_check_header_field($this->to, 'Empfänger'));
 		$ret->merge($this->safety_check_header_field($this->from, 'Absender'));
@@ -196,30 +207,30 @@ class MailMessage {
 		return $ret;
 	}
 
-	private function safety_check_header_field(&$value, $type) {
+	protected function safety_check_header_field(&$value, $type) {
 		if (strpos($value, "\r") !== false || strpos($value, "\n") !== false) {
-			return new Status($type. ': Zeilenumbrüche sind nicht erlaubt.');
+			return new Status($type . ': Zeilenumbrüche sind nicht erlaubt.');
 		}
 
 		return $this->safety_check_exploit_strings($value, $type, false);
 	}
 
-	private function safety_check_exploit_strings(&$value, $type, $beginLineOnly = false) {
+	protected function safety_check_exploit_strings(&$value, $type, $beginLineOnly = false) {
 		$err = new Status();
-		$find = array($this->safety_prepare_exploit_string("bcc" , $beginLineOnly),
-		              $this->safety_prepare_exploit_string("Content\-Type" , $beginLineOnly),
-		              $this->safety_prepare_exploit_string("Mime\-Type" , $beginLineOnly),
-		              $this->safety_prepare_exploit_string('cc' , $beginLineOnly),
-		              $this->safety_prepare_exploit_string('to' , $beginLineOnly));
+		$find = array($this->safety_prepare_exploit_string("bcc", $beginLineOnly),
+			$this->safety_prepare_exploit_string("Content\-Type", $beginLineOnly),
+			$this->safety_prepare_exploit_string("Mime\-Type", $beginLineOnly),
+			$this->safety_prepare_exploit_string('cc', $beginLineOnly),
+			$this->safety_prepare_exploit_string('to', $beginLineOnly));
 		$temp = preg_replace($find, '**!HEADERINJECTION!**', $value);
 		if (strpos($temp, '**!HEADERINJECTION!**') !== false) {
 			$err->append($type . ': "To:", "Bcc:", "Subject:" und weitere reservierte Wörter eines E-Mail-Headers sind nicht erlaubt.');
 		}
-		
+
 		return $err;
 	}
 
-	private function safety_prepare_exploit_string($val, $multiline) {
+	protected function safety_prepare_exploit_string($val, $multiline) {
 		if ($multiline)
 			return "/^" . $val . "\:/im";
 		else
