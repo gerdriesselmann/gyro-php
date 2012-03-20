@@ -626,6 +626,9 @@ class Url {
 			else {
 				Common::send_status_code(302); // Moved Temporarily
 			}
+			if (Config::has_feature(Config::TESTMODE)) {
+				Common::send_backtrace_as_headers();
+			}
 			session_write_close(); // Fixes some issues with Sessions not getting save on redirect
 			header($address);
 			exit;
