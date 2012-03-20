@@ -78,7 +78,20 @@ class Common {
 		if ($iStatusCode >= 500 && $iStatusCode < 600) {
 			 header('Retry-After: 120'); // Retry after 2 minutes
 		}
-	} 		
+	}
+
+	/**
+	 * Send Backtrace as HTTP headers
+	 */
+	public static function send_backtrace_as_headers() {
+		$arr = debug_backtrace();
+		array_shift($arr);
+		$i = 0;
+		foreach($arr as $trace) {
+			header('X-Gyro-Backtrace-' . $i . ': ' . $trace['file'] . ':' . $trace['line'] . ':' . $trace['function']);
+			$i++;
+		}
+	}
 	
 	/**
 	 * Send a header
