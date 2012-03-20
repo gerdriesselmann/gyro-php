@@ -9,12 +9,7 @@ require_once dirname(__FILE__) . '/viewbase.cls.php';
  */
 class PageViewBase extends ViewBase {
 	const POLICY_GZIP = 1024;
-	
-	/**
-	 * @var ICacheManager
-	 */
-	protected $cache_manager = null; 
-	
+		
 	/**
 	 * Page Data 
 	 *
@@ -24,12 +19,11 @@ class PageViewBase extends ViewBase {
 
 	public function __construct(PageData $page_data, $file = false) {
 		$this->page_data = $page_data;
-		$this->cache_manager = $page_data->get_cache_manager();
-		
+
 		if (empty($file)) {
 			$file = 'page';
 		}
-		parent::__construct($file, $this->cache_manager->get_cache_id());
+		parent::__construct($file, $page_data->get_cache_manager()->get_cache_id());
 	}
 
 	/**
@@ -83,11 +77,11 @@ class PageViewBase extends ViewBase {
 	protected function render_postprocess(&$rendered_content, $policy) {
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
 			$this->send_status();
-			$cache_header_manager = $this->cache_manager->get_cache_header_manager();
+			$cache_header_manager = $this->page_data->get_cache_manager()->get_cache_header_manager();
 			$cache_header_manager->send_headers(
 				$rendered_content, 
-				$this->cache_manager->get_expiration_datetime(), 
-				$this->cache_manager->get_creation_datetime()
+				$this->page_data->get_cache_manager()->get_expiration_datetime(), 
+				$this->page_data->get_cache_manager()->get_creation_datetime()
 			);
 			
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
@@ -120,7 +114,7 @@ class PageViewBase extends ViewBase {
 	 * @return int
 	 */
 	protected function get_cache_lifetime() {
-		return $this->cache_manager->get_expiration_datetime() - time(); 
+		return $this->page_data->get_cache_manager()->get_expiration_datetime() - time();
 	}
 	
 	/**
@@ -153,7 +147,7 @@ class PageViewBase extends ViewBase {
 			'status' => $this->page_data->status_code,
 			'in_history' => $this->page_data->in_history,
 			'headers' => $headers,
-			'cacheheadermanager' => $this->cache_manager->get_cache_header_manager()
+			'cacheheadermanager' => $this->page_data->get_cache_manager()->get_cache_header_manager()
 		);
 		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
 		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
@@ -174,8 +168,8 @@ class PageViewBase extends ViewBase {
 				GyroHeaders::set($header, false, true);
 			}
 			//$etag = Arr::get_item($cache_data, 'etag', '');
-			$cache_header_manager = Arr::get_item($cache_data, 'cacheheadermanager', $this->cache_manager->get_cache_header_manager());
-			$this->cache_manager->set_cache_header_manager($cache_header_manager);
+			$cache_header_manager = Arr::get_item($cache_data, 'cacheheadermanager', $this->page_data->get_cache_manager()->get_cache_header_manager());
+			$this->page_data->get_cache_manager()->set_cache_header_manager($cache_header_manager);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
