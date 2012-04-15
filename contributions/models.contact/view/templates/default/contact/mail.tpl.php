@@ -12,8 +12,8 @@
 $mailcmd->set_is_html(true);
 $mailcmd->set_alt_message($self);
 ?>
-<p><b>Hello,</b></p>
+<p><b><?=tr('Hello,', 'contact')?></b></p>
 
-<p><?=$name?> (<?=$email?>) send the following message using the contact form on <?=$appname ?>.</p>
+<p><?=tr('%name (%email) send the following message using the contact form on %app:', 'contact', array('%name' => $name, '%email' => $email, '%app' => $appname))?></p>
 <hr />
 <?php print ConverterFactory::encode($message, ConverterFactory::HTML); ?>

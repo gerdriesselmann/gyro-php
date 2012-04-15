@@ -62,13 +62,13 @@ class ContactBaseController extends ControllerBase {
 			Load::commands('generics/mail');
 			$post = $page_data->get_post();
 			$data = $post->get_array();
-			if (empty($data['name'])) { $err->merge(tr('Please provide a name.')); }
+			if (empty($data['name'])) { $err->merge(tr('Please provide a name.', 'contact')); }
 			if (empty($data['email'])) {
-				$err->merge(tr('Please provide an email address.'));
+				$err->merge(tr('Please provide an e-mail address.', 'contact'));
 			} elseif (!Validation::is_email($data['email'])) {
-				$err->merge(tr('Your email address looks invalid.'));
+				$err->merge(tr('Your e-mail address looks invalid.', 'contact'));
 			}
-			if (empty($data['message'])) { $err->merge(tr('The message should not be empty.')); }
+			if (empty($data['message'])) { $err->merge(tr('The message should not be empty.', 'contact')); }
 			if (empty($data['subject'])) { $data['subject'] = tr('Contact Form Message', 'contact'); }
 			if ($err->is_ok()) {
 				$cmd = new MailCommand($data['subject'], Config::get_value(Config::MAIL_SUPPORT), 'contact/mail', $post->get_array());
