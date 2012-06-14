@@ -9,8 +9,8 @@ class GeoCalculator {
 	const R = 6371; // Earth radius in km
 	
 	/**
-	 * Calculates distance between to points
-	 * 
+	 * Calculates shortest distance between to points
+	 *
 	 * @param float $lat1 Latitude of point 1;
 	 * @param float $lon1 Longitude of point 1;
 	 * @param float $lat2 Latitude of point 2;
@@ -34,7 +34,39 @@ class GeoCalculator {
 		$d = self::R * $c;
 		return $d;
 	}
+
+	/**
+	 * Normalizes Latitude (must be between -90 and 90)
+	 *
+	 * @param float $lat
+	 * @return float
+	 */
+	public static function normalize_lat($lat) {
+		if ($lat > 90.0) {
+			return self::normalize_lat(180.0 - $lat); // 100° => 80°
+		} else if ($lat < -90.0) {
+			return self::normalize_lat(-180.0 - $lat);  // -100°  => -80°
+		} else {
+			return $lat;
+		}
+	}
 	
+	/**
+	 * Normalizes longitude (must be between -180 and 180)
+	 *
+	 * @param float $lon
+	 * @return float
+	 */
+	public static function normalize_lon($lon) {
+		if ($lon > 180.0) {
+			return self::normalize_lon($lon - 360.0); // 181° => -179°
+		} else if ($lon <= -180.0) {
+			return self::normalize_lon($lon + 360.0); // -181° => 179°
+		} else {
+			return $lon;
+		}
+	}
+
 	/**
 	 * Compute bounding box
 	 * 
@@ -52,8 +84,8 @@ class GeoCalculator {
 		$d_lon = rad2deg($we_radius/self::R/cos(deg2rad($lat)));
 		
 		return array(
-			'lat' => array('min' => $lat - $d_lat, 'max' => $lat + $d_lat),
-			'lon' => array('min' => $lon - $d_lon, 'max' => $lon + $d_lon)
+			'lat' => array('min' => self::normalize_lat($lat - $d_lat), 'max' => self::normalize_lat($lat + $d_lat)),
+			'lon' => array('min' => self::normalize_lon($lon - $d_lon), 'max' => self::normalize_lon($lon + $d_lon))
 		);
 	}
 

@@ -26,8 +26,8 @@ class GeoCoordinate {
 	 * @param double $lon Longitude
 	 */
 	public function __construct($lat, $lon) {
-		$this->lat = $lat;
-		$this->lon = $lon;
+		$this->lat = GeoCalculator::normalize_lat($lat);
+		$this->lon = GeoCalculator::normalize_lon($lon);
 	} 
 	
 	/**
@@ -80,12 +80,12 @@ class GeoCoordinate {
 	}
 	
 	/**
-	 * Calculates distance between this and other points
+	 * Calculates shortest distance between this and other points
 	 * 
 	 * @param GeoCoordinate $other Coordinate of point
 	 * @return float Distance in km or FALSE if one of the coordinates is invalid
 	 */
-	public function distance_to($other) {
+	public function distance_to(GeoCoordinate $other) {
 		$ret = false;
 		if ($this->is_valid() && $other->is_valid()) {
 			$ret = GeoCalculator::distance($this->lat, $this->lon, $other->lat, $other->lon);
@@ -99,7 +99,7 @@ class GeoCoordinate {
 	 * @param GeoCoordinate $other
 	 * @return bool|GeoCoordinate
 	 */
-	public function center_of($other) {
+	public function center_of(GeoCoordinate $other) {
 		$ret = false;
 		if ($this->is_valid() && $other->is_valid()) {
 			$ret = new GeoCoordinate(
@@ -111,6 +111,8 @@ class GeoCoordinate {
 	}
 
 	/**
+	 * Returns true if this coordinate is inside the rectangle defined by $coord1 und $coord2
+	 *
 	 * @param GeoCoordinate $coord1
 	 * @param GeoCoordinate $coord2
 	 * @return bool
@@ -118,13 +120,8 @@ class GeoCoordinate {
 	public function is_within($coord1, $coord2) {
 		$ret = false;
 		if ($this->is_valid() && $coord1->is_valid() && $coord2->is_valid()) {
-			$max_lat = max($coord1->lat, $coord2->lat);
-			$min_lat = min($coord1->lat, $coord2->lat);
-			$max_lon = max($coord1->lon, $coord2->lon);
-			$min_lon = min($coord1->lon, $coord2->lon);
-			$ret =
-				$this->lat >= $min_lat && $this->lat <= $max_lat &&
-				$this->lon >= $min_lon && $this->lon <= $max_lon;
+			$rect = GeoRectangle::from_coords($coord1, $coord2);
+			$ret = $rect->contains($this);
 		}
 		return $ret;
 	}
@@ -173,7 +170,7 @@ class GeoCoordinate {
 	 */
 	public function bounding_rect($ns_radius, $we_radius) {
 		$arr = GeoCalculator::bounding_box($this->lat, $this->lon, $ns_radius, $we_radius);
-		return new GeoRectangle($arr['lat']['min'], $arr['lon']['min'],$arr['lat']['max'], $arr['lon']['max']);
+		return new GeoRectangle($arr['lat']['min'], $arr['lon']['min'], $arr['lat']['max'], $arr['lon']['max']);
 	}
 
 	/**
