@@ -24,7 +24,7 @@ class Cookie {
 	 * @param string Name of cookie to delete
 	 */
 	public static function delete($name) {
-		setcookie($name, '', time() - 24 * 60 * 60, '/');
+		setcookie($name, '', 1, '/');
 	}
 	
 	/**
