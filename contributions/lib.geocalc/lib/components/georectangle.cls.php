@@ -64,10 +64,22 @@ class GeoRectangle {
 	 * @return GeoCoordinate
 	 */
 	public function center() {
+		$center_lon = ($this->north_west->lon + $this->south_east->lon) / 2;
+		if ($this->spans_180_deg_meridian()) {
+			// This rect spans over the -180/180 boundary.
+			$center_lon = $center_lon + 180.0;
+		}
 		return new GeoCoordinate(
 			($this->north_west->lat + $this->south_east->lat) / 2,
-			($this->north_west->lon + $this->south_east->lon) / 2
+			$center_lon
 		);
+	}
+
+	/**
+	 * Returns true if the rect spans the 180° meridian (date line)
+	 */
+	private function spans_180_deg_meridian() {
+		return ($this->north_west->lon > $this->south_east->lon);
 	}
 
 	/**
@@ -77,11 +89,19 @@ class GeoRectangle {
 	 * @return bool
 	 */
 	public function contains(GeoCoordinate $coord) {
-		return
-			($coord->lat <= $this->south_east->lat) &&
-			($coord->lat >= $this->north_west->lat) &&
-			($coord->lon <= $this->south_east->lon) &&
-			($coord->lon >= $this->south_east->lon);
+		$lat_matches = ($coord->lat <= $this->north_west->lat) && ($coord->lat >= $this->south_east->lat);
+		$test_lon = $coord->lon;
+		$lon_matches = false;
+		if ($this->spans_180_deg_meridian()) {
+			// This rect spans over the -180/180 boundary. We look if point on opposite is inside opposite rectangle
+			$test_lon = GeoCalculator::normalize_lon($test_lon + 180.0);
+			$lon_matches = ($test_lon <= $this->north_west->lon) && ($test_lon >= $this->south_east->lon);
+		}
+		else {
+			$lon_matches = ($test_lon >= $this->north_west->lon) && ($test_lon <= $this->south_east->lon);
+		}
+
+		return $lat_matches && $lon_matches;
 	}
 
 	/**
@@ -95,4 +115,30 @@ class GeoRectangle {
 		return $this->north_west->is_valid() && $this->south_east->is_valid();
 	}
 
+	/**
+	 * Configure a DB query, assuming lat and lon are stored in two columns
+	 *
+	 * @param IDBWhereHolder $holder
+	 * @param string $lat_field_name
+	 * @param string $lon_field_name
+	 */
+	public function configure_query(IDBWhereHolder $holder, $lat_field_name, $lon_field_name) {
+		$table = $holder->get_wheres()->get_table();
+		$where_lat = new DBWhereGroup($table);
+		$where_lat->add_where($lat_field_name, '>=', $this->north_west->lat_to_string(4, true));
+		$where_lat->add_where($lat_field_name, '<=', $this->south_east->lat_to_string(4, true));
+
+		$where_lon = new DBWhereGroup($table);
+		if ($this->spans_180_deg_meridian()) {
+			// e.g. -178 => +178
+			$where_lon->add_where($lon_field_name, '<=', $this->north_west->lon_to_string(4, true));
+			$where_lon->add_where($lon_field_name, '>=', $this->south_east->lon_to_string(4, true), IDBWhere::LOGIC_OR);
+		} else {
+			$where_lon->add_where($lon_field_name, '>=', $this->north_west->lon_to_string(4, true));
+			$where_lon->add_where($lon_field_name, '<=', $this->south_east->lon_to_string(4, true));
+		}
+
+		$holder->add_where_object($where_lat);
+		$holder->add_where_object($where_lon);
+	}
 }
