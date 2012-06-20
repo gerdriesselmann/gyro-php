@@ -26,8 +26,12 @@ class GeoCoordinate {
 	 * @param double $lon Longitude
 	 */
 	public function __construct($lat, $lon) {
-		$this->lat = GeoCalculator::normalize_lat($lat);
-		$this->lon = GeoCalculator::normalize_lon($lon);
+		$this->lat = $lat;
+		$this->lon = $lon;
+		if ($this->is_valid()) {
+			$this->lat = GeoCalculator::normalize_lat($lat);
+			$this->lon = GeoCalculator::normalize_lon($lon);
+		}
 	} 
 	
 	/**
