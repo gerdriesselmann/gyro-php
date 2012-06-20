@@ -83,8 +83,11 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 	 * @return GeoRectangle
 	 */
 	public function get_bounding_rect() {
-		Load::components('georectangle');
-		return new GeoRectangle($this->lat1, $this->lon1, $this->lat2, $this->lon2);
+		Load::components('geocoordinate');
+		return GeoCoordinate::bounding_rect_of(array(
+			new GeoCoordinate($this->lat1, $this->lon1),
+			new GeoCoordinate($this->lat2, $this->lon2)
+		));
 	}
 
 	/**
