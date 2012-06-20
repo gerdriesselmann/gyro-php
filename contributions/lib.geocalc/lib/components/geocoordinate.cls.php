@@ -180,7 +180,7 @@ class GeoCoordinate {
 	 * @param $arr_coordinates
 	 * @return array Array with two elements 'min' and 'max', containing a GeoCoordinate instance
 	 */
-	public static function boundig_box_of($arr_coordinates) {
+	public static function bounding_box_of($arr_coordinates) {
 		$arr_data = array();
 		/* @var $coord GeoCoordinate */
 		foreach($arr_coordinates as $coord) {
@@ -193,5 +193,19 @@ class GeoCoordinate {
 			'min' => new GeoCoordinate($arr['lat']['min'], $arr['lon']['min']),
 			'max' => new GeoCoordinate($arr['lat']['max'], $arr['lon']['max'])
 		) : false;
+	}
+
+	/**
+	 * Calculate a bounding rect that contains all of coordinates passed
+	 *
+	 * @static
+	 * @param $arr_coordinates
+	 * @return GeoRectangle
+	 */
+	public static function bounding_rect_of($arr_coordinates) {
+		$arr = self::bounding_box_of($arr_coordinates);
+		return $arr
+			? GeoRectangle::from_coords($arr['min'], $arr['max'])
+			: false;
 	}
 }
