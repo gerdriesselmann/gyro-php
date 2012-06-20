@@ -109,18 +109,46 @@ class GeoCalculator {
 		if ($first == false) {
 			return false;
 		}
+
 		$lat_min = Arr::get_item($first, 'lat', 0.0);
 		$lat_max = $lat_min;
 		$lon_min = Arr::get_item($first, 'lon', 0.0);
 		$lon_max = $lon_min;
 
+		$has_only_negative_lons = $lon_min <= 0;
+		$has_only_positive_lons = $lon_min >= 0;
 		foreach($arr_coordinates as $c) {
 			$lat = Arr::get_item($c, 'lat', 0.0);
 			$lon = Arr::get_item($c, 'lon', 0.0);
+			$has_only_negative_lons = $has_only_negative_lons && ($lon <= 0);
+			$has_only_positive_lons = $has_only_positive_lons && ($lon >= 0);
+
 			$lat_min = min($lat_min, $lat);
 			$lat_max = max($lat_max, $lat);
 			$lon_min = min($lon_min, $lon);
 			$lon_max = max($lon_max, $lon);
+		}
+
+		if (!$has_only_negative_lons && !$has_only_positive_lons) {
+			// Spans the prime meridian OR the 180° median. Check witch rectangle would be smaller
+			// Think -178, -179, 179, 178: Min is 178, Max is -178
+			// We know that there are at least 2 items, one < 0, and one > 0, and that recent $lon_min is negative
+			$distance_lon_prime_meridian = $lon_max - $lon_min;
+
+			$lon_min_180 =  180.0;
+			$lon_max_180 = -180.0;;
+			array_unshift($arr_coordinates, $first);
+			foreach($arr_coordinates as $c) {
+				$lon = Arr::get_item($c, 'lon', 180.0);
+				if ($lon >= 0 && $lon < $lon_min_180) { $lon_min_180 = $lon; }
+				if ($lon <  0 && $lon > $lon_max_180) { $lon_max_180 = $lon; }
+			}
+
+			$distance_lon_180_meridian = 180 + $lon_max_180 + 180 - $lon_min_180;
+			if ($distance_lon_180_meridian < $distance_lon_prime_meridian) {
+				$lon_min = $lon_min_180;
+				$lon_max = $lon_max_180;
+			}
 		}
 
 		return array(

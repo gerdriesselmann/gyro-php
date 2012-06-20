@@ -59,4 +59,36 @@ class GeoCalculatorTest extends GyroUnitTestCase {
 		$dist_we = GeoCalculator::distance(0, $box['lon']['max'], 0, $box['lon']['min']);
 		$this->assertEqual(2.0, round($dist_we, 5));
 	}
+
+	public function test_bounding_box_of() {
+		$box = GeoCalculator::bounding_box_of(array(
+			array('lat' => -10, 'lon' => -10),
+			array('lat' =>  -9, 'lon' =>  -9),
+			array('lat' =>   8, 'lon' =>   8),
+			array('lat' =>  10, 'lon' =>  10),
+		));
+		$this->assertEqual(-10, $box['lat']['min']);
+		$this->assertEqual( 10, $box['lat']['max']);
+		$this->assertEqual(-10, $box['lon']['min']);
+		$this->assertEqual( 10, $box['lon']['max']);
+
+		$box = GeoCalculator::bounding_box_of(array(
+			array('lat' => -10, 'lon' => -170),
+			array('lat' =>  -9, 'lon' => -171),
+			array('lat' =>   8, 'lon' =>  172),
+			array('lat' =>  10, 'lon' =>  170),
+		));
+		$this->assertEqual( -10, $box['lat']['min']);
+		$this->assertEqual(  10, $box['lat']['max']);
+		$this->assertEqual( 170, $box['lon']['min']);
+		$this->assertEqual(-170, $box['lon']['max']);
+
+		$box = GeoCalculator::bounding_box_of(array(
+			array('lat' => -10, 'lon' => -175),
+			array('lat' =>   8, 'lon' =>  105),
+		));
+		$this->assertEqual( 105, $box['lon']['min']);
+		$this->assertEqual(-175, $box['lon']['max']);
+
+	}
 }
