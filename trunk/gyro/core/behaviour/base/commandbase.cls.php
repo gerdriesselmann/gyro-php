@@ -1,6 +1,6 @@
 <?php
-define('GYRO_COMMAND_SEP', '_');
-define('GYRO_COMMAND_ID_SEP', ',');
+if (!defined('GYRO_COMMAND_SEP')) define('GYRO_COMMAND_SEP', '_');
+if (!defined('GYRO_COMMAND_ID_SEP')) define('GYRO_COMMAND_ID_SEP', ',');
 
 /**
  * Base implementation for commands
