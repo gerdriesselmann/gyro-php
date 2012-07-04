@@ -6,6 +6,8 @@
  * @ingroup Model
  */
 class FormValidations {
+	const LENGTH_NAME = 35;
+
 	/**
 	 * Create a token for form of given name
 	 */

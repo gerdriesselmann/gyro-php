@@ -58,7 +58,11 @@ class FormHandler {
  		else if ($token_policy === true) {
  			$token_policy = self::TOKEN_POLICY_UNIQUE;
  		}
- 		
+
+		 // Check name length. http://code.google.com/p/gyro-php/issues/detail?id=6
+		if (Config::has_feature(Config::TESTMODE) && String::length($name) > FormValidations::LENGTH_NAME) {
+			throw new InvalidArgumentException('Name for formhandler ist too long: ' . $name);
+		}
  		$this->name = $name;
  		$this->token_policy = $token_policy;
  		$this->url = Url::current();
