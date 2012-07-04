@@ -52,6 +52,7 @@ class MailBaseCommand extends CommandBase {
 
 	protected $alt_message = '';
 	protected $files_to_attach = array();
+	protected $additional_headers = array();
 
 	/**
 	 * Constructor
@@ -105,6 +106,11 @@ class MailBaseCommand extends CommandBase {
 			// Set custom attachments
 			foreach($this->files_to_attach as $filename => $name) {
 				$mail->add_attachment($filename, $name);
+			}
+
+			// Set custom headers
+			foreach($this->additional_headers as $name => $value) {
+				$mail->add_header($name, $value);
 			}
 				
 			// Set overlaoded attachments
@@ -257,5 +263,15 @@ class MailBaseCommand extends CommandBase {
 	 */
 	public function add_attachment($file_name, $name = '') {
 		$this->files_to_attach[$file_name] = $name;
+	}
+
+	/**
+	 * Add a header
+	 *
+	 * @param string $name
+	 * @param string $value
+	 */
+	public function add_header($name, $value) {
+		$this->additional_headers[$name] = $value;
 	}
 }

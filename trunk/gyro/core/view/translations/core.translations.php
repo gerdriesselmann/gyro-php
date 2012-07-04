@@ -131,6 +131,30 @@ function core_load_translations($languages) {
 		),
 		'Could not send mail' => array(
 			'de' => 'Mail konnte nicht gesendet werden'
-		)
+		),
+		// Mail Message
+		'Recipient' => array(
+			'de' => 'Empfänger'
+		),
+		'Sender' => array(
+			'de' => 'Absender'
+		),
+		'Subject' => array(
+			'de' => 'Betreff'
+		),
+		'Message' => array(
+			'de' => 'Nachricht'
+		),
+		'Additional Headers' => array(
+			'de' => 'Weitere Header'
+		),
+		'%type: "To:", "Bcc:", "Subject:" and other reserved words are not allowed.' => array(
+			'de' => '%type: "To:", "Bcc:", "Subject:" und weitere reservierte Wörter eines E-Mail-Headers sind nicht erlaubt.'
+		),
+		'%field: Line breaks are not allowed.' => array(
+			'de' => '%field: Zeilenumbrüche sind nicht erlaubt.'
+		),
+
+
 	);
 }
