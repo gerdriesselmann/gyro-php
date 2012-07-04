@@ -16,7 +16,7 @@ class DAOFormvalidations extends DataObjectBase {
 	    	'formvalidations',
 			array(
 				new DBFieldText('token', 35, null, DBField::NOT_NULL),
-				new DBFieldText('name', 35, null, DBField::NOT_NULL),
+				new DBFieldText('name', FormValidations::LENGTH_NAME, null, DBField::NOT_NULL),
 				new DBFieldText('sessionid', 60, '', DBField::NONE),
 				new DBFieldDateTime('expirationdate', null, DBField::NOT_NULL),				
 			),
