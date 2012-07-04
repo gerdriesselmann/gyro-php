@@ -62,6 +62,11 @@ class MailMessage {
 	private $files_to_attach = array();
 
 	/**
+	 * Additional headers as associative array
+	 */
+	private $additional_headers = array();
+
+	/**
 	 * constructor
 	 */
 	public function __construct($subject, $message, $to, $from = '', $content_type = '') {
@@ -89,9 +94,8 @@ class MailMessage {
 			return $ret;
 		}
 
-		$headers = array(
-			'From' => empty($this->from) ? Config::get_value(Config::MAIL_SENDER, true) : $this->from,
-		);
+		$headers = $this->additional_headers;
+		$headers['From'] = empty($this->from) ? Config::get_value(Config::MAIL_SENDER, true) : $this->from;
 		if ($this->cc != '') {
 			$headers['Bcc'] = $this->cc;
 		}
@@ -160,6 +164,20 @@ class MailMessage {
 	}
 
 	/**
+	 * Add header.
+	 *
+	 * @code
+	 * add_header('Reply-To', 'somemail@example.com')
+	 * @endcode
+	 *
+	 * @param string $name Name of header
+	 * @param string $value Header value
+	 */
+	public function add_header($name, $value) {
+		$this->additional_headers[$name] = $value;
+	}
+
+	/**
 	 * Clears from, subject, cc and to data to avoid header injection
 	 * http://www.anders.com/projects/sysadmin/formPostHijacking/
 	 */
@@ -194,22 +212,27 @@ class MailMessage {
 	}
 
 	/**
-	 * Clears from, subject, cc and to data to avaoid header injection
+	 * Clears from, subject, cc and to data to avoid header injection
 	 */
 	protected function safety_validate_header() {
 		$ret = new Status();
-		$ret->merge($this->safety_check_header_field($this->to, 'Empfänger'));
-		$ret->merge($this->safety_check_header_field($this->from, 'Absender'));
-		$ret->merge($this->safety_check_header_field($this->subject, 'Betreff'));
-		$ret->merge($this->safety_check_header_field($this->cc, 'CC'));
-		$ret->merge($this->safety_check_header_field($this->content_type, 'Content-Tye'));
-		$ret->merge($this->safety_check_exploit_strings($this->message, 'Nachricht', true));
+		$ret->merge($this->safety_check_header_field($this->to, tr('Recipient')));
+		$ret->merge($this->safety_check_header_field($this->from, tr('Sender')));
+		$ret->merge($this->safety_check_header_field($this->subject, tr('Subject')));
+		$ret->merge($this->safety_check_header_field($this->cc, tr('CC')));
+		$ret->merge($this->safety_check_header_field($this->content_type, tr('Content-Tye')));
+		$ret->merge($this->safety_check_exploit_strings($this->message, tr('Message'), true));
+
+		foreach($this->additional_headers as $key => $value) {
+			$ret->merge($this->safety_check_header_field($key, tr('Additional Headers')));
+			$ret->merge($this->safety_check_header_field($value, tr('Additional Headers')));
+		}
 		return $ret;
 	}
 
 	protected function safety_check_header_field(&$value, $type) {
 		if (strpos($value, "\r") !== false || strpos($value, "\n") !== false) {
-			return new Status($type . ': Zeilenumbrüche sind nicht erlaubt.');
+			return new Status(tr('%field: Line breaks are not allowed.', 'core', array('%field' => $type)));
 		}
 
 		return $this->safety_check_exploit_strings($value, $type, false);
@@ -217,14 +240,16 @@ class MailMessage {
 
 	protected function safety_check_exploit_strings(&$value, $type, $beginLineOnly = false) {
 		$err = new Status();
-		$find = array($this->safety_prepare_exploit_string("bcc", $beginLineOnly),
+		$find = array(
+			$this->safety_prepare_exploit_string("bcc", $beginLineOnly),
 			$this->safety_prepare_exploit_string("Content\-Type", $beginLineOnly),
 			$this->safety_prepare_exploit_string("Mime\-Type", $beginLineOnly),
 			$this->safety_prepare_exploit_string('cc', $beginLineOnly),
-			$this->safety_prepare_exploit_string('to', $beginLineOnly));
+			$this->safety_prepare_exploit_string('to', $beginLineOnly)
+		);
 		$temp = preg_replace($find, '**!HEADERINJECTION!**', $value);
 		if (strpos($temp, '**!HEADERINJECTION!**') !== false) {
-			$err->append($type . ': "To:", "Bcc:", "Subject:" und weitere reservierte Wörter eines E-Mail-Headers sind nicht erlaubt.');
+			$err->append('%type: "To:", "Bcc:", "Subject:" and other reserved words are not allowed.', 'core', array('%type' => $type));
 		}
 
 		return $err;
