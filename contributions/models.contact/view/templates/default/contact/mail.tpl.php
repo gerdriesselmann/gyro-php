@@ -11,6 +11,7 @@
  */
 $mailcmd->set_is_html(true);
 $mailcmd->set_alt_message($self);
+$mailcmd->add_header('Reply-To', $email);
 ?>
 <p><b><?=tr('Hello,', 'contact')?></b></p>
 
