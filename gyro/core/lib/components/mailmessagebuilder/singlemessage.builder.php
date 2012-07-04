@@ -42,7 +42,7 @@ class SingleMessageBuilder implements IMailMessageBuilder {
 	 * @return string
 	 */
 	public function get_body() {
-		return base64_encode($this->message);
+		return chunk_split(base64_encode($this->message));
 	}
 	
 	/**
