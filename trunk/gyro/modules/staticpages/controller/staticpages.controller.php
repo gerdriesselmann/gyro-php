@@ -98,8 +98,8 @@ class StaticPagesController extends ControllerBase {
 			$arr = $this->collect_templates();
 			foreach($arr as $template => $path) {
 				$result[] = array(
-					'url' => ActionMapper::get_url('static', array('page' => $path)),
-					'lastmod' => filemtime(TemplatePathResolver::resolve('static/' . $template)) 
+					'url' => ActionMapper::get_url('static_' . $path),
+					'lastmod' => filemtime(TemplatePathResolver::resolve('static/' . $template))
 				);
 			}
 		}
