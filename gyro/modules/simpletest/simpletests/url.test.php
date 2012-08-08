@@ -98,6 +98,13 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual('a', $arr_host['sld']);
 		$this->assertEqual('a.de', $arr_host['domain']);
 		$this->assertEqual('', $arr_host['subdomain']);
+
+		$url = Url::create('http://www.a.co');
+		$arr_host = $url->parse_host();
+		$this->assertEqual('co', $arr_host['tld']);
+		$this->assertEqual('a', $arr_host['sld']);
+		$this->assertEqual('a.co', $arr_host['domain']);
+		$this->assertEqual('www', $arr_host['subdomain']);
 	}
 	
 	function test_host_to_lower() {

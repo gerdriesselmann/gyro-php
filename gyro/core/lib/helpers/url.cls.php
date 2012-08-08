@@ -477,11 +477,18 @@ class Url {
 							$arr_subdomain[] = $ret['data'][$i];
 						}
 						$ret['subdomain'] = implode('.', $arr_subdomain);
-						$ret['domain'] = $ret['sld'] . '.' . $ret['tld'];
 					}
 					break;
 				}
-			} 
+			}
+			if (empty($ret['tld'])) {
+				//No TLD found in list. Since virtually any TLD domain can be registered nowadays, just split stuff at dots
+				$tmp = explode('.', $host);
+				$ret['tld'] = array_pop($tmp);
+				$ret['sld'] = array_pop($tmp);
+				$ret['subdomain'] = implode('.', $tmp);
+			}
+			$ret['domain'] = $ret['sld'] . '.' . $ret['tld'];
 		}
 		unset($tlds); // Saves Memory, I think.
 		return $ret;
