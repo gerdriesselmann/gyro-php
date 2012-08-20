@@ -40,6 +40,7 @@ class GsitemapController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
  	public function action_gsitemap_index($page_data) {
+		$page_data->head->robots_index = ROBOTS_NOINDEX;
  		$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/index', $page_data);
  		$this->gsitemap_index($page_data, $view);
  		$view->render();
@@ -52,6 +53,7 @@ class GsitemapController extends ControllerBase {
  	 * @return mixed
  	 */
 	public function action_gsitemap_site($page_data) {
+		$page_data->head->robots_index = ROBOTS_NOINDEX;
 		// Somehat hackish. Let two routes work on same path
 		if ($page_data->get_get()->count() == 0) {
  			return $this->action_gsitemap_index($page_data); 

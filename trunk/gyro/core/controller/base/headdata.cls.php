@@ -5,6 +5,7 @@ define('ROBOTS_NOARCHIVE', 4);
 define('ROBOTS_NOINDEX_NOFOLLOW', 7);
 define('ROBOTS_NOINDEX_FOLLOW', 5);
 define('ROBOTS_INDEX_FOLLOW', 0);
+define('ROBOTS_NOSNIPPET', 8);
 
 /**
  * Centralizes HTML HEAD data
@@ -219,22 +220,32 @@ class HeadData implements IRenderer {
 	 * @return string
 	 */
 	protected function render_robots($robot_policy) {
-    	$robots_policies = array();
-    	$robots_available_policies = array(
+    	return html::meta('robots', $this->robots_policy_as_string($robot_policy)) . "\n";
+	}
+
+	protected function robots_policy_as_string($robot_policy) {
+		$robots_policies = array();
+		$robots_available_policies = array(
 			'index' => ROBOTS_NOINDEX,
-    		'follow' => ROBOTS_NOFOLLOW,
-    		'archive' => ROBOTS_NOARCHIVE    	
-    	);
-    	foreach ($robots_available_policies as $name => $flag) {
-    		if (Common::flag_is_set($robot_policy, $flag)) {
-    			$robots_policies[] = 'no' . $name;
-    		}
-    		else {
-    			$robots_policies[] = $name;
-    		}
-    	}
-    	
-    	return html::meta('robots', implode(', ', $robots_policies)) . "\n";
+			'follow' => ROBOTS_NOFOLLOW,
+			'archive' => ROBOTS_NOARCHIVE,
+			'snippet' => ROBOTS_NOSNIPPET
+		);
+		foreach ($robots_available_policies as $name => $flag) {
+			if (Common::flag_is_set($robot_policy, $flag)) {
+				$robots_policies[] = 'no' . $name;
+			} else if ($flag == ROBOTS_NOINDEX) {
+				$robots_policies[] = $name;
+			}
+		}
+		return implode(', ', $robots_policies);
+	}
+
+	/**
+	 * Output an x-robots-tag header
+	 */
+	public function robot_headers() {
+		Common::header('X-Robots-Tag', $this->robots_policy_as_string($this->robots_index));
 	}
 		
 	/**

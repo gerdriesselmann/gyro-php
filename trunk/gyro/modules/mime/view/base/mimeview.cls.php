@@ -86,6 +86,8 @@ class MimeView extends ContentViewBase {
 				}
 				$this->page_data->get_cache_manager()->set_expiration_datetime($ex);
 			}
+
+			$this->page_data->head->robot_headers();
 		}
 	}	
 	
