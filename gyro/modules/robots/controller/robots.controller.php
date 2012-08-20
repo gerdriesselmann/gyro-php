@@ -33,6 +33,7 @@ class RobotsController extends ControllerBase {
 	 * @return void
 	 */
 	public function action_robots_txt(PageData $page_data) {
+		$page_data->head->robots_index = ROBOTS_NOINDEX;
 		$view = ViewFactory::create_view(ViewFactoryMime::MIME, 'robots.txt', $page_data);
 		$view->assign(MimeView::MIMETYPE, 'text/plain');
 		$view->render();		
