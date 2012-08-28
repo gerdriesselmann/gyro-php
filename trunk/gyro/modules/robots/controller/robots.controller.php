@@ -22,7 +22,7 @@ class RobotsController extends ControllerBase {
  	 */
 	public function get_routes() {
 		return array(
-			new ExactMatchRoute('robots.txt', $this, 'robots_txt'),
+			new ExactMatchRoute('any://robots.txt', $this, 'robots_txt'),
 		);		
 	}
 
