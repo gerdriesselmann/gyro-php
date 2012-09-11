@@ -17,7 +17,7 @@ class DBFieldBlob extends DBFieldText {
 			return '0x' . bin2hex($value);
 		}
 		else {
-			return parent::format('');
+			return parent::do_format_not_null('');
 		}
 	}
 	
