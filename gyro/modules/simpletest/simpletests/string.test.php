@@ -62,7 +62,7 @@ class StringTest extends GyroUnitTestCase {
 		// Achtung: stellt das Eurozeichen nicht richtig dar!
 		// echo String::currency($val);
 		$this->assertEqual('2.100,02 €',String::currency($val));
-		// wie muss das für UK und US heissen?
+		// wie muss das für UK und US heissen?1
 		setlocale(LC_ALL, array('en_US.utf8', 'en_US', 'en'));
 		$val = 4512.43;
 		$this->assertEqual('$4,512.43',String::currency($val));
@@ -248,6 +248,9 @@ class StringTest extends GyroUnitTestCase {
 		$val = "Test date: 20.20.2020, and url: www.example.org. New sentence!";
 		$this->assertEqual('Test date: 20.20.2020, and', String::substr_sentence($val, 0, 29));
 		$this->assertEqual('Test date: 20.20.2020, and url: www.example.org.', String::substr_sentence($val, 0, 56));
+
+		$val = "A sentence. Something with a number: 1234.00 Euro he paid.";
+		$this->assertEqual('A sentence.', String::substr_sentence($val, 0, 50));
 	}
 	
 	function test_left() {
