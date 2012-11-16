@@ -31,7 +31,7 @@ class Countries {
     /**
      * Returns country for given code (de, fr etc.
      *
-     * @param DAOCountries $country_code
+     * @param string $country_code
      */
     public static function get($country_code) {
         return DB::get_item('countries', 'id', $country_code);
