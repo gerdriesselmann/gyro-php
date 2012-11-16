@@ -518,7 +518,7 @@ class DataObjectBase implements IDataObject, IActionSource {
 	 * Join another table to this
 	 *
 	 * @param IDBTable $other
-	 * @param array $conditions Array of DBJoinCondition. When ommited Gyro will figure out join conditions by itself
+	 * @param array $conditions Array of IDBWhere. When ommited Gyro will figure out join conditions by itself
 	 * @param string $type One of DBQueryJoined::INNER, DBQueryJoined::LEFT, or DBQueryJoined::RIGHT  
 	 */
 	public function join(IDBTable $other, $conditions = array(), $type = DBQueryJoined::INNER) {
