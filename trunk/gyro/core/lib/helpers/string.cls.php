@@ -428,30 +428,42 @@ class String {
 	 */
 	public static function substr_sentence($val, $start, $max_length, $elipsis = false) {
 		$val_temp = self::preg_replace('|\s+|', ' ', $val) . ' ';
-		$pos = false;
+		$pos_punctuation = false;
+		$pos_punctuation_but_not_sentence = false;
 		$ret = self::substr($val_temp, $start, $max_length);
 		$punctuations = array('?', '!', '.');
 		foreach($punctuations as $punc) {
 			$pos_temp = self::strrpos($ret, $punc);
-			//var_dump($ret, $punc, $pos_temp);
-			if ($pos_temp !== false && $pos_temp > $pos) {
+			if ($pos_temp !== false && $pos_temp > $pos_punctuation) {
 				// There is a punctuation character and it seems to be the last (up to now),
 				// so check if there is a space following it
 				$test = self::substr($val_temp, $pos_temp + 1, 1);
 				if ($test === ' ' || $test === '') {
-					$pos = $pos_temp;
-				} 	
+					$pos_punctuation = $pos_temp;
+				} else {
+					$pos_punctuation_but_not_sentence = $pos_temp;
+				}
 			}
 		}
-		if ($pos === false) {
+		if ($pos_punctuation === false) {
 			// Check if a punctuation follows substring
 			$test = self::substr($val_temp, $start + $max_length, 1);
 			if (!in_array($test, $punctuations)) {
-				$ret = self::substr_word($val_temp, $start, $max_length, false);
+				if ($pos_punctuation_but_not_sentence > 0) {
+					$test_shorter_string = self::substr($val, $start, $pos_punctuation_but_not_sentence - $start - 1);
+					$test_substr = self::substr_sentence($test_shorter_string, $start, $max_length, false);
+					if ($test_substr != $test_shorter_string) {
+						$ret = $test_substr;
+					} else  {
+						$ret = self::substr_word($val_temp, $start, $max_length, false);
+					}
+				} else {
+					$ret = self::substr_word($val_temp, $start, $max_length, false);
+				}
 			}
 		}
 		else {
-			$ret = self::substr($ret, 0, $pos + 1);
+			$ret = self::substr($ret, 0, $pos_punctuation + 1);
 		}
 
 		$ret = rtrim($ret);
