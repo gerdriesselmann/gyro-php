@@ -101,6 +101,7 @@ class MailMessage {
 		}
 
 		$builder = $this->create_builder();
+		$headers['MIME-Version'] = '1.0';
 		$headers['Content-Type'] = $builder->get_mail_mime();
 		$headers = array_merge($headers, $builder->get_additional_headers());
 		$body = $builder->get_body();

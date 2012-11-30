@@ -35,7 +35,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	public function __construct(IMailMessageBuilder $msg_builder, $attachments) {
 		$this->message_builder = $msg_builder;
 		$this->attachments = $attachments;
-		$this->boundary = 'GYROMAILSEP-' . Common::create_token();
+		$this->boundary = Common::create_token();
 	}
 	
 	/**
