@@ -95,7 +95,8 @@ class DB {
 		if (count($pks) != 1) {
 			throw new Exception(tr('No or more than 1 keys on model %s: get_item_by_pk() cannot be applied', 'core', array('%s' => $table)));
 		}
-		$pk_name = array_shift(array_keys($pks));
+		$php54_strict_requires_a_variable_here = array_keys($pks);
+		$pk_name = array_shift($php54_strict_requires_a_variable_here);
 		return self::get_item($table, $pk_name, $value);			
 	}
 	
