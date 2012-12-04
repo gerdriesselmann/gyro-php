@@ -438,7 +438,8 @@ class ParameterizedRoute extends RouteBase {
 		$ret = array();
 		preg_match_all($tag, $path, $tags);
 		foreach($tags[1] as $t) {
-			$ret[] = array_shift($php54_strict_requires_a_variable_here = explode(':', $t));
+			$php54_strict_requires_a_variable_here = explode(':', $t);
+			$ret[] = array_shift($php54_strict_requires_a_variable_here);
 		}
 		return array_unique($ret);
 	}
