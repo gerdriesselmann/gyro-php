@@ -145,7 +145,7 @@ class Arr {
 	 * @param Array The clean array
 	 * @param Array The array to read from
 	 */
-	public static function clean(&$clean, &$source) {
+	public static function clean(&$clean, $source) {
 		foreach($source as $key => $value) 	{
 			if (array_key_exists($key, $clean))
 				$clean[$key] = strip_tags($value);
