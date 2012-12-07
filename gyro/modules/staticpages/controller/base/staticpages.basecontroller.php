@@ -7,7 +7,7 @@
  * @author Gerd Riesselmann
  * @ingroup StaticPages
  */
-class StaticPagesController extends ControllerBase {
+class StaticPagesBaseController extends ControllerBase {
 	private $cache_templates = null;
 	
 	/**
