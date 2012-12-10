@@ -48,6 +48,28 @@ class GyroHttpRequest {
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
+
+	public static function post_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_post_options($options, $fields);
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	public static function post_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_post_options($options, $fields);
+		$options[CURLOPT_USERPWD] = "$user:$pwd";
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	private static function set_post_options($options, $fields) {
+		$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
+		$options[CURLOPT_POST] = true;
+		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+		return $options;
+	}
 	
 	/**
 	 * Fetch only head
