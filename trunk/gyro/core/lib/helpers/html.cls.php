@@ -607,7 +607,7 @@ class html
 	 * 
 	 * @param array  $rows Array or Array of arrays of cells. Cells must be already formated with either <td> or <th>
 	 */
-	private function table_build_rows($rows) {
+	private static function table_build_rows($rows) {
 		$ret = '';
 		$i = 0;		
 		$c = count($rows);
