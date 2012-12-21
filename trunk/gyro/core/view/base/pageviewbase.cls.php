@@ -34,7 +34,7 @@ class PageViewBase extends ViewBase {
 	 */
 	public function render($policy = self::NONE) {
 		if (Config::has_feature(Config::GZIP_SUPPORT)) {
-			if (in_array(ini_get('zlib.output_compression'), array('0', 'Off'))) {
+			if (!ini_get('zlib.output_compression')) {
 				$policy |= self::POLICY_GZIP;
 			}
 		}

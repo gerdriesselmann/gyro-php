@@ -118,10 +118,15 @@ Config::set_value_from_constant(Config::FORMVALIDATION_EXPIRATION_TIME, 'APP_FOR
 /**
  * Use GZIP?
  */
-Config::set_feature(
-	Config::GZIP_SUPPORT, 
-	isset($_SERVER['HTTP_ACCEPT_ENCODING']) && strstr($_SERVER['HTTP_ACCEPT_ENCODING'], 'deflate') && !APP_TESTMODE 
-);
+$http_accept_encoding =  isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '';
+if (strstr($http_accept_encoding, 'deflate')) {
+	// Gyro Build in gzip compression uses compressed cache => less CPU usage
+	Config::set_feature(Config::GZIP_SUPPORT, true);
+} elseif (strstr($http_accept_encoding, 'gzip')) {
+	// But Gyro compression supports deflate only, so for gzip only clients (Java HTTP Clients, that is) use PHP
+	// build in compression
+	ini_set('zlib.output_compression', 'On');
+}
 /**
  * Some URLs
  */
