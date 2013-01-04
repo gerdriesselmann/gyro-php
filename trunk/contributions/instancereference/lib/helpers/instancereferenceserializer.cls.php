@@ -25,8 +25,10 @@ class InstanceReferenceSerializier {
 	 * @param array $arr_inst
 	 */
 	public static function array_to_instance($arr_inst) {
-		$ret = false;
 		$table = array_shift($arr_inst);
+		if (empty($table)) {
+			return false;
+		}
 		$dao = DB::create($table);
 		$params = array();
 		if ($dao) {
