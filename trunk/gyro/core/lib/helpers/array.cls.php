@@ -241,7 +241,7 @@ class Arr {
 	 * @param array $arr
 	 * @return array
 	 */
-	public static function force_keys_to_string($arr) {
+	public static function force_keys_to_string(&$arr) {
 		$ret = array();
 		foreach($arr as $key => $value) {
 			if (is_array($value)) {
@@ -261,7 +261,7 @@ class Arr {
 	 * @param array $arr
 	 * @return array
 	 */
-	public static function unforce_keys_from_string($arr) {
+	public static function unforce_keys_from_string(&$arr) {
 		$ret = array();
 		foreach($arr as $key => $value) {
 			if (is_array($value)) {
@@ -280,7 +280,13 @@ class Arr {
 	 * @param mixed $value The value to unset
 	 */
 	public static function remove(&$arr, $value) {
-		foreach(array_keys($arr, $value) as $key) {
+		// This is a hack, since on some ocasions, PHP 5.4 will
+		// crash when comparing complex objects.
+		// This for some reason does not occur, if they
+		// are var_dunmped or print_r'ed before.
+		$dummy = print_r($arr, true);
+		$keys = array_keys($arr, $value);
+		foreach($keys as $key) {
 			unset($arr[$key]);
 		}
 	}
