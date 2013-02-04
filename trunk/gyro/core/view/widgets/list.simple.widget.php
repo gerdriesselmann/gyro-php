@@ -27,7 +27,7 @@ class WidgetListSimple implements IWidget {
 		$view->assign('policy', $policy);
 		$view->assign('empty_message', $this->empty_message);
 		$ret = $view->render();
-		return $ret;
+		return trim($ret);
 	}
 	
 	protected function render_items($page_data, $items, $policy) {
