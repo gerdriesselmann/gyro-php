@@ -235,5 +235,14 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertTrue($a->is_same_as('/'));
 		$this->assertTrue($a->is_same_as(''));
 	}
+
+	public function test_encoding() {
+		$a = Url::create("http://www.example.org/");
+		$a->replace_query_parameter('unenc', " n\n\r&%=");
+		$this->assertEqual(" n\n\r&%=", $a->get_query_param('unenc', false, Url::NO_ENCODE_PARAMS));
+		$this->assertEqual("+n%0A%0D%26%25%3D", $a->get_query_param('unenc', false, Url::ENCODE_PARAMS));
+		$this->assertEqual("http://www.example.org/?unenc= n\n\r&%=", $a->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS));
+		$this->assertEqual("http://www.example.org/?unenc=+n%0A%0D%26%25%3D", $a->build());
+	}
 }
 
