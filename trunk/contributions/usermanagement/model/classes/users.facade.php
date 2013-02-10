@@ -222,6 +222,14 @@ class Users {
 		return $err;		
 	}
 
+	public static function create_deletion_command($user) {
+		if (Config::has_feature(ConfigUsermanagement::REAL_DELETION)) {
+			return CommandsFactory::create_command($user, 'delete', false);
+		} else {
+			return CommandsFactory::create_command($user, 'status', self::STATUS_DELETED);
+		}
+	}
+
 	/**
 	 * Prepare DAO instance for retrieving users (that are ACTIVE)
 	 * 
@@ -279,7 +287,7 @@ class Users {
 	 */
 	public static function count_unconfirmed() {
 		$users = new DAOUsers();
-		$users->status = USER_STATUS_UNCONFIRMED;	
+		$users->status = self::STATUS_UNCONFIRMED;
 		return $users->count();
 	}	
 	

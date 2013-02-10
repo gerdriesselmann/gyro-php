@@ -34,6 +34,7 @@ class UsersAccessControl extends AccessControlBase {
 			case 'create':
 			case 'status':
 			case 'edit':
+			case 'delete':
 				$ret = $this->to_result($is_admin);
 				break;
 		}

@@ -311,18 +311,24 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 	 * @return array
 	 */
 	protected function get_actions_for_context($context, $user, $params) {
+		$real_deletion = Config::has_feature(ConfigUsermanagement::REAL_DELETION);
 		$ret = array();
 		$ret['edit'] = tr('Edit user', 'users');
 		
 		$arrStates = array(
 			Users::STATUS_ACTIVE,
 			Users::STATUS_DISABLED,
-			Users::STATUS_DELETED
 		);
+		if (!$real_deletion) {
+			$arrStates[] = Users::STATUS_DELETED;
+		}
 		foreach($arrStates as $state) {
 			$cmd = 'status[' . $state . ']';
 			$desc = tr('Set ' . $state); 
 			$ret[$cmd] = $desc;
+		}
+		if ($real_deletion) {
+			$ret['delete'] = tr('Delete');
 		}
 		return $ret;
 	}
