@@ -178,6 +178,14 @@ class ConfigUsermanagement {
 	 * Enable Passwordcheck when changing e-mail. Defaults to true
 	 */
 	const ENABLE_PWD_ON_EMAILCHANGE = 'USER_ENABLE_PWD_ON_EMAILCHANGE';
+
+	/**
+	 * If set to true, module will use the delete command rather than the
+	 * status(DELETED) command to delete an user
+	 *
+	 * User deletion should be properly implemented by the app!
+	 */
+	const REAL_DELETION = 'USER_REAL_DELETION';
 }
 
 
@@ -210,6 +218,7 @@ Config::set_value_from_constant(ConfigUsermanagement::TOS_VERSION, 'APP_USER_TOS
 Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN, 'APP_USER_CACHEHEADER_CLASS_LOGGEDIN', 'PrivateRigidEtagOnly');
 Config::set_feature_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_USER_MAIL_STATUSCHANGE', true);
 Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_PWD_ON_EMAILCHANGE, 'APP_USER_ENABLE_PWD_ON_EMAILCHANGE', true);
+Config::set_feature_from_constant(ConfigUsermanagement::REAL_DELETION, 'APP_USER_REAL_DELETION', false);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';

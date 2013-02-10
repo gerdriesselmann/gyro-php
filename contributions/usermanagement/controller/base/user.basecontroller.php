@@ -289,7 +289,9 @@ class UserBaseController extends ControllerBase {
  	/**
  	 * Deletes account
  	 */
- 	public function action_user_delete_account($page_data) {
+ 	public function action_users_delete_account($page_data) {
+		 $page_data->in_history = false;
+
 		if (Users::current_has_role(USER_ROLE_USER) == false) {
 			return self::ACCESS_DENIED;
 		}
@@ -299,12 +301,10 @@ class UserBaseController extends ControllerBase {
 			$this->do_delete_account($formhandler, $page_data);
 		}
 
- 		$view = content_view_create('user_delete_account', $page_data);
+ 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/delete_account', $page_data);
 		$formhandler->prepare_view($view);
  		$view->render();
-
- 		$page_data->in_history = false;
- 	} 
+ 	}
 
  	/**
  	 * Builds and process the register page
@@ -757,26 +757,24 @@ class UserBaseController extends ControllerBase {
 	/**
 	 * Process delete account request
 	 */
-	protected function do_delete_account($formhandler, $page_data) {
+	protected function do_delete_account(FormHandler $formhandler, $page_data) {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
-			// Validate
-			$cmd = CommandsFactory::create_command(Users::get_current_user(), 'status', USER_STATUS_DELETED);
+			$cmd = Users::create_deletion_command(Users::get_current_user());
 			$err->merge($cmd->execute());
 
 			if ($err->is_ok()) {
-				// Back to where we came from
 				Users::logout();
-				$msg = new Message(tr('Your account has been deleted', 'users'));
-				$msg->persist();
-				Url::create(Config::get_url(Config::URL_BASEURL))->redirect();
-				exit;
+				History::push(Url::create(Config::get_url(Config::URL_BASEURL)));
 			}
 		}
-		// At this point we habe an error. Do post fix (redirects)
-		$formhandler->fix_post_history($err);
+		$formhandler->finish($err, tr('Your account has been deleted', 'users'));
 		exit;		
-	} 
+	}
+
+	protected function create_delete_account_command($user) {
+		return Users::create_deletion_command($user);
+	}
 
  	/**
  	 * Processes the register POST request
