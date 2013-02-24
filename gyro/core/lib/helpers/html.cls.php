@@ -339,7 +339,7 @@ class html
 	 * @return string
 	 */
 	public static function select($name, $options, $value, $attrs = array()) {
-		$opts = self::options(Arr::force($options), Arr::force($value, false));
+		$opts = self::options(Arr::force($options), Arr::force($value));
 		$attrs['name'] = $name;
 		return html::tag('select', $opts, $attrs);
 	}
@@ -354,7 +354,7 @@ class html
 	private static function options($options, $selected_values) {
 		$opts = '';
 		foreach($options as $option => $display) {
-			$opts .= "\n" . self::option($option, $display, $selected_values); 
+			$opts .= "\n" . self::option($option, $display, $selected_values);
 		}
 		return $opts;
 	}
@@ -375,11 +375,20 @@ class html
 		}
 		else {
 			$opt_attrs = array();
-			if (empty($key)) {
-				$key = self::EMPTY_ATTRIBUTE; 
+			foreach($selected_values as $v) {
+				// Try to cope with "" == 0 and such
+				if ($key === '' || $v === '') {
+					$match = ($key === $v);
+				} else {
+					$match = ($key == $v);
+				}
+				if ($match) {
+					$opt_attrs['selected'] = 'selected';
+					break;
+				}
 			}
-			elseif (in_array($key, $selected_values)) {
-				$opt_attrs['selected'] = 'selected';
+			if ($key === '') {
+				$key = self::EMPTY_ATTRIBUTE;
 			}
 			$opt_attrs['value'] = $key;
 			$ret = html::tag('option', String::escape($display), $opt_attrs);
