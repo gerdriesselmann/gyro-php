@@ -24,7 +24,11 @@ class PDFMaker extends FPDI
 	private $cell = false;
 	private $skipFirstLF = false;
 
+	/* @var Status */
+	private $error;
+
 	public function __construct($text, $filename, $template = "") {
+		$this->error = new Status();
 		$this->text = $text;
 		$this->filename = $filename;
 		$this->template = $template;
@@ -52,6 +56,12 @@ class PDFMaker extends FPDI
 		$this->SetXY($left, $top);
 		$this->writeFormatted(5, $this->text);
 		$this->Output($this->filename, "F");
+
+		return $this->error;
+	}
+
+	function Error($msg) {
+		$this->error->append($msg);
 	}
 
 	function Footer() {
@@ -84,15 +94,15 @@ class PDFMaker extends FPDI
 				                 
 					Arr::clean($arrCell, $this->cell);
 					
-		    	//Text
-		    	$this->Cell(
-		    		$arrCell["w"], 
-		    		$arrCell["h"], 
-		    		$content,
-			      $arrCell["border"], 
-			      0, 
-			      $arrCell["align"], 
-			      $arrCell["fill"]
+					//Text
+					$this->Cell(
+						$arrCell["w"],
+						$arrCell["h"],
+						$content,
+					 	 $arrCell["border"],
+					  	0,
+					  	$arrCell["align"],
+					  	$arrCell["fill"]
 					);
 				}
 				else {
@@ -105,29 +115,29 @@ class PDFMaker extends FPDI
 						}
 						$this->skipFirstLF = false;
 					}
-						
+
 					$this->Write(5, $content);
 				}
-      }
-      else {
-     		//Tags
+      		}
+    		else {
+				//Tags
 				if($content{0} == '/') {
 					$this->closeTag(strtoupper(substr($content,1)));
 				}
 				else {
-    				//Extract attributes
+					//Extract attributes
 					$arrAttrs = explode(' ', $content);
 					$tag = strtoupper(array_shift($arrAttrs));
 					$arrAttrValues = array();
 					foreach($arrAttrs as $attrExpression) {
-    				if ( ereg('^([^=]*)=["\']?([^"\']*)["\']?$', $attrExpression, $temp)) {
-            	$arrAttrValues[strtoupper($temp[1])] = $temp[2];
-    				}
+						if ( ereg('^([^=]*)=["\']?([^"\']*)["\']?$', $attrExpression, $temp)) {
+							$arrAttrValues[strtoupper($temp[1])] = $temp[2];
+						}
 					}
-    			$this->openTag($tag, $arrAttrValues);
-    		}
-    	}
-    }
+					$this->openTag($tag, $arrAttrValues);
+				}
+			}
+		}
 	}
 	
 	function openTag($tag, &$arrAttributes) {
