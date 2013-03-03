@@ -12,7 +12,7 @@
  * - If this fails redirects to action "users_confirmdata"
  * 
  * - Except if the current route is one of the allowed ones, that can be set through
- *   ConfirmUserDataRenderDecorator::append_allowed_route_id()  
+ *   ConfirmUserDataRenderDecorator::add_allowed_route_ids()
  * 
  * @author Gerd Riesselmann
  * @ingroup Controller 
