@@ -1,0 +1,6 @@
+CREATE TABLE sequences (
+	`slot`VARCHAR(20) NOT NULL,
+	`current` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+	PRIMARY KEY(slot)
+) ENGINE=InnoDB;
+
