@@ -12,6 +12,8 @@ class DAOSystemUsers extends DAOUsers {
 	public function __construct() {
 		parent::__construct();
 		$this->email = Config::get_value(Config::MAIL_ADMIN);
+		$this->tos_version = Config::get_value(ConfigUsermanagement::TOS_VERSION);
+		$this->emailstatus = Users::EMAIL_STATUS_CONFIRMED;
 	}
 	
 	/**
