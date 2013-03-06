@@ -348,7 +348,6 @@ class Users {
 				 *
 				 * TODO Somewhat hackish. There must be a solution in session, I presume
 				 */
-				sleep(1);
 				Url::current()->redirect(Url::TEMPORARY);
 			}
 		} 
