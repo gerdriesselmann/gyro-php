@@ -337,6 +337,19 @@ class Users {
 				$cmd = CommandsFactory::create_command($user, 'restartsession', false);
 				$cmd->execute();
 				self::do_login($user);
+				/*
+				 * Experimental. May prevent problems with stuff that is packed in
+				 * sessions when doing permanent login.
+				 *
+				 * E.g. opening pages with form validation tokens in a new
+				 * browser instance generally failed.
+				 *
+				 * After the redirect session should be initialized correctly.
+				 *
+				 * TODO Somewhat hackish. There must be a solution in session, I presume
+				 */
+				sleep(1);
+				Url::current()->redirect(Url::TEMPORARY);
 			}
 		} 
 	} 
