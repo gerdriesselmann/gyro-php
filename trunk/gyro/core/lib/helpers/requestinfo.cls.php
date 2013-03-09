@@ -143,16 +143,32 @@ class RequestInfo {
 	public function method() {
 		return strtoupper(Arr::get_item($this->data, 'REQUEST_METHOD', 'GET'));
 	}
+
+	/**
+	 * Returns if this request was forwarded or not
+	 *
+	 * @return bool
+	 */
+	public function is_forwarded() {
+		return isset($this->data['HTTP_X_FORWARDED_FOR']);
+	}
 	
 	/**
 	 * Client IP Address
+	 *
+	 * By default returns IP the request was forwarded for, if any.
+	 *
+	 * @attention Note the IP may be empty!
 	 * 
 	 * @return string
 	 */
-	public function remote_address() {
+	public function remote_address($use_forwarded_if_available = true) {
 		$ret = '';
 		// Check for X-Forwarded-For use REMOTE_ADDR as fallback
-		$in = Arr::get_item($this->data, 'HTTP_X_FORWARDED_FOR', Arr::get_item($this->data, 'REMOTE_ADDR', ''));
+		$in = Arr::get_item($this->data, 'REMOTE_ADDR', '');
+		if ($use_forwarded_if_available) {
+			$in = Arr::get_item($this->data, 'HTTP_X_FORWARDED_FOR', $in);
+		}
 		if ($in) {
 			// May be comma separeted list (in case of proxies involved)
 			$arr_ips = explode(',', $in);
@@ -171,13 +187,15 @@ class RequestInfo {
 	 * 
 	 * @return string
 	 */
-	public function remote_host() {
+	public function remote_host($use_forwarded_if_available = true) {
 		$ret = '';
-		if (!isset($this->data['HTTP_X_FORWARDED_FOR'])) {
+		$read_from_forwarded = $use_forwarded_if_available && $this->is_forwarded();
+		if (!$read_from_forwarded) {
+			// Do not read host, if forwarded, This is included in remote_address() fallback
 			$ret = Arr::get_item($this->data, 'REMOTE_HOST', '');
 		}
 		if ($ret === '') {
-			$ret = $this->remote_address();
+			$ret = $this->remote_address($use_forwarded_if_available);
 			if ($ret) {
 				$ret = @gethostbyaddr($ret);
 			}
