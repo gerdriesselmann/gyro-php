@@ -1,0 +1,17 @@
+/**
+ * YAML styles for some default Gyro elements
+ */
+
+@media all {
+    form.commands_form {
+        border: none;
+        background: inherit;
+        padding: 0;
+        margin: 0;
+    }
+    form.commands_form input {
+        width: auto !important;
+        margin: 0;
+        padding: 0;
+    }
+}
