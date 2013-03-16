@@ -1,0 +1,103 @@
+/**
+ * YAML form settings, applied to all forms
+ */
+
+@media all {
+
+   /**
+	* @section Form Module
+	*
+	* Vertical-Forms - technical base (standard)
+	*
+	* |-------------------------------|
+	* | form                          |
+	* |-------------------------------|
+	* |   label                       |
+	* |   input / select / textarea   |
+	* |-------------------------------|
+	* | /form                         |
+	* |-------------------------------|
+	*
+	* (en) Styling of forms where both label and input/select/textarea are styled with display:block;
+	* (de) Formulargestaltung, bei der sowohl label als auch input/select/textarea mit display:block; gestaltet werden
+	*/
+
+	form,
+	form fieldset { overflow:hidden; }
+
+	form div { position:relative; }
+	
+	form label,
+    form .label
+	form .ym-message {
+		position:relative;
+		display:block; /* important for Safari */
+	}
+
+	form .ym-fbox-check label {
+		display:inline;
+	}
+
+	form input,
+	form textarea { cursor:text; }
+
+	form input[type="checkbox"],
+	form input[type="radio"],
+	form select,
+	form label { cursor:pointer; }
+
+	/* small adjustments for Internet Explorer - all versions */
+	form textarea { overflow: auto; }
+
+	/* Hiding of hidden fields (otherwise ugly spaces in Firefox) | Versteckte Felder wirklich verstecken (sonst ggf. häßliche Lücken im Firefox) */
+	form input[type=hidden] { display:none !important; }
+
+	/* styling containing DIV elements | Gestaltung der kapselnden DIV-Elemente */
+	form .ym-fbox-text:before,
+	form .ym-fbox-select:before,
+	form .ym-fbox-check:before,
+	form .ym-fbox-button:before {
+		content:"";
+		display:table;
+	}
+
+	form .ym-fbox-text:after,
+	form .ym-fbox-select:after,
+	form .ym-fbox-check:after,
+	form .ym-fbox-button:after {
+		clear:both;
+		content:".";
+		display:block;
+		font-size:0;
+		height:0;
+		visibility:hidden;
+	}
+
+	/* styling standard form elements with 'almost' equal flexible width | Gestaltung der einzelnen Formularelemente mit annähend gleicher Breite */
+	form select,
+	form input,
+	form textarea {
+		display:block;
+		position:relative;
+		width:58.5%;
+	}
+
+	form .ym-fbox-check input {
+		display: inline;
+		width: auto;
+	}
+
+	/* Styling of buttons | Gestaltung von Buttons */
+	form .ym-fbox-button input {
+		display: inline;
+		overflow:visible;  /* Fixes IE7 auto-padding bug */
+		width:auto;
+	}
+
+	/* avoid jumping checkboxes & radiobuttons in IE8 */
+	form .ym-fbox-check input:focus,
+	form .ym-fbox-check input:hover,
+	form .ym-fbox-check input:active {
+		border:0 none;
+	}
+}

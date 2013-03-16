@@ -24,14 +24,18 @@ class InputWidgetRadioBase extends InputWidgetBase {
 					$attrs_copy['checked'] = 'checked';
 				}
 			}
-			$radio_html = '';
-			$radio_html .= html::input('radio', $name, $attrs_copy);
-			$radio_html .= ' ' . String::escape($opt_value);
-			$radio_html = html::label($radio_html, '', 'spanning');
-			$ret .= $radio_html;	
+			$ret .= $this->render_radio_button_and_label($name, $attrs_copy, $opt_value);
 		}
 		return $ret;	
-	}	
+	}
+
+	protected function render_radio_button_and_label($name, $attrs, $label_text) {
+		$radio_html = '';
+		$radio_html .= html::input('radio', $name, $attrs);
+		$radio_html .= ' ' . String::escape($label_text);
+		$radio_html = html::label($radio_html, '', 'spanning');
+		return $radio_html;
+	}
 
 	/**
 	 * Render a label around widget
