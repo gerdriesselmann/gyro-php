@@ -148,7 +148,7 @@ class JCSSManager {
 	
 	public static function transform_css_file($file) {
 		$ret = '';
-		if (substr($file, 0, 1) !== '/') {
+		if (substr($file, 0, 1) !== '/' && strpos($file, '://') === false) {
 			$file = Config::get_value(Config::URL_ABSPATH) . $file;
 		}
 		$handle = fopen($file, 'r');
@@ -170,11 +170,14 @@ class JCSSManager {
 					if ($end !== false) {
 						$start++;
 						$file_to_include = trim(substr($line, $start, $end - $start), "'\" \t");
-						if (substr($file_to_include, 0, 1) !== '/') {
-							$file_to_include = dirname($file) . '/' . $file_to_include;
-						}
-						else {
-							$file_to_include = JCSSManager::make_absolute($file_to_include);
+						if (strpos($file_to_include, '://') === false) {
+							// NO http:// or alike
+							if (substr($file_to_include, 0, 1) !== '/') {
+								// no absolute path
+								$file_to_include = dirname($file) . '/' . $file_to_include;
+							} else  {
+								$file_to_include = JCSSManager::make_absolute($file_to_include);
+							}
 						}
 						$line = self::transform_css_file($file_to_include);
 					}
