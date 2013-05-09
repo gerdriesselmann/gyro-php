@@ -27,4 +27,3 @@ class NotFoundRenderDecorator extends RenderDecoratorBase {
 		$page_data->head->title = tr('Page not found', 'core');		
 	}	
 }
-?>

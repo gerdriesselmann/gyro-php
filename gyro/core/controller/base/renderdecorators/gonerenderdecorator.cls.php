@@ -29,4 +29,3 @@ class GoneRenderDecorator extends RenderDecoratorBase {
 		$page_data->head->title = tr('Page not found', 'core');		
 	}	
 }
-?>
