@@ -41,6 +41,13 @@ class PageData {
 	 */
 	public $status_code = CONTROLLER_OK;
 	/**
+	 * HTTP status code. Usually this is handled by the framework, but you may overwrite,
+	 * if for example you want to sent 410 for a Not Found
+	 *
+	 * @var int
+	 */
+	public $status_code_http = null;
+	/**
 	 * Pathstack, traces invoked URL 
 	 *
 	 * @var PathStack

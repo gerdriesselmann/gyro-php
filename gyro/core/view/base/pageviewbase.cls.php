@@ -259,18 +259,20 @@ class PageViewBase extends ViewBase {
 	 */
 	protected function send_status() {
 		$log = Config::has_feature(Config::LOG_HTML_ERROR_STATUS);
+		$http_status = $this->page_data->status_code_http;
 		switch ($this->page_data->status_code) {
 			case CONTROLLER_ACCESS_DENIED:
-				Common::send_status_code(403); // Forbidden
+				Common::send_status_code($http_status ? $http_status : 403); // Forbidden
 				break;
 			case CONTROLLER_NOT_FOUND:
-				Common::send_status_code(404); //Not found
+				Common::send_status_code($http_status ? $http_status : 404); //Not found
 				break;
 			case CONTROLLER_INTERNAL_ERROR:
-				Common::send_status_code(503); // Service unavailable
+				Common::send_status_code($http_status ? $http_status : 503); // Service unavailable
 				break;
 			default:
 				// OK, a valid page. This can be remembered, if allowed
+				if ($http_status) { Common::send_status_code($http_status); }
 				if ($this->page_data->in_history) {
 					History::push(Url::current());
 				}					
