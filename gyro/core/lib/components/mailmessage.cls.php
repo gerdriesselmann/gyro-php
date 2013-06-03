@@ -20,51 +20,51 @@ class MailMessage {
 	 *
 	 * @var String
 	 */
-	private $to = '';
+	protected $to = '';
 
 	/**
 	 * Sender
 	 *
 	 * @private String
 	 */
-	private $from = '';
+	protected $from = '';
 
 	/**
 	 * Subject
 	 *
 	 * @private String
 	 */
-	private $subject = '';
+	protected $subject = '';
 
 	/**
 	 * Message
 	 */
-	private $message = '';
+	protected $message = '';
 	/**
 	 * Alternative message (e.g. plain text for HTML mails)
 	 *
 	 * Will be always treated as plain text
 	 */
-	private $message_alt = '';
+	protected $message_alt = '';
 
 	/**
 	 * CC
 	 *
 	 * @private String
 	 */
-	private $cc = '';
+	protected $cc = '';
 
-	private $content_type = '';
+	protected $content_type = '';
 
 	/**
 	 * Attachment (Filename)
 	 */
-	private $files_to_attach = array();
+	protected $files_to_attach = array();
 
 	/**
 	 * Additional headers as associative array
 	 */
-	private $additional_headers = array();
+	protected $additional_headers = array();
 
 	/**
 	 * constructor
