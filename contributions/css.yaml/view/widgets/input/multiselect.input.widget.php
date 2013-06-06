@@ -20,8 +20,9 @@ class InputWidgetMultiselect extends InputWidgetMultiselectBase {
 		}
 		$attrs['id'] = strtr($name, array(']' => '', '[' => '')) . '_' . $key;
 		$checkbox_html = html::input('checkbox', $name, $attrs);
-		$checkbox_html .= ' ';
-		$checkbox_html .= html::label($display, $attrs['id']);
+		$checkbox_html = $this->parent_render_label($checkbox_html, array(), array(), $attrs["id"], $display, '', WidgetInput::WRAP_LABEL);
+		//$checkbox_html .= ' ';
+		//$checkbox_html .= html::label($display, $attrs['id']);
 		$ret .= html::div($checkbox_html, 'type-check');
 		return $ret;
 	}	

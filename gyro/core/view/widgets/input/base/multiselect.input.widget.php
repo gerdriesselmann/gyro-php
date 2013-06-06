@@ -47,8 +47,16 @@ class InputWidgetMultiselectBase extends InputWidgetBase {
 			$policy |= WidgetInput::NO_LABEL;
 		}
 		return parent::render_label($widget, $html_attrs, $params, $name, $title, $value, $policy);
-	}	
-	
+	}
+
+	/**
+	 * Render a label around widget
+	 */
+	protected function parent_render_label($widget, $html_attrs, $params, $name, $title, $value, $policy) {
+		return parent::render_label($widget, $html_attrs, $params, $name, $title, $value, $policy);
+	}
+
+
 	/**
 	 * Last steps
 	 */
