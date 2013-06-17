@@ -88,7 +88,7 @@ class DB {
 	 * 
 	 * @return mixed Object or false 
 	 */
-	public static function get_item_by_pk($table, $value) {
+	public static function get_item_by_pk($table, $value, $use_cache = true) {
 		$model = self::create($table); // Throws!
 		/* @var $model IDataObject */
 		$pks = $model->get_table_keys();
@@ -97,7 +97,7 @@ class DB {
 		}
 		$php54_strict_requires_a_variable_here = array_keys($pks);
 		$pk_name = array_shift($php54_strict_requires_a_variable_here);
-		return self::get_item($table, $pk_name, $value);			
+		return self::get_item($table, $pk_name, $value, $use_cache);
 	}
 	
 	/**
@@ -105,10 +105,10 @@ class DB {
 	 * 
 	 * @return mixed Object or false 
 	 */
-	public static function get_item($table, $key, $value) {
+	public static function get_item($table, $key, $value, $use_cache = true) {
 		$ret = false;
 		if (!empty($value) && !$value instanceof DBNull) {
-			$ret = self::get_item_multi($table, array($key => $value));
+			$ret = self::get_item_multi($table, array($key => $value), $use_cache);
 		}
 		return $ret;			
 	}
@@ -120,10 +120,10 @@ class DB {
 	 * @param array $values Associative array with column => value
 	 * @return IDataObject  False if not found
 	 */
-	public static function get_item_multi($table, $arr_values) {
+	public static function get_item_multi($table, $arr_values, $use_cache = true) {
 		ksort($arr_values);
 		$keys = array('db', $table, strtr(http_build_query($arr_values), '[]', '__'));
-		$ret = RuntimeCache::get($keys, null);
+		$ret = $use_cache ? RuntimeCache::get($keys, null) : null;
 		if (is_null($ret)) {
 			$ret = false;
 			$dao = self::create($table);
@@ -134,7 +134,7 @@ class DB {
 			if ($dao->find(IDataObject::AUTOFETCH)) {
 				$ret = clone($dao); // Get rid of Query related properties
 			}
-			RuntimeCache::set($keys, $ret);
+			if ($use_cache) { RuntimeCache::set($keys, $ret); }
 		}
 		return $ret;
 	}
