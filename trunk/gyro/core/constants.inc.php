@@ -69,6 +69,7 @@ Config::set_value_from_constant(Config::MAIL_SUBJECT, 'APP_MAIL_SUBJECT', '[' . 
  * Default FROM address
  */
 Config::set_value(Config::MAIL_SENDER, APP_MAIL_SENDER);
+Config::set_value_from_constant(Config::MAIL_RETURN_PATH, 'APP_MAIL_RETURN_PATH', '');
 /**
  * Address to receive system notifications
  */
