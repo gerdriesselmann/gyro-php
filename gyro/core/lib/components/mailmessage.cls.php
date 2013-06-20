@@ -100,13 +100,16 @@ class MailMessage {
 			$headers['Bcc'] = $this->cc;
 		}
 
+		$return_path = Config::get_value(Config::MAIL_RETURN_PATH);
+		$additional_params = $return_path ? "-f$return_path" : '';
+
 		$builder = $this->create_builder();
 		$headers['MIME-Version'] = '1.0';
 		$headers['Content-Type'] = $builder->get_mail_mime();
 		$headers = array_merge($headers, $builder->get_additional_headers());
 		$body = $builder->get_body();
 
-		$ret->merge($this->do_send($this->to, $this->subject, $body, $headers));
+		$ret->merge($this->do_send($this->to, $this->subject, $body, $headers, $additional_params));
 		return $ret;
 	}
 
@@ -115,11 +118,11 @@ class MailMessage {
 	 *
 	 * @return Status
 	 */
-	protected function do_send($to, $subject, $body, $headers) {
+	protected function do_send($to, $subject, $body, $headers, $additional_params = '') {
 		$ret = new Status();
 		$headers = $this->encode_headers($headers);
 		$subject = ConverterFactory::encode($subject, ConverterFactory::MIMEHEADER);
-		if (!mail($to, $subject, $body, Arr::implode("\n", $headers, ': '))) {
+		if (!mail($to, $subject, $body, Arr::implode("\n", $headers, ': '), $additional_params)) {
 			$ret->append(tr('Could not send mail', 'core'));
 		}
 

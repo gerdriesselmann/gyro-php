@@ -56,6 +56,10 @@ class Config {
 	 */
 	const MAIL_SENDER = 'MAIL_SENDER';
 	/**
+	 * Return path (or bounce) address
+	 */
+	const MAIL_RETURN_PATH = 'MAIL_RETURN_PATH';
+	/**
 	 * Address to receive system notifications
 	 */
 	const MAIL_ADMIN = 'MAIL_ADMIN';
