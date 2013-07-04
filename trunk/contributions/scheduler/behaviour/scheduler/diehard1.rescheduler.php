@@ -2,7 +2,7 @@
 require_once dirname(__FILE__) . '/rescheduler.base.php';
 
 /**
- * Run several times
+ * Rerun 6 times, with delay increasing every time
  */
 class ReschedulerDiehard1 extends ReschedulerBase {
 	/**

@@ -2,12 +2,12 @@
 require_once dirname(__FILE__) . '/rescheduler.base.php';
 
 /**
- * Run twice
+ * Rerun 13 times, with duration between increasing every time
  */
 class ReschedulerDiehard2 extends ReschedulerBase {
 	/**
 	 * Returns all schedules for this policy as array.
-	 * 
+	 *
 	 * Array index is number of runs done, value is the difference to last run in seconds
 	 *
 	 * @return array
@@ -28,7 +28,7 @@ class ReschedulerDiehard2 extends ReschedulerBase {
 			11 => 8 * GyroDate::ONE_HOUR,
 			12 => 12 * GyroDate::ONE_HOUR,
 			13 => 24 * GyroDate::ONE_HOUR,
-			12 => 48 * GyroDate::ONE_HOUR,
+			14 => 48 * GyroDate::ONE_HOUR,
 		);
 	}
 }
