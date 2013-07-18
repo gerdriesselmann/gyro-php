@@ -130,7 +130,8 @@ class PDFMaker extends FPDI
 					$tag = strtoupper(array_shift($arrAttrs));
 					$arrAttrValues = array();
 					foreach($arrAttrs as $attrExpression) {
-						if ( ereg('^([^=]*)=["\']?([^"\']*)["\']?$', $attrExpression, $temp)) {
+						// Extracts a=b from either a=b or a="b" or a='b'
+						if ( preg_match('|^([^=]*)=["\']?([^"\']*)["\']?$|', $attrExpression, $temp)) {
 							$arrAttrValues[strtoupper($temp[1])] = $temp[2];
 						}
 					}
