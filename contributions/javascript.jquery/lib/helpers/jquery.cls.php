@@ -36,6 +36,12 @@ class JQuery {
 			case '1.7':
 				$version = JQUERY_VERSION_1_7;
 				break;
+			case '1.9':
+				$version = JQUERY_VERSION_1_9;
+				break;
+			case '1.10':
+				$version = JQUERY_VERSION_1_10;
+				break;
 		}
 		if (empty($version)) {
 			throw new Exception('Unknown JQuery Version ' . Config::get_value(ConfigJQuery::VERSION));
