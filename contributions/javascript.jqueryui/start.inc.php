@@ -101,8 +101,9 @@ class ConfigJQueryUI {
 // To be changed on new releases
 define('JQUERYUI_VERSION_1_7', '1.7.3');
 define('JQUERYUI_VERSION_1_8', '1.8.16');
+define('JQUERYUI_VERSION_1_10', '1.10.3');
 
 Config::set_value_from_constant(ConfigJQueryUI::CDN, 'APP_JQUERYUI_CDN', '');
-Config::set_value_from_constant(ConfigJQueryUI::VERSION, 'APP_JQUERYUI_VERSION', '1.8');
+Config::set_value_from_constant(ConfigJQueryUI::VERSION, 'APP_JQUERYUI_VERSION', '1.10');
 
 JQueryUI::enable_locales(GyroLocale::get_language());

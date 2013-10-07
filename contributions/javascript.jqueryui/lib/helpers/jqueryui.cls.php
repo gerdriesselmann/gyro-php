@@ -182,6 +182,9 @@ class JQueryUI {
 			case '1.8':
 				$version = JQUERYUI_VERSION_1_8;
 				break;
+			case '1.10':
+				$version = JQUERYUI_VERSION_1_10;
+				break;
 		}
 		if (empty($version)) {
 			throw new Exception('Unknown JQueryUI Version ' . Config::get_value(ConfigJQueryUI::VERSION));
