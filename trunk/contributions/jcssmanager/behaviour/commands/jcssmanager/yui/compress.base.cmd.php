@@ -34,7 +34,7 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 		else {
 			$handle = fopen($tmp_file, 'w');
 			foreach($arr_files as $file) {
-				if (substr($file, 0, 1) !== '/') {
+				if (substr($file, 0, 1) !== '/' && strpos($file, '://') == false) {
 					$file = Config::get_value(Config::URL_ABSPATH) . $file;
 				}
 				fwrite($handle, $this->get_file_contents($file));
