@@ -94,25 +94,59 @@ class html
 	 *
 	 * @param String The Error Message
 	 * @return String The HTML Code for outputting an error
+	 *
+	 * @deprecated Use WidgetAlert instead
 	 */
 	public static function error($text) {
-		return html::p($text, "error");
+		return WidgetAlert::output($text, WidgetAlert::ERROR);
 	}
 
+	/**
+	 * Static. Returns $text formatted as success message.
+	 *
+	 * @param String The Message
+	 * @return String The HTML Code for outputting a success message
+	 *
+	 * @deprecated Use WidgetAlert instead
+	 */
 	public static function success($text) {
-		return html::p($text, "success");
+		return WidgetAlert::output($text, WidgetAlert::SUCCESS);
 	}
 
+	/**
+	 * Static. Returns $text formatted as notification message.
+	 *
+	 * @param String The Message
+	 * @return String The HTML Code for outputting a notification message
+	 *
+	 * @deprecated Use WidgetAlert instead
+	 */
 	public static function note($text) {
-		return html::p($text, "note");
+		return WidgetAlert::output($text, WidgetAlert::NOTE);
 	}
 
+	/**
+	 * Static. Returns $text formatted as warning message.
+	 *
+	 * @param String The Message
+	 * @return String The HTML Code for outputting a warning message
+	 *
+	 * @deprecated Use WidgetAlert instead
+	 */
 	public static function warning($text) {
-		return html::p($text, "warning");
+		return WidgetAlert::output($text, WidgetAlert::WARNING);
 	}
-	
+
+	/**
+	 * Static. Returns $text formatted as information message.
+	 *
+	 * @param String The Message
+	 * @return String The HTML Code for outputting an information message
+	 *
+	 * @deprecated Use WidgetAlert instead
+	 */
 	public static function info($text) {
-		return html::p($text, "info");
+		return WidgetAlert::output($text, WidgetAlert::INFO);
 	}
 
 	/**
