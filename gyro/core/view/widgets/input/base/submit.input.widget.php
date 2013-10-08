@@ -10,6 +10,7 @@ class InputWidgetSubmitBase extends InputWidgetBase {
 	 * Add new attributes or process old ones
 	 */
 	protected function extend_attributes(&$attrs, $params, $name, $title, $value, $policy) {
+		parent::extend_attributes($attrs, $params, $name, $title, $value, $policy);
 		$attrs['value'] = $value;
 	}
 	
@@ -17,6 +18,6 @@ class InputWidgetSubmitBase extends InputWidgetBase {
 	* Render the actual widget
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
-		return html::input('submit', $name, $attrs);
+		return html::input('submit', String::escape($title), $attrs);
 	}	
 }
