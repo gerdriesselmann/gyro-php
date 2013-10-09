@@ -13,20 +13,7 @@ foreach($actions as $action) {
 	$view->assign('form_validation', $form_validation);
 	$items[] = array($action->get_name() => $view->render());
 }
-$c = count($items) - 1;
-$i = 0;
-foreach($items as $arr_item) {
-	foreach($arr_item as $name => $item) {
-		$name = String::plain_ascii($name);
-		$cls = array($class);
-		if ($i === 0) {
-			$cls[] = "{$class}_first";
-		}
-		if ($i === $c) {
-			$cls[] = "{$class}_last";
-		}
-		$cls[] = "{$class}_{$name}";
-		print html::tag('li', $item, array('class' => implode(' ', $cls)));
-		$i++;
-	}
-}
+$_menu_group_view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/menu/item.list');
+$_menu_group_view->assign('items', $items);
+$_menu_group_view->assign('class', $class);
+print $_menu_group_view->render();
