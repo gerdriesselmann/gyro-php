@@ -11,9 +11,9 @@ if (count($actions) || count($commands)) {
 	$view->assign('actions', $commands);
 	$view->assign('class', 'commands');
 	$out .= $view->render();
-	
-	print html::div(
-		html::tag('ul', $out),			
-		$css_class
-	);
+
+	$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/menu/group');
+	$view->assign('content', $out);
+	$view->assign('css_class', $css_class);
+	print $view->render();
 }
