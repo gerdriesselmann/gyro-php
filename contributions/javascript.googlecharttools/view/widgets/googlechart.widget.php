@@ -56,7 +56,9 @@ class WidgetGoogleChart implements IWidget {
 		);
 		$js = implode("\n", $js);
 
-		return html::script_js($js). html::tag('div', '', array('id' => $elem_id, 'class' => 'js-chart'));
+		StaticPageData::data()->head->add_js_snippet($js);
+
+		return html::tag('div', '', array('id' => $elem_id, 'class' => 'js-chart'));
     }
 
 	private function chart_type($policy) {
