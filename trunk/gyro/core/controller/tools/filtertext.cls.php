@@ -100,6 +100,7 @@ class FilterText implements IDBQueryModifier {
  */
 class FilterTextDefaultAdapter implements IFilterTextAdapter {
 	protected $param;
+	/* @var PageData */
 	protected $page_data;
 	
 	public function __construct($page_data, $param, $prefix = 'filter_') {
@@ -113,7 +114,7 @@ class FilterTextDefaultAdapter implements IFilterTextAdapter {
 	 * @return string
 	 */
 	public function get_value() {
-		$reset = $this->page_data->get_get()->get_item($this->get_reset_param(), false);
+		$reset = $this->page_data->get_get()->contains($this->get_reset_param());
 		return ($reset) ? '' : $this->page_data->get_get()->get_item($this->get_param(), '');
 	}
 

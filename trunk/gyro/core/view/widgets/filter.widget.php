@@ -44,7 +44,9 @@ class WidgetFilter implements IWidget {
 			$ret .= $view->render();
 		}
 		if ($ret) {
-			$ret = html::div($ret, 'filter_groups');
+			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/filter.wrapper');
+			$view->assign('content', $ret);
+			$ret = $view->render();
 		}
 		return $ret;
 	}
