@@ -18,6 +18,6 @@ class InputWidgetSubmitBase extends InputWidgetBase {
 	* Render the actual widget
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
-		return html::input('submit', String::escape($title), $attrs);
+		return html::input('submit', $name, $attrs);
 	}	
 }
