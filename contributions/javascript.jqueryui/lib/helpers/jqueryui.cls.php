@@ -114,7 +114,7 @@ class JQueryUI {
 		}
 		
 		$ret = array();
-		$prefix = self::is_version_1_8() ? 'jquery.' : ''; 
+		$prefix = self::is_version_1_8_or_higher() ? 'jquery.' : '';
 		foreach($resolved as $c) {
 			$c = explode('/', $c);
 			$file = array_pop($c);
@@ -217,7 +217,7 @@ class JQueryUI {
 		$css_components[] = 'ui.theme';
 		
 		$ret = array();
-		$prefix = self::is_version_1_8() ? 'jquery.' : ''; 
+		$prefix = self::is_version_1_8_or_higher() ? 'jquery.' : '';
 		foreach($css_components as $c) {
 			$path = 'css/jqueryui/' . $prefix . $c . '.css';
 			if (!in_array($path, $ret)) {
@@ -242,7 +242,7 @@ class JQueryUI {
 			self::WIDGET_TABS,
 			self::WIDGET_AUTOCOMPLETE
 		);
-		if (self::is_version_1_8()) {
+		if (self::is_version_1_8_or_higher()) {
 			$ret[] = self::WIDGET_BUTTON; 
 		}
 		return $ret;
@@ -254,16 +254,33 @@ class JQueryUI {
 	 * @return bool
 	 */
 	private static function is_version_1_8() {
-		return Config::get_value(ConfigJQueryUI::JQUERYUI_VERSION) == '1.8';
+		return Config::get_value(ConfigJQueryUI::VERSION) == '1.8';
 	}
-	
+
+	/**
+	 * Returns true, if version is 1.8
+	 *
+	 * @return bool
+	 */
+	private static function is_version_1_8_or_higher() {
+		switch (Config::get_value(ConfigJQueryUI::VERSION)) {
+			case '1.8':
+			case '1.9':
+			case '1.10':
+				return true;
+			default:
+				return false;
+		}
+	}
+
+
 	/**
 	 * Returns array of dependencies for every component
 	 * 
 	 * @return array
 	 */
 	private static function get_dependencies() {
-		if (self::is_version_1_8()) {
+		if (self::is_version_1_8_or_higher()) {
 			return array(
 				self::EFFECTS_CORE => array(),
 				self::EFFECTS_BLIND => array(self::EFFECTS_CORE),
@@ -349,7 +366,7 @@ class JQueryUI {
 	 * @return array
 	 */
 	private static function get_supported_locales() {
-		if (self::is_version_1_8()) {
+		if (self::is_version_1_8_or_higher()) {
 			return array(
 				self::WIDGET_DATEPICKER => array(
 					'af', 'ar', 'az',
