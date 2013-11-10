@@ -622,19 +622,22 @@ class html
 	 * @param array $head Array of arrays of head cells. Cells must be already formated with either <td> or <th>
 	 * @param string $summary Table summary
 	 * @param array $attr Additional html attributes
-	 * 
+	 * @param array $foot Array of arrays of foot cells. Cells must be already formated with either <td> or <th>
+	 *
 	 * @return string
 	 */
-	public static function table($rows, $head, $summary, $attr = array()) {
+	public static function table($rows, $head, $summary, $attr = array(), $foot = array()) {
 		$ret = '';
 		
 		$body = self::table_build_rows($rows);
 		$head = self::table_build_rows($head);
-		
+		$foot = self::table_build_rows($foot);
+
 		$content = '';
 		$content .= ($head) ? html::tag('thead', $head) . "\n" : '';
 		$content .= ($body) ? html::tag('tbody', $body) . "\n" : '';
-		
+		$content .= ($foot) ? html::tag('tfoot', $foot) . "\n" : '';
+
 		$attr['summary'] = $summary;
 		$ret .= html::tag(
 			'table', 
