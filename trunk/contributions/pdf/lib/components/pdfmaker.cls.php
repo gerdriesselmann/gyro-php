@@ -24,6 +24,9 @@ class PDFMaker extends FPDI
 	private $cell = false;
 	private $skipFirstLF = false;
 
+	private $small_font_size = 6;
+	private $default_font_size = 9;
+
 	/* @var Status */
 	private $error;
 
@@ -48,11 +51,11 @@ class PDFMaker extends FPDI
 	 *
 	 * @return Status
 	 */
-	function create($top = 10, $left = 10, $bottom = 20) {		
+	public function create($top = 10, $left = 10, $bottom = 20) {
 		$this->AddPage();
 		$this->SetMargins($left, $top, $left);
 		$this->SetAutoPageBreak(true, $bottom);
-		$this->SetFont("helvetica", "", 9);
+		$this->SetFont("helvetica", "", $this->default_font_size);
 		$this->SetXY($left, $top);
 		$this->writeFormatted(5, $this->text);
 		$this->Output($this->filename, "F");
@@ -60,11 +63,18 @@ class PDFMaker extends FPDI
 		return $this->error;
 	}
 
-	function Error($msg) {
+	public function setDefaultFontSize($size) {
+		$this->default_font_size = $size;
+	}
+	public function setSmallFontSize($size) {
+		$this->small_font_size = $size;
+	}
+
+	public function Error($msg) {
 		$this->error->append($msg);
 	}
 
-	function Footer() {
+	public function Footer() {
 		$page_no = $this->PageNo();
 		$tpl_page = 0;
 		if ($page_no <= $this->template_pagecount) {
@@ -79,7 +89,7 @@ class PDFMaker extends FPDI
 		}
 	}
 	
-	function writeFormatted($lineHeight, $text) {
+	private function writeFormatted($lineHeight, $text) {
 		$arrText = preg_split('/\<(.*)\>/U', $text, -1, PREG_SPLIT_DELIM_CAPTURE);
 		foreach($arrText as $index => $content) {
 			if($index % 2 == 0) {
@@ -141,12 +151,15 @@ class PDFMaker extends FPDI
 		}
 	}
 	
-	function openTag($tag, &$arrAttributes) {
+	private function openTag($tag, &$arrAttributes) {
 		switch ($tag) {
 			case "B":
 			case "I":
 			case "U":
 				$this->setStyle($tag, 1);
+				break;
+			case "SMALL":
+				$this->SetFontSize($this->small_font_size);
 				break;
 			case "CELL":
 				$this->cell = array();
@@ -157,12 +170,15 @@ class PDFMaker extends FPDI
 		}
 	}
 	
-	function closeTag($tag) {
+	private function closeTag($tag) {
 		switch ($tag) {
 			case "B":
 			case "I":
 			case "U":
 				$this->setStyle($tag, 0);
+				break;
+			case "SMALL":
+				$this->SetFontSize($this->default_font_size);
 				break;
 			case "CELL":
 				$this->cell = false;
@@ -171,7 +187,7 @@ class PDFMaker extends FPDI
 		}
 	}
 	
-	function setStyle($tag, $enable) {
+	private function setStyle($tag, $enable) {
 		//Modify style and select corresponding font
 		if (array_key_exists($tag, $this->style) == false) {
 			$this->style[$tag] = 0;
