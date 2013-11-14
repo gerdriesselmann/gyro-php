@@ -12,7 +12,7 @@ class InputWidgetRadio extends InputWidgetRadioBase {
 		$radio_html = '';
 		$radio_html .= html::input('radio', $name, $attrs);
 		$radio_html .= ' ';
-		$radio_html .= html::label($label_text, $name);
+		$radio_html .= html::label($label_text, $attrs['id']);
 		return html::div($radio_html, 'radio');
 	}
 
