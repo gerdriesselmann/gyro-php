@@ -39,6 +39,7 @@ class InputWidgetBase extends InputWidgetBaseBase {
 			case 'file':
 			case 'date':
 			case 'html':
+			case 'email':
 				return true;
 			case 'radio':
 			case 'checkbox':

@@ -80,7 +80,8 @@ class WidgetInput implements IWidget {
 	const RADIO = 'radio';
 	const FILE = 'file';
 	const DATE = 'date';
-	
+	const EMAIL = 'email';
+
 	public static function output($name, $label, $value = '', $type = self::TEXT, $params = array(), $policy = self::NONE) {
 		$widget = new WidgetInput($name, $label, $value, $type, $params);
 		return $widget->render($policy);
