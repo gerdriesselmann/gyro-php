@@ -74,8 +74,8 @@ class FormHandler {
  	/**
  	 * Set data required on view
  	 * 
- 	 * @param View The view to populate with data
- 	 * @param mixed Array or Object containing key/value-pairs for default data
+ 	 * @param $view IView The view to populate with data
+ 	 * @param $data mixed Array or Object containing key/value-pairs for default data
  	 */
  	public function prepare_view($view, $data = false) {
  		$token = $this->create_token();

@@ -39,9 +39,9 @@ class ViewFactory {
 	/**
 	 * Create a suitable view
 	 *
-	 * @param $type The type of view to create as a string, e.g. "page", or "content", or "XML" ...  
-	 * @param $template_name Name of the template
-	 * @param $params Params to pass to view, may depend on type
+	 * @param $type string The type of view to create as a string, e.g. "page", or "content", or "XML" ...
+	 * @param $template_name string Name of the template
+	 * @param $params mixed Params to pass to view, may depend on type
 	 * @return IView
 	 */
 	public static function create_view($type, $template_name, $params= false) {
