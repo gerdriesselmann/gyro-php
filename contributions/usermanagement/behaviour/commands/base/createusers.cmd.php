@@ -83,7 +83,6 @@ class CreateUsersBaseCommand extends CommandChain {
 	protected function preprocess_params($params) {
 		$params['tos_version'] = Config::get_value(ConfigUsermanagement::TOS_VERSION);
 		// Encrypt password
-		$params['hash_type'] = Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5');
 		$this->preprocess_hash_password($params);
 		$this->preprocess_check_roles($params);
 		return $params;
@@ -95,15 +94,19 @@ class CreateUsersBaseCommand extends CommandChain {
 	 * @since 0.5.1
 	 */
 	protected function preprocess_hash_password(&$params) {
-		$params['hash_type'] = Arr::get_item($params, 'hash_type', Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5'));
-		
-		$pwd = Arr::get_item($params, 'password', '');
-		if (!empty($pwd)) {
-			$params['password'] = Users::create_hash($pwd, $params['hash_type']);
+		$params['hash_type'] = Arr::get_item($params, 'hash_type', Users::get_default_hash_type());
+		if (isset($params['hashed_password'])) {
+			$params['password'] = $params['hashed_password'];
+			unset($params['hashed_password']);
+		} else {
+			$pwd = Arr::get_item($params, 'password', '');
+			if (!empty($pwd)) {
+				$params['password'] = Users::create_hash($pwd, $params['hash_type']);
+			}
+			else {
+				unset($params['password']);
+			}
 		}
-		else {
-			unset($params['password']);
-		}			
 	}
 	
 	/**
