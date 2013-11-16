@@ -482,4 +482,13 @@ class Users {
 		$user->name = $name;
 		return ($user->count() == 0);				
 	}
+
+	/**
+	 * Returns hashing type set as default
+	 *
+	 * @return string
+	 */
+	public static function get_default_hash_type() {
+		return Config::get_value(ConfigUsermanagement::HASH_TYPE, 'md5');
+	}
 }
