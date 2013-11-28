@@ -56,6 +56,16 @@ class JCSSManager {
 	public static function make_absolute($path) {
 		return Config::get_value(Config::URL_ABSPATH) . $path;
 	}
+
+	public static function make_absolute_with_base($path, $base) {
+		if (substr($path, 0, 1) === '/') {
+			return $path; // Is absolute
+		} else if (strpos($path, '://') !== false) {
+			return $path; // Some kind of URL
+		} else {
+			return rtrim($base, '/') . '/' . $path;
+		}
+	}
 	
 	/**
 	 * Collect and compres all JS and CSS
@@ -152,9 +162,10 @@ class JCSSManager {
 			$file = Config::get_value(Config::URL_ABSPATH) . $file;
 		}
 		$handle = fopen($file, 'r');
-		$regex = '@(url\s*\(\s*"?)([\w.][^"\)]*)@';
+		// http://stackoverflow.com/questions/9798378/preg-replace-regex-to-match-relative-url-paths-in-css-files
+		$regex = '#url\s*\((?!\s*[\'"]?(?:https?:)?//)\s*([\'"])?#';
 		$rel_path = str_replace(Config::get_value(Config::URL_ABSPATH), '/', realpath($file));
-		$replace = '$1' .  dirname($rel_path) . '/$2'; 
+		$replace = 'url($1' .  dirname($rel_path) . '/$2';
 		while(($line = fgets($handle)) !== false) {
 			// Works around a bug in WebKit, which dislikes two charset declarations in one file
 			$line = trim($line);
