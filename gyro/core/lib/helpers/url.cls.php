@@ -76,7 +76,7 @@ class Url {
 		}
 		
 		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
-		$this->set_host(Arr::get_item($data, 'host', ''));
+		$this->set_host(Arr::get_item($data, 'host', $fallback_host));
 		$this->set_port(Arr::get_item($data, 'port', ''));
 		$this->set_path(Arr::get_item($data, 'path', ''));
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
