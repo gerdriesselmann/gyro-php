@@ -592,6 +592,7 @@ class html
 	 * Build a table cell. 
 	 */
 	public static function td($text, $attr = array(), $is_head = false) {
+		$attr = Arr::force($attr, false);
 		if ($is_head) {
 			return self::tag('th', $text, $attr);
 		}
