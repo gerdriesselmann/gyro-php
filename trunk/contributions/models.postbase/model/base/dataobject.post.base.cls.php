@@ -193,7 +193,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	public function get_sortable_columns() {
 		return array(
 			'title' => new DBSortColumn('title', tr('Title', 'postbase'), DBSortColumn::TYPE_TEXT),
-			'creationdate' => new DBSortColumn('creationdate', tr('Creation Date'), DBSortColumn::TYPE_DATE, DBSortColumn::ORDER_BACKWARD),		
+			'creationdate' => new DBSortColumn('creationdate', tr('Creation Date'), DBSortColumn::TYPE_DATE, DBSortColumn::ORDER_FORWARD),
 		);	
 	}
 	
@@ -201,7 +201,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	 * Get the column to sort by default
 	 */
 	public function get_sort_default_column() {
-		return 'title';	
+		return 'title';
 	}
 	
 	/**
