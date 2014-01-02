@@ -162,12 +162,13 @@ class FormHandler {
  	}
 
 	/**
- 	 * Called after a form has been processed
- 	 *
- 	 * @param Status $status 
- 	 * @param string $success_message Optional message to display on success
- 	 */
- 	public function finish($status, $success_message = '') {
+	 * Called after a form has been processed
+	 *
+	 * @param Status $status
+	 * @param string $success_message Optional message to display on success
+	 * @param bool $default_page Page used as redirect source on success, if History is empty
+	 */
+ 	public function finish($status, $success_message = '', $default_page = false) {
  		$params = array(
  			'name' => $this->name,
  			'status' => $status
@@ -179,17 +180,18 @@ class FormHandler {
  		}
  		else {
  			$msg = ($status->is_empty()) ? $success_message : $status->to_string(Status::OUTPUT_PLAIN);
- 			$this->success($msg);
+ 			$this->success($msg, $default_page);
  		}
  	}
- 	
- 	/**
- 	 * Called if a form has been processed successfully
- 	 *
- 	 * @param Status|string $message
- 	 */
- 	public function success($message) {
- 		History::go_to(0, $message);
+
+	/**
+	 * Called if a form has been processed successfully
+	 *
+	 * @param Status|string $message
+	 * @param bool $default_page Page that is used for redirect, if History is empty
+	 */
+ 	public function success($message, $default_page = false) {
+ 		History::go_to(0, $message, $default_page);
  		exit;
  	}
  	
