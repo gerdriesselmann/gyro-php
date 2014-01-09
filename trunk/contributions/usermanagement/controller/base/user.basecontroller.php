@@ -55,6 +55,7 @@ class UserBaseController extends ControllerBase {
  		}
  		if ($this->has_feature(self::ALLOW_LOST_PASSWORD)) {
  			$ret['lost_password'] = new ExactMatchRoute('https://lost-password', $this, 'lost_password', new NoCacheCacheManager());
+ 			$ret['lost_password_reenter'] = new ParameterizedRoute('https://user/lost-password/{token:s}/', $this, 'lost_password_reenter', new AccessRenderDecorator());
  		}
  		if ($this->has_feature(self::ALLOW_REGISTER | self::ALLOW_RESEND_REGISTRATION)) {
  			$ret['resend_registration_mail'] = new ExactMatchRoute('https://resend-registration-mail', $this, 'resend_registration_mail', new NoCacheCacheManager());
@@ -258,6 +259,8 @@ class UserBaseController extends ControllerBase {
  	 * @param PageData $page_data
  	 */
  	public function action_login($page_data) {
+		$page_data->in_history = false;
+
 		$err = $this->check_login_preconditions();
 		if ($err->is_error()) {
 			$page_data->error($err);
@@ -273,8 +276,6 @@ class UserBaseController extends ControllerBase {
 		$formhandler->prepare_view($view);
 		$view->assign('goto', Session::peek('login_goto'));
  		$view->render();
-
- 		$page_data->in_history = false;
  	}
 
  	/**
@@ -310,6 +311,8 @@ class UserBaseController extends ControllerBase {
  	 * Builds and process the register page
  	 */
  	public function action_register($page_data) {
+		$page_data->in_history = false;
+
 		$err = $this->check_login_preconditions();
 		if ($err->is_error()) {
 			$page_data->error($err);
@@ -327,14 +330,14 @@ class UserBaseController extends ControllerBase {
 
 		$formhandler->prepare_view($view);
  		$view->render();
-
- 		$page_data->in_history = false;
  	}
 
 	/**
 	 * Lost password page
 	 */
 	public function action_lost_password($page_data) {
+		$page_data->in_history = false;
+
 		$err = $this->check_login_preconditions();
 		if ($err->is_error()) {
 			$page_data->error($err);
@@ -349,14 +352,51 @@ class UserBaseController extends ControllerBase {
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/lost_password', $page_data);
 		$formhandler->prepare_view($view);
  		$view->render();
+	}
 
- 		$page_data->in_history = false;
+	/**
+	 * Reenter password after loss
+	 */
+	public function action_lost_password_reenter(PageData $page_data, $token) {
+		$page_data->in_history = false;
+
+		if (Session::peek(Users::LOST_PASSWORD_TOKEN) != $token) {
+			return self::NOT_FOUND;
+		}
+
+		$formhandler = new FormHandler('lost_password_reenter');
+		if ($page_data->has_post_data()) {
+			$this->do_lost_password_reenter($formhandler, $page_data, $token);
+		}
+
+		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/lost_password_reenter', $page_data);
+		$formhandler->prepare_view($view);
+		$view->assign('token', $token);
+		$view->render();
+	}
+
+	private function do_lost_password_reenter(FormHandler $formhandler, PageData $page_data, $token) {
+		$err = $formhandler->validate();
+		if ($err->is_ok()) {
+			$user = Users::get_current_user();
+			$params = $user->unset_internals($page_data->get_post()->get_array());
+			$err->merge($this->validate_password($params));
+			if ($err->is_ok()) {
+				$err->merge(Users::update($user, $params));
+			}
+			if ($err->is_ok()) {
+				Session::pull(Users::LOST_PASSWORD_TOKEN);
+			}
+		}
+		$formhandler->finish($err, tr('Your password has been changed', 'users'));
 	}
 
 	/**
 	 * Page for resending registration e-mail
 	 */
 	public function action_resend_registration_mail($page_data) {
+		$page_data->in_history = false;
+
 		$err = $this->check_login_preconditions();
 		if ($err->is_error()) {
 			$page_data->error($err);
@@ -371,8 +411,6 @@ class UserBaseController extends ControllerBase {
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/resend_registration_mail', $page_data);
 		$formhandler->prepare_view($view);
  		$view->render();
-
- 		$page_data->in_history = false;
 	}
 
 	/**
@@ -408,8 +446,8 @@ class UserBaseController extends ControllerBase {
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/create', $page_data);	
 		$roleOptions = Users::get_user_roles();
 		$view->assign('role_options', $roleOptions);	
-		$view->assign('user', $user);
-		$formhandler->prepare_view($view, $user);
+		//$view->assign('user', $user);
+		$formhandler->prepare_view($view); //, $user);
 		
 		$view->render();
 	}
@@ -511,6 +549,8 @@ class UserBaseController extends ControllerBase {
 	 * Edit account settings
 	 */
 	public function action_users_edit_self($page_data) {
+		$page_data->in_history = false;
+
 		// User exists, since Route is for logged in only
 		Users::reload_current();
 		$user = Users::get_current_user();
@@ -519,8 +559,6 @@ class UserBaseController extends ControllerBase {
 			$this->do_edit_self($formhandler, $user, $page_data);
 		}
 
- 		$page_data->in_history = false;
-		
  		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'users/edit_self', $page_data);
 		$formhandler->prepare_view($view, $user);
 		$view->assign('user', $user);
@@ -540,13 +578,31 @@ class UserBaseController extends ControllerBase {
 			// Validate
 			$params = $user->unset_internals($page_data->get_post()->get_array());
 			$err->merge($this->validate_email_change($params, $user, $page_data->get_post()->get_item('pwd_mail')));
-			$err->merge($this->validate_password($params));
+			$err->merge($this->validate_password_change($params, $page_data->get_post()->get_item('pwd_pwd')));
 			if ($err->is_ok()) {
 				$err->merge(Users::update($user, $params));
 			}
 		}
 		$formhandler->finish($err, tr('Your changes have been saved', 'users'));
  	}
+
+
+	/**
+	 * Validate password change
+	 *
+	 * @param array $params
+	 * @param DAOUsers $user
+	 * @param string $pwd
+	 */
+	protected function validate_password_change(&$params, $pwd) {
+		$err = $this->validate_password($params);
+		if ($err->is_ok() && !Config::has_feature(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE) && !empty($params['password'])) {
+			if (!Users::get_current_user()->password_match($pwd)) {
+				$err->append(tr('The password entered for password change confirmation is not correct. Please try again.', 'users'));
+			}
+		}
+		return $err;
+	}
 
  	/**
  	 * Validate password for email change

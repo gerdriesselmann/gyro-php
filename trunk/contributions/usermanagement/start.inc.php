@@ -186,6 +186,9 @@ class ConfigUsermanagement {
 	 * User deletion should be properly implemented by the app!
 	 */
 	const REAL_DELETION = 'USER_REAL_DELETION';
+
+	/** IF set to true, changing password must be confirmed by password, else by mail*/
+	const ENABLE_MAIL_ON_PWD_CHANGE = 'ENABLE_MAIL_ON_PWD_CHANGE';
 }
 
 
@@ -219,6 +222,7 @@ Config::set_value_from_constant(ConfigUsermanagement::CACHEHEADER_CLASS_LOGGEDIN
 Config::set_feature_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_USER_MAIL_STATUSCHANGE', true);
 Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_PWD_ON_EMAILCHANGE, 'APP_USER_ENABLE_PWD_ON_EMAILCHANGE', true);
 Config::set_feature_from_constant(ConfigUsermanagement::REAL_DELETION, 'APP_USER_REAL_DELETION', false);
+Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE, 'APP_USER_ENABLE_MAIL_ON_PWD_CHANGE', true);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';

@@ -17,6 +17,8 @@ class Users {
 	const EMAIL_STATUS_CONFIRMED = 'CONFIRMED';
 	const EMAIL_STATUS_EXPIRED = 'EXPIRED';
 	const EMAIL_STATUS_BOUNCED = 'BOUNCED';
+
+	const LOST_PASSWORD_TOKEN = 'USER_LPT';
 	
 	/**
 	 * Returns the user logged in or null, if no user is logged in
