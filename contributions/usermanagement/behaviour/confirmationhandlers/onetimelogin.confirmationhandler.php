@@ -22,7 +22,9 @@ class OnetimeloginConfirmationHandler extends ConfirmationHandlerBase {
 				if (Users::do_login($user)) {
 					$msg = new Message(tr('You have been automatically logged in. You now can change your password.', 'users'));
 					$msg->persist();
-					$redirect = ActionMapper::get_url('edit_self', $user); 
+					$token = Common::create_token('reset password');
+					Session::push(Users::LOST_PASSWORD_TOKEN, $token);
+					$redirect = ActionMapper::get_url('lost_password_reenter', array('token' => $token));
 					Url::create($redirect)->redirect();
 					exit;					
 				}

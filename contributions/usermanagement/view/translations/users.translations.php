@@ -487,15 +487,24 @@ function users_load_translations($languages) {
 		),
 		'Please confirm changes of the email address by entering the password:' => array(
 			'de' => 'Bitte Änderung der E-Mail Adresse mit Passwort bestätigen:'
-		),		
+		),
+		'Please confirm password change by entering the old password:' => array(
+			'de' => 'Bitte Änderung des Passwords mit altem Passwort bestätigen:'
+		),
 		'The password entered for email change confirmation is not correct. Please try again.' => array(
 			'de' => 'Das Passwort für die Bestätigung der neuen E-Mail Adresse ist leider falsch. Bitte versuchen Sie es noch einmal.'
+		),
+		'The password entered for password change confirmation is not correct. Please try again.' => array(
+			'de' => 'Das Passwort für die Bestätigung des neuen Passworts ist leider falsch. Bitte versuchen Sie es noch einmal.'
 		),
 		'The old password is not correct. Please try again.' => array(
 			'de' => 'Das alte Passwort ist leider falsch. Bitte versuchen Sie es noch einmal.'
 		),
 		'If the password changes, you will get a mail send to you to confirm this change.' => array(
 			'de' => 'Wenn Sie das Passwort ändern, erhalten Sie eine E-Mail, um die Änderung zu bestätigen.'
+		),
+		'Change Password' => array(
+			'de' => 'Passwort ändern'
 		),
 		'Your password has been changed' => array(
 			'de' => 'Ihr Passwort wurde geändert'

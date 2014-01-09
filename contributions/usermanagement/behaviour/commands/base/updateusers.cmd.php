@@ -76,10 +76,10 @@ class UpdateUsersBaseCommand extends CommandChain {
 		$pwd = Arr::get_item($params, 'password', $user->password);
 		if (!Users::current_has_role(USER_ROLE_ADMIN)) {
 			// None-admins cannot change mail directly!
-			if ($user->password !== $pwd) {
+			if (Config::has_feature(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE) && $user->password !== $pwd) {
 				$this->send_pwd_notification($user, $pwd);
-			} 
-			unset($params['password']);
+				unset($params['password']);
+			}
 		}
 	}	
 
