@@ -193,9 +193,10 @@ class JCSSManager {
 						$line = self::transform_css_file($file_to_include);
 					}
 				}
+			} else {
+				// Set all url(..) stuff absolute
+				$line = preg_replace($regex, $replace, $line);
 			}
-			// Set all url(..) stuff absolute
-			$line = preg_replace($regex, $replace, $line);
 			$ret .= $line;
 		}
 
