@@ -161,45 +161,71 @@ class JCSSManager {
 		if (substr($file, 0, 1) !== '/' && strpos($file, '://') === false) {
 			$file = Config::get_value(Config::URL_ABSPATH) . $file;
 		}
+		$real_path = realpath($file);
 		$handle = fopen($file, 'r');
-		// http://stackoverflow.com/questions/9798378/preg-replace-regex-to-match-relative-url-paths-in-css-files
-		$regex = '#url\s*\((?!\s*[\'"]?(?:https?:)?//)\s*([\'"])?#';
-		$rel_path = str_replace(Config::get_value(Config::URL_ABSPATH), '/', realpath($file));
-		$replace = 'url($1' .  dirname($rel_path) . '/$2';
 		while(($line = fgets($handle)) !== false) {
-			// Works around a bug in WebKit, which dislikes two charset declarations in one file
-			$line = trim($line);
-			$token = substr($line, 0, 7);
-			if ($token === '@charse') {
-				continue;
-			}
-			// Resolve imports			
-			if ($token === '@import') {
-				$start = strpos($line, '(', 7);
-				if ($start !== false) {
-					$end = strpos($line, ')', $start);
-					if ($end !== false) {
-						$start++;
-						$file_to_include = trim(substr($line, $start, $end - $start), "'\" \t");
-						if (strpos($file_to_include, '://') === false) {
-							// NO http:// or alike
-							if (substr($file_to_include, 0, 1) !== '/') {
-								// no absolute path
-								$file_to_include = dirname($file) . '/' . $file_to_include;
-							} else  {
-								$file_to_include = JCSSManager::make_absolute($file_to_include);
-							}
-						}
-						$line = self::transform_css_file($file_to_include);
-					}
-				}
-			} else {
-				// Set all url(..) stuff absolute
-				$line = preg_replace($regex, $replace, $line);
-			}
-			$ret .= $line;
+			$ret .= self::transform_css_line($line, $real_path, Config::get_value(Config::URL_ABSPATH));
 		}
 
 		return $ret;		
 	}
+
+	public static function transform_css_line($line, $src_file_real_path, $base_path) {
+		$ret = '';
+		$line = trim($line);
+		$token = substr($line, 0, 7);
+
+		switch ($token) {
+		case '@charse':
+			// Works around a bug in WebKit, which dislikes two charset declarations in one file
+			break;
+		case '@import':
+			$start = strpos($line, '(', 7);
+			if ($start !== false) {
+				$end = strpos($line, ')', $start);
+				if ($end !== false) {
+					$start++;
+					$file_to_include = trim(substr($line, $start, $end - $start), "'\" \t");
+					if (strpos($file_to_include, '://') === false) {
+						// NO http:// or alike
+						if (substr($file_to_include, 0, 1) !== '/') {
+							// no absolute path
+							$file_to_include = dirname($src_file_real_path) . '/' . $file_to_include;
+						} else  {
+							$file_to_include = JCSSManager::make_absolute($file_to_include);
+						}
+					}
+					return self::transform_css_file($file_to_include);
+				}
+			}
+			break;
+		default:
+			// Set all url(..) stuff absolute
+			$regex = '#url\s*\(([\'"]?)([^\)]*)#';
+			$rel_path = dirname(str_replace($base_path, '/', $src_file_real_path)) . '/';
+			$replace = function($matches) use ($rel_path) {
+				$resolved = '';
+				$quotes = $matches[1];
+				$path = $matches[2];
+
+				if (strpos($path, '://') !== false)  {
+					// HTTP and such
+					$resolved = $path;
+				} else if (substr($path, 0, 1) == '/') {
+					// Absolute
+					$resolved = $path;
+				} else {
+					// Relative
+					$resolved = $rel_path . $path;
+				}
+
+				return "url({$matches[1]}$resolved";
+			};
+			$ret = preg_replace_callback($regex, $replace, $line);
+			break;
+		}
+
+		return $ret;
+	}
+
 }
