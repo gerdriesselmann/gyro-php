@@ -54,6 +54,8 @@ class MailBaseCommand extends CommandBase {
 	protected $files_to_attach = array();
 	protected $additional_headers = array();
 
+	protected $from = ''; // If emtpy, use default sender adress from config
+
 	/**
 	 * Constructor
 	 *
@@ -132,7 +134,7 @@ class MailBaseCommand extends CommandBase {
 	 */
 	protected function create_mail_message($subject, $message, $to) {
 		$content_type = $this->html_mail ? 'text/html; charset=%charset' : '';
-		return new MailMessage($subject, $message, $to, '', $content_type);
+		return new MailMessage($subject, $message, $to, $this->get_from(), $content_type);
 	}
 
 	/**
@@ -175,6 +177,18 @@ class MailBaseCommand extends CommandBase {
 	protected function get_subject() {
 		return $this->subject;
 	}
+
+	public function set_from($from) {
+		$this->from = $from;
+	}
+
+	/**
+	 * Create or retieve from address
+	 */
+	protected function get_from() {
+		return $this->from;
+	}
+
 
 	/**
 	 * Return mail message
