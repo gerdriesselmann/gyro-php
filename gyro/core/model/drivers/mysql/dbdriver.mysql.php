@@ -20,7 +20,10 @@ class DBDriverMysql implements IDBDriver {
 	 * @var int
 	 */
 	protected $type;
-	protected $db_handle = false;
+	/**
+	 * @var mysqli
+	 */
+	protected $conn = false;
 	protected static $transaction_count = 0;
 	protected $connect_params;
 
@@ -77,24 +80,31 @@ class DBDriverMysql implements IDBDriver {
 	 * @return void
 	 */
 	protected function connect() {
-		if ($this->db_handle === false) {
+		if ($this->conn === false) {
 			$err = new Status();
-			$this->db_handle = mysql_connect(
-				$this->connect_params['host'], 
+			$host_arr = explode(':', $this->connect_params['host']);
+			$this->conn = new mysqli(
+				array_shift($host_arr),
 				$this->connect_params['user'],
-				$this->connect_params['pwd']
+				$this->connect_params['pwd'],
+				'',
+				array_shift($host_arr)
 			);
-			if ($this->db_handle) {
+			if (mysqli_connect_errno()) {
+				$err->merge($this->conn->connect_error);
+			}
+			if ($err->is_ok()) {
+				$this->conn->set_charset(GyroLocale::get_charset());
 				if ($this->type == self::PRIMARY) {
 					$err->merge($this->make_default());
-				} 
-				if ($err->is_ok()) {
-					// We are connected
-					if (GyroLocale::get_charset() == 'UTF-8') {
- 						$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
- 					}
- 					//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
 				}
+			}
+			if ($err->is_ok()) {
+				// We are connected
+				if (GyroLocale::get_charset() == 'UTF-8') {
+					$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+				}
+ 				//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
 			}
 			else {
 				$err->append(tr(
@@ -140,7 +150,7 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function escape($value) {
 		$this->connect();
-		return mysql_real_escape_string(Cast::string($value), $this->db_handle);
+		return $this->conn->real_escape_string(Cast::string($value));
 	}
 	
 	/**
@@ -151,8 +161,8 @@ class DBDriverMysql implements IDBDriver {
 	public function get_status() {
 		$this->connect();
 		$ret = new Status();
-		if (mysql_errno($this->db_handle)) {
-			$ret->append(mysql_error($this->db_handle));
+		if ($this->conn->errno) {
+			$ret->append($this->conn->error);
 		}
 		return $ret;
 	}
@@ -165,8 +175,8 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function execute($sql) {
 		$this->connect();
-		mysql_query($sql, $this->db_handle);
-		return $this->get_status();		
+		$this->conn->real_query($sql);
+		return $this->get_status();
 	}
 	
 	/**
@@ -177,9 +187,9 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function query($sql) {
 		$this->connect();
-		$handle = mysql_query($sql, $this->db_handle);
+		$result = $this->conn->query($sql, MYSQLI_STORE_RESULT);
 		$status = $this->get_status();
-		return new DBResultSetMysql($handle, $status);
+		return new DBResultSetMysql($result, $status);
 	}
 	
 	/**
@@ -205,7 +215,7 @@ class DBDriverMysql implements IDBDriver {
 	public function make_default() {
 		$ret = new Status();
 		$this->connect();
-		if (!mysql_select_db($this->connect_params['db'], $this->db_handle)) {
+		if (!$this->conn->select_db($this->connect_params['db'])) {
 			$ret->append(tr(
 				'Could not connect to database %db on server %host', 
 				'core', 
@@ -224,7 +234,8 @@ class DBDriverMysql implements IDBDriver {
 				// We support nested transaction, while MySQL doesn't
 				// "Beginning a transaction causes any pending transaction to be committed.", http://dev.mysql.com/doc/refman/5.0/en/commit.html
 				$this->connect();
-				mysql_query('START TRANSACTION', $this->db_handle);	
+				//$this->conn->autocommit(false);
+				$this->conn->query('START TRANSACTION');
 			}
 			self::$transaction_count++;
 		}		
@@ -237,7 +248,7 @@ class DBDriverMysql implements IDBDriver {
 		if (self::$transaction_count > 0) {
 			self::$transaction_count--;
 			if (self::$transaction_count == 0) {
-				mysql_query('COMMIT', $this->db_handle);
+				$this->conn->commit();
 			}
 		}
 	}
@@ -250,7 +261,7 @@ class DBDriverMysql implements IDBDriver {
 			self::$transaction_count--;
 			if (self::$transaction_count == 0) {
 				// Rollback anything up to now
-				mysql_query('ROLLBACK', $this->db_handle);
+				$this->conn->rollback();
 			}
 		}
 		// Start a transaction that won't get committed
@@ -262,7 +273,7 @@ class DBDriverMysql implements IDBDriver {
 	 * Get last insert ID
 	 */
 	public function last_insert_id() {
-		return mysql_insert_id($this->db_handle);
+		return $this->conn->insert_id;
 	}
 	
 	/**

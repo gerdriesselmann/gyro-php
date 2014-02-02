@@ -9,9 +9,9 @@ class DBResultSetMysql implements IDBResultSet {
 	/**
 	 * Handle to query result
 	 *
-	 * @var int
+	 * @var mysqli_result
 	 */
-	protected $result_handle = null;
+	protected $result_set = null;
 	/**
 	 * Status for query
 	 *
@@ -19,8 +19,8 @@ class DBResultSetMysql implements IDBResultSet {
 	 */
 	protected $status = null;
 
-	public function __construct($result_handle, $status) {
-		$this->result_handle = $result_handle;
+	public function __construct($result_set, $status) {
+		$this->result_set = $result_set;
 		$this->status = $status;
 	}
 	
@@ -34,10 +34,10 @@ class DBResultSetMysql implements IDBResultSet {
 	 * @return void
 	 */
 	public function close() {
-		if ($this->result_handle) {
-			mysql_free_result($this->result_handle);
+		if ($this->result_set) {
+			$this->result_set->close();
+			$this->result_set = null;
 		}
-		$this->result_handle = null;
 	}
 	
 	/**
@@ -46,10 +46,11 @@ class DBResultSetMysql implements IDBResultSet {
 	 * @return int
 	 */
 	public function get_column_count() {
-		if ($this->result_handle) {
-			return mysql_num_fields($this->result_handle);
+		if ($this->result_set) {
+			return $this->result_set->field_count;
+		} else {
+			return 0;
 		}
-		return false;
 	}
 	
 	/**
@@ -58,10 +59,12 @@ class DBResultSetMysql implements IDBResultSet {
 	 * @return int
 	 */
 	public function get_row_count() {
-		if ($this->result_handle) {
-			return mysql_num_rows($this->result_handle);
+		if ($this->result_set) {
+			return $this->result_set->num_rows;
 		}
-		return 0;
+		else {
+			return 0;
+		}
 	}
 	
 	/**
@@ -70,10 +73,12 @@ class DBResultSetMysql implements IDBResultSet {
 	 * @return array | bool False if no more data is available
 	 */
 	public function fetch() {
-		if ($this->result_handle) {
-			return mysql_fetch_assoc($this->result_handle);
+		if ($this->result_set) {
+			return $this->result_set->fetch_assoc();
 		}
-		return false;
+		else {
+			return array();
+		}
 	}
 	
 	/**
