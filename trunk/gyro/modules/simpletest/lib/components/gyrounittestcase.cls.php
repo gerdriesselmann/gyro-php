@@ -48,13 +48,11 @@ class GyroUnitTestCase extends UnitTestCase {
      * Assert given argument equals given URL path
      */
     protected function assertEqualsPath($arg1, $arg2, $message = '%s') {
-    	if ($this->is_console) {
-    		$arg1_path = Url::create($arg1);
-    		$arg1 = $arg1_path->is_valid() ? '/' . $arg1_path->get_path() : $arg1;
-    		$arg2_path = Url::create($arg2);
-    		$arg2 = $arg2_path->is_valid() ? '/' . $arg2_path->get_path() : $arg2;
-    	}	
-   		$this->assertEqual($arg1, $arg2, $message);
+		$arg1_path = Url::create($arg1);
+		$arg1 = $arg1_path->is_valid() ? '/' . $arg1_path->get_path() : $arg1;
+		$arg2_path = Url::create($arg2);
+		$arg2 = $arg2_path->is_valid() ? '/' . $arg2_path->get_path() : $arg2;
+		$this->assertEqual($arg1, $arg2, $message);
 	}
     
 }

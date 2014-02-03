@@ -22,7 +22,7 @@ class DBDriverMySqlMock extends DBDriverMysql {
 	 * @return string
 	 */
 	public function escape($value) {
-		return mysql_real_escape_string(Cast::string($value));
+		return String::escape(Cast::string($value));
 	}
 
 	/**
