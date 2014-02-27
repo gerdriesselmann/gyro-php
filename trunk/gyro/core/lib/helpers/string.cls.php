@@ -472,7 +472,18 @@ class String {
 		}
 
 		return $ret;
-	}	
+	}
+
+	public static function split_words($val, $max_length) {
+		$ret = array();
+		$val = trim($val);
+		while ($val) {
+			$substr = self::substr($val, 0, $max_length, false);
+			$ret[] = $substr;
+			$val = trim(substr($val, strlen($substr)));
+		}
+		return $ret;
+	}
 	
 	public static function right($val, $count) {
 		return self::substr($val, -$count, $count);
