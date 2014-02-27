@@ -476,11 +476,14 @@ class String {
 
 	public static function split_words($val, $max_length) {
 		$ret = array();
-		$val = trim($val);
-		while ($val) {
-			$substr = self::substr($val, 0, $max_length, false);
-			$ret[] = $substr;
-			$val = trim(substr($val, strlen($substr)));
+		$vals = explode("\n", $val);
+		foreach($vals as $v) {
+			$v = trim($v);
+			while ($v) {
+				$substr = self::substr_word($v, 0, $max_length, false);
+				$ret[] = $substr;
+				$v = trim(substr($v, strlen($substr)));
+			}
 		}
 		return $ret;
 	}
