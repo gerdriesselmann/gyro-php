@@ -15,7 +15,7 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	/**
 	 * Attachments as associative array of name to filename
 	 * 
-	 * @var array
+	 * @var MailAttachment[]
 	 */
 	protected $attachments;
 	
@@ -29,8 +29,8 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	/**
 	 * Constructors
 	 * 
-	 * @param IMailMessageBuiler $msg_builder Builder for the message body
-	 * @param array $attachments Attachments as associative array of name to filename
+	 * @param IMailMessageBuilder $msg_builder Builder for the message body
+	 * @param MailAttachment[] $attachments Attachments as array of array with members
 	 */
 	public function __construct(IMailMessageBuilder $msg_builder, $attachments) {
 		$this->message_builder = $msg_builder;
@@ -57,8 +57,8 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 		$blocks[] = $this->create_block(
 			$this->message_builder->get_mail_mime(), false, $this->message_builder->get_body(), $this->message_builder->get_additional_headers()
 		);
-		foreach($this->attachments as $name => $file) {
-			$blocks[] = $this->create_attachment_block($name, $file);
+		foreach($this->attachments as $attachment) {
+			$blocks[] = $this->create_attachment_block($attachment);
 		} 		
 		return 
 			$this->start_seperator($this->boundary) .
@@ -92,11 +92,11 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	/**
 	 * Create a block for an attachment 
 	 */
-	protected function create_attachment_block($name, $file) {
+	protected function create_attachment_block(MailAttachment $attachment) {
 		return $this->create_block(
-			$this->get_attachment_mime($file) . '; name=' . ConverterFactory::encode($name, ConverterFactory::MIMEHEADER),
+			$attachment->get_mime_type() . '; name=' . ConverterFactory::encode($attachment->get_name(), ConverterFactory::MIMEHEADER),
 			'base64',
-			chunk_split(base64_encode(file_get_contents($file)))
+			chunk_split(base64_encode($attachment->get_data()))
 		);		
 	}	
 	

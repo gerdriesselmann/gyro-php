@@ -51,7 +51,7 @@ class MailBaseCommand extends CommandBase {
 	protected $view;
 
 	protected $alt_message = '';
-	protected $files_to_attach = array();
+	protected $attachments = array();
 	protected $additional_headers = array();
 
 	protected $from = ''; // If emtpy, use default sender adress from config
@@ -106,8 +106,8 @@ class MailBaseCommand extends CommandBase {
 			$mail->set_alt_message($this->compute_alt_message($message));
 
 			// Set custom attachments
-			foreach($this->files_to_attach as $filename => $name) {
-				$mail->add_attachment($filename, $name);
+			foreach($this->attachments as $attachment) {
+				$mail->add_attachment($attachment);
 			}
 
 			// Set custom headers
@@ -272,11 +272,19 @@ class MailBaseCommand extends CommandBase {
 	/**
 	 * Add an attachment
 	 *
-	 * @param string $file_name Absolute path to file
+	 * @param string|MailAttachment $file_name_or_attachment Absolute path to file or attachment
 	 * @param string $name Optional name of attachment
 	 */
-	public function add_attachment($file_name, $name = '') {
-		$this->files_to_attach[$file_name] = $name;
+	public function add_attachment($file_name_or_attachment, $name = '') {
+		if (!$file_name_or_attachment instanceof MailAttachment) {
+			$file_name_or_attachment = MailAttachment::from_file($file_name_or_attachment, $name);
+		} else {
+			if ($name) {
+				$file_name_or_attachment->change_name($name);
+			}
+		}
+
+		$this->attachments[] = $file_name_or_attachment;
 	}
 
 	/**
