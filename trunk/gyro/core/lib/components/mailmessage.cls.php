@@ -58,8 +58,10 @@ class MailMessage {
 
 	/**
 	 * Attachment (Filename)
+	 *
+	 * @vat MailAttachment[]
 	 */
-	protected $files_to_attach = array();
+	protected $data_to_attach = array();
 
 	/**
 	 * Additional headers as associative array
@@ -148,8 +150,8 @@ class MailMessage {
 		$msg_builder = ($this->message_alt)
 			? new AlternativeMessageBuilder($this->message, $this->content_type, $this->message_alt)
 			: new SingleMessageBuilder($this->message, $this->content_type);
-		if (count($this->files_to_attach)) {
-			$ret = new AttachmentsBuilder($msg_builder, $this->files_to_attach);
+		if (count($this->data_to_attach)) {
+			$ret = new AttachmentsBuilder($msg_builder, $this->data_to_attach);
 		}
 		else {
 			$ret = $msg_builder;
@@ -159,12 +161,19 @@ class MailMessage {
 
 	/**
 	 * Append a file to attach
+	 *
+	 * @param string|MailAttachment $file_name_or_attachment with members data, mime_type, and optional name
+	 * @param string $name Name of attachment
 	 */
-	public function add_attachment($file_name, $name = '') {
-		if ($name == '') {
-			$name = $file_name;
+	public function add_attachment($file_name_or_attachment, $name = '') {
+		if (!$file_name_or_attachment instanceof MailAttachment) {
+			$file_name_or_attachment = MailAttachment::from_file($file_name_or_attachment, $name);
+		} else {
+			if ($name) {
+				$file_name_or_attachment->change_name($name);
+			}
 		}
-		$this->files_to_attach[$name] = $file_name;
+		$this->data_to_attach[] = $file_name_or_attachment;
 	}
 
 	/**
@@ -264,5 +273,69 @@ class MailMessage {
 			return "/^" . $val . "\:/im";
 		else
 			return "/" . $val . "\:/i";
+	}
+}
+
+class MailAttachment {
+	private $filename;
+	private $name;
+	private $data;
+	private $mime_type;
+
+	public function get_mime_type() {
+		$ret = 'application/octet-stream';
+		if (empty($this->mime_type)) {
+			if ($this->filename && function_exists('mime_content_type')) {
+				$ret = mime_content_type($this->filename);
+			}
+		} else {
+			$ret = $this->mime_type;
+		}
+
+		return $ret;
+	}
+
+	public function get_name() {
+		if ($this->name) {
+			return $this->name;
+		} else {
+			$this->name = Common::create_token('attachment');
+			return $this->name;
+		}
+	}
+
+	public function change_name($name) {
+		$this->name = $name;
+	}
+
+	public function get_data() {
+		if ($this->filename) {
+			return file_get_contents($this->filename);
+		} else {
+			return $this->data;
+		}
+	}
+
+	public static function from_data($data, $mime_type, $name) {
+		$ret = new MailAttachment();
+		$ret->data = $data;
+		$ret->mime_type = $mime_type;
+		$ret->name = $name;
+		return $ret;
+	}
+
+	public static function from_file($filename, $name = '') {
+		$ret = new MailAttachment();
+		$ret->filename = $filename;
+		$ret->name = $name ? $name : $filename;
+		return $ret;
+	}
+
+	public static function from_binary(DAOBinaries $binary) {
+		$ret = new MailAttachment();
+		$ret->data = $binary->get_data();
+		$ret->name = $binary->name;
+		$ret->mime_type = $binary->mimetype;
+		return $ret;
 	}
 }
