@@ -148,7 +148,18 @@ class GyroDate {
 	public static function iso_date($date) {
 		return date('c', $date);
 	}
-	
+
+	/**
+	 * Static. Converts timestamp to ISO DateTime string with UTC timezone
+	 *
+	 * @param int Timestamp
+	 * @return string
+	 */
+	public static function iso_date_utc($date) {
+		return gmdate('Y-m-d\TH:i:s\Z', $date);
+	}
+
+
 	/**
 	 * Static. Converts timestamp to RFC 2822 DateTime string
 	 *
