@@ -24,6 +24,11 @@ class LoginknownUsersBaseCommand extends CommandChain {
 			Session::push('current_user_id', $user->id);
 			Session::pull('current_user');
 			AccessControl::set_current_aro($user);
+
+			if (Config::has_feature(ConfigUsermanagement::TRACE_LAST_LOGIN)) {
+				$cmd = CommandsFactory::create_command($user, 'update', array('lastlogindate' => time()));
+				$cmd->execute();
+			}
 			
 			Load::commands('generics/triggerevent');
 			$this->append(new TriggerEventCommand('login', $user));

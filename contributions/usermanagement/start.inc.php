@@ -189,6 +189,8 @@ class ConfigUsermanagement {
 
 	/** IF set to true, changing password must be confirmed by password, else by mail*/
 	const ENABLE_MAIL_ON_PWD_CHANGE = 'ENABLE_MAIL_ON_PWD_CHANGE';
+
+	const TRACE_LAST_LOGIN = 'TRACE_LAST_LOGIN';
 }
 
 
@@ -223,6 +225,7 @@ Config::set_feature_from_constant(ConfigUsermanagement::MAIL_STATUSCHANGE, 'APP_
 Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_PWD_ON_EMAILCHANGE, 'APP_USER_ENABLE_PWD_ON_EMAILCHANGE', true);
 Config::set_feature_from_constant(ConfigUsermanagement::REAL_DELETION, 'APP_USER_REAL_DELETION', false);
 Config::set_feature_from_constant(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE, 'APP_USER_ENABLE_MAIL_ON_PWD_CHANGE', true);
+Config::set_feature_from_constant(ConfigUsermanagement::TRACE_LAST_LOGIN, 'APP_USER_TRACE_LAST_LOGIN', false);
 
 // We add new variables to each view...
 require_once (dirname(__FILE__)) . '/view/users.vieweventsink.cls.php';

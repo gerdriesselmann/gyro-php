@@ -17,6 +17,7 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 	public $emailstatus;
 	public $tos_version; 
 	public $status;                          // string(11)  not_null enum
+	public $lastlogindate;
 	
 	// now define your table structure.
 	// key is column name, value is type
@@ -31,8 +32,9 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL | DBField::INTERNAL),
 				new DBFieldDateTime('emailconfirmationdate', null, DBField::NONE | DBField::INTERNAL), 
 				new DBFieldEnum('emailstatus', array_keys(Users::get_email_statuses()), Users::EMAIL_STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
-				new DBFieldInt('tos_version', 0, DBFieldInt::UNSIGNED | DBField::NOT_NULL | DBField::INTERNAL), 
+				new DBFieldInt('tos_version', 0, DBFieldInt::UNSIGNED | DBField::NOT_NULL | DBField::INTERNAL),
 				new DBFieldEnum('status', array_keys($this->get_allowed_status()), Users::STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
+				new DBFieldDateTime('lastlogindate', null, DBField::NONE | DBField::INTERNAL),
 				), $this->get_timestamp_field_declarations()
 			),
 			'id'
