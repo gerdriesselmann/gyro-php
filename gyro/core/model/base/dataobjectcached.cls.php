@@ -8,6 +8,11 @@ require_once dirname(__FILE__) . '/dataobjectbase.cls.php';
  * @ingroup Model
  */
 class DataObjectCached extends DataObjectBase {
+	public function __clone() {
+		$this->clear_cache();
+		parent::__clone();
+	}
+
 	/**
 	 * Reads a value from cache. If not already set, cache is populated with result of 
 	 * function $this->$callback 
