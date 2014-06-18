@@ -20,6 +20,7 @@ class ConverterHtmlPurifier implements IConverter {
 		$config->set('Cache.SerializerPath', Config::get_value(Config::TEMP_DIR) . 'htmlpurifier');
 
 		$config->set('HTML.TidyLevel', 'medium');
+		$config->set('Attr.AllowedRel', 'nofollow');
 		
 		$config->loadArray(Arr::force($params, false));
 		
