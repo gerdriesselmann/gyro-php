@@ -70,5 +70,12 @@ class DBFieldFloat extends DBField {
 			$ret = String::delocalize_number($ret);
 		}
 		return $ret;
-	}	
+	}
+
+	/**
+	 * Returns true if $value is NULL or DBNull
+	 */
+	protected function is_null($value) {
+		return parent::is_null($value) || $value === '';
+	}
 }
