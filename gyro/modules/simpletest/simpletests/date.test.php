@@ -40,6 +40,10 @@ class DateTest extends GyroUnitTestCase {
 		$dt = GyroDate::datetime('2007/01/27');
 		$dt_expect = GyroDate::datetime('2007/02/27');
 		$this->assertEqual($dt_expect, GyroDate::add_months($dt, 1));
+
+		$dt = GyroDate::datetime('2014/04/03');
+		$dt_expect = GyroDate::datetime('2014/05/03');
+		$this->assertEqual($dt_expect, GyroDate::add_months($dt, 1));
 	}
 	
 	public function test_substract_months() {		
