@@ -95,5 +95,11 @@ class DBFieldInt extends DBField {
 	protected function do_format_not_null($value) {
 		return Cast::int($value);
 	}
-	
+
+	/**
+	 * Returns true if $value is NULL or DBNull
+	 */
+	protected function is_null($value) {
+		return parent::is_null($value) || $value === '';
+	}
 }
