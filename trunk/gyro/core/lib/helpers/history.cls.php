@@ -85,7 +85,7 @@ class History {
 	 * If history is empty, $defaultpage is invoked (or current page, if empty)
 	 * 
 	 * @param Integer Index of page to go to, 0-based. Index counts back in time, so 0 is last, 1 is page before last etc
-	 * @param String Optional message to display on page redirected to 
+	 * @param Status|String Optional message to display on page redirected to
 	 * @param Mixed Either Url or String: Default page to go to if history is empty 
 	 */ 
 	public static function go_to($index, $message = '', $defaultpage = false) {
