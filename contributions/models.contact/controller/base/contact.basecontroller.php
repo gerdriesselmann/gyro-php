@@ -61,7 +61,7 @@ class ContactBaseController extends ControllerBase {
 	 * @param PageData $page_data
 	 * @param FormHandler $formhandler
 	 */
-	private function do_contact_form(PageData $page_data, FormHandler $formhandler) {
+	protected function do_contact_form(PageData $page_data, FormHandler $formhandler) {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
 			Load::commands('generics/mail');
@@ -76,11 +76,29 @@ class ContactBaseController extends ControllerBase {
 			if (empty($data['message'])) { $err->merge(tr('The message should not be empty.', 'contact')); }
 			if (empty($data['subject'])) { $data['subject'] = tr('Contact Form Message', 'contact'); }
 			if ($err->is_ok()) {
+				$err->merge($this->check_spam($data['email'], $data['subject'], $data['message'], $data));
+			}
+			if ($err->is_ok()) {
 				$cmd = new MailCommand($data['subject'], Config::get_value(Config::MAIL_SUPPORT), 'contact/mail', $post->get_array());
 				$err->merge($cmd->execute());
 			}
 		}
 		$formhandler->finish($err, tr('Your message has been sent successfully.', 'contact'));
+	}
+
+	/**
+	 * Check for spam and return error if it is
+	 *
+	 * Should be overloaded by childs
+	 *
+	 * @param string $email Sender email address
+	 * @param string $subject Mail subject
+	 * @param string $message
+	 * @param array $data All data passed
+	 * @return Status
+	 */
+	protected function check_spam($email, $subject, $message, $data) {
+		return new Status();
 	}
 
 }
