@@ -65,7 +65,10 @@ class GyroHttpRequest {
 	}
 
 	private static function set_post_options($options, $fields) {
-		$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
+		$options[CURLOPT_HTTPHEADER] = array(
+			'Content-Type' => 'application/x-www-form-urlencoded',
+			'Expect' => '' // See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
+		);
 		$options[CURLOPT_POST] = true;
 		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
 		return $options;
