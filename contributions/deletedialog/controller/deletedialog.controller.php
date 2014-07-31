@@ -13,11 +13,11 @@ class DeleteDialogController extends ControllerBase {
 	 */
 	public function get_routes() {
 		$ret = array(
-			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/delete', $this, 'deletedialog_cmd_handler'),
-			new ParameterizedRoute('https://deletedialog/approve/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve'),			
+			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/delete', $this, 'deletedialog_cmd_handler', new NoCacheCacheManager()),
+			new ParameterizedRoute('https://deletedialog/approve/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve', new NoCacheCacheManager()),
 			
-			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/status/DELETED', $this, 'deletedialog_status_cmd_handler'),								
-			new ParameterizedRoute('https://deletedialog/approve/status/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve_status'),
+			new CommandsRoute('https://process_commands/{model:s}/{id:ui>}/status/DELETED', $this, 'deletedialog_status_cmd_handler', new NoCacheCacheManager()),
+			new ParameterizedRoute('https://deletedialog/approve/status/{_model_:s}/{id:ui>}', $this, 'deletedialog_approve_status', new NoCacheCacheManager()),
 		);
 		return $ret;
 	}
