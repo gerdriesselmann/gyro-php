@@ -94,7 +94,11 @@ class MailBaseCommand extends CommandBase {
 		$message = $this->get_message();
 		$append = $this->get_message_extension();
 		if (!empty($append)) {
-			$message .= "\n\n------------------------\n\n" . $append;
+			if ($this->html_mail) {
+				$message .= "\n\n<p>------------------------</p>\n\n" . $append;
+			} else {
+				$message .= "\n\n------------------------\n\n" . $append;
+			}
 		}
 
 		$subject = $this->get_subject();
