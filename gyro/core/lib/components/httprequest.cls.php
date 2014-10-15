@@ -117,7 +117,7 @@ class GyroHttpRequest {
 			CURLOPT_USERAGENT => Config::get_value(Config::TITLE). ' bot',
 			CURLOPT_CONNECTTIMEOUT => 5,
 			CURLOPT_FRESH_CONNECT => 1,
-			CURLOPT_SSLVERSION => 3
+			CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1 // Only use TLS, due to POODLE and others
 		);
 		//curl_setopt($curl_handle, CURLOPT_COOKIE, '');
 		if (!ini_get('safe_mode')) {
