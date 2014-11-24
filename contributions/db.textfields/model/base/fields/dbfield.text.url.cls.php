@@ -4,10 +4,12 @@
  * 
  * Value gets validated and prefixed with http://, if it hasn't a scheme already. 
  *  
- * Field in DB should be defined as VARCHAR(255)
+ * Field in DB should be defined as VARCHAR(255), unless another size is passed
  * 
- * URLs of course can be much longer than 255 chars, up to 4000 e.g. is Apache default. This however
- * hardly makes sense.  
+ * URLs of course can be much longer than 255 chars, up to 4000 e.g. is Apache default.
+ * However for most use cases (like e.g. an user's or company's homepage) 255 is more than
+ * enough
+ *
  * 
  * @since 0.5.1
  * 
@@ -15,8 +17,8 @@
  * @ingroup TextFields
  */
 class DBFieldTextUrl extends DBFieldText {
-	public function __construct($name, $default_value = null, $policy = self::NOT_NULL) {
-		parent::__construct($name, 255, $default_value, $policy);
+	public function __construct($name, $default_value = null, $policy = self::NOT_NULL, $size = 255) {
+		parent::__construct($name, $size, $default_value, $policy);
 	}
 	
 	/**
