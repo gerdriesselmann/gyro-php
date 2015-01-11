@@ -9,3 +9,5 @@ Commands offer undo functionality, too.
 Additionally, Gyro-PHP comes with a set of modules and contributions to make every day web development tasks easier.
 
 The framework was created around 2004 for PHP 4 and rewritten in 2005 for PHP 5.
+
+See documentation here: http://gerdriesselmann.github.io/gyro-php/
