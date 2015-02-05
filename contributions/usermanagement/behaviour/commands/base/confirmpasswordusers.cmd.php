@@ -21,10 +21,12 @@ class ConfirmPasswordUsersBaseCommand extends CommandChain {
 		if ($pwd) {
 			$params['password'] = $pwd;
 		}
-		
-		// Chain next commands
+
+        // We do a direct update, and bypass the UpdateUsersCommand, since
+        // it does not allow for update of password
 		Load::commands('generics/update');
 		$this->append(new UpdateCommand($user, $params));
+		$this->append(CommandsFactory::create_command($user, 'invalidatepermanentlogins', null));
 
 		return $ret;
 	}	

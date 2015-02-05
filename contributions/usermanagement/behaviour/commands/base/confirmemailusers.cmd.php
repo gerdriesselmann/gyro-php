@@ -22,9 +22,11 @@ class ConfirmEmailUsersBaseCommand extends CommandChain {
 			$params['email'] = $mail;
 		}
 		
-		// Chain next commands
+		// We do a direct update, and bypass the UpdateUsersCommand, since
+        // it does not allow for update of email address
 		Load::commands('generics/update');
 		$this->append(new UpdateCommand($user, $params));
+        $this->append(CommandsFactory::create_command($user, 'invalidatepermanentlogins', null));
 
 		return $ret;
 	}	

@@ -26,6 +26,8 @@ class UpdateUsersBaseCommand extends CommandChain {
 			// HAsh password
 			$this->hash_password($user, $params);
 			$this->check_for_pwd_confirmation($user, $params);
+
+            $this->check_for_changed_login_credentials($user, $params);
 	
 			// Chain next commands
 			Load::commands('generics/update');
@@ -74,16 +76,35 @@ class UpdateUsersBaseCommand extends CommandChain {
 	 */
 	protected function check_for_pwd_confirmation($user, &$params) {
 		$pwd = Arr::get_item($params, 'password', $user->password);
-		if (!Users::current_has_role(USER_ROLE_ADMIN)) {
-			// None-admins cannot change mail directly!
-			if (Config::has_feature(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE) && $user->password !== $pwd) {
-				$this->send_pwd_notification($user, $pwd);
-				unset($params['password']);
-			}
-		}
-	}	
+        if ($user->password != $pwd) {
+            $pwd_change_requires_mail = Config::has_feature(ConfigUsermanagement::ENABLE_MAIL_ON_PWD_CHANGE);
+            if ($pwd_change_requires_mail && !Users::current_has_role(USER_ROLE_ADMIN)) {
+                // None-admins cannot change mail directly, if forbidden by config setting!
+                $this->send_pwd_notification($user, $pwd);
+                unset($params['password']);
+            }
+        }
+	}
 
-	/**
+
+    /**
+     * Check if login credentials have changed
+     */
+    protected function check_for_changed_login_credentials(DAOUsers $user, $params) {
+        $credentials_changed = false;
+        $pwd = Arr::get_item($params, 'password', $user->password);
+        $credentials_changed = $credentials_changed || $pwd != $user->password;
+        $email = Arr::get_item($params, 'email', $user->email);
+        $credentials_changed = $credentials_changed || $email != $user->email;
+        $name = Arr::get_item($params, 'name', $user->name);
+        $credentials_changed = $credentials_changed || $name != $user->name;
+        if ($credentials_changed) {
+            // Remove permanent logins, since credentials have changed
+            $this->append(CommandsFactory::create_command($user, 'invalidatepermanentlogins', null));
+        }
+    }
+
+    /**
 	 * Create an email change notification
 	 * 
 	 * @since 0.5.1
