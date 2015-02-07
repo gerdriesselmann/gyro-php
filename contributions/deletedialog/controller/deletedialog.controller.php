@@ -87,12 +87,18 @@ class DeleteDialogController extends ControllerBase {
      */
     protected function get_instance_name($dao) {
         if ($dao instanceof ISelfDescribingType) {
+            // Should be the default in about 99,9% of all cases
             return $dao->get_type_name_singular();
         } else if ($dao instanceof IDataObject) {
+            // This is just in case someone implements a IDataObject without ISelfDescribingType in the Future
+            // You never know...
             return $dao->get_table_name();
         } else if ($dao instanceof ISelfDescribing) {
+            // Or some weird mind implements a model without IDataObject at all
+            // Most unlikely, but it will be handled :)
             return $dao->get_title();
         } else {
+            // Everyone needs a default, for the very very unlikely situations
             return 'instance';
         }
     }

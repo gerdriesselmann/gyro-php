@@ -1162,7 +1162,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
      * @return string
      */
     public function get_type_name_singular() {
-        $ret = $this->table;
+        $ret = $this->get_table_name();
         if (substr($ret, -1) == 's') {
             $ret = substr($ret, 0, strlen($ret) - 1);
         }
@@ -1181,7 +1181,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
     public function get_type_name_plural() {
         // We assume naming convention that table is plural and
         // same as module
-        return $this->table;
+        return $this->get_table_name();
     }
 
     /**
