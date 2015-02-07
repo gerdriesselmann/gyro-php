@@ -7,7 +7,7 @@
  * @author Gerd Riesselmann
  * @ingroup Model
  */
-class DataObjectBase implements IDataObject, IActionSource {
+class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource {
  	/**
  	 * Table for this DataObject
  	 *
@@ -1147,6 +1147,51 @@ class DataObjectBase implements IDataObject, IActionSource {
 	public function register_query_hook(IDataObjectQueryHook $hook) {
 		$this->queryhooks[] = $hook;
 	}
+
+    //******************************************
+    // ISelfDescribingType
+    //******************************************
+
+    /**
+     * Get singular name of type
+     *
+     * For example for a DAOUsers instance that will be 'user'
+     *
+     * @attention It is not translated by default!
+
+     * @return string
+     */
+    public function get_type_name_singular() {
+        $ret = $this->table;
+        if (substr($ret, -1) == 's') {
+            $ret = substr($ret, 0, strlen($ret) - 1);
+        }
+        return $ret;
+    }
+
+    /**
+     * Get plural name of type
+     *
+     * For example for a DAOUsers instance that will be 'users'
+     *
+     * @attention It is not translated by default!
+     *
+     * @return string
+     */
+    public function get_type_name_plural() {
+        // We assume naming convention that table is plural and
+        // same as module
+        return $this->table;
+    }
+
+    /**
+     * Get description for the type
+     *
+     * @return string
+     */
+    public function get_type_description() {
+        return '';
+    }
 	
 	// *************************************
 	// Helper functions

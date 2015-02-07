@@ -69,15 +69,33 @@ class DeleteDialogController extends ControllerBase {
 					$err->merge($cmd->execute());
 				}
 			}
-			$instance_string = 'instance';
-			$instance = $dao->get_table_name();
-			$instance_string =  substr($instance, 0, strlen($instance)-1);
+			$instance_string = $this->get_instance_name($dao);
 			$formhandler->finish($err, tr('The '.$instance_string.' has been deleted', 'deletedialog'));
 		}
 		else {
 			$this->render_view_status($page_data, $formhandler, $dao);	
 		}
 	}
+
+    /**
+     * Extract instance name from DAO instance
+     *
+     * Strips of plural s, like 'users' => 'user'
+     *
+     * @param DataObjectBase $dao
+     * @return string
+     */
+    protected function get_instance_name($dao) {
+        if ($dao instanceof ISelfDescribingType) {
+            return $dao->get_type_name_singular();
+        } else if ($dao instanceof IDataObject) {
+            return $dao->get_table_name();
+        } else if ($dao instanceof ISelfDescribing) {
+            return $dao->get_title();
+        } else {
+            return 'instance';
+        }
+    }
 	
 	
 	/**
