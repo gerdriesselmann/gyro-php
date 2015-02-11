@@ -71,7 +71,7 @@ UPDATE countries SET code3 = 'SLV' WHERE id = 'SV';
 UPDATE countries SET code3 = 'GNQ' WHERE id = 'GQ';
 UPDATE countries SET code3 = 'ERI' WHERE id = 'ER';
 UPDATE countries SET code3 = 'EST' WHERE id = 'EE';
-UPDATE countries SET code3 = 'ETH ' WHERE id = 'ET';
+UPDATE countries SET code3 = 'ETH' WHERE id = 'ET';
 UPDATE countries SET code3 = 'FLK' WHERE id = 'FK';
 UPDATE countries SET code3 = 'FRO' WHERE id = 'FO';
 UPDATE countries SET code3 = 'FJI' WHERE id = 'FJ';
@@ -274,7 +274,7 @@ UPDATE countries SET codenum = '70' WHERE id = 'BA';
 UPDATE countries SET codenum = '72' WHERE id = 'BW';
 UPDATE countries SET codenum = '74' WHERE id = 'BV';
 UPDATE countries SET codenum = '76' WHERE id = 'BR';
-UPDATE countries SET codenum = '086 ' WHERE id = 'IO';
+UPDATE countries SET codenum = '086' WHERE id = 'IO';
 UPDATE countries SET codenum = '96' WHERE id = 'BN';
 UPDATE countries SET codenum = '100' WHERE id = 'BG';
 UPDATE countries SET codenum = '854' WHERE id = 'BF';
@@ -490,7 +490,12 @@ UPDATE countries SET code3 = 'TLS', codenum = 626 WHERE id = 'TL';
 UPDATE countries SET code3 = 'SRB', codenum = 688 WHERE id = 'RS';
 UPDATE countries SET code3 = 'PSE', codenum = 275 WHERE id = 'PS';
 
+/* MySQL 5.6 complains about a modification of a FOREIGN KEY
+ * and won't allow to DROP/MODIFY/ADD CONTRAINT in a single
+ * statement ... */
+ALTER TABLE `countries` DROP FOREIGN KEY `fk_countries_continent`;
+ALTER TABLE `countries` MODIFY COLUMN `id_continent` CHAR(2) NOT NULL;
 ALTER TABLE `countries` 
- MODIFY COLUMN `id_continent` CHAR(2) NOT NULL,
+ ADD CONSTRAINT `fk_countries_continent` FOREIGN KEY (`id_continent`) REFERENCES `continents` (`id`),
  MODIFY COLUMN `code3` CHAR(3) NOT NULL,
  MODIFY COLUMN `codenum` INT(10) UNSIGNED NOT NULL;
