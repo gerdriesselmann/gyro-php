@@ -49,6 +49,17 @@ class GyroHttpRequest {
 		return $ret;
 	}
 
+	/**
+	 * POST to given URL
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param array $fields Associative array of values
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
 	public static function post_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
 		$options = self::set_post_options($options, $fields);
@@ -56,6 +67,19 @@ class GyroHttpRequest {
 		return $ret;
 	}
 
+	/**
+	 * POST content to given url using authentication
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param array $fields Associative array of values
+	 * @param string $user Username for authentication
+	 * @param string $pwd Password for authentication
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
 	public static function post_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
 		$options = self::set_post_options($options, $fields);
@@ -64,6 +88,13 @@ class GyroHttpRequest {
 		return $ret;
 	}
 
+	/**
+	 * Configure curl for POST requests
+
+	 * @param array $options Options already set
+	 * @param array $fields Data as associative array
+	 * @return array
+	 */
 	private static function set_post_options($options, $fields) {
 		$options[CURLOPT_HTTPHEADER] = array(
 			'Content-Type' => 'application/x-www-form-urlencoded',
@@ -73,7 +104,112 @@ class GyroHttpRequest {
 		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
 		return $options;
 	}
-	
+
+	/**
+	 * PUT to given URL
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param array $fields Associative array of values
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
+	public static function put_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_put_options($options, $fields);
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	/**
+	 * PUT content to given url using authentication
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param array $fields Associative array of values
+	 * @param string $user Username for authentication
+	 * @param string $pwd Password for authentication
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
+	public static function put_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_put_options($options, $fields);
+		$options[CURLOPT_USERPWD] = "$user:$pwd";
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	/**
+	 * Configure curl for PUT requests
+
+	 * @param array $options Options already set
+	 * @param array $fields Data as associative array
+	 * @return array
+	 */
+	private static function set_put_options($options, $fields) {
+		$options[CURLOPT_HTTPHEADER] = array(
+			'Content-Type' => 'application/x-www-form-urlencoded',
+			'Expect: ' // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
+		);
+		$options[CURLOPT_CUSTOMREQUEST] = "PUT";
+		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+		return $options;
+	}
+
+	/**
+	 * DELETE from given url
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
+	public static function delete_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_delete_options($options);
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	/**
+	 * DELETE from given url using authentication
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param string $user Username for authentication
+	 * @param string $pwd Password for authentication
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 */
+	public static function delete_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$options = self::get_default_opts($policy);
+		$options = self::set_delete_options($options);
+		$options[CURLOPT_USERPWD] = "$user:$pwd";
+		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
+		return $ret;
+	}
+
+	/**
+	 * Configure curl for DELETE requests
+
+	 * @param array $options Options already set
+	 * @return array
+	 */
+	private static function set_delete_options($options) {
+		$options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
+		return $options;
+	}
+
+
 	/**
 	 * Fetch only head
 	 *
