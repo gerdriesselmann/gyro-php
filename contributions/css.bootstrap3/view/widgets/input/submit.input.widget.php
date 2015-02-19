@@ -5,7 +5,7 @@ require_once GYRO_CORE_DIR . 'view/widgets/input/base/submit.input.widget.php';
  * A submit button
  * 
  * @author Gerd Riesselmann
- * @ingroup View
+ * @ingroup Bootstrap3
  */ 
 class InputWidgetSubmit extends InputWidgetSubmitBase {
 	/**

@@ -5,7 +5,7 @@ require_once GYRO_CORE_DIR . 'view/widgets/input/base/base.input.widget.php';
  * Basic input widget
  * 
  * @author Gerd Riesselmann
- * @ingroup View
+ * @ingroup Bootstrap3
  */
 class InputWidgetBase extends InputWidgetBaseBase {
 	/**
