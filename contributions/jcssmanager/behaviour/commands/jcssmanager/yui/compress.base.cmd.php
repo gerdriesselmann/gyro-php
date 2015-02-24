@@ -65,7 +65,7 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 		$ret = new Status();
 		return $ret;
 	}
-	
+
 	/**
 	 * Invoke YUICOmpressor
 	 * 
@@ -75,27 +75,68 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 	 * @return Status 
 	 */
 	protected function run_yui($in_file, $out_file, $type) {
-		$module_dir = Load::get_module_dir('jcssmanager');
-		$yui_cmd = 'java -jar ' . $module_dir . '3rdparty/yuicompressor/yuicompressor.jar';
-		
-		$yui_options = array();
-		$yui_options['--type'] = $type;
-		$yui_options['--charset'] = GyroLocale::get_charset();
-		$yui_options['--line-break'] = 1000;
-		$yui_options['-o'] = $out_file;
-		
-		$yui_cmd = $yui_cmd . ' ' . Arr::implode(' ', $yui_options, ' ') . ' ' . $in_file;
-		
-		$output = array();
-		$return = 0;
-		exec($yui_cmd, $output, $return);
-
 		$ret = new Status();
-		if ($return) {
-			$ret->append('JCSSManager: Error running yuicompressor.');
-			$ret->append(implode(' ', $output));
+		
+		$yui_path = false;
+		$ret->merge(self::get_yui_jar($yui_path));
+		if ($ret->is_ok()) {
+			$yui_cmd = 'java -jar ' . $yui_path;
+
+			$yui_options = array();
+			$yui_options['--type'] = $type;
+			$yui_options['--charset'] = GyroLocale::get_charset();
+			$yui_options['--line-break'] = 1000;
+			$yui_options['-o'] = $out_file;
+		
+			$yui_cmd = $yui_cmd . ' ' . Arr::implode(' ', $yui_options, ' ') . ' ' . $in_file;
+		
+			$output = array();
+			$return = 0;
+			exec($yui_cmd, $output, $return);
+
+			if ($return) {
+				$ret->append('JCSSManager: Error running yuicompressor.');
+				$ret->append(implode(' ', $output));
+			}
 		}
 		
 		return $ret;		
-	} 
+	}
+
+	/**
+	 * Get path to yuicompressor.jar
+	 *
+	 * @return Status
+	 */
+	protected function get_yui_jar(&$path) {
+		$ret = new Status();
+		
+		$yui_version = Config::get_value(ConfigJCSSManager::YUI_VERSION);
+		if ($yui_version == 'latest') {
+			$yui_version = ConfigJCSSManager::YUI_VERSION_LATEST;
+		}
+		$yui_jar	 = 'yuicompressor/' . $yui_version . '/yuicompressor.jar';
+
+		// test APP_3RDPARTY_DIR first ...
+		$app_thirdparty = Config::get_value(Config::THIRDPARTY_DIR);
+		if (!empty($app_thirdparty)) {
+			if (substr($app_thirdparty, -1) != '/') {
+				$app_thirdparty .= '/';
+			}
+			if (file_exists($app_thirdparty . $yui_jar)) {
+				$path = $app_thirdparty . $yui_jar;
+				return $ret;
+			}
+		}
+			
+		$module_3rdparty  = Load::get_module_dir('jcssmanager') . '3rdparty/';
+		if (file_exists($module_3rdparty . $yui_jar)) {
+			$path = $module_3rdparty . $yui_jar;
+			return $ret;
+		}
+
+		$ret->append('yuicompressor.jar not found at configured YUI_VERSION');
+		
+		return $ret;
+	}
 }
