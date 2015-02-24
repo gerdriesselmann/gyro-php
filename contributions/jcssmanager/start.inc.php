@@ -26,11 +26,33 @@ class ConfigJCSSManager {
 	 * Set to FALSE to disable gzipping compressed files 
 	 */
 	const ALSO_GZIP = 'JCSS_ALSO_GZIP'; 
+	/**
+	 * yuicompressor versions to use, bundled with gyro-php / possible values are
+	 *
+	 * '2.4.2' => used as default, to avoid issues with CKeditor
+	 * '2.4.8' / alias: 'latest', see below
+	 *
+	 * If APP_3RDPARTY_DIR is set, custom versions may be
+	 * added by application too, just define
+	 *
+	 * - APP_3RDPARTY_DIR (i.e. dirname(__FILE__) . '/3rdparty')
+	 *
+	 * and
+	 *
+	 * - YUI_VERSION (i.e. '2.4.6')
+	 *
+	 * with propper values and provide yuicompressor.jar at that path:
+	 *
+	 * APP_3RDPARTY_DIR . '/yuicompressor/' . YUI_VERSION . '/yuicompressor.jar'
+	 */
+	const YUI_VERSION = 'JCSS_YUI_VERSION';
+	const YUI_VERSION_LATEST = '2.4.8'; 
 }
 
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_DIR, 'APP_JCSS_CSS_DIR', 'css/');
 Config::set_value_from_constant(ConfigJCSSManager::JS_DIR, 'APP_JCSS_JS_DIR', 'js/');
+Config::set_value_from_constant(ConfigJCSSManager::YUI_VERSION, 'APP_JCSS_YUI_VERSION', '2.4.2');
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_COMPRESSOR, 'APP_JCSS_CSS_COMPRESSOR', 'yui');
 Config::set_value_from_constant(ConfigJCSSManager::JS_COMPRESSOR, 'APP_JCSS_JS_COMPRESSOR', 'yui');
