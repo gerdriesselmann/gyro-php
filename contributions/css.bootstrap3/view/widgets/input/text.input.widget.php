@@ -14,7 +14,8 @@ class InputWidgetText extends InputWidgetTextBase {
     protected function render_input($attrs, $params, $name, $title, $value, $policy) {
         $needs_div = false;
 
-        $text_box = html::input('text', $name, $attrs);
+        $type = Arr::get_item($attrs, 'type', 'text');
+        $text_box = html::input($type, $name, $attrs);
         $pre = Arr::get_item($params, 'addon-pre');
         if ($pre) {
             $text_box = html::span(String::escape($pre), 'input-group-addon') . $text_box;

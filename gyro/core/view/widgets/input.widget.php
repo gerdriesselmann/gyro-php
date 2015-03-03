@@ -10,7 +10,7 @@ if (!defined('APP_MULTISELECT_THRESHOLD')) define ('APP_MULTISELECT_THRESHOLD', 
  * Requires.
  * - name: input name (and id, if id is not set)
  * - type: hidden, text, select, checkbox (defaults to text) 
- *  
+ *
  * Optional param array has different members according to type
  * 
  * Accepts: 
@@ -23,7 +23,8 @@ if (!defined('APP_MULTISELECT_THRESHOLD')) define ('APP_MULTISELECT_THRESHOLD', 
  * - notes (optional): If larger than 0, n stars (*) are added. E.g. notes:2 adds 2 stars. Needs label to be set  
  * 
  * If type is text, the following is supported:
- * - size (optional): For text fields 
+ * - size (optional): For text fields
+ * - Additional, if a type attribute is set, this is used rather than 'text'
  *
  * If type is select, multi select or radio buttons, the following is supported:
  * - options: Array of options. Options are key => value pair. If value itself is an array, all its values will 
