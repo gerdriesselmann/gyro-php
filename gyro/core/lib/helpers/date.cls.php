@@ -358,8 +358,24 @@ class GyroDate {
 		$ret = self::set_time($ret, 0);
 		$ret = self::set_day($ret, 1);
 		return $ret;		
-	}	
-	
+	}
+
+	/**
+	 * Casts date to end of month (E.g. December 31st). Time is set to 23:59:59)
+	 *
+	 * @param date $date
+	 * @return date
+	 */
+	public static function end_of_month($date) {
+		$ret = GyroDate::datetime($date);
+		$ret = self::add_months($ret, 1);
+		$ret = self::set_day($ret, 1);
+		$ret = self::set_time($ret, 0);
+		$ret = $ret - 1;
+		return $ret;
+	}
+
+
 	/**
 	 * Return weekday of given Date
 	 * 
