@@ -44,11 +44,12 @@ class NotifyallUsersCommand extends CommandTransactional {
 			$notification->quote($title) => 'title',
 			$notification->quote($message) => 'message',
 			$notification->quote($source) => 'source',
+			$notification->quote(GyroDate::mysql_date(GyroDate::datetime(false))) => 'creationdate',
 		));
 		
 		$insert = $notification->create_insert_query();
 		$insert->set_fields(array(
-			'id_user', 'title', 'message', 'source'
+			'id_user', 'title', 'message', 'source', 'creationdate'
 		)); 
 		$insert->set_select($select);
 		return DB::execute($insert->get_sql(), $notification->get_table_driver());
