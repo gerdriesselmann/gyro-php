@@ -534,19 +534,34 @@ class GyroDate {
 	 * Returns true if the given datetime is of this month
 	 */
 	public static function is_this_month($time) {
-		$arr_time = getdate(self::datetime($time));
-		$arr_now = getdate(time());
-		return ($arr_now['year'] == $arr_time['year'] && $arr_now['mon'] == $arr_time['mon']);	
+		return self::is_same_month($time, time());
 	}
 
 	/**
 	 * Returns true if the given datetime is of this year
 	 */
 	public static function is_this_year($time) {
-		$arr_time = getdate(self::datetime($time));
-		$arr_now = getdate(time());
-		return ($arr_now['year'] == $arr_time['year']);			
+		return self::is_same_year($time, time());
 	}
+
+	/**
+	 * Returns true if the given times are in same month in same year
+	 */
+	public static function is_same_month($time1, $time2) {
+		$arr_time_1 = getdate(self::datetime($time1));
+		$arr_time_2 = getdate(self::datetime($time2));
+		return ($arr_time_1['year'] === $arr_time_2['year'] && $arr_time_1['mon'] === $arr_time_2['mon']);
+	}
+
+	/**
+	 * Returns true if the given times are in same year
+	 */
+	public static function is_same_year($time1, $time2) {
+		$arr_time_1 = getdate(self::datetime($time1));
+		$arr_time_2 = getdate(self::datetime($time2));
+		return ($arr_time_1['year'] === $arr_time_2['year']);
+	}
+
 }
 
 if (!class_exists('Date')) {
