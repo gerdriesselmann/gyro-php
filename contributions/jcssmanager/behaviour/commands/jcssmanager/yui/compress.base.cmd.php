@@ -38,6 +38,7 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 					$file = Config::get_value(Config::URL_ABSPATH) . $file;
 				}
 				fwrite($handle, $this->get_file_contents($file));
+				fwrite($handle, "\n");
 			}			
 			fclose($handle);
 		}
