@@ -331,7 +331,7 @@ class Url {
 	 * Callback to urlencode values - does not actually walk
 	 */
 	protected function callback_urlencode(&$value, $key = false) {
-		$value = urlencode($value);
+		$value = str_replace(' ', '+', urlencode($value));
 	}
 
 	/**
@@ -732,11 +732,16 @@ class Url {
 		}
 		$pathclean = implode('/', $dirsclean);
 		$url->set_path($pathclean);
-		if ($url->build(Url::ABSOLUTE, Url::ENCODE_PARAMS) != RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE)) {
+
+		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
+		$test_2 = RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE);
+		$test_1 = str_replace(array(' ', '+'), '%20', $test_1);
+		$test_2 = str_replace(array(' ', '+'), '%20', $test_2);
+		if ($test_1 !== $test_2) {
 			$url->redirect(self::PERMANENT);
 			exit();
-		} 
-		
+		}
+
 		$pos = String::strpos($path, '&'); 
 		if ($pos !== false) {
 			$path = String::left($path, $pos) . '?' . String::substr($path, $pos + 1);
