@@ -735,8 +735,8 @@ class Url {
 
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
 		$test_2 = RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE);
-		$test_1 = str_replace(array(' ', '+'), '%20', $test_1);
-		$test_2 = str_replace(array(' ', '+'), '%20', $test_2);
+		$test_1 = urldecode($test_1);
+		$test_2 = urldecode($test_2);
 		if ($test_1 !== $test_2) {
 			$url->redirect(self::PERMANENT);
 			exit();
