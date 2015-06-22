@@ -5,7 +5,7 @@
  * @author Gerd Riesselmann
  * @ingroup Binaries
  */
-class DAOBinaries extends DataObjectTimestampedCached {
+class DAOBinaries extends DataObjectTimestampedCached implements ISelfDescribing {
 	public $id;
 	public $name;
 	public $mimetype;
@@ -20,8 +20,7 @@ class DAOBinaries extends DataObjectTimestampedCached {
 				new DBFieldInt('id', null, DBFieldInt::AUTOINCREMENT | DBFieldInt::UNSIGNED | DBFieldInt::NOT_NULL),				
 				new DBFieldText('name', 200, null, DBFieldText::NOT_NULL),
 				new DBFieldText('mimetype', 100, null, DBFieldText::NOT_NULL),
-				), $this->get_timestamp_field_declarations()
-			),
+			), $this->get_timestamp_field_declarations()),
 			'id'
 		);
 	}
@@ -55,4 +54,12 @@ class DAOBinaries extends DataObjectTimestampedCached {
  		}
  		return null;
  	}
+
+	public function get_title() {
+		return $this->name;
+	}
+
+	public function get_description() {
+		return '';
+	}
 }
