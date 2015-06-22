@@ -8,6 +8,12 @@
 class Arr {
 	/**
 	 * Return value for key, if available, else return default value
+	 *
+	 * @param array $arr
+	 * @param string $key
+	 * @paranm mixed $default
+	 *
+	 * @return mixed
 	 */
 	public static function get_item($arr, $key, $default = false) {
 		if (isset($arr[$key])) {
