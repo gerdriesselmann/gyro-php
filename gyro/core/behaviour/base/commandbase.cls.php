@@ -27,7 +27,11 @@ class CommandBase implements ICommand {
 	 * @var mixed
 	 */
 	protected $result = false;
-	
+
+	/**
+	 * @param mixed $obj The object the command acts upon. Can also be a string that indicated a type, e.g.
+	 * @param mixed $params The parameters for the command
+	 */
 	public function __construct($obj = null, $params = false) {
 		$this->obj = $obj;
 		$this->params = $params;
