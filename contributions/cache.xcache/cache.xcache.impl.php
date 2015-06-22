@@ -19,6 +19,9 @@ class XCacheCacheItem implements ICacheItem {
 	 * @param array $item_data
 	 */
 	public function __construct($item_data) {
+		if (is_string($item_data)) {
+			$item_data = unserialize($item_data);
+		}
 		$this->item_data = $item_data;
 	}
 	
@@ -68,7 +71,9 @@ class XCacheCacheItem implements ICacheItem {
 	 * @return string
 	 */
 	public function get_content_compressed() {
-		return $this->item_data['content'];
+		$content = $this->item_data['content'];
+		//$content = base64_decode($content);
+		return $content;
 	}	
 }
 
@@ -113,15 +118,18 @@ class CacheXCacheImpl implements ICachePersister {
 			if (function_exists('gzdeflate')) {
 				$content = gzdeflate($content, 9);
 			}
-		} 
+		}
+		//$content = base64_encode($content);
 		$data = array(
 			'content' => $content,
 			'data' => $data,
 			'creationdate' => time(),
 			'expirationdate' => time() + $cache_life_time			
 		);
+
 		$key = $this->flatten_keys($cache_keys);
-		xcache_set($key, $data, $cache_life_time);
+		$serialized = serialize($data);
+		xcache_set($key, $serialized, $cache_life_time);
 	}
 	
 	/**
@@ -149,7 +157,7 @@ class CacheXCacheImpl implements ICachePersister {
 	 * Clear cache for given cache key(s)
 	 */
 	protected function do_clear($cache_keys) {
-		$key = $this->flatten_keys($cache_keys);
+		$key = $this->flatten_keys($cache_keys, false);
 		xcache_unset($key);
 		xcache_unset_by_prefix($key . '_g$c');
 	}
@@ -168,30 +176,28 @@ class CacheXCacheImpl implements ICachePersister {
 	 */
 	protected function preprocess_keys($cache_keys, $strip_empty = true) {
 		$cleaned = array($this->get_app_key());
-		if ($strip_empty) {
-			foreach(Arr::force($cache_keys, false) as $key) {
-				if ($key || $key == '0') {
-					$cleaned[] = $key;
-				} 
-				else {
-					break;
-				}
-			}		
-		}
-		else {
-			$cleaned = array_merge($cleaned, Arr::force($cache_keys, true));
+		foreach(Arr::force($cache_keys, false) as $key) {
+			if ($key || $key == '0') {
+				$cleaned[] = $key;
+			} else if ($strip_empty) {
+				break;
+			} else {
+				$cleaned[] = "{empty}";
+			}
 		}
 		return $cleaned;
 	}
-		
+
 	/**
 	 * Transform the given param into a key string
-	 * 
-	 * @param Mixed A set of key params, may be an array or a string
+	 *
+	 * @param $cache_keys
+	 * @param bool $strip_empty
+	 * @return string
 	 */
-	protected function flatten_keys($cache_keys) {
-		$cache_keys = $this->preprocess_keys($cache_keys);
-		$ret .= implode('_g$c', $cache_keys);
+	protected function flatten_keys($cache_keys, $strip_empty = true) {
+		$cache_keys = $this->preprocess_keys($cache_keys, $strip_empty);
+		$ret = implode('_g$c', $cache_keys);
 		return $ret;		
 	}
 

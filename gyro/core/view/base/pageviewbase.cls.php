@@ -170,7 +170,10 @@ class PageViewBase extends ViewBase {
 				GyroHeaders::set($header, false, true);
 			}
 			//$etag = Arr::get_item($cache_data, 'etag', '');
-			$cache_header_manager = Arr::get_item($cache_data, 'cacheheadermanager', $this->page_data->get_cache_manager()->get_cache_header_manager());
+			$cache_header_manager = Arr::get_item($cache_data, 'cacheheadermanager', null);
+			if (empty($cache_header_manager)) {
+				$cache_header_manager = $this->page_data->get_cache_manager()->get_cache_header_manager();
+			}
 			$this->page_data->get_cache_manager()->set_cache_header_manager($cache_header_manager);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
