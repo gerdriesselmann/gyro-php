@@ -87,16 +87,14 @@ class DBSession implements ISessionHandler {
 	 * Delete outdated sessions
 	 */
 	public function gc($lifetime) {
-		if (!Session::is_started()) {
-			return;
+		if (Session::is_started()) {
+			try {
+				$sess = new DAOSessions();
+				$sess->add_where('modificationdate', '<', time() - $lifetime);
+				$sess->delete(DataObjectBase::WHERE_ONLY);
+			} catch (Exception $ex) {
+			}
 		}
-		try {
-			$sess = new DAOSessions();
-			$sess->add_where('modificationdate', '<', time() - $lifetime);	
-			$sess->delete(DataObjectBase::WHERE_ONLY);
-		}
-		catch (Exception $ex) {}
-		
 		return true;
 	}
 }
