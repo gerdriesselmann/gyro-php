@@ -15,9 +15,49 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 			
 			$ret->merge($this->invoke_yui($sourcefile, $out_file));
 		}
+        if ($ret->is_error()) {
+            // ignore error, retry file by file ...
+            $ret = $this->yui_compress_file_by_file($in_files, $out_file, $files_to_unlink);
+        }
 		
 		return $ret;
 	}
+
+    /**
+    * Compress given files, do this one-by-one, if compress'ed runs fine
+    * append compressed result, otherwise append original to out_file
+    *
+    * @return Status
+    */
+    protected function yui_compress_file_by_file($in_files, $out_file, &$files_to_unlink) {
+        $ret = new Status();
+        $tmp_file = tempnam('/tmp', 'jcss');
+        if ($tmp_file === false) {
+            $ret->append('JCSSManager: Could not create tempfile');
+        } else {
+            $files_to_unlink[] = $tmp_file;
+            $handle = fopen($out_file, 'w');
+            if ($handle === false) {
+                $ret->append('JCSSManager: Could not open out_file');
+            } else {
+                foreach($in_files as $file) {
+                    if (substr($file, 0, 1) !== '/' && strpos($file, '://') == false) {
+                        $file = Config::get_value(Config::URL_ABSPATH) . $file;
+                    }
+                    $err = $this->invoke_yui($file, $tmp_file);
+                    if ($err->is_ok()) {
+                        // yuicompress was fine, append compressed
+                        fwrite($handle, $this->get_file_contents($tmp_file));
+                    } else {
+                        // yuicompress failed, append uncompressed stuff as it is
+                        fwrite($handle, $this->get_file_contents($file));
+                    }
+                }
+                fclose($handle);
+            }
+        }
+        return $ret;
+    }
 	
 	/**
 	 * Concat the gicen files into one
