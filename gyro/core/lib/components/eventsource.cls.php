@@ -8,6 +8,8 @@
 class EventSource implements IEventSource {
 	/**
 	 * Array of EventSinks
+	 *
+	 * @var IEventSink[]
 	 */
 	private $sinks = array();
 	
