@@ -153,6 +153,8 @@ class JCSSManager {
 		foreach($arr_files as $file) {
 			$ret .= self::transform_css_file($file);
 		}
+		// Fire an event so the concated CSS can be post processed by other modules
+		EventSource::Instance()->invoke_event('jcssmanager_concated', JCSSManager::TYPE_CSS, $ret);
 		return $ret;
 	}
 	
