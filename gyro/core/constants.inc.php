@@ -38,6 +38,7 @@ Config::set_feature_from_constant(Config::THROW_ON_WARNING, 'APP_THROW_ON_WARNIN
 Config::set_feature_from_constant(Config::DEBUG_QUERIES, 'APP_DEBUG_QUERIES', APP_TESTMODE);
 Config::set_feature_from_constant(Config::PRINT_DURATION, 'APP_PRINT_DURATION', APP_TESTMODE);
 Config::set_feature_from_constant(Config::DISABLE_CACHE, 'APP_DISABLE_CACHE', APP_TESTMODE);
+Config::set_feature_from_constant(Config::DISABLE_ERROR_CACHE, 'APP_DISABLE_ERROR_CACHE', APP_TESTMODE);
 Config::set_feature_from_constant(Config::FORCE_FULL_DOMAINNAME, 'APP_FORCE_FULL_DOMAINNAME', true);
 Config::set_feature_from_constant(Config::VALIDATE_URL, 'APP_VALIDATE_URL', true);
 /**
