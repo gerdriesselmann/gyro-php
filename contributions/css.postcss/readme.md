@@ -12,9 +12,9 @@ and so should be the npm packet manager.
 
 On both Debian and Ubuntu it is normally enough to just do 
 
-    apt-get install node npm
-    npm install postcss-cli
-    npm install {postcss extension}
+    sudo apt-get install node npm
+    sudo npm install postcss-cli
+    sudo npm install {postcss extension}
 
 
 Usage

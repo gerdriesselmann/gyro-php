@@ -83,7 +83,7 @@ class PostCSS {
 		$cli = self::build_basic_command($temp_files_created);
 		$cli .= ' ' . implode(' ', $params);
 
-		Load::commands('generic/executeshell');
+		Load::commands('generics/execute.shell');
 		$cmd = new ExecuteShellCommand($cli);
 		$ret = $cmd->execute();
 
