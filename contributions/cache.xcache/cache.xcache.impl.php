@@ -150,7 +150,8 @@ class CacheXCacheImpl implements ICachePersister {
 	 * Clear all cache
 	 */
 	protected function do_clear_all() {
-		xcache_unset_by_prefix($this->get_app_key());
+		$app_key = $this->get_app_key();
+		xcache_unset_by_prefix($app_key);
 	}
 	
 	/**
