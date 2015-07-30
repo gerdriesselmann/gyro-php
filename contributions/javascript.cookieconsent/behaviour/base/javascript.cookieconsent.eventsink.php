@@ -20,11 +20,11 @@ class JavascriptCookieConsentEventSink implements IEventSink {
 			if (!Load::is_module_loaded('usermanagement') || !Users::is_logged_in()) {
 				$view = $event_params['view'];
 				if ($view instanceof PageViewBase) {
-					$msg = Config::get_value(ConfigCookieConsent::MESSAGE);
+					$msg = tr(Config::get_value(ConfigCookieConsent::MESSAGE), 'cookieconsent');
 					$theme = Config::get_value(ConfigCookieConsent::THEME);
 					$link = Config::get_value(ConfigCookieConsent::LINK);
-					$dismiss = Config::get_value(ConfigCookieConsent::DISMISS);
-					$learn_more = Config::get_value(ConfigCookieConsent::LEARN_MORE);
+					$dismiss = tr(Config::get_value(ConfigCookieConsent::DISMISS), 'cookieconsent');
+					$learn_more = tr(Config::get_value(ConfigCookieConsent::LEARN_MORE), 'cookieconsent');
 					/* @var PageData $page_data */
 					$page_data = $view->retrieve('page_data');
 					$page_data->head->add_js_snippet(

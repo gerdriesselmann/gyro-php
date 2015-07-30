@@ -22,11 +22,11 @@ class ConfigCookieConsent {
 	const THEME = 'COOKIE_CONSENT_THEME';
 }
 
-Config::set_value_from_constant(ConfigCookieConsent::MESSAGE, 'APP_COOKIE_CONSENT_MESSAGE' ,'This website uses cookies to ensure you get the best experience on our website.');
+Config::set_value_from_constant(ConfigCookieConsent::MESSAGE, 'APP_COOKIE_CONSENT_MESSAGE' ,'Cookies help us deliver our services. By using our services, you agree to our use of cookies.');
 Config::set_value_from_constant(ConfigCookieConsent::DISMISS, 'APP_COOKIE_CONSENT_DISMISS', 'Got it!');
 Config::set_value_from_constant(ConfigCookieConsent::LEARN_MORE, 'APP_COOKIE_CONSENT_LEARN_MORE', 'More info');
 Config::set_value_from_constant(ConfigCookieConsent::LINK, 'APP_COOKIE_CONSENT_LINK', '/privacy');
-Config::set_value_from_constant(ConfigCookieConsent::THEME, 'APP_COOKIE_CONSENT_THEME', 'light-floating');
+Config::set_value_from_constant(ConfigCookieConsent::THEME, 'APP_COOKIE_CONSENT_THEME', 'dark-bottom');
 
 define('COOKIE_CONSENT_THEME_LIGHT_FLOATING', 'light-floating');
 define('COOKIE_CONSENT_THEME_DARK_FLOATING', 'dark-floating');
