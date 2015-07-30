@@ -307,7 +307,7 @@ class HeadData implements IRenderer {
 	}
 	
 	protected function escape_file($file) {
-		if (strpos($file, '://') === false) {
+		if (strpos($file, '://') === false && substr($file, 0, 2) !== '//') {
 			$file = Config::get_value(Config::URL_BASEDIR) . ltrim($file, '/');
 		}
 		return $file;		
