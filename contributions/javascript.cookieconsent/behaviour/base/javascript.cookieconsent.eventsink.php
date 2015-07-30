@@ -30,7 +30,7 @@ class JavascriptCookieConsentEventSink implements IEventSink {
 					$page_data->head->add_js_snippet(
 						"window.cookieconsent_options = {'message':'$msg','dismiss':'$dismiss','learnMore':'$learn_more','link':'$link','theme':'$theme'};"
 					);
-					$page_data->head->add_js_file('//s3.amazonaws.com/cc.silktide.com/cookieconsent.latest.min.js');
+					$page_data->head->add_js_file('/js/cookie-consent/cookieconsent.min.js');
 				}
 			}
 		}
