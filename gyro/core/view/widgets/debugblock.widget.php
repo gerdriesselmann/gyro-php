@@ -34,9 +34,11 @@ class WidgetDebugBlock implements IWidget {
 					$out .= $content;
 				}
 			}
+
+			$out = html::div($out, 'debugblock');
 		}
 		
-		return html::div($out, 'debugblock');
+		return $out;
 	}
 
 	protected function render_properties() {

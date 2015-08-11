@@ -8,6 +8,7 @@
 class JQuery {
 	const CDN_GOOGLE = 'https://ajax.googleapis.com/ajax/libs/jquery/%version%/jquery.min.js';
 	const CDN_MS = 'https://ajax.aspnetcdn.com/ajax/jQuery/jquery-%version_min%.min.js';
+	const CDN_JQUERY = 'https://code.jquery.com/jquery-%version%.min.js';
 
 	public static function get_path() {
 		$cdn = trim(Config::get_value(ConfigJQuery::CDN));
@@ -18,7 +19,8 @@ class JQuery {
 		// Resolve CDN
 		if ($cdn == 'google') { $cdn = self::CDN_GOOGLE; }
 		elseif ($cdn == 'ms') { $cdn = self::CDN_MS; }
-		
+		elseif ($cdn == 'jquery') { $cdn = self::CDN_JQUERY; }
+
 		$version = '';
 		switch(Config::get_value(ConfigJQuery::VERSION)) {
 			case '1.3': 
@@ -41,6 +43,9 @@ class JQuery {
 				break;
 			case '1.10':
 				$version = JQUERY_VERSION_1_10;
+				break;
+			case '1.11':
+				$version = JQUERY_VERSION_1_11;
 				break;
 		}
 		if (empty($version)) {

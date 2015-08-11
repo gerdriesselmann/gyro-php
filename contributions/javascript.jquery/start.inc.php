@@ -11,15 +11,14 @@
  * get included on all pages, if JCSSManager WidgetJCSS is used. It also will be compressed by JCSSManager, 
  * if compression is enabled.
  * 
- * To dissable automatic inclusion of jquery.js set constant APP-JQUERY_ON_EVERY_PAGE to false, and include
+ * To dissable automatic inclusion of jquery.js set constant APP_JQUERY_ON_EVERY_PAGE to false, and include
  * 'js/jquery.js' manually where approbiate.  
  * 
  * To define the version of JQuery to use, you must specify a version to use by defining
- * the constant APP_JQUERY_VERSION. Available values are "1.3" for JQuery 1.3.2, "1.4" for JQuery 1.4.4,
- * "1.5" for JQuery 1.5.2., "1.6" for 1.6.4 and "1.7" for 1.7.1 The default is "1.7".
+ * the constant APP_JQUERY_VERSION. Available values are "1.3" to "1.11" for the lates jquery version for each branch.
  * 
  * @attention The default version policy changed to "newest", so if you do not define a jquery version,
- *            you will automaticalyy get the latest release
+ *            you will automatically get the latest release
  * 
  * @code
  * define('APP_JQUERY_VERSION', '1.4');
@@ -52,10 +51,11 @@ class ConfigJQuery {
 	 *
 	 * - "google" for the Google CDN
 	 * - "ms" for the Microsoft CDN
+	 * - "jquery" for the JQuery CDN
 	 * 
 	 * @attention %version% will be allways 3 digits (e.g. 1.6.0). Use %version_min% to force this to 1.6
 	 * 
-	 * Files will be loaded using https with both Google and Microsoft CDN
+	 * Files will be loaded using https always
 	 */
 	const CDN = 'JQUERY_CDN';
 }
@@ -64,7 +64,8 @@ Config::set_feature_from_constant(ConfigJQuery::ON_EVERY_PAGE, 'APP_JQUERY_ON_EV
 Config::set_value_from_constant(ConfigJQuery::CDN, 'APP_JQUERY_CDN', '');
 
 // To be changed on new releases
-Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.10');
+Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.11');
+define('JQUERY_VERSION_1_11', '1.11.3');
 define('JQUERY_VERSION_1_10', '1.10.2');
 define('JQUERY_VERSION_1_9', '1.9.1');
 define('JQUERY_VERSION_1_7', '1.7.1');

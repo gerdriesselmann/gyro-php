@@ -11,9 +11,6 @@
  * 
  * The module copies Bootstrap css, js and fonts to the app/www directory. These files are overwritten
  * on each system update
- * 
- * By default a 213-template is installed. Use the YAML builder to create your own template
- * and CSS stubs: http://builder.yaml.de/
  */
 
 EventSource::Instance()->register(new CSSBootstrap3EventSink());
@@ -26,8 +23,11 @@ EventSource::Instance()->register(new CSSBootstrap3EventSink());
  */
 class ConfigBootstrap3 {
 	const VERSION = 'BOOTSTRAP3_VERSION';
+
+	const ON_EVERY_PAGE = 'BOOTSTRAP3_ON_EVERY_PAGE';
 }
 
 Config::set_value_from_constant(ConfigBootstrap3::VERSION, 'APP_BOOTSTRAP3_VERSION', '3.0');
+Config::set_feature_from_constant(ConfigBootstrap3::ON_EVERY_PAGE, 'APP_BOOTSTRAP3_ON_EVERY_PAGE', true);
 
 

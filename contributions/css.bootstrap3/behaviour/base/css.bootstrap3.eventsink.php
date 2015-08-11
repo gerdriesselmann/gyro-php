@@ -14,13 +14,15 @@ class CSSBootstrap3EventSink implements IEventSink {
 	 */
 	public function on_event($event_name, $event_params, &$result) {
 		if ($event_name == 'jcssmanager_compress' || $event_name == 'jcssmanager_collect') {
-			switch($event_params) {
-				case JCSSManager::TYPE_CSS:
-					$result[] = 'css/bootstrap.css';
-					break;
-				case JCSSManager::TYPE_JS:
-					$result[] = 'js/bootstrap.js';
-					break;
+			if (Config::has_feature(ConfigBootstrap3::ON_EVERY_PAGE)) {
+				switch ($event_params) {
+					case JCSSManager::TYPE_CSS:
+						$result[] = 'css/bootstrap.css';
+						break;
+					case JCSSManager::TYPE_JS:
+						$result[] = 'js/bootstrap.js';
+						break;
+				}
 			}
 		}
 	}
