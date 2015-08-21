@@ -20,4 +20,7 @@ switch ($policy) {
 		$cls = 'warning';
 		break;
 }
-print html::p($content, $cls);
+print html::tag('p', $content, array(
+	'class' => $cls,
+	'id' => $id
+));

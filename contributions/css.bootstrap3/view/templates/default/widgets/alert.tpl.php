@@ -20,8 +20,8 @@ switch ($policy) {
 		$cls = 'warning';
 		break;
 }
+$attr = array('id' => $id);
 if ($cls) {
-	print html::div($content, "alert alert-$cls");
-} else {
-	print html::div($content);
+	$attr['class'] = "alert alert-$cls";
 }
+print html::tag('div', $content, $attr);
