@@ -24,6 +24,7 @@ class WidgetAlert implements IWidget {
 	
 	public function __construct($content, $id = null) {
 		$this->content = $content;
+		$this->id = $id;
 	}
 	
 	public function render($policy = self::NONE) {
