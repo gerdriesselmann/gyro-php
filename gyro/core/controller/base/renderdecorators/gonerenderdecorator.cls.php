@@ -14,7 +14,11 @@ class GoneRenderDecorator extends RenderDecoratorBase {
 	 */
 	public function initialize($page_data) {
 		$page_data->in_history = false;
-		$page_data->set_cache_manager(new ConstantCacheManager('error-410'));
+		if (Config::has_feature(Config::DISABLE_ERROR_CACHE)) {
+			$page_data->set_cache_manager(new NoCacheCacheManager());
+		} else {
+			$page_data->set_cache_manager(new ConstantCacheManager('error-410'));
+		}
 		$page_data->status_code = CONTROLLER_NOT_FOUND;
 		$page_data->status_code_http = 410; // Gone
 	}

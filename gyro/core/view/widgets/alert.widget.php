@@ -15,20 +15,23 @@ class WidgetAlert implements IWidget {
 	const NOTE = 4096;
 
 	public $content;
+	public $id;
 
-	public static function output($content, $policy = self::NONE) {
-		$w = new WidgetAlert($content);
+	public static function output($content, $policy = self::NONE, $id = null) {
+		$w = new WidgetAlert($content, $id);
 		return $w->render($policy);
 	}
 	
-	public function __construct($content) {
+	public function __construct($content, $id = null) {
 		$this->content = $content;
+		$this->id = $id;
 	}
 	
 	public function render($policy = self::NONE) {
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/alert', false);
 		$view->assign('content', $this->content);
 		$view->assign('policy', $policy);
+		$view->assign('id', $this->id);
 		return $view->render();
 	}
 }

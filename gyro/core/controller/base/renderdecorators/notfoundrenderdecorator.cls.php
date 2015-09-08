@@ -13,7 +13,11 @@ class NotFoundRenderDecorator extends RenderDecoratorBase {
 	 * @return void
 	 */
 	public function initialize($page_data) {
-		$page_data->set_cache_manager(new ConstantCacheManager('error-404'));
+		if (Config::has_feature(Config::DISABLE_ERROR_CACHE)) {
+			$page_data->set_cache_manager(new NoCacheCacheManager());
+		} else {
+			$page_data->set_cache_manager(new ConstantCacheManager('error-404'));
+		}
 		$page_data->status_code = CONTROLLER_NOT_FOUND;
 	}
 	

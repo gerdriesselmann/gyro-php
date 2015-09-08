@@ -233,3 +233,7 @@ EventSource::Instance()->register(new UsersViewEventSink());
 
 Load::models('users');
 Users::initialize();
+
+if (Users::is_logged_in() && !defined('APP_DISABLE_ERROR_CACHE')) {
+	Config::set_feature(Config::DISABLE_ERROR_CACHE, true); // Disable constant caching of error pages
+}
