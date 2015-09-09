@@ -32,7 +32,7 @@ class PostCSS {
 	 */
 	public static function process_file($in, $out) {
 		return self::run_cli_with(array(
-			'--out', escapeshellarg($out), escapeshellarg($in)
+			'--output', escapeshellarg($out), escapeshellarg($in)
 		));
 	}
 
@@ -45,9 +45,13 @@ class PostCSS {
 	 * @return Status
 	 */
 	public static function process_directory($in, $out) {
-		return self::run_cli_with(array(
-			'--out', escapeshellarg($out), escapeshellarg($in)
-		));
+		$err = new Status();
+		foreach(glob($in . '/*.css') as $css_file) {
+			$err->merge(
+				self::run_cli_with(array('--dir', $out, $css_file))
+			);
+		}
+		return $err;
 	}
 
 	/**
@@ -105,7 +109,10 @@ class PostCSS {
 			array_keys(self::$extensions)
 		);
 		$conf = ConverterFactory::encode(self::$extensions, CONVERTER_JSON);
-		$conf_file = Common::create_temp_file($conf);
+		print $conf;
+		$tmp_file = Common::create_temp_file($conf);
+		$conf_file = $tmp_file . '.json';
+		rename($tmp_file, $conf_file);
 		$temp_files_created[] = $conf_file;
 
 		$ret = 'postcss ';
@@ -119,7 +126,7 @@ class PostCSS {
 	 *
 	 * @param array $temp_files
 	 */
-	private function remove_temp_files($temp_files) {
+	private static function remove_temp_files($temp_files) {
 		foreach($temp_files as $f) {
 			@unlink($f);
 		}
