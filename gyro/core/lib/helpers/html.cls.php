@@ -659,7 +659,7 @@ class html
 		$i = 0;		
 		$c = count($rows);
 		// Test if $rwos is array or array of arrays;
-		if ($c && !is_array($rows[0])) {
+		if ($c && !is_array(reset($rows))) {
 			$rows = array($rows);
 		}
 		// Iterate and output
