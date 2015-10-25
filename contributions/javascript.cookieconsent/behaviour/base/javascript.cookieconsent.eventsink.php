@@ -29,7 +29,7 @@ class JavascriptCookieConsentEventSink implements IEventSink {
 						$learn_more = tr(Config::get_value(ConfigCookieConsent::LEARN_MORE), 'cookieconsent');
 						/* @var PageData $page_data */
 						$page_data->head->add_js_snippet(
-							"window.cookieconsent_options = {'message':'$msg','dismiss':'$dismiss','learnMore':'$learn_more','link':'$link','theme':'$theme'};"
+							"window.cookieconsent_options = {'message':'$msg','dismiss':'$dismiss','learnMore':'$learn_more','link':'$link','theme':'$theme'};", true
 						);
 						$page_data->head->add_js_file('/js/cookie-consent/cookieconsent.min.js');
 					}
