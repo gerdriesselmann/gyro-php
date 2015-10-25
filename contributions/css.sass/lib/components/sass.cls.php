@@ -73,7 +73,15 @@ class SASS {
 	 * @return Status
 	 */
 	private static function run_cli_with($in_file, $out_file) {
-		$elems = array('sass', '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
+		$style = Config::get_value(ConfigSASS::OUTPUT_FORMAT, 'default');
+		if ($style === 'default') {
+			if (Config::has_feature(Config::TESTMODE)) {
+				$style = 'nested';
+			} else {
+				$style = 'compressed';
+			}
+		}
+		$elems = array('sass', '--style', $style, '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
 		$cli = implode(' ', $elems);
 
 		Load::commands('generics/execute.shell');

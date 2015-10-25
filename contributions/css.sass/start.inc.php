@@ -33,9 +33,17 @@ class ConfigSASS {
 	 */
 	const KEEP_DIRECTORY_STRUCTURE = 'SASS_KEEP_DIRECTORY_STRUCTURE';
 
+	/**
+	 * Output format.
+	 *
+	 * If set to 'default' resolves to 'nested' in test mode and 'compressed' in live mode
+	 */
+	const OUTPUT_FORMAT = 'SASS_OUTPUT_FORMAT';
+
 }
 
 Config::set_value_from_constant(ConfigSASS::OUTPUT_DIR, 'APP_SASS_OUTPUT_DIR', 'www/css/generated/');
+Config::set_value_from_constant(ConfigSASS::OUTPUT_FORMAT, 'APP_SASS_OUTPUT_FORMAT', 'default');
 Config::set_feature_from_constant(ConfigSASS::KEEP_DIRECTORY_STRUCTURE, 'APP_SASS_KEEP_DIRECTORY_STRUCTURE', true);
 
 
