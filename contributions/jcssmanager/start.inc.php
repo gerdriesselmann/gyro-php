@@ -10,11 +10,11 @@ class ConfigJCSSManager {
 	const JS_DIR = 'JCSS_JS_DIR';
 	
 	/**
-	 * CSS Compression method. Only 'yui' and 'csstidy' are supported
+	 * CSS Compression method. Only 'yui' and 'csstidy' and 'concat' are supported
 	 */
 	const CSS_COMPRESSOR = 'JCSS_CSS_COMPRESSOR';
 	/**
-	 * Javascript Compression method. Possible values are 'yui' or 'closure'
+	 * Javascript Compression method. Possible values are 'yui' or 'closure' or 'concat'
 	 */
 	const JS_COMPRESSOR = 'JCSS_JS_COMPRESSOR';
 	
