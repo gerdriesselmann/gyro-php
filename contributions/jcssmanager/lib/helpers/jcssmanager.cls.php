@@ -180,8 +180,11 @@ class JCSSManager {
 		switch ($token) {
 		case '@charse':
 			// Works around a bug in WebKit, which dislikes two charset declarations in one file
+			$charset_removed = self::remove_until_semicolon($line, 0);
+			$ret = self::transform_css_line($charset_removed, $src_file_real_path, $base_path);
 			break;
 		case '@import':
+			$ret = $line;
 			$start = strpos($line, '(', 7);
 			if ($start !== false) {
 				$end = strpos($line, ')', $start);
@@ -197,7 +200,9 @@ class JCSSManager {
 							$file_to_include = JCSSManager::make_absolute($file_to_include);
 						}
 					}
-					return self::transform_css_file($file_to_include);
+					$resolved = self::transform_css_file($file_to_include);
+					$rest_of_line = self::remove_until_semicolon($line, 0);
+					$ret = self::transform_css_line($resolved . $rest_of_line, $src_file_real_path, $base_path);
 				}
 			}
 			break;
@@ -228,6 +233,16 @@ class JCSSManager {
 		}
 
 		return $ret;
+	}
+
+	private static function remove_until_semicolon($in, $start_pos = 0) {
+		$pos_of_semicolon = strpos($in, ';', $start_pos);
+		if ($pos_of_semicolon !== false) {
+			return substr($in, 0, $start_pos) . substr($in, $pos_of_semicolon + 1);
+		} else {
+			return $in;
+		}
+
 	}
 
 }
