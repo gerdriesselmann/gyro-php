@@ -54,8 +54,11 @@ class HijackUsersCommand extends CommandComposite {
 				$this->append($notify);
 			}
 		}
-		// Set a Cookie
-		$this->append(new CookieSetCommand(HijackAccount::COOKIE_NAME, $saved_session_id, 0));
+		// Set cookie. Get secure settings from session cookie settings
+		$this->append(new CookieSetCommand(
+			HijackAccount::COOKIE_NAME, $saved_session_id, 0,
+			Session::cookies_are_http_only(), Session::cookies_are_secure()
+		));
 		return $ret;
 	}
 	

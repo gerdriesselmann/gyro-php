@@ -327,7 +327,25 @@ class Session {
 		return self::pull("status");
 	}
 	
-	public function has_status() {
+	public static function has_status() {
 		return (self::peek('status') != false);
+	}
+
+	/**
+	 * Returns whether session cookies are set in secure connections only or not
+	 * @return bool
+	 */
+	public static function cookies_are_secure() {
+		$sess_params = session_get_cookie_params();
+		return Arr::get_item($sess_params, 'secure', false);
+	}
+
+	/**
+	 * Returns whether session cookies are set for HTTP only
+	 * @return bool
+	 */
+	public static function cookies_are_http_only() {
+		$sess_params = session_get_cookie_params();
+		return Arr::get_item($sess_params, 'httponly', false);
 	}
 }

@@ -27,8 +27,11 @@ class CreatePermanentloginsCommand extends CommandComposite {
 		);
 		$this->append(new CreateCommand('permanentlogins', $params));
 		
-		// Set cookie
-		$this->append(new CookieSetCommand(PermanentLogins::COOKIE_NAME, $code, $validtime));
+		// Set cookie. Get secure settings from session cookie settings
+		$this->append(new CookieSetCommand(
+				PermanentLogins::COOKIE_NAME, $code, $validtime,
+				Session::cookies_are_http_only(), Session::cookies_are_secure()
+		));
 		
 		return $ret;
 	}
