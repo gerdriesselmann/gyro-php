@@ -78,9 +78,11 @@ class DBSession implements ISessionHandler {
 		try {
 			$sess = new DAOSessions();
 			$sess->id = $key;
-			$sess->delete();
+			$ret = $sess->delete();
+			return $ret->is_ok();
 		}
 		catch(Exception $ex) {}
+		return false;
 	}
 	
 	/**
