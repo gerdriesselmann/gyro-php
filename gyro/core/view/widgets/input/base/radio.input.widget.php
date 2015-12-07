@@ -32,7 +32,7 @@ class InputWidgetRadioBase extends InputWidgetBase {
 	protected function render_radio_button_and_label($name, $attrs, $label_text) {
 		$radio_html = '';
 		$radio_html .= html::input('radio', $name, $attrs);
-		$radio_html .= ' ' . String::escape($label_text);
+		$radio_html .= ' ' . GyroString::escape($label_text);
 		$radio_html = html::label($radio_html, '', 'spanning');
 		return $radio_html;
 	}

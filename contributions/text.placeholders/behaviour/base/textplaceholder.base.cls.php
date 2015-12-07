@@ -26,7 +26,7 @@ class TextPlaceholderBase implements ITextPlaceholder {
 	public function apply($text) {
 		$ret = $text;
 		$matches = array();
-		String::preg_match_all($this->build_regex(), $ret, $matches, PREG_SET_ORDER);
+		GyroString::preg_match_all($this->build_regex(), $ret, $matches, PREG_SET_ORDER);
 		foreach($matches as $match) {
 			$params = explode(':', $match[1]);
 			$replace = $this->do_apply($params);

@@ -60,7 +60,7 @@ class FormHandler {
  		}
 
 		 // Check name length. http://code.google.com/p/gyro-php/issues/detail?id=6
-		if (Config::has_feature(Config::TESTMODE) && String::length($name) > FormValidations::LENGTH_NAME) {
+		if (Config::has_feature(Config::TESTMODE) && GyroString::length($name) > FormValidations::LENGTH_NAME) {
 			throw new InvalidArgumentException('Name for formhandler ist too long: ' . $name);
 		}
  		$this->name = $name;

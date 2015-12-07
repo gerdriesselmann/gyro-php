@@ -157,7 +157,7 @@ class FeedWriter implements IRenderer {
      * Escape properties
 	 */
 	protected function escape($obj) {
-		return String::escape($obj, String::XML);
+		return GyroString::escape($obj, GyroString::XML);
 	}
 
 	/**
@@ -195,7 +195,7 @@ class FeedWriter implements IRenderer {
 	 * Strip off html from 
 	 */
 	protected function strip_html($text) {
-		return 	String::clear_html(String::unescape(str_replace("&nbsp;", '', $text)));
+		return 	GyroString::clear_html(GyroString::unescape(str_replace("&nbsp;", '', $text)));
 	}
 
 	/**

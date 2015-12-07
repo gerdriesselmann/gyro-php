@@ -32,7 +32,7 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(array(
 	<?php
 	print WidgetInput::output('feed_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
 	if ($settings && $settings->is_feed_enabled()) {
-		print html::info(String::escape(
+		print html::info(GyroString::escape(
 			tr('Your feed url is %url', 'notifications', array('%url' => ActionMapper::get_url('notifications_feed', $settings)))
 		));
 	}	

@@ -66,7 +66,7 @@ class TemplatePathResolver {
 		$resource_to_find = $resource;
 		if ($required_file_extension) {
 			$extension = '.' . $required_file_extension;
-			if (!String::ends_with($resource_to_find, $extension)) {
+			if (!GyroString::ends_with($resource_to_find, $extension)) {
 				$resource_to_find .= $extension; 
 			}
 		}

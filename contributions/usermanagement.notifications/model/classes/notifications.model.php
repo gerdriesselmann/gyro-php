@@ -84,7 +84,7 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 		if ($click_track_source) {
 			$injector = new ClickTrackInjecter($this, $click_track_source);
 			$reg = '@<a(.*?)href="(.*?)"(.*?)>@';
-			$ret = String::preg_replace_callback($reg, array($injector, 'callback'), $ret);	
+			$ret = GyroString::preg_replace_callback($reg, array($injector, 'callback'), $ret);	
 		}
 		return $ret;
 	}

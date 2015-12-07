@@ -17,7 +17,7 @@ class ConverterHtmlEx extends ConverterHtml {
 	 * @return string
 	 */
 	protected function process_paragraph($text, $params) {
-		if (String::length($text) <= 70 && String::right($text, 1) != '.') {
+		if (GyroString::length($text) <= 70 && GyroString::right($text, 1) != '.') {
 			$level = intval(Arr::get_item($params, 'h', 2));
 			return html::tag('h' . $level, $text);  
 		}
@@ -50,7 +50,7 @@ class ConverterHtmlEx extends ConverterHtml {
 		
 		// Remove paragraphs
 		$value = str_replace("\r", "\n", $value);
-		$value = String::preg_replace('|\n+|', " ", $value);
+		$value = GyroString::preg_replace('|\n+|', " ", $value);
 		
 		// Replace <p> and <br>
 		$value = preg_replace('@\s*<p>\s*@', "<p>", $value);
@@ -61,8 +61,8 @@ class ConverterHtmlEx extends ConverterHtml {
 		
 		// Strip HTML
 		$value = strip_tags($value);
-		$value = String::unescape($value);
-		$value = String::preg_replace('| +|', ' ', $value);
+		$value = GyroString::unescape($value);
+		$value = GyroString::preg_replace('| +|', ' ', $value);
 		
 		return $value;		
 	}
@@ -77,7 +77,7 @@ class ConverterHtmlEx extends ConverterHtml {
 		$value = $this->relative_to_absolute($value, Config::get_url(Config::URL_BASEURL));
 		$link_format = str_replace('$title$', '$2', $link_format);
 		$link_format = str_replace('$url$', '$1', $link_format);
-		return String::preg_replace('|<a.*?href="(.*?)".*?>(.*?)</a>|', $link_format, $value);
+		return GyroString::preg_replace('|<a.*?href="(.*?)".*?>(.*?)</a>|', $link_format, $value);
 	}
 
 	/**

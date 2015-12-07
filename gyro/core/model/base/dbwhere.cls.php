@@ -93,7 +93,7 @@ class DBWhere implements IDBWhere {
 	 */
 	protected function prefix_table_name($column, $table) {
 		$ret = $column;
-		if (!String::contains($column, '.')) {
+		if (!GyroString::contains($column, '.')) {
 			if ($table instanceof IDBTable) {
 				$ret = DB::escape_database_entity($column, $table->get_table_driver(), IDBDriver::FIELD); 
 				if ($table->get_table_field($column)) {

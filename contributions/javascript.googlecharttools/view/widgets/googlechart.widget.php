@@ -34,7 +34,7 @@ class WidgetGoogleChart implements IWidget {
 	public function render($policy = self::NONE) {
 		GoogleChartTools::enable(GoogleChartTools::CORE_CHART);
 
-		$elem_id = String::plain_ascii($this->title, '_');
+		$elem_id = GyroString::plain_ascii($this->title, '_');
 		$func_name = 'draw_' . $elem_id;
 		$data = $this->data;
 		if (!empty($this->column_names)) {

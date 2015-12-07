@@ -46,8 +46,8 @@ class GeoRectangle {
 	 *
 	 * @param string $divider_lat_lon Divider of lat and loin
 	 * @param string $divider_coord Divider of both coordinates
-	 * @param int $precision Number of digits, passed to String::number() to format values
-	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to String::number()
+	 * @param int $precision Number of digits, passed to GyroString::number() to format values
+	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to GyroString::number()
 	 *
 	 * @return string
 	 */

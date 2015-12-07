@@ -28,6 +28,6 @@ class LetterParameterizedRouteHandler implements IParameterizedRouteHandler {
 	 * Preprocess a value before URL is build
 	 */
 	public function preprocess_build_url($value) {
-		return String::to_lower($value);
+		return GyroString::to_lower($value);
 	}
 }

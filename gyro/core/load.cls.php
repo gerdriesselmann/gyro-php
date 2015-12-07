@@ -59,7 +59,7 @@ class Load {
 		}
 
 		$filename = str_replace('_', '.', $filename);
-		$filename = String::plain_ascii($filename, '.', true);
+		$filename = GyroString::plain_ascii($filename, '.', true);
 		$cls = '';
 		$fragments = explode('.', $filename);
 		foreach($fragments as $f) {

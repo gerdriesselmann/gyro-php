@@ -192,7 +192,7 @@ class Notifications {
 	 */
 	private static function compute_title($message, $title) {
 		if (empty($title)) {
-			$title = String::substr_word(String::clear_html($message), 0, 150) . '...';
+			$title = GyroString::substr_word(GyroString::clear_html($message), 0, 150) . '...';
 		}
 		return $title;
 	}

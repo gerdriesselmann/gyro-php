@@ -9,7 +9,7 @@ $c = count($items) - 1;
 $i = 0;
 foreach($items as $arr_item) {
 	foreach($arr_item as $name => $item) {
-		$name = String::plain_ascii($name);
+		$name = GyroString::plain_ascii($name);
 		$cls = array($class);
 		if ($i === 0) {
 			$cls[] = "{$class}_first";

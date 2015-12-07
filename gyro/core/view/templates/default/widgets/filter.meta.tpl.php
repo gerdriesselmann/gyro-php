@@ -11,8 +11,8 @@
 $filter_current = $filter_group->get_current_filter();
 if ($filter_current && $filter_current->get_key() != $filter_group->get_default_key()) {
 	if (!Common::flag_is_set($policy, WidgetFilter::DONT_CHANGE_TITLE)) {
-		$filter_value = String::escape($filter_current->get_title());
-		$filter_name = String::escape($filter_group->get_name());
+		$filter_value = GyroString::escape($filter_current->get_title());
+		$filter_name = GyroString::escape($filter_group->get_name());
 		
 		$t = tr(
 			' - filtered by %filter: %value', 

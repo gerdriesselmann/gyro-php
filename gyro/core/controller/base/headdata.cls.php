@@ -202,10 +202,10 @@ class HeadData implements IRenderer {
 	protected function render_title($title, $description, $keywords) {
     	$ret = '';
     	// title
-    	$ret .= html::tag('title', String::escape($title)) . "\n";
+    	$ret .= html::tag('title', GyroString::escape($title)) . "\n";
     	if ($description) {
-    		$description = String::preg_replace('|\s\s+|s', ' ', $description);
-    		$ret .= html::meta('description', String::substr_word($description, 0, 200)) . "\n";
+    		$description = GyroString::preg_replace('|\s\s+|s', ' ', $description);
+    		$ret .= html::meta('description', GyroString::substr_word($description, 0, 200)) . "\n";
     	}
     	if ($keywords) {
     		$ret .= html::meta('keywords', $keywords) . "\n";
@@ -300,7 +300,7 @@ class HeadData implements IRenderer {
 		$ret = '';
 		$css_files = array_unique($css_files);
 		foreach ($css_files as $file) {
-			$file = String::escape($this->escape_file($file));
+			$file = GyroString::escape($this->escape_file($file));
 			$ret .= "<link rel=\"stylesheet\" type=\"text/css\"  href=\"$file\" />\n";
 		}
 		return $ret;

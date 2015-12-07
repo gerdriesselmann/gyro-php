@@ -79,7 +79,7 @@ class AtomWriter extends FeedWriter {
 		
 		// HTML content
 		$content = $this->relative_to_absolute($item->content, $item->baseurl);
-		$content = String::escape($content, String::XML);
+		$content = GyroString::escape($content, GyroString::XML);
 		$tags[] = html::tag('content', $content, array('type' => 'html'));
 		
 		// Categories

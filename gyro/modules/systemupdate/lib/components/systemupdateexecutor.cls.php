@@ -285,6 +285,6 @@ class SystemUpdateExecutor {
 	}
 	
 	protected function make_func_name($component, $func_postfix) {
-		return String::plain_ascii($component, '_', true) . '_' . $func_postfix;
+		return GyroString::plain_ascii($component, '_', true) . '_' . $func_postfix;
 	}
 }

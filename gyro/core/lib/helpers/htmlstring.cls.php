@@ -23,11 +23,11 @@ class HtmlString {
 		$text = ' ' . $text; // We need a leading non-tag, see below 
 
 		// Split on tags
-		$this->html_texts = String::preg_split($tag, $text,  -1);
+		$this->html_texts = GyroString::preg_split($tag, $text,  -1);
 
 		// Find all tags
 		$html_tags = '';
-		String::preg_match_all($tag, $text, $html_tags);
+		GyroString::preg_match_all($tag, $text, $html_tags);
 		$this->html_tags = $html_tags[0];
 
 		// we now have two arrays, one for text between tags ($html_texts),
@@ -83,7 +83,7 @@ class HtmlString {
 			if (!$this->is_within_tags($tags_to_skip, $index)) {
 				$count_matches = 0;
 				if ($this->policy == self::USE_STRING_FUNCTIONS) {
-					$this->html_texts[$index] = String::preg_replace($regex, $replace, $this->html_texts[$index], $max, $count_matches);
+					$this->html_texts[$index] = GyroString::preg_replace($regex, $replace, $this->html_texts[$index], $max, $count_matches);
 				}
 				else {
 					$this->html_texts[$index] = preg_replace($regex, $replace, $this->html_texts[$index], $max, $count_matches);
@@ -161,7 +161,7 @@ class HtmlString {
 		// Step though all text blocks...
 		for($index = 0; $index < $count_texts; $index ++) {
 			$arr_startpos[] = $pos_total;
-			$pos_total += String::length($this->html_texts[$index]);
+			$pos_total += GyroString::length($this->html_texts[$index]);
 			$arr_endpos[] = $pos_total;
 
 			if ($pos_total >= $pos) {
@@ -187,8 +187,8 @@ class HtmlString {
 		}
 		else {
 			// Need to insert it in between.
-			$tmp = String::substr_word($block_text, 0, $pos - $arr_startpos[$matching_index]);
-			$block_text = $tmp . $text . String::substr($block_text, String::length($tmp));
+			$tmp = GyroString::substr_word($block_text, 0, $pos - $arr_startpos[$matching_index]);
+			$block_text = $tmp . $text . GyroString::substr($block_text, GyroString::length($tmp));
 		}
 		$this->html_texts[$matching_index] = $block_text;
 		$this->rebuild();
@@ -200,7 +200,7 @@ class HtmlString {
 	protected function get_plain_tagname($tag) {
 		$ret = str_replace(array('<', '>', '/'), '', $tag);
 		$ret = trim($ret);
-		$ret = String::extract_before($ret, ' ');
+		$ret = GyroString::extract_before($ret, ' ');
 		return $ret;
 	}
 }

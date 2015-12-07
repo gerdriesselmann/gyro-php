@@ -87,7 +87,7 @@ class Status {
 			$ret .= implode("\n", $this->messages); 
 		}
 		else {
-			$tmp = array_map(array('String', 'escape'), $this->messages);
+			$tmp = array_map(array('GyroString', 'escape'), $this->messages);
 			$ret .= implode('<br />', $tmp);
 		}
 		return $ret; 

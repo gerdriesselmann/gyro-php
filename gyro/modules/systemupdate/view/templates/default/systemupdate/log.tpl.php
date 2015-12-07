@@ -8,7 +8,7 @@ else {
 	$li = array();
 	$success = true;
 	foreach($logs as $log) {
-		$out = html::b(String::escape($log['component']));
+		$out = html::b(GyroString::escape($log['component']));
 		$status = $log['status'];
 		$status_message = '';
 		if ($status->is_ok()) {
@@ -20,7 +20,7 @@ else {
 		}
 		
 		$sub_li = array();
-		$sub_li[] = html::b(tr('Task:', 'systemupdates')) . ' ' . String::escape($log['task']) ;
+		$sub_li[] = html::b(tr('Task:', 'systemupdates')) . ' ' . GyroString::escape($log['task']) ;
 		$sub_li[] = html::b(tr('Status:', 'systemupdates')) . ' ' . $status_message; 
 
 		$out .= html::li($sub_li);

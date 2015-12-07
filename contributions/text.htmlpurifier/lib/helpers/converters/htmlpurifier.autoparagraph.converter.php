@@ -20,7 +20,7 @@ class ConverterHtmlPurifierAutoParagraph extends ConverterHtmlPurifier {
 		$input = trim($value);
 		$input = str_replace("\r", "\n", $input);
 		$input = preg_replace('|<br.*?>|', "\n", $input);
-		$input = String::preg_replace('|\n\n+|m', "\n", $input);
+		$input = GyroString::preg_replace('|\n\n+|m', "\n", $input);
 		$input = str_replace("\n", "\n\n", $input);
 		$params = array_merge(array(
  			'AutoFormat.RemoveEmpty' => true,
@@ -29,7 +29,7 @@ class ConverterHtmlPurifierAutoParagraph extends ConverterHtmlPurifier {
  			), Arr::force($params, false)
  		);
  		$input = parent::encode($input, $params);
-		$input = String::preg_replace('|\n\n+|m', "\n", $input); 	
+		$input = GyroString::preg_replace('|\n\n+|m', "\n", $input); 	
  		return $input;	
 	}
 } 
