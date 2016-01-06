@@ -25,6 +25,7 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 	 * @var string
 	 */
 	private $target_path = null;
+	private $keep_query = false;
 
 	/**
 	 * Constructor
@@ -32,8 +33,9 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 	 * @param ICacheManager $cache_manager Desired Cache Manager
 	 * @return void
 	 */
-	public function __construct($target_path) {
+	public function __construct($target_path, $keep_query = false) {
 		$this->target_path = $target_path;
+		$this->keep_query = $keep_query;
 	}
 
 	/**
@@ -49,7 +51,10 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 				
 		$url = Url::create($full_target);
 		if (!$url->is_valid()) {
-			$url = Url::current()->clear_query()->set_path($full_target);
+			$url = Url::current()->set_path($full_target);
+			if (!$this->keep_query) {
+				$url = $url->clear_query();
+			}
 		}
 		$url->redirect(Url::PERMANENT);
 		exit;
