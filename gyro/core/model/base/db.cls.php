@@ -24,6 +24,7 @@ class DB {
 	private static $connections = array();
 	public static $query_log = array();
 	public static $queries_total_time = 0;
+	public static $queries_total_count = 0;
 	public static $db_connect_time= 0;
 
 	/**
@@ -439,6 +440,9 @@ class DB {
 	 * @param Status $status
 	 */
 	public static function log_query($query, $seconds, $status, $conn = self::DEFAULT_CONNECTION) {
+		self::$queries_total_time += $seconds;
+		self::$queries_total_count += 1;
+
 		if (Config::has_feature(Config::LOG_QUERIES)) {
 			$c = self::get_connection($conn);
 			$log = array(
@@ -452,7 +456,6 @@ class DB {
 			
 			$log['connection'] = $c;
 			self::$query_log[] = $log;
-			self::$queries_total_time += $seconds;
 		}
 		
 		if (Config::has_feature(Config::LOG_SLOW_QUERIES)) {
