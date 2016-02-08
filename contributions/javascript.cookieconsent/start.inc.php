@@ -4,9 +4,12 @@
  * @ingroup JavaScript
  * 
  * Show Cookie Conset screen for anonymous users
+ *
+ * Important: This module must be loaded after Usermanagement module, if user management is used
  */
-EventSource::Instance()->register(new JavascriptCookieConsentEventSink());
-
+if (!Load::is_module_loaded('usermanagement') || !Users::is_logged_in()) {
+	EventSource::Instance()->register(new JavascriptCookieConsentEventSink());
+}
 
 /**
  * Cookie Consent Config options
