@@ -148,14 +148,15 @@ class MailBaseCommand extends CommandBase {
 	 */
 	protected function compute_alt_message($org_message) {
 		$ret = '';
-		if ($this->alt_message instanceof IView) {
-			if ($this->alt_message == $this->view) {
+		$alt_message = $this->get_alt_message();
+		if ($alt_message instanceof IView) {
+			if ($alt_message == $this->view) {
 				$ret = $org_message; // Prevent view from beeing rendered twice
 				if ($this->is_html()) {
 					$ret = ConverterFactory::decode($ret, ConverterFactory::HTML_EX, array('p' => "\n\n", 'a' => '$url$'));
 				}
 			} else {
-				$ret = $this->alt_message->render();
+				$ret = $alt_message->render();
 			}
 		}
 		return $ret;
