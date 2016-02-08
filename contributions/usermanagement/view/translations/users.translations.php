@@ -58,6 +58,7 @@ function users_load_translations($languages) {
 			'pt' => 'Não foi possível gerar o código de ativação. Por favor tente novamente.'
 		),
 		'An user with this username already exists' => array(
+			'en' => 'A user with this username already exists', // Fix typo, but stay backward compatible
 			'de' => 'Ihr gewählter Benutzername ist leider bereits vergeben'
 		),
 		'No password' => array(
@@ -234,6 +235,7 @@ function users_load_translations($languages) {
 			'de' => 'Zugangsdaten bestätigen',
 		),	
 		'An user with this email address already exists' => array (
+			'en' => 'A user with this email address already exists',  // Fix typo, but stay backward compatible
 			'de' => 'Es existiert bereits ein Benutzer mit dieser E-Mail-Adresse.',
 			'pt' => 'Já existe um usuário com este endereço de e-mail.'
 		),
