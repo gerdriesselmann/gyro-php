@@ -65,11 +65,9 @@ class EventSource implements IEventSource {
 	public function invoke_event($event_name, $event_params, &$event_result) {
 		$ret = new Status();
 		foreach($this->sinks as $sink) {
-			if (method_exists($sink, 'on_event')) {
-				$ret->merge($sink->on_event($event_name, $event_params, $event_result));
-			}
+			$ret->merge($sink->on_event($event_name, $event_params, $event_result));
 		}
 		return $ret;
-	}	
+	}
  }
 ?>
