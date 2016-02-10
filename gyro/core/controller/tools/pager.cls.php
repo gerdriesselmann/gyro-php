@@ -68,8 +68,8 @@ class Pager implements IDBQueryModifier {
 				$url->redirect(Url::PERMANENT);
 			}
 			exit;			
-		} elseif ($page_raw == 1) {
-			$url = $this->adapter->get_url_for_page(1);
+		} else {
+			$url = $this->adapter->get_url_for_page($page);
 			if ($url->build() != Url::current()->build()) {
 				$url->redirect(Url::PERMANENT);
 				exit;
