@@ -7,6 +7,7 @@ class WidgetGoogleChart implements IWidget {
 	const PIE_CHART = 1001;
 	const LINE_CHART = 1002;
 	const COMBO_CHART = 1003;
+	const AREA_CHART = 1004;
 
 	public $title;
 	public $column_names;
@@ -71,6 +72,8 @@ class WidgetGoogleChart implements IWidget {
 				return 'PieChart';
 			case self::LINE_CHART:
 				return 'LineChart';
+			case self::AREA_CHART:
+				return 'AreaChart';
 			default:
 				return 'ColumnChart';
 		}
