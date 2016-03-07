@@ -82,7 +82,15 @@ class Url {
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
 		$this->set_query(Arr::get_item($data, 'query', ''));
 	}
-	
+
+	public static function decode_path($path) {
+		return str_replace(array('%252F', '%253F', '%2526'), array('%2F', '%3F', '%26'), $path);
+	}
+
+	public static function encode_path($path) {
+		return str_replace(array('%2F', '%3F', '%26'), array('%252F', '%253F', '%2526'), $path);
+	}
+
 	/**
 	 * Split a query into items and return them as associative array
 	 * 
@@ -568,7 +576,7 @@ class Url {
 		
 		$out .= '/';
 		$out .= $this->get_path();
-				 
+
 		$query = $this->get_query($encoding);
 		if (!empty($query)) {
 			$out .= '?' . $query;
@@ -736,9 +744,13 @@ class Url {
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
 		$test_2 = RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE);
 		//$test_1 = urldecode($test_1);
-		$test_2 = urldecode($test_2);
+		$test_2 = Url::encode_path(urldecode($test_2));
 		if ($test_1 !== $test_2) {
-			$url->redirect(self::PERMANENT);
+			if (Config::has_feature(Config::TESTMODE)) {
+				$url->redirect(self::TEMPORARY);
+			} else {
+				$url->redirect(self::PERMANENT);
+			}
 			exit();
 		}
 
