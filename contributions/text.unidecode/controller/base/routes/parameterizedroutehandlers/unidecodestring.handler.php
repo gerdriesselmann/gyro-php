@@ -33,6 +33,6 @@ class UnidecodestringParameterizedRouteHandler implements IParameterizedRouteHan
 	 * Preprocess a value before URL is build
 	 */
 	public function preprocess_build_url($value) {
-		return String::plain_ascii(ConverterFactory::encode($value, CONVERTER_UNIDECODE), '-', true);
+		return GyroString::plain_ascii(ConverterFactory::encode($value, CONVERTER_UNIDECODE), '-', true);
 	}
 }

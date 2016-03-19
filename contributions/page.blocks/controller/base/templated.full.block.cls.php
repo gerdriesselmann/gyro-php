@@ -31,7 +31,7 @@ class TemplatedFullBlock extends TemplatedParameterizedBlock {
 	 * @param enum $position Where the block is to be displayed. 
 	 */
 	public function __construct($template, $params = array(), $index = 1000, $position = self::LEFT) {
-		parent::__construct(String::plain_ascii($template, '-'), '', $template, $params, $index, $position);
+		parent::__construct(GyroString::plain_ascii($template, '-'), '', $template, $params, $index, $position);
 	}
 	
 }

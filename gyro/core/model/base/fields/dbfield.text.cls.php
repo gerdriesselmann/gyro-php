@@ -31,7 +31,7 @@ class DBFieldText extends DBField {
 	 */
 	public function validate($value) {
 		$ret = new Status();
-		$l = String::length(Cast::string($value));
+		$l = GyroString::length(Cast::string($value));
 		if ($l > $this->length) {
 			$ret->append(tr(
 				'%field may have no more than %num character', 

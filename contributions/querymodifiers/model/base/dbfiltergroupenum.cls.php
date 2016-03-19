@@ -17,12 +17,12 @@ class DBFilterGroupEnum extends DBFilterGroup {
 	public function __construct($fieldname, $name, $enums, $default = '') {
 		$columns = array();
 		foreach($enums as $ekey => $evalue) {
-			$columns[String::plain_ascii($ekey)] = new DBFilterColumn(
+			$columns[GyroString::plain_ascii($ekey)] = new DBFilterColumn(
 				$fieldname,
 				$ekey,
 				$evalue
 			);
 		}
-		parent::__construct($fieldname, $name, $columns, String::plain_ascii($default));
+		parent::__construct($fieldname, $name, $columns, GyroString::plain_ascii($default));
 	}
 }

@@ -241,7 +241,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 	 */
 	protected function preprocess_query($query) {
 		// replace "a-b" by "a b", like in 'ad-hoc'
-		$query = String::preg_replace('@(\w)\-@', '$1 ', $query);
+		$query = GyroString::preg_replace('@(\w)\-@', '$1 ', $query);
 		return $query;
 	}
 	
@@ -275,7 +275,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 		if ($this->matching == self::MATCH_NARROW) {
 			$month = 30 * GyroDate::ONE_DAY;
 			$now = time();
-			$weight_base = String::number($weight_base, 2, true);
+			$weight_base = GyroString::number($weight_base, 2, true);
 			
 			$ret = "-$weight_base * ($now - modificationdate) / $month";
 		}
@@ -293,7 +293,7 @@ abstract class DataObjectSearchIndexSphinxBase extends DataObjectSphinxBase impl
 		// Build model weighting expression
 		foreach(SearchIndexRepository::get_model_rules() as $rule) {
 			$model_id = $rule->model_id;
-			$model_weight = String::number($weight_base * $rule->weight, 2, true); 
+			$model_weight = GyroString::number($weight_base * $rule->weight, 2, true); 
 			$weight_if_expression = "IF(item_model = $model_id, $model_weight, $weight_if_expression)";
 		}
 		return $weight_if_expression;

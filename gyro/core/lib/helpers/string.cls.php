@@ -9,7 +9,7 @@ define("STRING_SANITIZE_HTML", 2);
  * @author Gerd Riesselmann
  * @ingroup Lib
  */
-class String {
+class GyroString {
 	const HTML = 'html';
 	const XML = 'xml';
 	
@@ -133,7 +133,7 @@ class String {
 			return (string)$int;
 		}
 		else {
-			return String::number($int, 0);
+			return GyroString::number($int, 0);
 		}
 	}
 
@@ -670,9 +670,14 @@ class String {
 
 if (function_exists('mb_detect_encoding')) {
 	require_once dirname(__FILE__) . '/string_impl/string.mbstring.cls.php';
-	String::$impl = new StringMBString();	
+	GyroString::$impl = new StringMBString();	
 }
 else {
 	require_once dirname(__FILE__) . '/string_impl/string.php.cls.php';
-	String::$impl = new StringPHP();		
+	GyroString::$impl = new StringPHP();		
 }
+
+/* Hm, this isn't allowed in PHP7 ...
+if (!class_exists('String') && (int)phpversion() < 7) {
+	class String extends GyroString {}
+}*/

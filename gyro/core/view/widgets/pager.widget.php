@@ -118,7 +118,7 @@ class WidgetPagerCalculator implements IPolicyHolder {
 		$pages = $this->strip_pages($this->data['page'], $this->data['pages_total'], $total, $policy);
 		$ret = array();
 		foreach ($pages as $page) {
-			$text = String::escape($page['page']);
+			$text = GyroString::escape($page['page']);
 			if ($page['url']) {
 				$ret[] = html::a($text, $page['url'], tr('Show page %page', array('app', 'core'), array('%page' => $text)));
 			} else {

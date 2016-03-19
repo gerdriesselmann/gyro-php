@@ -166,7 +166,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	 * @return string 
 	 */
 	public function get_teaser() {
-		return ($this->teaser) ? $this->teaser : String::substr_word(strip_tags($this->text), 0, 300);
+		return ($this->teaser) ? $this->teaser : GyroString::substr_word(strip_tags($this->text), 0, 300);
 	}
 	
 	/**
@@ -180,7 +180,7 @@ abstract class DataObjectPostBase extends DataObjectTimestampedCached implements
 	 * Returns meta description
 	 */
 	public function get_meta_description() {
-		return $this->meta_description ? $this->meta_description : String::unescape($this->get_teaser());
+		return $this->meta_description ? $this->meta_description : GyroString::unescape($this->get_teaser());
 	}
 	
 	// **************************************

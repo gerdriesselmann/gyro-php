@@ -40,7 +40,7 @@ class RouterBase implements IEventSink {
 	 */
 	public function initialize($page_data) {
 		$path = $this->get_path();
-		//if (String::ends_with($path, '/')) {
+		//if (GyroString::ends_with($path, '/')) {
 		//	$path = trim($path, '/');
 		//}
 		$this->path_invoked = $path;

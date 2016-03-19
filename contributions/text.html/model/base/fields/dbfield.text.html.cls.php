@@ -26,7 +26,7 @@ class DBFieldTextHtml extends DBFieldText {
 		if ($value !== '') {
 			// This test for empty HTML, like <p><span></span></p>, which will not be allowed
 			// @TODO what about <img />?
-	 		$test = String::preg_replace('|\W|ms', '', strip_tags($value)); 
+	 		$test = GyroString::preg_replace('|\W|ms', '', strip_tags($value)); 
 	 		if ($test === '' && !$this->get_null_allowed()) {
 				$ret->append(tr(
 					'%field may not be empty', 

@@ -38,8 +38,8 @@ class GeoCoordinate {
 	 * Renders this Coordinate in the form Latitude(divider)Longitude
 	 * 
 	 * @param string $divider 
-	 * @param int $precision Number of digits, passed to String::number() to format values
-	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to String::number()
+	 * @param int $precision Number of digits, passed to GyroString::number() to format values
+	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to GyroString::number()
 	 * 
 	 * @return string
 	 */
@@ -53,34 +53,34 @@ class GeoCoordinate {
 	public static function from_string($val, $divider = ', ', $system = false) {
 		$latlon = explode($divider, $val);
 		$lat = array_shift($latlon);
-		$lat = ($system) ? floatval($lat) : String::delocalize_number($lat);
+		$lat = ($system) ? floatval($lat) : GyroString::delocalize_number($lat);
 		$lon = array_shift($latlon);
-		$lon = ($system) ? floatval($lon) : String::delocalize_number($lon);
+		$lon = ($system) ? floatval($lon) : GyroString::delocalize_number($lon);
 		return new GeoCoordinate($lat, $lon);
 	}
 
 	/**
 	 * Renders this Coordinate's Latitude to string
 	 * 
-	 * @param int $precision Number of digits, passed to String::number() to format values
-	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to String::number()
+	 * @param int $precision Number of digits, passed to GyroString::number() to format values
+	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to GyroString::number()
 	 * 
 	 * @return string
 	 */
 	public function lat_to_string($precision = 4, $system = false) {
-		return String::number($this->lat, $precision, $system);
+		return GyroString::number($this->lat, $precision, $system);
 	}
 	
 	/**
 	 * Renders this Coordinate's Longitude to string
 	 * 
-	 * @param int $precision Number of digits, passed to String::number() to format values
-	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to String::number()
+	 * @param int $precision Number of digits, passed to GyroString::number() to format values
+	 * @param bool $system True to use C locale to format values. False to use current locale. Passed to GyroString::number()
 	 * 
 	 * @return string
 	 */
 	public function lon_to_string($precision = 4, $system = false) {
-		return String::number($this->lon, $precision, $system);
+		return GyroString::number($this->lon, $precision, $system);
 	}
 	
 	/**

@@ -16,7 +16,7 @@
 			'Filter by %topic: %select', 
 			'dropdownsorter', 
 			array(
-				'%topic' => String::escape($filter_group->get_name()),
+				'%topic' => GyroString::escape($filter_group->get_name()),
 				'%select' => html::select('', $options, $url_current, array('onchange' => $js_function)))
 		),
 		'',

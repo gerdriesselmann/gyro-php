@@ -69,9 +69,9 @@ class Validation {
 		}
 		$ret = is_string($value);
 		if ($ret) {
-			$ret = $ret && ( String::length($value) >= $min_length);
+			$ret = $ret && ( GyroString::length($value) >= $min_length);
 			if ($max_length > 0) {
-				$ret = $ret && ( String::length($value) <= $max_length); 
+				$ret = $ret && ( GyroString::length($value) <= $max_length); 
 			} 
 		}
 		return $ret;

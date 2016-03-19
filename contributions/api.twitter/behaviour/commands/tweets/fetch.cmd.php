@@ -35,7 +35,7 @@ class FetchTweetsCommand extends CommandChain {
 			$ret->merge('Empty twitter user when fetching tweets');
 		}
 		else {
-			$url = 'http://twitter.com/statuses/user_timeline/' . String::plain_ascii($twitter_user) . '.json';
+			$url = 'http://twitter.com/statuses/user_timeline/' . GyroString::plain_ascii($twitter_user) . '.json';
 			
 			Load::components('httprequest');
 			$json = HttpRequest::get_content($url, $err);
@@ -79,9 +79,9 @@ class FetchTweetsCommand extends CommandChain {
 		$message = ConverterFactory::decode($s->text, CONVERTER_TWITTER);
 		$tweet->message = $message;
 		$tweet->message_html = ConverterFactory::encode($message, CONVERTER_TWITTER, $policy);
-		$title = String::substr_word($message, 0, 120);
+		$title = GyroString::substr_word($message, 0, 120);
 		if ($title == '') {
-			$title = String::substr($message, 0, 120);
+			$title = GyroString::substr($message, 0, 120);
 		}
 		$tweet->title = $title;
 		

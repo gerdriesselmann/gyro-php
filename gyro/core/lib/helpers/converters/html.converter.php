@@ -22,7 +22,7 @@ class ConverterHtml implements IConverter {
 			$arr_result[] = $this->process_paragraph($tmp, $params);
 		}
 		$ret = implode("\n", $arr_result);
-		$ret = String::preg_replace('| +|', ' ', $ret);
+		$ret = GyroString::preg_replace('| +|', ' ', $ret);
 		return $ret;
 	}
 	
@@ -33,7 +33,7 @@ class ConverterHtml implements IConverter {
 	 * @return string
 	 */
 	protected function process_paragraph($text, $params) {
-		return html::tag('p', String::escape($text));
+		return html::tag('p', GyroString::escape($text));
 	}
 	
 	public function decode($value, $params = false) {
@@ -41,7 +41,7 @@ class ConverterHtml implements IConverter {
 		//$value = str_replace("\r", ' ', $value);
 		$value = str_replace('</p>', "</p>\n", $value);
 		$value = preg_replace('@<br.*?>@', "\n", $value);
-		$value = String::unescape($value);
+		$value = GyroString::unescape($value);
 		return strip_tags($value);		
 	} 	
 } 

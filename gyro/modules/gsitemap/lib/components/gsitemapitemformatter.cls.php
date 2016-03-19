@@ -46,7 +46,7 @@ class GSiteMapItemFormatter {
 	 * @return string
 	 */
 	public function as_html() {
-		$s_url = String::escape($this->url);
+		$s_url = GyroString::escape($this->url);
 		return "<a href=\"$s_url\">$s_url</a>";
 	}
 
@@ -59,7 +59,7 @@ class GSiteMapItemFormatter {
 	protected function xml_from_tags($tags) {
 		$ret = '';
 		foreach($tags as $tag => $content) {
-			$c = is_array($content) ? $this->xml_from_tags($content) : String::escape($content, String::XML);
+			$c = is_array($content) ? $this->xml_from_tags($content) : GyroString::escape($content, GyroString::XML);
 			$ret .= "<$tag>" . $c . "</$tag>\n";
 		}
 		return $ret;

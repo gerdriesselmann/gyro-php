@@ -25,7 +25,7 @@ class InputWidgetSubmit extends InputWidgetSubmitBase {
 	 * Render the actual widget
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
-		return html::tag('button', String::escape($value), $attrs);
+		return html::tag('button', GyroString::escape($value), $attrs);
 	}
 
 }

@@ -39,7 +39,7 @@ class GyroUnitTestCase extends UnitTestCase {
         if ($status instanceof Status) {
         	$this->assertTrue($status->is_error(), sprintf($message, 'Status error check'));
         	if ($status->is_error()) {
-        		$this->assertTrue(String::length($status->to_string()) > 0, sprintf($message, 'Status has error message'));
+        		$this->assertTrue(GyroString::length($status->to_string()) > 0, sprintf($message, 'Status has error message'));
         	}
         }        
     }	

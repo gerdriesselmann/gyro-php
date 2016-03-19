@@ -67,7 +67,7 @@ class DBFieldFloat extends DBField {
 	public function read_from_array($arr) {
 		$ret = parent::read_from_array($arr);
 		if (!empty($ret)) {
-			$ret = String::delocalize_number($ret);
+			$ret = GyroString::delocalize_number($ret);
 		}
 		return $ret;
 	}

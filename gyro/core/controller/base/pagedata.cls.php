@@ -206,8 +206,8 @@ class PageData {
 		$candidates = array();
 		foreach($arr as $key => $value) {
 			// If there is key_x and key_y, add key to post array
-			if (String::ends_with($key, '_x')) {
-				$newkey = String::substr($key, 0, String::length($key) - 2);
+			if (GyroString::ends_with($key, '_x')) {
+				$newkey = GyroString::substr($key, 0, GyroString::length($key) - 2);
 				if (array_key_exists($newkey . '_y', $this->post)) {
 					$candidates[$newkey] = 'computed';
 				}

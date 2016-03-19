@@ -125,7 +125,7 @@ class Translator {
 	protected function load_group($group) {
 		$ret = array();
 		if (Load::classes_in_directory('view/translations/', $group, 'translations', false)) {
-			$func = String::plain_ascii($group, '_') . '_load_translations';
+			$func = GyroString::plain_ascii($group, '_') . '_load_translations';
 			if (function_exists($func)) {
 				$params = array($this->lang);
 				$ret = $func($params);

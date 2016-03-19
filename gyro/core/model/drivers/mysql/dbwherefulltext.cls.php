@@ -23,7 +23,7 @@ class DBWhereFulltext extends DBWhere {
 	 */
 	public function __construct(IDBTable $table, $column, $value, $threshold = 0, $mode = IDBWhere::LOGIC_AND) {
 		if (!is_array($value)) {
-			$value = String::explode_terms($value);
+			$value = GyroString::explode_terms($value);
 		}
 		parent::__construct(
 			$table, 
