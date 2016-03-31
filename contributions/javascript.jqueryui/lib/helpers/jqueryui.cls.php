@@ -31,7 +31,8 @@ class JQueryUI {
 	const WIDGET_SLIDER = 'ui.slider';
 	const WIDGET_TABS = 'ui.tabs';
 	const WIDGET_AUTOCOMPLETE = 'ui.autocomplete';
-	
+	const WIDGET_MENU = 'ui.menu'; // Since 1.10
+
 	/* Feature constants */
 	const FEATURE_DRAGGABLE = 'ui.draggable';
 	const FEATURE_DROPPABLE = 'ui.droppable';
@@ -273,6 +274,15 @@ class JQueryUI {
 		}
 	}
 
+	private static function is_version_1_10_or_higher() {
+		switch (Config::get_value(ConfigJQueryUI::VERSION)) {
+			case '1.10':
+				return true;
+			default:
+				return false;
+		}
+	}
+
 
 	/**
 	 * Returns array of dependencies for every component
@@ -281,7 +291,7 @@ class JQueryUI {
 	 */
 	private static function get_dependencies() {
 		if (self::is_version_1_8_or_higher()) {
-			return array(
+			$ret = array(
 				self::EFFECTS_CORE => array(),
 				self::EFFECTS_BLIND => array(self::EFFECTS_CORE),
 				self::EFFECTS_BOUNCE => array(self::EFFECTS_CORE),
@@ -320,10 +330,13 @@ class JQueryUI {
 				self::CORE_WIDGET => array(),
 				self::CORE => array(),			
 			);
+			if (self::is_version_1_10_or_higher()) {
+				$ret[self::WIDGET_AUTOCOMPLETE][] = self::WIDGET_MENU;
+			}
 		}	
 		else {
 			// Version 1.7
-			return array(
+			$ret = array(
 				self::EFFECTS_CORE => array(),
 				self::EFFECTS_BLIND => array(self::EFFECTS_CORE),
 				self::EFFECTS_BOUNCE => array(self::EFFECTS_CORE),
@@ -358,6 +371,7 @@ class JQueryUI {
 				self::CORE => array(),			
 			);
 		}
+		return $ret;
 	}
 	
 		/**
@@ -432,4 +446,18 @@ class JQueryUI {
 		$ret[] = self::FEATURE_SELECTABLE;
 		return $ret;
 	}
+
+	/**
+	 * Add JS and CSS for enabled comonents to current page
+	 * 
+	 * @param PageData $page_data
+	 */
+	public static function switch_on(PageData $page_data) {
+		foreach (self::get_js_paths(self::get_enabled_components()) as $js_path) {
+			$page_data->head->add_js_file($js_path);
+		}
+		foreach (self::get_css_paths(self::get_enabled_components()) as $css_path) {
+			$page_data->head->add_css_file($css_path);
+		}
+	} 
 }

@@ -70,8 +70,6 @@
  * @see http://jqueryui.com/ for details about JQueryUI
  */
 
-EventSource::Instance()->register(new JavascriptJQueryUIEventSink());
-
 /**
  * JQueryUI Config options 
  * 
@@ -96,6 +94,8 @@ class ConfigJQueryUI {
 	 * Files will be loaded using https with both Google and Microsoft CDN
 	 */
 	const CDN = 'JQUERYUI_CDN';
+	
+	const ON_EVERY_PAGE = 'JQUERYUI_ON_EVERY_PAGE';
 }
 
 // To be changed on new releases
@@ -105,5 +105,10 @@ define('JQUERYUI_VERSION_1_10', '1.10.3');
 
 Config::set_value_from_constant(ConfigJQueryUI::CDN, 'APP_JQUERYUI_CDN', '');
 Config::set_value_from_constant(ConfigJQueryUI::VERSION, 'APP_JQUERYUI_VERSION', '1.10');
+Config::set_feature_from_constant(ConfigJQueryUI::ON_EVERY_PAGE, 'APP_JQUERYUI_ON_EVERY_PAGE', true);
 
 JQueryUI::enable_locales(GyroLocale::get_language());
+
+if (Config::has_feature(ConfigJQueryUI::ON_EVERY_PAGE)) {
+	EventSource::Instance()->register(new JavascriptJQueryUIEventSink());
+}
