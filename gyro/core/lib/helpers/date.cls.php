@@ -469,7 +469,7 @@ class GyroDate {
 	/**
 	 * Sets Time on given date (keeps date)
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @param int $hour
 	 * @param int $min
 	 * @param int $sec
@@ -562,6 +562,15 @@ class GyroDate {
 		return ($arr_time_1['year'] === $arr_time_2['year']);
 	}
 
+	public static function convert_from_utc_to_local($datetime) {
+		$server_timezone_offset_seconds = date('Z');
+		return self::datetime($datetime) + $server_timezone_offset_seconds;
+	}
+
+	public static function convert_from_local_to_utc($datetime) {
+		$server_timezone_offset_seconds = date('Z');
+		return self::datetime($datetime) - $server_timezone_offset_seconds;
+	}
 }
 
 if (!class_exists('Date')) {
