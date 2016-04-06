@@ -563,12 +563,12 @@ class GyroDate {
 	}
 
 	public static function convert_from_utc_to_local($datetime) {
-		$server_timezone_offset_seconds = date('Z');
+		$server_timezone_offset_seconds = intval(date('Z'));
 		return self::datetime($datetime) + $server_timezone_offset_seconds;
 	}
 
 	public static function convert_from_local_to_utc($datetime) {
-		$server_timezone_offset_seconds = date('Z');
+		$server_timezone_offset_seconds = intval(date('Z'));
 		return self::datetime($datetime) - $server_timezone_offset_seconds;
 	}
 }
