@@ -23,7 +23,7 @@ class InputWidgetDateTime extends InputWidgetDateTimeBase {
 	/**
 	 * Render the actual widget
 	 */
-	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
+	protected function render_datetime_widget($attrs, $params, $name, $title, $value, $policy) {
 		return html::input('datetime-local', $name, $attrs);
 	}
 }
