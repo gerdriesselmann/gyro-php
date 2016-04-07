@@ -127,6 +127,15 @@ class Config {
 	 * Include 3rd party dir
 	 */
 	const THIRDPARTY_DIR = '3RDPARTY_DIR';
+	/** Logfile directory. Default is Config;;TEMP_DIR/log */
+	const LOG_DIR = 'LOG_DIR';
+
+	/**
+	 * How the logfile's name is build. Available are %date% as %name% as palceholders
+	 *
+	 * Default is %date%_%name%.log
+	 */
+	const LOG_FILE_NAME_PATTERN = 'LOG_FILE_NAME_PATTERN';
 	
 	/**
 	 * The query parameter that contains the path orignally invoked

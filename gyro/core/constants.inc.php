@@ -111,6 +111,12 @@ if (defined('APP_3RDPARTY_DIR')) {
 	set_include_path(get_include_path() . PATH_SEPARATOR . APP_3RDPARTY_DIR);
 	Config::set_value(Config::THIRDPARTY_DIR, APP_3RDPARTY_DIR);
 }
+/*
+ * Logfile directory and name
+ */
+Config::set_value_from_constant(Config::LOG_DIR, 'APP_LOG_DIR', Config::get_value(Config::TEMP_DIR) . 'log/');
+Config::set_value_from_constant(Config::LOG_FILE_NAME_PATTERN, 'APP_LOG_FILE_NAME_PATTERN', '%date%_%name%.log');
+
 /**
  * Formhandler stuff
  */
