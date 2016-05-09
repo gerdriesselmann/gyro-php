@@ -739,12 +739,13 @@ class Url {
 			array_push($dirsclean, $dirs[$i]);
 		}
 		$pathclean = implode('/', $dirsclean);
+		$pathclean = Url::encode_path(rawurldecode($pathclean));
 		$url->set_path($pathclean);
 
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
 		$test_2 = RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE);
 		//$test_1 = urldecode($test_1);
-		$test_2 = Url::encode_path(urldecode($test_2));
+		//$test_2 = Url::encode_path(rawurldecode($test_2));
 		if ($test_1 !== $test_2) {
 			if (Config::has_feature(Config::TESTMODE)) {
 				$url->redirect(self::TEMPORARY);

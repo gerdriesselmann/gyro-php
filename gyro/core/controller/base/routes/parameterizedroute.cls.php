@@ -486,7 +486,7 @@ class ParameterizedRoute extends RouteBase {
 	 * Preprocess a value before it gets inserted into URL
 	 */
 	protected function preprocess_replace_value($value) {
-		return Url::encode_path(urlencode(Cast::string($value)));
+		return Url::encode_path(rawurlencode(Cast::string($value)));
 	}
 	
 	// ---------------------------------------------
