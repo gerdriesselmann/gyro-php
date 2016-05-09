@@ -743,7 +743,7 @@ class Url {
 		$url->set_path($pathclean);
 
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
-		$test_2 = RequestInfo::current()->url_invoked(RequestInfo::ABSOLUTE);
+		$test_2 = Url::current()->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
 		//$test_1 = urldecode($test_1);
 		//$test_2 = Url::encode_path(rawurldecode($test_2));
 		if ($test_1 !== $test_2) {
