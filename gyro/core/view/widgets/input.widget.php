@@ -83,6 +83,7 @@ class WidgetInput implements IWidget {
 	const DATE = 'date';
 	const DATETIME = 'datetime';
 	const EMAIL = 'email';
+	const NUMBER = 'number';
 
 	public static function output($name, $label, $value = '', $type = self::TEXT, $params = array(), $policy = self::NONE) {
 		$widget = new WidgetInput($name, $label, $value, $type, $params);
