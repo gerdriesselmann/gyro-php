@@ -56,7 +56,7 @@ class WidgetAlphaList implements IWidget {
 			}
 			// TODO Does not handle numbers
 			foreach($this->items as $key => $value) {
-				$clean = String::plain_ascii($key);
+				$clean = GyroString::plain_ascii($key);
 				$data[substr($clean, 0, 1)][] = $value;
 			}
 

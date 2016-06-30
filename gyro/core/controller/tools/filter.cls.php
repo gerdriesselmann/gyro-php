@@ -106,7 +106,7 @@ class FilterDefaultAdapter implements IFilterAdapter {
 	}
 	
 	public function get_current_key($group_id, $default = '') {
-		$query_key = 'fl' . String::plain_ascii($group_id);
+		$query_key = 'fl' . GyroString::plain_ascii($group_id);
 		return $this->page_data->get_get()->get_item($query_key, $default);		
 	}
 
@@ -129,6 +129,6 @@ class FilterDefaultAdapter implements IFilterAdapter {
 	 * @deprecated Used function on FilterAdapter instead
 	 */
 	public static function apply_to_url($url, $filter, $group_id = '', $parameter = 'fl') {
-		$url->replace_query_parameter($parameter . String::plain_ascii($group_id), $filter);
+		$url->replace_query_parameter($parameter . GyroString::plain_ascii($group_id), $filter);
 	}	
 }

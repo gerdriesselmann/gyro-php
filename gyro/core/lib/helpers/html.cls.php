@@ -64,7 +64,7 @@ class html
 		$keywords = str_replace("  ", " ", $keywords);
 		$keywords = str_replace(" ", ",", $keywords);
 
-		$ret = self::tag('title', String::escape($text)) . "\n";
+		$ret = self::tag('title', GyroString::escape($text)) . "\n";
 		$ret .= self::meta('title', $text) . "\n";
 		$ret .= self::meta('description', $descr) . "\n";
 		$ret .= self::meta('keywords', $keywords) . "\n";
@@ -425,7 +425,7 @@ class html
 				$key = self::EMPTY_ATTRIBUTE;
 			}
 			$opt_attrs['value'] = $key;
-			$ret = html::tag('option', String::escape($display), $opt_attrs);
+			$ret = html::tag('option', GyroString::escape($display), $opt_attrs);
 		} 		
 		return $ret;
 	}
@@ -449,7 +449,7 @@ class html
 			return '';
 		} 
 
-		return ' ' . $clean_name . '="' . String::escape($value) . '"';
+		return ' ' . $clean_name . '="' . GyroString::escape($value) . '"';
 	}
 
 	public static function attrs($arr) {
@@ -470,7 +470,7 @@ class html
 	 * @return string <script type="text/javascript" src="$path"></script>
 	 */
 	public static function include_js($path) {
-		return '<script type="text/javascript" src="' . String::clear_html($path) . '"></script>';
+		return '<script type="text/javascript" src="' . GyroString::clear_html($path) . '"></script>';
 	}
 
 	/**
@@ -495,7 +495,7 @@ class html
 	 * @return string <style type="text/css" media="$media">@import url($path);</style>
 	 */
 	public static function include_css($path, $media = 'screen') {
-		return '<style type="text/css" media="' . String::clear_html($media) . '">@import url(' . String::clear_html($path) . ');</style>';
+		return '<style type="text/css" media="' . GyroString::clear_html($media) . '">@import url(' . GyroString::clear_html($path) . ');</style>';
 	}
 
 	/**

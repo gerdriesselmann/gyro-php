@@ -18,13 +18,13 @@ class InputWidgetText extends InputWidgetTextBase {
         $text_box = html::input($type, $name, $attrs);
         $pre = Arr::get_item($params, 'addon-pre');
         if ($pre) {
-            $text_box = html::span(String::escape($pre), 'input-group-addon') . $text_box;
+            $text_box = html::span(GyroString::escape($pre), 'input-group-addon') . $text_box;
             $needs_div = true;
         }
 
         $post = Arr::get_item($params, 'addon-post');
         if ($post) {
-            $text_box = $text_box . html::span(String::escape($post), 'input-group-addon');
+            $text_box = $text_box . html::span(GyroString::escape($post), 'input-group-addon');
             $needs_div = true;
         }
 

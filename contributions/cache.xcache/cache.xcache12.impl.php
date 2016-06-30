@@ -40,7 +40,7 @@ class CacheXCache12Impl extends CacheXCacheImpl {
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string
 	 */
-	protected function flatten_keys($cache_keys) {
+	protected function flatten_keys($cache_keys, $strip_empty = true) {
 		$cache_keys = $this->preprocess_keys($cache_keys);
 		$ns_keys = $this->get_keys_namespaces($cache_keys);
 		

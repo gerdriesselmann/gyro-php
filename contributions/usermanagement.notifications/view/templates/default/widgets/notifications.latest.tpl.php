@@ -14,7 +14,7 @@ $url_title = tr('Show all', 'notifications');
 			'Last <strong>%num</strong> out of <strong>%total</strong> unread messages.', 
 			'notifications', 
 			array(
-				'%num' => String::number($c, 0),
+				'%num' => GyroString::number($c, 0),
 				'%total' => $total
 			)
 		);

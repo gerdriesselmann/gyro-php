@@ -10,14 +10,14 @@ require_once dirname(__FILE__) . '/../simple/templateengine.simple.php';
  * 
  * will get translated to 
  * 
- * <?php print String::escape({statement})[;]?>
+ * <?php print GyroString::escape({statement})[;]?>
  * 
  * Examples:
  * 
  * @code
- * <?=$var; ?> becomes <?php print String::escape($var); ?>
- * <?=ActionMapper::action_url('view', $item)?> becomes <?php print String::escape(ActionMapper::action_url('view', $item))?>
- * <?=$a; print $b; ?> becomes <?php print String::escape($a); print $b; ?>
+ * <?=$var; ?> becomes <?php print GyroString::escape($var); ?>
+ * <?=ActionMapper::action_url('view', $item)?> becomes <?php print GyroString::escape(ActionMapper::action_url('view', $item))?>
+ * <?=$a; print $b; ?> becomes <?php print GyroString::escape($a); print $b; ?>
  * @endcode
  * 
  * Additionally you can include templates using this syntax:
@@ -75,15 +75,15 @@ class TemplateEngineCore extends TemplateEngineSimple {
 	/**
 	 * Resolve quick tags <?=...?>
 	 * 
-	 * Replaces <?=...  with <?php print String::escape(...)
+	 * Replaces <?=...  with <?php print GyroString::escape(...)
 	 * 
 	 * @param string $content
 	 * @return string
 	 */ 
 	protected function resolve_quick_tags($content) {
 		$regex = '@(<\?=)(.*?)(;|\?>)@';
-		$rep = '<?php print String::escape($2)$3';
-		return String::preg_replace($regex, $rep, $content);		
+		$rep = '<?php print GyroString::escape($2)$3';
+		return GyroString::preg_replace($regex, $rep, $content);		
 	}
 	
 	/**

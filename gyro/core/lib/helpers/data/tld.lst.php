@@ -1485,8 +1485,8 @@ function get_tlds() {
  * call this function with usort, and store the result in the above function
  */
 function _url_sort_tld($a, $b) {
-	$la = String::length($a);
-	$lb = String::length($b);
+	$la = GyroString::length($a);
+	$lb = GyroString::length($b);
 	if ($la == $lb) {
 		return 0;
 	}

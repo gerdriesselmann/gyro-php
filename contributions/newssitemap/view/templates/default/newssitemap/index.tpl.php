@@ -4,7 +4,7 @@
       <loc><?=ActionMapper::get_url('view', $item)?></loc>
       <news:news>
          <news:publication_date><?=GyroDate::iso_date($item->get_publication_date())?></news:publication_date>
-         <news:keywords><?php print String::clear_html(implode(', ', $item->get_publication_keywords()))?></news:keywords>         
+         <news:keywords><?php print GyroString::clear_html(implode(', ', $item->get_publication_keywords()))?></news:keywords>         
       </news:news>
    </url>
 <?php endforeach; ?>

@@ -62,6 +62,7 @@ class XCacheSession implements ISessionHandler {
 	 */
 	public function destroy($key) {
 		xcache_unset($this->create_key($key));
+		return true;
 	}
 	
 	/**

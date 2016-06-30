@@ -24,7 +24,7 @@ class FilterText implements IDBQueryModifier {
 	 * @param Array Array with filter names as keys and descriptions to display as values 
 	 */
 	public function __construct($page_data, $filtercolumn, $filtername, $operator, $adapter = false) {
-		$this->adapter = ($adapter instanceof IFilterTextAdapter) ? $adapter : new FilterTextDefaultAdapter($page_data, String::plain_ascii($filtername));
+		$this->adapter = ($adapter instanceof IFilterTextAdapter) ? $adapter : new FilterTextDefaultAdapter($page_data, GyroString::plain_ascii($filtername));
 		$this->page_data = $page_data;
 		$this->filter_object = new DBFilterColumn(
 			$filtercolumn, 

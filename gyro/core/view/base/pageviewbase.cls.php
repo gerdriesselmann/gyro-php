@@ -218,7 +218,7 @@ class PageViewBase extends ViewBase {
 			case CONTROLLER_INTERNAL_ERROR:
 				$error_view = ViewFactory::create_view(
 					IViewFactory::CONTENT, 
-					'errors/' . String::plain_ascii($this->page_data->status_code, '_'),
+					'errors/' . GyroString::plain_ascii($this->page_data->status_code, '_'),
 					$this->page_data	
 				);
 				$this->page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
@@ -231,7 +231,7 @@ class PageViewBase extends ViewBase {
 		$this->page_data->sort_blocks();	
 		$this->assign('page_data', $this->page_data);
 		$this->assign('pagetitle', $this->page_data->head->title);
-		$this->assign('pagedescr', String::substr_word($this->page_data->head->description, 0, 200));
+		$this->assign('pagedescr', GyroString::substr_word($this->page_data->head->description, 0, 200));
 		$this->assign('status', $this->page_data->status);
 		$this->assign('blocks', $this->page_data->blocks);
 		$this->assign('content', $this->page_data->content);

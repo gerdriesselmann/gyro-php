@@ -68,6 +68,7 @@ class MemcacheSession implements ISessionHandler {
 	 */
 	public function destroy($key) {
 		GyroMemcache::delete($this->create_key($key));
+		return true;
 	}
 	
 	/**

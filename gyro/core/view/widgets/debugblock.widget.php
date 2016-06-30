@@ -30,7 +30,7 @@ class WidgetDebugBlock implements IWidget {
 			
 			foreach($sections as $heading => $content) {
 				if ($content) {
-					$out .= html::h(String::escape($heading), 3);
+					$out .= html::h(GyroString::escape($heading), 3);
 					$out .= $content;
 				}
 			}
@@ -46,8 +46,8 @@ class WidgetDebugBlock implements IWidget {
 		$modules = Load::get_loaded_modules();
 		$count_queries = count(DB::$query_log);
 		$debugs = array(
-	  		'Memory' => String::number(memory_get_usage()/1024, 2) . ' KB',
-	  		'Memory Peak' => String::number(memory_get_peak_usage()/1024, 2) . ' KB',
+	  		'Memory' => GyroString::number(memory_get_usage()/1024, 2) . ' KB',
+	  		'Memory Peak' => GyroString::number(memory_get_peak_usage()/1024, 2) . ' KB',
 	  		'Execution time' => $this->duration($endtime - APP_START_MICROTIME),
 	   		'DB-Queries execution time' => $this->duration(DB::$queries_total_time),
 			'DB-Queries' => $count_queries,
@@ -106,7 +106,7 @@ class WidgetDebugBlock implements IWidget {
 		return html::tr(
 			array(
 				html::td(html::b(implode('<br />', $query_time))),
-				html::td(String::escape($query['query'])),							
+				html::td(GyroString::escape($query['query'])),							
 			),
 			array('class' => $cls)
 		);
@@ -116,7 +116,7 @@ class WidgetDebugBlock implements IWidget {
 		$ret = '';
 		if ($query['message']) {
 			$ret .= html::tr(
-				html::td(String::escape($query['message']), array('colspan' => 2)),
+				html::td(GyroString::escape($query['message']), array('colspan' => 2)),
 				array('class' => 'query message')
 			);
 		}
@@ -146,13 +146,13 @@ class WidgetDebugBlock implements IWidget {
 			if ($head === false) {
 				$head = array();
 				foreach(array_keys($row) as $h) {
-					$head[] = html::td(String::escape($h), array(), true);
+					$head[] = html::td(GyroString::escape($h), array(), true);
 				}
 			}
 			
 			$tr = array();
 			foreach($row as $col => $value) {
-				$tr[] = html::td(String::escape($value));	
+				$tr[] = html::td(GyroString::escape($value));	
 			}
 			$rows[] = $tr;
 		}
@@ -169,8 +169,8 @@ class WidgetDebugBlock implements IWidget {
 				$cls = 'template';
 				$table .= html::tr(
 					array(
-						html::td(String::escape($resource)),
-						html::td(String::escape($file)),
+						html::td(GyroString::escape($resource)),
+						html::td(GyroString::escape($file)),
 					),
 					array('class' => $cls)
 				);
@@ -189,7 +189,7 @@ class WidgetDebugBlock implements IWidget {
 			$li = array(); 
 			foreach(Translator::Instance()->groups as $key => $group) {
 				if (count($group)) {
-					$li[] = String::escape($key);
+					$li[] = GyroString::escape($key);
 				}
 			}
 			$out .= html::li($li, 'translations');
@@ -198,11 +198,11 @@ class WidgetDebugBlock implements IWidget {
 	}
 	
 	protected function sec($sec) {
-		return String::number($sec, 4) . '&nbsp;sec';
+		return GyroString::number($sec, 4) . '&nbsp;sec';
 	}
 
 	protected function msec($sec) {
-		return String::number($sec * 1000, 2) . '&nbsp;msec';
+		return GyroString::number($sec * 1000, 2) . '&nbsp;msec';
 	}
 	
 	protected function duration($sec) {

@@ -18,8 +18,8 @@ print WidgetInput::output('message', tr('Your Message:', 'contact'), $form_data,
 
 if ($is_logged_in && $show_sender_if_logged_in) {
 	print html::div(
-		html::p(tr('Your Name:', 'contact') . ' ' . html::b(String::escape($current_user->name))) .
-		html::p(tr('Your E-Mail Address:', 'contact') . ' ' . html::b(String::escape($current_user->email))),
+		html::p(tr('Your Name:', 'contact') . ' ' . html::b(GyroString::escape($current_user->name))) .
+		html::p(tr('Your E-Mail Address:', 'contact') . ' ' . html::b(GyroString::escape($current_user->email))),
 		'fixed-sender note'
 	);
 }

@@ -102,13 +102,13 @@ class Url {
 		
 		// Input separator may be a list of chars!
 		$sep = ini_get('arg_separator.input');
-		$l = String::length($sep);
+		$l = GyroString::length($sep);
 		if ($l > 1) {
 			// We have a list, take first char as separator and replace all others with it 
 			$all_seps = $sep;
-			$sep = String::substr($all_seps, 0, 1);			
+			$sep = GyroString::substr($all_seps, 0, 1);			
 			for ($i = 1; $i < $l; $i++) {
-				$query = str_replace(String::substr($all_seps,$i, 1), $sep, $query);
+				$query = str_replace(GyroString::substr($all_seps,$i, 1), $sep, $query);
 			}
 		}
 		
@@ -116,8 +116,8 @@ class Url {
 		$arrItems = explode($sep, $query);
 		foreach($arrItems as $query_item) {
 			$arr = explode('=', $query_item, 2);
-			$pname = String::convert(urldecode($arr[0]));
-			$pvalue = (count($arr) > 1) ? String::convert(urldecode($arr[1])) : '';
+			$pname = GyroString::convert(urldecode($arr[0]));
+			$pvalue = (count($arr) > 1) ? GyroString::convert(urldecode($arr[1])) : '';
 			if (!empty($pname)) {
 				if (substr($pname, -2) == '[]') {
 					$ret[$pname][] = $pvalue;
@@ -140,8 +140,8 @@ class Url {
 		// $temp = array();
 		// parse_str($query, $temp);
 		// foreach($temp as $key => $value) {
-		// 	$pname = String::convert(urldecode($key));
-		// 	$pvalue = String::convert(urldecode($value));
+		// 	$pname = GyroString::convert(urldecode($key));
+		// 	$pvalue = GyroString::convert(urldecode($value));
 		// 	if (!empty($pname)) {
 		// 		$ret[$pname] = $pvalue;
 		// 	}
@@ -382,7 +382,7 @@ class Url {
 	 * @return Url
 	 */
 	public function set_host($host) {
-		$this->data['host'] = String::to_lower($host);
+		$this->data['host'] = GyroString::to_lower($host);
 		return $this;
 	}
 	
@@ -461,7 +461,7 @@ class Url {
 			require_once(dirname(__FILE__) . '/data/tld.lst.php');
 			$tlds = get_tlds();
 			// We do not have utf 8 here, so we can use native string functions,
-			// no String::xxxx wrappers. They perform notably faster.
+			// no GyroString::xxxx wrappers. They perform notably faster.
 			foreach($tlds as $tld) {
 				$l_tld_check = strlen($tld) + 1; // +1 is for the '.' we will add later on
 				// A valid domain name is x.[TLD], so the host must be at least by one
@@ -471,7 +471,7 @@ class Url {
 					continue;
 				} 
 				
-				// The below is equal to (String::ends_with($host, '.' . $tld))
+				// The below is equal to (GyroString::ends_with($host, '.' . $tld))
 				if (substr($host, -$l_tld_check, $l_tld_check) === '.' . $tld) {
 					$ret['tld'] = $tld;
 					$tmp = explode('.', $tld);
@@ -619,7 +619,7 @@ class Url {
 	 */
 	function clean() {
 		$ret = Arr::get_item($this->data, 'path', '');
-		$this->data['path'] = String::plain_ascii($ret);
+		$this->data['path'] = GyroString::plain_ascii($ret);
 		return $this;	
 	}
 	
@@ -755,9 +755,9 @@ class Url {
 			exit();
 		}
 
-		$pos = String::strpos($path, '&'); 
+		$pos = GyroString::strpos($path, '&'); 
 		if ($pos !== false) {
-			$path = String::left($path, $pos) . '?' . String::substr($path, $pos + 1);
+			$path = GyroString::left($path, $pos) . '?' . GyroString::substr($path, $pos + 1);
 			$url->set_path($path);
 			$url->redirect(self::PERMANENT);
 			exit();

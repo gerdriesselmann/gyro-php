@@ -11,7 +11,7 @@
 	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
 </head>
-<body id="<?=String::plain_ascii($route_id)?>" class="<?=strtolower($route_controller)?>">
+<body id="<?=GyroString::plain_ascii($route_id)?>" class="<?=strtolower($route_controller)?>">
 <ul class="ym-skiplinks">
 	<li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
 	<li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>

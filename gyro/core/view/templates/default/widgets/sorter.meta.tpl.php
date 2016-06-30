@@ -10,14 +10,14 @@
 if (!$sorter_data['is_default']) {
 	if (!Common::flag_is_set($policy, WidgetSorter::DONT_CHANGE_TITLE)) {
 		$current_column = $sorter_data['current_column'];
-		$column_title = String::escape($current_column['title']);
+		$column_title = GyroString::escape($current_column['title']);
 		
 		$t = tr(
 			' - sorted by %col %dir', 
 			'core', 
 			array(
 				'%col' => $column_title,
-				'%dir' => String::escape(tr($sorter_data['order'], 'core'))
+				'%dir' => GyroString::escape(tr($sorter_data['order'], 'core'))
 			)
 		);
 		$d = tr(
@@ -25,7 +25,7 @@ if (!$sorter_data['is_default']) {
 			'core', 
 			array(
 				'%col' => $column_title,
-				'%dir' => String::escape($current_column['sort_title'])
+				'%dir' => GyroString::escape($current_column['sort_title'])
 			)
 		);
 		

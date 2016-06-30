@@ -20,6 +20,6 @@ class InputWidgetTextareaBase extends InputWidgetBase {
 	* Render the actual widget
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
-		return html::tag('textarea', String::escape($value), $attrs);
+		return html::tag('textarea', GyroString::escape($value), $attrs);
 	}	
 }

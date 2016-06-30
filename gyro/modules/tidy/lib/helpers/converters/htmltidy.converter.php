@@ -34,7 +34,7 @@ class ConverterHtmlTidy implements IConverter {
 			//'merge-spans' => false, // Not widely supported on Debian system
 			'hide-comments' => true,
 			'lower-literals' => true,
-			'char-encoding' => String::plain_ascii(GyroLocale::get_charset(), ''),
+			'char-encoding' => GyroString::plain_ascii(GyroLocale::get_charset(), ''),
 			'wrap' => 0
 		);
 		$this->predefined_params = array_merge($predefined_params, $global_params);
@@ -53,13 +53,13 @@ class ConverterHtmlTidy implements IConverter {
 	 */
 	public function encode($value, $params = false) {
 		//TODO this is a hotfix to keep tidy from striping <script>-Only-Content
-		if (String::starts_with(trim(String::to_lower($value)), '<script')) {
+		if (GyroString::starts_with(trim(GyroString::to_lower($value)), '<script')) {
 			return $value;
 		}
 		$is_partial_doc = (strpos($value, '<html') === false);
 		$predefined_params = $this->predefined_params;
 		$params = array_merge($predefined_params, Arr::force($params, false));
-		$tidy = tidy_parse_string($value, $params, String::plain_ascii(GyroLocale::get_charset(), ''));
+		$tidy = tidy_parse_string($value, $params, GyroString::plain_ascii(GyroLocale::get_charset(), ''));
 		$tidy->cleanRepair();
 		return tidy_get_output($tidy);
 	}

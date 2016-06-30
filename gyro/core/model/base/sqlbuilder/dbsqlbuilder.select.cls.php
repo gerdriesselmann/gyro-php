@@ -37,7 +37,7 @@ class DBSqlBuilderSelect extends DBSqlBuilderBase {
 		foreach($arr_fields as $key => $name) {
 			$has_alias = !is_numeric($key);
 			$fieldname = $has_alias ? $key : $name;
-			$fieldalias = $name; //String::plain_ascii($name, '', true);
+			$fieldalias = $name; //GyroString::plain_ascii($name, '', true);
 
 			$dbfield = $table->get_table_field($fieldname);
 			$statement = ($dbfield) ? $dbfield->format_select() : $fieldname;

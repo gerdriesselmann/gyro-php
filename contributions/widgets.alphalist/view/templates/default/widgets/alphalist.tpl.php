@@ -6,7 +6,7 @@ $link_subpage = Common::flag_is_set($policy, WidgetAlphabeticalList::LINK_TO_SUB
 $list = array();
 foreach($data as $letter => $elements) {
 	$content = '';
-	$content .= html::tag('h3', String::to_upper($letter), array('id' => 'letter_' . strtolower($letter) . '_'));
+	$content .= html::tag('h3', GyroString::to_upper($letter), array('id' => 'letter_' . strtolower($letter) . '_'));
 	foreach($elements as $item) {
 		$subview = $self->create_child_view('widgets/alphalist/item');
 		$subview->assign('item', $item);
@@ -17,7 +17,7 @@ foreach($data as $letter => $elements) {
 		$url = '/' . rtrim(Url::current()->get_path(), '/') . '/' . strtolower($letter) . '/';
 		$link_title = Arr::get_item($params, 'more_title', tr('More...', 'alphabeticallist'));
 		$link_title = str_replace('%letter', strtoupper($letter), $link_title);
-		$content .= html::p(html::a(String::escape($link_title), $url, ''));
+		$content .= html::p(html::a(GyroString::escape($link_title), $url, ''));
 	}
 }
 $list[] = $content;

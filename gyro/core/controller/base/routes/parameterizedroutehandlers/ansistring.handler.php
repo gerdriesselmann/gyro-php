@@ -33,6 +33,6 @@ class AnsistringParameterizedRouteHandler implements IParameterizedRouteHandler 
 	 * Preprocess a value before URL is build
 	 */
 	public function preprocess_build_url($value) {
-		return String::plain_ascii($value, '-', true);
+		return GyroString::plain_ascii($value, '-', true);
 	}
 }

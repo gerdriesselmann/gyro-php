@@ -97,7 +97,7 @@ class UserBaseController extends ControllerBase {
 		$ret = array();
 
 		foreach ($user->get_role_names() as $role) {
-			$role = String::plain_ascii($role);
+			$role = GyroString::plain_ascii($role);
 			$dashboard_file = 'controller/tools/dashboards/' .  $role . '.dashboard.php';
 			$dashboard_class = ucfirst($role) . 'Dashboard';
 			$found = Load::first_file($dashboard_file);

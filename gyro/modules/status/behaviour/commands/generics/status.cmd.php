@@ -32,7 +32,7 @@ class StatusCommand extends CommandDelegate {
 	 */
 	public function __construct($obj, $params) {
 		$params = Arr::force($params);
-		$new_status = String::to_lower(Arr::get_item($params, 0, ''));
+		$new_status = GyroString::to_lower(Arr::get_item($params, 0, ''));
 		if ($new_status == '') {
 			throw new Exception(tr('Status command called with empty status', 'status'));
 			exit;

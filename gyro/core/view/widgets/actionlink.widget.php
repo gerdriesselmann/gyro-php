@@ -24,7 +24,7 @@ class WidgetActionLink implements IWidget {
 	}
 	
 	public function render($policy = self::NONE) {
-		$text = ($this->text instanceof ISelfDescribing) ? String::escape($this->text->get_title()) : $this->text;
+		$text = ($this->text instanceof ISelfDescribing) ? GyroString::escape($this->text->get_title()) : $this->text;
 		return html::a(
 			$text, 
 			ActionMapper::get_path($this->action, $this->params),
