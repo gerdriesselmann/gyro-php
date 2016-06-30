@@ -105,7 +105,8 @@ class DBDriverMysql implements IDBDriver {
 					$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 				}
 				//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
-				$this->execute("SET SESSION sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
+				$this->execute("SET sql_mode='TRADITIONAL'");
+				//$this->execute("SET SESSION sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION'");
 			}
 			else {
 				$err->append(tr(
