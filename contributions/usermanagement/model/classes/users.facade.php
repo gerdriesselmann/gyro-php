@@ -72,10 +72,12 @@ class Users {
 	 * Returns true, if current user has given access level (or higher)
 	 */
 	public static function current_has_role($role) {
-		if (self::is_logged_in()) {
-			return self::get_current_user()->has_role($role);
+		$user = self::get_current_user();
+		if ($user instanceof DAOUsers) {
+			return $user->has_role($role);
+		} else {
+			return false;
 		}
-		return false;
 	}
 	
 	/**
@@ -455,6 +457,13 @@ class Users {
 	 * 
 	 * @since 0.5.1
 	 * 
+	 * @return string
+	 */
+	/**
+	 * Create a hash of $source using algorith $hash_type
+	 *
+	 * @since 0.5.1
+	 *
 	 * @return string
 	 */
 	public static function create_hash($source, $hash_type) {
