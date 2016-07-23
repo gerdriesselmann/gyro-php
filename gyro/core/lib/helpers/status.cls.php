@@ -131,6 +131,10 @@ class Status {
 	 * @param Status|Exception|PEAR_Error|string $other Either Status, Exception, PEAR_Error or a string
 	 */
 	public function merge($other) {
+		if (empty($other)) {
+			return;
+		}
+
 		if ($other instanceof Status) {
 			foreach($other->get_messages() as $m) {
 				$this->append($m);
@@ -142,7 +146,7 @@ class Status {
 		else if ($other instanceof Exception) {
 			$this->append($other->getMessage());
 		}
-		else if (!empty($other) && is_string($other)){
+		else if (is_string($other)) {
 			$this->append($other);
 		}
 	}  
