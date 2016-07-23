@@ -141,6 +141,9 @@ class Load {
 		$basedirs = self::get_base_directories(self::ORDER_DECORATORS);
 		$arr_directories = self::to_array(func_get_args());
 		foreach($arr_directories as $directory) {
+			if (self::is_loaded($directory, '*')) {
+				continue;
+			}
 			$found = false;
 			foreach($basedirs as $basedir) {
 				$path = $basedir . $directory;
@@ -151,7 +154,9 @@ class Load {
 						}
 					}
 			}
-			if (!$found) {
+			if ($found) {
+				self::mark_loaded($directory, '*', '');
+			} else {
 				throw new Exception("Directory $directory not found");
 			}
 		}
@@ -273,7 +278,7 @@ class Load {
 	 * @param string $modname
 	 */
 	public static function is_module_loaded($modname) {
-		return in_array($modname, self::get_loaded_modules());
+		return array_key_exists($modname, self::$module_dirs);
 	}
 	
 	/**
@@ -468,7 +473,8 @@ class Load {
 	 * @return bool True if ressource was loaded already, false otherwise
 	 */
 	private static function is_loaded($directory, $class) {
-		return isset(self::$loaded[$directory][$class]);
+		return
+			isset(self::$loaded[$directory][$class]) || isset(self::$loaded[$directory]['*']);
 	}
 	
 	public static function autoload($class_name) {
