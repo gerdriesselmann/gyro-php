@@ -42,7 +42,8 @@ class SingleMessageBuilder implements IMailMessageBuilder {
 	 * @return string
 	 */
 	public function get_body() {
-		return chunk_split(base64_encode($this->message));
+		//return chunk_split(base64_encode($this->message));
+		return quoted_printable_encode($this->message);
 	}
 	
 	/**
@@ -53,6 +54,7 @@ class SingleMessageBuilder implements IMailMessageBuilder {
 	 * @return $headers Associative array with header name as key
 	 */
 	public function get_additional_headers() {
-		return array('Content-Transfer-Encoding' => 'base64');
+		//return array('Content-Transfer-Encoding' => 'base64');
+		return array('Content-Transfer-Encoding' => 'quoted-printable');
 	}
 }
