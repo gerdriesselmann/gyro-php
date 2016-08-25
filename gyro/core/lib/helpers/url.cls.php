@@ -81,6 +81,7 @@ class Url {
 		$this->set_path(Arr::get_item($data, 'path', ''));
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
 		$this->set_query(Arr::get_item($data, 'query', ''));
+		$this->set_user_info(Arr::get_item($data, 'user', ''), Arr::get_item($data, 'pass', ''));
 	}
 
 	public static function decode_path($path) {
@@ -501,7 +502,19 @@ class Url {
 		unset($tlds); // Saves Memory, I think.
 		return $ret;
 	}
-	
+
+	public function set_user_info($user, $password) {
+		if ($user || $password) {
+			$this->data['user_info'] = "$user:$password";
+		} else {
+			$this->data['user_info'] = '';
+		}
+	}
+
+	public function get_user_info() {
+		return $this->data['user_info'];
+	}
+
 	public function set_port($port) {
 		$this->data['port'] = ($port) ? intval($port) : $port;
 		return $this;
@@ -563,6 +576,11 @@ class Url {
 			$out .= $this->get_scheme();
 			$out .= '://';
 		
+			$user = $this->get_user_info();
+			if ($user) {
+				$out .= $user . '@';
+			}
+			
 			$host = $this->get_host();
 			if (empty($host)) {
 				throw new Exception('Url: No Host specified!');
