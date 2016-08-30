@@ -58,4 +58,25 @@ class JQuery {
 		
 		return $cdn;
 	}
+	
+	public static function get_head_data_file() {
+		return new HeadDataFile(
+			self::get_path(), 
+			self::get_subresource_integrity()
+		);
+	}
+	
+	private static function get_subresource_integrity() {
+		$cdn = trim(Config::get_value(ConfigJQuery::CDN));
+		if (empty($cdn)) {
+			return '';
+		}
+			
+		switch (Config::get_value(ConfigJQuery::VERSION)) {
+			case '1.11':
+				return JQUERY_SRI_1_11;
+			default:
+				return '';
+		}
+	}
 }

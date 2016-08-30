@@ -66,6 +66,7 @@ Config::set_value_from_constant(ConfigJQuery::CDN, 'APP_JQUERY_CDN', '');
 // To be changed on new releases
 Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.11');
 define('JQUERY_VERSION_1_11', '1.11.3');
+define('JQUERY_SRI_1_11', 'sha384-6ePHh72Rl3hKio4HiJ841psfsRJveeS+aLoaEf3BWfS+gTF0XdAqku2ka8VddikM');
 define('JQUERY_VERSION_1_10', '1.10.2');
 define('JQUERY_VERSION_1_9', '1.9.1');
 define('JQUERY_VERSION_1_7', '1.7.1');

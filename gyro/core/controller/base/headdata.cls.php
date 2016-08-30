@@ -7,6 +7,16 @@ define('ROBOTS_NOINDEX_FOLLOW', 5);
 define('ROBOTS_INDEX_FOLLOW', 0);
 define('ROBOTS_NOSNIPPET', 8);
 
+class HeadDataFile {
+	public $file;
+	public $subresource_integrity;
+
+	public function __construct($file, $sri = '') {
+		$this->file = $file;
+		$this->subresource_integrity = $sri;
+	}
+}
+
 /**
  * Centralizes HTML HEAD data
  * 
@@ -41,15 +51,29 @@ class HeadData implements IRenderer {
 	 * @var int
 	 */
 	public $robots_index = ROBOTS_INDEX_FOLLOW;
-	
+
+	/**
+	 * @var string[]
+	 */
 	public $js_files = array();
 	public $js_snippets = array('before' => array(), 'after' => array());
+	/**
+	 * @var string[]
+	 */
 	public $css_files = array();
 	public $css_snippets = array('before' => array(), 'after' => array());
+	/**
+	 * @var string[]
+	 */
 	public $conditional_css_files = array();
 	public $meta = array();
 	public $meta_http_equiv = array();
+	/**
+	 * @var string[]
+	 */
 	public $links = array();
+
+	public $subresource_integrities = array();
 	
 	const META_INFORMATION = 256;
 	const JAVASCRIPT_INCLUDES = 512;
@@ -95,17 +119,35 @@ class HeadData implements IRenderer {
 	/**
 	 * Add a javascript file include 
 	 * 
-	 * @param string $file
+	 * @param string|HeadDataFile $file
 	 * @param bool $to_front If true, the javascript file is included before other
 	 * @return void
 	 */
 	public function add_js_file($file, $to_front = false) {
 		if (!empty($file)) {
+			$file = $this->adapt_file($file);
 			if ($to_front) {
 				array_unshift($this->js_files, $file);
 			} else {
 				$this->js_files[] = $file;
 			}
+		}
+	}
+
+	/**
+	 * Turn a string into a HeadDataFile
+	 *
+	 * @param string|HeadDataFile $file
+	 * @return string
+	 */
+	private function adapt_file($file) {
+		if ($file instanceof HeadDataFile) {
+			if ($file->subresource_integrity) {
+				$this->subresource_integrities[$file->file] = $file->subresource_integrity;
+			}
+			return $file->file;
+		} else {
+			return $file;
 		}
 	}
 	
@@ -128,6 +170,7 @@ class HeadData implements IRenderer {
 	
 	public function add_css_file($file, $to_front = false) {
 		if (!empty($file)) {
+			$file = $this->adapt_file($file);
 			if ($to_front) {
 				array_unshift($this->css_files, $file);
 			} else {
@@ -138,6 +181,7 @@ class HeadData implements IRenderer {
 
 	public function add_conditional_css_file($browser, $file, $to_front = false) {
 		if (!empty($file)) {
+			$file = $this->adapt_file($file);
 			if (!isset($this->conditional_css_files[$browser])) {
 				$this->conditional_css_files[$browser] = array();
 			}
@@ -300,8 +344,25 @@ class HeadData implements IRenderer {
 		$ret = '';
 		$css_files = array_unique($css_files);
 		foreach ($css_files as $file) {
-			$file = GyroString::escape($this->escape_file($file));
-			$ret .= "<link rel=\"stylesheet\" type=\"text/css\"  href=\"$file\" />\n";
+			$attr = array_merge(
+				$this->subresource_integrity_attr($file),
+				array(
+					'rel' => 'stylesheet',
+					'type' => 'text/css',
+					'href' => $this->escape_file($file),
+				)
+			);
+			$ret .= html::tag_selfclosing('link', $attr) . "\n";
+		}
+		return $ret;
+	}
+	
+	public function subresource_integrity_attr($file) {
+		$ret = array();
+		$integriy = Arr::get_item($this->subresource_integrities, $file, null);
+		if ($integriy) {
+			$ret['integrity'] = $integriy;
+			$ret['crossorigin'] = 'anonymous';
 		}
 		return $ret;
 	}
@@ -356,8 +417,15 @@ class HeadData implements IRenderer {
 		$ret = '';
 		$ret .= $this->render_js_snippets($this->js_snippets['before']);
 		foreach ($js_files as $file) {
-			$file = $this->escape_file($file);
-			$ret .= html::include_js($file) . "\n";
+			$attr = array_merge(
+				$this->subresource_integrity_attr($file),
+				array(
+					'src' => $this->escape_file($file),
+					'type' => 'text/javascript',
+				)
+			);
+
+			$ret .= html::tag('script', '', $attr) . "\n";
 		}
 		$ret .= $this->render_js_snippets($this->js_snippets['after']);
 		return $ret;

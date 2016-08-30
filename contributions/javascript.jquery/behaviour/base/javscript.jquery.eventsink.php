@@ -24,7 +24,7 @@ class JavascriptJQueryEventSink implements IEventSink {
 				break;
 			case 'jcssmanager_collect':
 				if ($event_params == JCSSManager::TYPE_JS && Config::has_feature(ConfigJQuery::ON_EVERY_PAGE)) {
-					array_unshift($result, JQuery::get_path());
+					array_unshift($result, JQuery::get_head_data_file());
 				}
 				break;
 		}
