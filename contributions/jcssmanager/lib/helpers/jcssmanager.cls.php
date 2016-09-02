@@ -78,8 +78,7 @@ class JCSSManager {
 		Load::models('jcsscompressedfiles');
 		
 		$out_file = Config::get_value(Config::URL_ABSPATH) . Config::get_value(ConfigJCSSManager::JS_DIR) . 'compressed.js';
-		$in_files = array();
-		EventSource::Instance()->invoke_event('jcssmanager_compress', JCSSManager::TYPE_JS, $in_files);
+		$in_files = self::collect_for_compressing(JCSSManager::TYPE_JS);
 		$js = new JCSSManagerCompressJSCommand($in_files, $out_file);
 		$err->merge($js->execute());
 		
@@ -87,8 +86,7 @@ class JCSSManager {
 		foreach(JCSSManager::get_css_types() as $type => $tr) {
 			$out_file = ($type !== JCSSManager::TYPE_CSS) ? 'compressed.' . strtolower($type) . '.css' : 'compressed.css';
 			$out_file = JCSSManager::make_absolute($css_base . $out_file);
-			$in_files = array();
-			EventSource::Instance()->invoke_event('jcssmanager_compress', $type, $in_files);
+			$in_files = self::collect_for_compressing($type);
 			$css = new JCSSManagerCompressCSSCommand($in_files, $out_file, $type);
 			$err->merge($css->execute());
 		}		
@@ -98,6 +96,26 @@ class JCSSManager {
 			$err->merge(self::update_htaccess());
 		}
 		return $err;
+	}
+	
+	private static function collect_for_compressing($type) {
+		$in_files = array();
+		EventSource::Instance()->invoke_event('jcssmanager_compress', $type, $in_files);
+		
+		var_dump($in_files);
+		
+		array_walk_recursive(
+			$in_files,
+			function(&$file, $key) {
+				if ($file instanceof HeadDataFile) {
+					$file = $file->file;
+				}
+			},
+			$in_files
+		);
+		var_dump($in_files);
+		
+		return $in_files;
 	}
 	
 	private static function update_htaccess() {
