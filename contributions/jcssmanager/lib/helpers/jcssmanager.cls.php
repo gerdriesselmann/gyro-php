@@ -102,8 +102,6 @@ class JCSSManager {
 		$in_files = array();
 		EventSource::Instance()->invoke_event('jcssmanager_compress', $type, $in_files);
 		
-		var_dump($in_files);
-		
 		array_walk_recursive(
 			$in_files,
 			function(&$file, $key) {
@@ -113,8 +111,6 @@ class JCSSManager {
 			},
 			$in_files
 		);
-		var_dump($in_files);
-		
 		return $in_files;
 	}
 	
