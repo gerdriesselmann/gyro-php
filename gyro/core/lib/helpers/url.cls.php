@@ -738,6 +738,9 @@ class Url {
 		if (!empty($_POST)) {
 			return;
 		}
+		if (RequestInfo::current()->is_console()) {
+			return;
+		}
 		
 		$url = Url::current();
 		$path = trim($url->get_path());
