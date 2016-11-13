@@ -747,14 +747,15 @@ class Url {
 		
 		if ($path == Config::get_value(Config::URL_BASEDIR)) {
 			return;
-		} 
+		}
 
 
+		$pathclean = $path;
 		//$pathclean = trim(str_replace('%20', '', $path), '/'); // created endless circles of redirects
 		//$pathclean = trim($path, '/');
-		$pathclean = str_replace('%20', '', $path);
-		$pathclean = str_replace('//', '/', $pathclean);
-		
+		//$pathclean = str_replace('%20', '', $path);
+		$pathclean = preg_replace('@/+@', '/', $pathclean);
+
 		$dirs = explode('/', $pathclean);
 		$dirsclean = array();
 		for ($i = 0; $i < sizeof($dirs); $i++) {
