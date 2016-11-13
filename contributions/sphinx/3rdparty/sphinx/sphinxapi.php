@@ -180,7 +180,11 @@ function sphPackU64 ( $v )
 		// x64, bcmath
 		if ( function_exists("bcmul") )
 		{
-			$h = bcdiv ( $v, 4294967296, 0 );
+			// Quoting the number is a fix for PHP7 which else throws a parser error
+			// Invalid numeric literal
+			// which is caused of the large number plus the comma
+			$h = bcdiv ( $v, '4294967296', 0 );
+
 			$l = bcmod ( $v, 4294967296 );
 			return pack ( "NN", $h, $l );
 		}
