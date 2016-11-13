@@ -78,7 +78,7 @@ class Url {
 		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
 		$this->set_host(Arr::get_item($data, 'host', $fallback_host));
 		$this->set_port(Arr::get_item($data, 'port', ''));
-		$this->set_path(Arr::get_item($data, 'path', ''));
+		$this->set_path_internal(Arr::get_item($data, 'path', ''));
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
 		$this->set_query(Arr::get_item($data, 'query', ''));
 		$this->set_user_info(Arr::get_item($data, 'user', ''), Arr::get_item($data, 'pass', ''));
@@ -262,7 +262,15 @@ class Url {
 	 * @return Url Reference to self  
 	 */
 	public function set_path($path) {
-		$this->data['path'] = ltrim($path, '/');
+		$path = ltrim($path, '/');
+		return $this->set_path_internal($path);
+	}
+
+	private function set_path_internal($path) {
+		if (GyroString::starts_with($path, '/')) {
+			$path = GyroString::substr($path, 1);
+		}
+		$this->data['path'] = $path;
 		return $this;
 	}
 	
