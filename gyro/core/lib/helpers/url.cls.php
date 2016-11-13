@@ -755,17 +755,20 @@ class Url {
 		$dirs = explode('/', $pathclean);
 		$dirsclean = array();
 		for ($i = 0; $i < sizeof($dirs); $i++) {
-			if ('.' === $dirs[$i]) {
+			$dir_to_test = $dirs[$i];
+			if ('.' === $dir_to_test) {
 				continue;
-			}
-			if ('..' === $dirs[$i] && $i > 0 && '..' != $dirsclean[sizeof($dirsclean) - 1]) {
+			} else if ('..' === $dir_to_test && $i > 0 && '..' != $dirsclean[sizeof($dirsclean) - 1]) {
 				array_pop($dirsclean);
 				continue;
+			} else {
+				$dir_to_test = Url::encode_path(
+					rawurlencode(rawurldecode($dir_to_test))
+				);
+				array_push($dirsclean, $dir_to_test);
 			}
-			array_push($dirsclean, $dirs[$i]);
 		}
 		$pathclean = implode('/', $dirsclean);
-		$pathclean = Url::encode_path(rawurldecode($pathclean));
 		$url->set_path($pathclean);
 
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
