@@ -17,7 +17,7 @@ class ConverterHtmlTidy implements IConverter {
 	public function __construct($global_params = array()) {
 		$predefined_params = array(
 			'bare' => true,
-			'clean' => !$is_partial_doc,
+			'clean' => true,
 			'drop-empty-paras' => true,
 			'drop-font-tags' => true,
 			'drop-proprietary-attributes' => true,
@@ -29,7 +29,7 @@ class ConverterHtmlTidy implements IConverter {
 			'logical-emphasis' => true,
 			'output-xhtml' => true,
 			'doctype' => 'loose',
-			'show-body-only' => $is_partial_doc,
+			'show-body-only' => false,
 			'merge-divs' => false,
 			//'merge-spans' => false, // Not widely supported on Debian system
 			'hide-comments' => true,
@@ -58,6 +58,8 @@ class ConverterHtmlTidy implements IConverter {
 		}
 		$is_partial_doc = (strpos($value, '<html') === false);
 		$predefined_params = $this->predefined_params;
+		$predefined_params['clean'] = !$is_partial_doc;
+		$predefined_params['show-body-only'] = $is_partial_doc;
 		$params = array_merge($predefined_params, Arr::force($params, false));
 		$tidy = tidy_parse_string($value, $params, GyroString::plain_ascii(GyroLocale::get_charset(), ''));
 		$tidy->cleanRepair();
