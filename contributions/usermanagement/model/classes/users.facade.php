@@ -379,6 +379,7 @@ class Users {
 		$user->email = $email;
 		$user->status = self::STATUS_ACTIVE;
 		if ($email && $user->find(IDataObject::AUTOFETCH)) {
+            Load::models('confirmations');
 			$params = array(
 				'id_item' => $user->id,
 				'action' => 'onetimelogin',
