@@ -406,7 +406,27 @@ class GyroDate {
 	public static function get_day($date) {
 		return intval(date('j', $date));
 	}
-	
+
+	/**
+	 * Returns day of given date
+	 *
+	 * @param date $date
+	 * @return int
+	 */
+	public static function get_hour($date) {
+		return intval(date('h', $date));
+	}
+
+	/**
+	 * Returns day of given date
+	 *
+	 * @param date $date
+	 * @return int
+	 */
+	public static function get_minute($date) {
+		return intval(date('i', $date));
+	}
+
 	/**
 	 * Returns number of month of given date
 	 * 
