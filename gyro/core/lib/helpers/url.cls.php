@@ -78,7 +78,7 @@ class Url {
 		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
 		$this->set_host(Arr::get_item($data, 'host', $fallback_host));
 		$this->set_port(Arr::get_item($data, 'port', ''));
-		$this->set_path(Arr::get_item($data, 'path', ''));
+		$this->set_path_internal(Arr::get_item($data, 'path', ''));
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
 		$this->set_query(Arr::get_item($data, 'query', ''));
 		$this->set_user_info(Arr::get_item($data, 'user', ''), Arr::get_item($data, 'pass', ''));
@@ -262,7 +262,15 @@ class Url {
 	 * @return Url Reference to self  
 	 */
 	public function set_path($path) {
-		$this->data['path'] = ltrim($path, '/');
+		$path = ltrim($path, '/');
+		return $this->set_path_internal($path);
+	}
+
+	private function set_path_internal($path) {
+		if (GyroString::starts_with($path, '/')) {
+			$path = GyroString::substr($path, 1);
+		}
+		$this->data['path'] = $path;
 		return $this;
 	}
 	
@@ -730,34 +738,41 @@ class Url {
 		if (!empty($_POST)) {
 			return;
 		}
+		if (RequestInfo::current()->is_console()) {
+			return;
+		}
 		
 		$url = Url::current();
 		$path = trim($url->get_path());
 		
 		if ($path == Config::get_value(Config::URL_BASEDIR)) {
 			return;
-		} 
+		}
 
 
+		$pathclean = $path;
 		//$pathclean = trim(str_replace('%20', '', $path), '/'); // created endless circles of redirects
 		//$pathclean = trim($path, '/');
-		$pathclean = str_replace('%20', '', $path);
-		$pathclean = str_replace('//', '/', $pathclean);
-		
+		//$pathclean = str_replace('%20', '', $path);
+		$pathclean = preg_replace('@/+@', '/', $pathclean);
+
 		$dirs = explode('/', $pathclean);
 		$dirsclean = array();
 		for ($i = 0; $i < sizeof($dirs); $i++) {
-			if ('.' === $dirs[$i]) {
+			$dir_to_test = $dirs[$i];
+			if ('.' === $dir_to_test) {
 				continue;
-			}
-			if ('..' === $dirs[$i] && $i > 0 && '..' != $dirsclean[sizeof($dirsclean) - 1]) {
+			} else if ('..' === $dir_to_test && $i > 0 && '..' != $dirsclean[sizeof($dirsclean) - 1]) {
 				array_pop($dirsclean);
 				continue;
+			} else {
+				$dir_to_test = Url::encode_path(
+					rawurlencode(rawurldecode($dir_to_test))
+				);
+				array_push($dirsclean, $dir_to_test);
 			}
-			array_push($dirsclean, $dirs[$i]);
 		}
 		$pathclean = implode('/', $dirsclean);
-		$pathclean = Url::encode_path(rawurldecode($pathclean));
 		$url->set_path($pathclean);
 
 		$test_1 = $url->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS);
