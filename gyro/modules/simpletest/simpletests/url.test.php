@@ -22,11 +22,7 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual(TEST_URL, $this->url->build());
 		$this->assertEqual(TEST_URL2, $this->url2->build());
 		$this->assertEqual('http://' .TEST_URL3, $this->url3->build());
-		
-		// Test if Latin gets converted to UTF-8
-		$url = Url::create('http://www.google.de/search?hl=de&ie=ISO-8859-1&q=Betriebsformen+des+Gro%DF-+und+Au%DFenhandels&meta=');
-		$this->assertEqual('http://www.google.de/search?hl=de&ie=ISO-8859-1&q=Betriebsformen+des+Gro%C3%9F-+und+Au%C3%9Fenhandels&meta=', $url->build());	
-	} 
+	}
 	
 	function test_replace_param() {
 		// replacing non-existent should do nothing
