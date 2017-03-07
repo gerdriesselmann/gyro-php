@@ -6,7 +6,6 @@
  * @author Travis Swicegood <development@domain51.com>
  * @package SimpleTest
  * @subpackage UnitTester
- * @version $Id: collector.php 1784 2008-04-26 13:07:14Z pp11 $
  */
 
 /**
@@ -16,14 +15,15 @@
  * @package SimpleTest
  * @subpackage UnitTester
  */
-class SimpleCollector {
-
+class SimpleCollector
+{
     /**
      * Strips off any kind of slash at the end so as to normalise the path.
      * @param string $path    Path to normalise.
      * @return string         Path without trailing slash.
      */
-    protected function removeTrailingSlash($path) {
+    protected function removeTrailingSlash($path)
+    {
         if (substr($path, -1) == DIRECTORY_SEPARATOR) {
             return substr($path, 0, -1);
         } elseif (substr($path, -1) == '/') {
@@ -39,7 +39,8 @@ class SimpleCollector {
      * @param string $path    Directory to scan.
      * @see _attemptToAdd()
      */
-    function collect(&$test, $path) {
+    public function collect(&$test, $path)
+    {
         $path = $this->removeTrailingSlash($path);
         if ($handle = opendir($path)) {
             while (($entry = readdir($handle)) !== false) {
@@ -65,13 +66,14 @@ class SimpleCollector {
      * @see collect()
      * @access protected
      */
-    protected function handle(&$test, $file) {
+    protected function handle(&$test, $file)
+    {
         if (is_dir($file)) {
             return;
         }
         $test->addFile($file);
     }
-    
+
     /**
      *  Tests for hidden files so as to skip them. Currently
      *  only tests for Unix hidden files.
@@ -79,7 +81,8 @@ class SimpleCollector {
      *  @return boolean                True if hidden file.
      *  @access private
      */
-    protected function isHidden($filename) {
+    protected function isHidden($filename)
+    {
         return strncmp($filename, '.', 1) == 0;
     }
 }
@@ -92,7 +95,8 @@ class SimpleCollector {
  * @subpackage UnitTester
  * @see SimpleCollector
  */
-class SimplePatternCollector extends SimpleCollector {
+class SimplePatternCollector extends SimpleCollector
+{
     private $pattern;
 
     /**
@@ -101,7 +105,8 @@ class SimplePatternCollector extends SimpleCollector {
      *  See {@link http://us4.php.net/manual/en/reference.pcre.pattern.syntax.php PHP's PCRE}
      *  for full documentation of valid pattern.s
      */
-    function __construct($pattern = '/php$/i') {
+    public function __construct($pattern = '/php$/i')
+    {
         $this->pattern = $pattern;
     }
 
@@ -113,10 +118,10 @@ class SimplePatternCollector extends SimpleCollector {
      * @param string $path    Directory to scan.
      * @access protected
      */
-    protected function handle(&$test, $filename) {
+    protected function handle(&$test, $filename)
+    {
         if (preg_match($this->pattern, $filename)) {
             parent::handle($test, $filename);
         }
     }
 }
-?>

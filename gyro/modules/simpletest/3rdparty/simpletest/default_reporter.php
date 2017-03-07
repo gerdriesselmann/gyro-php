@@ -3,16 +3,15 @@
  *  Optional include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage UnitTester
- *  @version    $Id: default_reporter.php 1995 2010-04-06 12:57:40Z lastcraft $
  */
 
 /**#@+
  *  include other SimpleTest class files
  */
-require_once(dirname(__FILE__) . '/simpletest.php');
-require_once(dirname(__FILE__) . '/scorer.php');
-require_once(dirname(__FILE__) . '/reporter.php');
-require_once(dirname(__FILE__) . '/xml.php');
+require_once dirname(__FILE__) . '/simpletest.php';
+require_once dirname(__FILE__) . '/scorer.php';
+require_once dirname(__FILE__) . '/reporter.php';
+require_once dirname(__FILE__) . '/xml.php';
 /**#@-*/
 
 /**
@@ -22,7 +21,8 @@ require_once(dirname(__FILE__) . '/xml.php');
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class SimpleCommandLineParser {
+class SimpleCommandLineParser
+{
     private $to_property = array(
             'case' => 'case', 'c' => 'case',
             'test' => 'test', 't' => 'test',
@@ -37,7 +37,8 @@ class SimpleCommandLineParser {
      *    Parses raw command line arguments into object properties.
      *    @param string $arguments        Raw commend line arguments.
      */
-    function __construct($arguments) {
+    public function __construct($arguments)
+    {
         if (! is_array($arguments)) {
             return;
         }
@@ -59,52 +60,58 @@ class SimpleCommandLineParser {
             }
         }
     }
-    
+
     /**
      *    Run only this test.
      *    @return string        Test name to run.
      */
-    function getTest() {
+    public function getTest()
+    {
         return $this->test;
     }
-    
+
     /**
      *    Run only this test suite.
      *    @return string        Test class name to run.
      */
-    function getTestCase() {
+    public function getTestCase()
+    {
         return $this->case;
     }
-    
+
     /**
      *    Output should be XML or not.
      *    @return boolean        True if XML desired.
      */
-    function isXml() {
+    public function isXml()
+    {
         return $this->xml;
     }
-    
+
     /**
      *    Output should suppress skip messages.
      *    @return boolean        True for no skips.
      */
-    function noSkips() {
+    public function noSkips()
+    {
         return $this->no_skips;
     }
-    
+
     /**
      *    Output should be a help message. Disabled during XML mode.
      *    @return boolean        True if help message desired.
      */
-    function help() {
+    public function help()
+    {
         return $this->help && ! $this->xml;
     }
-    
+
     /**
      *    Returns plain-text help message for command line runner.
      *    @return string         String help message
      */
-    function getHelpText() {
+    public function getHelpText()
+    {
         return <<<HELP
 SimpleTest command line default reporter (autorun)
 Usage: php <test_file> [args...]
@@ -117,7 +124,6 @@ Usage: php <test_file> [args...]
 
 HELP;
     }
-    
 }
 
 /**
@@ -127,12 +133,13 @@ HELP;
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class DefaultReporter extends SimpleReporterDecorator {
-    
+class DefaultReporter extends SimpleReporterDecorator
+{
     /**
      *  Assembles the appropriate reporter for the environment.
      */
-    function __construct() {
+    public function __construct()
+    {
         if (SimpleReporter::inCli()) {
             $parser = new SimpleCommandLineParser($_SERVER['argv']);
             $interfaces = $parser->isXml() ? array('XmlReporter') : array('TextReporter');
@@ -160,4 +167,3 @@ class DefaultReporter extends SimpleReporterDecorator {
         parent::__construct($reporter);
     }
 }
-?>
