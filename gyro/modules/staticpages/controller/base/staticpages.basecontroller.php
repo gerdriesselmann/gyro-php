@@ -25,6 +25,35 @@ class StaticPagesBaseController extends ControllerBase {
 
 		return $ret;
 	}
+
+	/**
+	 * Directories where static tempaltes can be found. Usually just static/
+	 *
+	 * Overload if there are more locations for static templates. E.g. if content
+	 * gets generated from markup into a directory generated, add it here like
+	 *
+	 * @code
+	 * return array('static/', 'generated/');
+	 * @code
+	 *
+	 * @return string[]
+	 */
+	protected function get_template_directories() {
+		return array('static/');
+	}
+
+	/**
+	 * @param string $file
+	 * @return string[]
+	 */
+	protected function build_template_paths($file) {
+		return array_map(
+			function($dir) use ($file) {
+				return $dir . $file;
+			},
+			$this->get_template_directories()
+		);
+	}
 	
 	/**
 	 * Load and display template
@@ -33,8 +62,8 @@ class StaticPagesBaseController extends ControllerBase {
 	 * @param string $template
 	 */
 	public function action_static($page_data, $page) {
-		$path = 'static/' . $page;
-		$template_file = TemplatePathResolver::resolve($path);
+		$paths = $this->build_template_paths($page);
+		$template_file = TemplatePathResolver::resolve($paths);
 		if (!file_exists($template_file)) {
 			return CONTROLLER_NOT_FOUND;
 		}
@@ -45,6 +74,14 @@ class StaticPagesBaseController extends ControllerBase {
 		}
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, $template_file, $page_data);
 		$view->render();
+	}
+
+	/**
+	 * Set additional parameters on view
+	 *
+	 * @param IView $view
+	 */
+	protected function prepare_view(IView $view) {
 	}
 	
 	/**
@@ -57,9 +94,11 @@ class StaticPagesBaseController extends ControllerBase {
 			$this->cache_templates = array();
 			$dirs = TemplatePathResolver::get_template_paths();
 			foreach($dirs as $dir) {
-				$statics_dir = $dir . 'static';
-				if (is_dir($statics_dir)) {
-					$this->collect_templates_in_dir($statics_dir, '');
+				foreach($this->get_template_directories() as $tpl_dir) {
+					$statics_dir = $dir . $tpl_dir;
+					if (is_dir($statics_dir)) {
+						$this->collect_templates_in_dir($statics_dir, '');
+					}
 				}
 			}
 		}
@@ -97,9 +136,11 @@ class StaticPagesBaseController extends ControllerBase {
 		if ($name == 'gsitemap_site' && $params == 'main') {
 			$arr = $this->collect_templates();
 			foreach($arr as $template => $path) {
+				$templates = $this->build_template_paths($template);
+				$template_file = TemplatePathResolver::resolve($templates);
 				$result[] = array(
 					'url' => ActionMapper::get_url('static_' . $path),
-					'lastmod' => filemtime(TemplatePathResolver::resolve('static/' . $template))
+					'lastmod' => filemtime($template_file)
 				);
 			}
 		}
