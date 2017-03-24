@@ -241,14 +241,17 @@ class SystemUpdateExecutor {
 	 */
 	protected function execute_php_script($file, $func) {
 		$ret = new Status();
-		require_once($file);
-		if (function_exists($func)) {
-			$ret->merge($func());
-		}
-		else {
-			// No function found
-			$ret->append(tr('Function %func not found!', 'systemupdate', array('%func' => $func)));
-		}
+		try {
+            require_once($file);
+            if (function_exists($func)) {
+                $ret->merge($func());
+            } else {
+                // No function found
+                $ret->append(tr('Function %func not found!', 'systemupdate', array('%func' => $func)));
+            }
+        } catch (Exception $ex) {
+		    $ret->merge($ex);
+        }
 		return $ret;		
 	}
 	
