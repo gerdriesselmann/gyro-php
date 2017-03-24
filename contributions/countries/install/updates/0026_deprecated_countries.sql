@@ -1,0 +1,1 @@
+UPDATE countries SET is_deprecated = 'TRUE' WHERE id = 'AN';
