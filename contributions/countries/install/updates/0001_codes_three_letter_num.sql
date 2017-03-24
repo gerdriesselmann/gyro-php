@@ -241,7 +241,7 @@ UPDATE countries SET code3 = 'ESH' WHERE id = 'EH';
 UPDATE countries SET code3 = 'YEM' WHERE id = 'YE';
 UPDATE countries SET code3 = 'YUG' WHERE id = 'YU';
 UPDATE countries SET code3 = 'ZMB' WHERE id = 'ZM';
-UPDATE countries SET code3 = 'ZWE ' WHERE id = 'ZW';
+UPDATE countries SET code3 = 'ZWE' WHERE id = 'ZW';
 
 
 UPDATE countries SET codenum = '4' WHERE id = 'AF';
@@ -482,7 +482,7 @@ UPDATE countries SET codenum = '732' WHERE id = 'EH';
 UPDATE countries SET codenum = '887' WHERE id = 'YE';
 UPDATE countries SET codenum = '891' WHERE id = 'YU';
 UPDATE countries SET codenum = '894' WHERE id = 'ZM';
-UPDATE countries SET codenum = '716 ' WHERE id = 'ZW';
+UPDATE countries SET codenum = '716' WHERE id = 'ZW';
 
 UPDATE countries SET code3 = 'ALA', codenum = 248 WHERE id = 'AX';
 UPDATE countries SET code3 = 'MNE', codenum = 499 WHERE id = 'ME';
