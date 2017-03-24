@@ -5,4 +5,4 @@ CREATE TABLE IF NOT EXISTS `jcsscompressedfiles` (
   `sources` text NOT NULL,
   `version` int(10) unsigned NOT NULL default '1',
   PRIMARY KEY  (`type`)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARACTER SET 'utf8';
