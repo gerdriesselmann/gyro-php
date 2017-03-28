@@ -414,7 +414,7 @@ class GyroDate {
 	 * @return int
 	 */
 	public static function get_hour($date) {
-		return intval(date('h', $date));
+		return intval(date('H', $date));
 	}
 
 	/**
