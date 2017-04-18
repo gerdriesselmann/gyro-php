@@ -1,0 +1,16 @@
+UPDATE countries SET capital = 'Sucre' WHERE id = 'BO';
+UPDATE countries SET capital = 'Flying Fish Cove' WHERE id = 'CX';
+UPDATE countries SET capital = 'St. Peter Port' WHERE id = 'GG';
+UPDATE countries SET capital = 'Tripoli' WHERE id = 'LY';
+UPDATE countries SET capital = 'Macau' WHERE id = 'MO';
+UPDATE countries SET capital = 'Mamoudzou' WHERE id = 'YT';
+UPDATE countries SET capital = 'Naypyidaw' WHERE id = 'MM';
+UPDATE countries SET capital = 'Pristina' WHERE id = 'XK';
+UPDATE countries SET capital = 'King Edward Point' WHERE id = 'GS';
+UPDATE countries SET capital = 'Bern' WHERE id = 'CH';
+UPDATE countries SET capital = 'Funafuti' WHERE id = 'TV';
+UPDATE countries SET capital = 'Kiev' WHERE id = 'UA';
+UPDATE countries SET capital = 'Mata-Utu' WHERE id = 'WF';
+UPDATE countries SET capital = 'Sana\'a' WHERE id = 'YE';
+UPDATE countries SET capital = 'Victoria City' WHERE id = 'HK';
+UPDATE countries SET capital = 'Fakaofo' WHERE id = 'TK';

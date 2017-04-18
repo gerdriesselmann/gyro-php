@@ -3,7 +3,6 @@ UPDATE countriestranslations SET name = 'Bermuda' WHERE lang = 'de' AND id_count
 UPDATE countriestranslations SET name = 'Brunei Darussalam' WHERE lang = 'de' AND id_country = 'BN';
 UPDATE countriestranslations SET name = 'Libyen' WHERE lang = 'de' AND id_country = 'LY';
 UPDATE countriestranslations SET name = 'Marshallinseln' WHERE lang = 'de' AND id_country = 'MH';
-UPDATE countriestranslations SET name = 'Polen' WHERE lang = 'de' AND id_country = 'PL';
 UPDATE countriestranslations SET name = 'St. Kitts und Nevis' WHERE lang = 'de' AND id_country = 'KN';
 UPDATE countriestranslations SET name = 'Vereinigte Staten (USA)' WHERE lang = 'de' AND id_country = 'US';
 UPDATE countriestranslations SET name = 'Belarus' WHERE lang = 'de' AND id_country = 'BY';
