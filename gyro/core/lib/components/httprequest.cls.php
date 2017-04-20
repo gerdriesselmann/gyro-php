@@ -13,6 +13,7 @@ class GyroHttpRequest {
 	const NONE = 0;
 	const SSL_NO_VERIFY = 1;
 	const NO_ERROR_ON_4XX_5XX = 2;
+    const SEND_JSON = 4;
 
 	/**
 	 * Read content from given url
@@ -24,7 +25,7 @@ class GyroHttpRequest {
 	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
 	 */
-	public static function get_content ($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+	public static function get_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -62,7 +63,7 @@ class GyroHttpRequest {
 	 */
 	public static function post_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
-		$options = self::set_post_options($options, $fields);
+		$options = self::set_post_options($options, $fields, $policy);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
@@ -82,10 +83,31 @@ class GyroHttpRequest {
 	 */
 	public static function post_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
-		$options = self::set_post_options($options, $fields);
+		$options = self::set_post_options($options, $fields, $policy);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
+	}
+
+	/**
+	 * Configure curl for BODY of POST/PUT requests
+
+	 * @param array $options Options already set
+	 * @param array $fields Data as associative array
+     * @param array $policy Policy. Either NONE or SEND_JSON
+	 * @return array
+	 */
+	private static function set_body_options($options, $fields, $policy) {
+        if (Common::flag_is_set($policy, self::SEND_JSON)) {
+            $options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
+            $options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/json');
+        } else {
+            $options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+            $options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
+        }
+		$options[CURLOPT_HTTPHEADER][] =
+			'Expect: '; // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
+		return $options;
 	}
 
 	/**
@@ -93,15 +115,12 @@ class GyroHttpRequest {
 
 	 * @param array $options Options already set
 	 * @param array $fields Data as associative array
+     * @param array $policy Policy. Either NONE or SEND_JSON
 	 * @return array
 	 */
-	private static function set_post_options($options, $fields) {
-		$options[CURLOPT_HTTPHEADER] = array(
-			'Content-Type' => 'application/x-www-form-urlencoded',
-			'Expect: ' // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
-		);
+	private static function set_post_options($options, $fields, $policy) {
 		$options[CURLOPT_POST] = true;
-		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+        $options = self::set_body_options($options, $fields, $policy);
 		return $options;
 	}
 
@@ -118,7 +137,7 @@ class GyroHttpRequest {
 	 */
 	public static function put_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
-		$options = self::set_put_options($options, $fields);
+		$options = self::set_put_options($options, $fields, $policy);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
@@ -138,7 +157,7 @@ class GyroHttpRequest {
 	 */
 	public static function put_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
 		$options = self::get_default_opts($policy);
-		$options = self::set_put_options($options, $fields);
+		$options = self::set_put_options($options, $fields, $policy);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -149,15 +168,12 @@ class GyroHttpRequest {
 
 	 * @param array $options Options already set
 	 * @param array $fields Data as associative array
+     * @param array $policy Policy. Either NONE or SEND_JSON
 	 * @return array
 	 */
-	private static function set_put_options($options, $fields) {
-		$options[CURLOPT_HTTPHEADER] = array(
-			'Content-Type' => 'application/x-www-form-urlencoded',
-			'Expect: ' // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
-		);
+	private static function set_put_options($options, $fields, $policy) {
 		$options[CURLOPT_CUSTOMREQUEST] = "PUT";
-		$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+        $options = self::set_body_options($options, $fields, $policy);
 		return $options;
 	}
 
