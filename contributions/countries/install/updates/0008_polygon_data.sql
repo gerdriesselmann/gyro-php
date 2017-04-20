@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS `tmp_c2p` (
   `lat2` FLOAT NOT NULL,
   `lon2` FLOAT NOT NULL
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB default character set utf8;
 
 INSERT IGNORE INTO countries (id, id_continent, code3, codenum, name)
   VALUES ('XK', 'EU', 'XXK', 381, 'Kosovo');

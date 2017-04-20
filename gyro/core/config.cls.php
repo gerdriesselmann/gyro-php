@@ -148,6 +148,7 @@ class Config {
 	
 	const PAGER_NUM_LINKS = 'PAGER_NUM_LINKS';
 	const PAGER_CALCULATOR = 'PAGER_CALCULATOR';
+	const PAGER_DEFAULT_POLICY = 'PAGER_DEFAULT_POLICY';
 
 	/** CacheHeaderManager policy for cached stuff. Class name without CacheHeaderManager, e.g. FullCache for FullCacheCacheHeaderManager */
 	const CACHEHEADER_CLASS_CACHED = 'CACHEHEADER_CLASS_CACHED';

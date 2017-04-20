@@ -13,7 +13,7 @@ class GyroHttpRequest {
 	const NONE = 0;
 	const SSL_NO_VERIFY = 1;
 	const NO_ERROR_ON_4XX_5XX = 2;
-    const SEND_JSON = 4;
+	const SEND_JSON = 4;
 
 	/**
 	 * Read content from given url
@@ -94,17 +94,17 @@ class GyroHttpRequest {
 
 	 * @param array $options Options already set
 	 * @param array $fields Data as associative array
-     * @param array $policy Policy. Either NONE or SEND_JSON
+	 * @param array $policy Policy. Either NONE or SEND_JSON
 	 * @return array
 	 */
 	private static function set_body_options($options, $fields, $policy) {
-        if (Common::flag_is_set($policy, self::SEND_JSON)) {
-            $options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
-            $options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/json');
-        } else {
-            $options[CURLOPT_POSTFIELDS] = http_build_query($fields);
-            $options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
-        }
+		if (Common::flag_is_set($policy, self::SEND_JSON)) {
+			$options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
+			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/json');
+		} else {
+			$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
+			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
+		}
 		$options[CURLOPT_HTTPHEADER][] =
 			'Expect: '; // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
 		return $options;
@@ -115,12 +115,12 @@ class GyroHttpRequest {
 
 	 * @param array $options Options already set
 	 * @param array $fields Data as associative array
-     * @param array $policy Policy. Either NONE or SEND_JSON
+	 * @param array $policy Policy. Either NONE or SEND_JSON
 	 * @return array
 	 */
 	private static function set_post_options($options, $fields, $policy) {
 		$options[CURLOPT_POST] = true;
-        $options = self::set_body_options($options, $fields, $policy);
+		$options = self::set_body_options($options, $fields, $policy);
 		return $options;
 	}
 
@@ -168,12 +168,12 @@ class GyroHttpRequest {
 
 	 * @param array $options Options already set
 	 * @param array $fields Data as associative array
-     * @param array $policy Policy. Either NONE or SEND_JSON
+	 * @param array $policy Policy. Either NONE or SEND_JSON
 	 * @return array
 	 */
 	private static function set_put_options($options, $fields, $policy) {
 		$options[CURLOPT_CUSTOMREQUEST] = "PUT";
-        $options = self::set_body_options($options, $fields, $policy);
+		$options = self::set_body_options($options, $fields, $policy);
 		return $options;
 	}
 

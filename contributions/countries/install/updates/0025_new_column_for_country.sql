@@ -1,0 +1,2 @@
+ALTER TABLE countries
+  ADD is_deprecated ENUM('FALSE', 'TRUE') NOT NULL DEFAULT 'FALSE';

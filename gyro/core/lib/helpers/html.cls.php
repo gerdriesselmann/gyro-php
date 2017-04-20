@@ -414,7 +414,13 @@ class html
 				if ($key === '' || $v === '') {
 					$match = ($key === $v);
 				} else {
-					$match = ($key == $v);
+					$numeric_key = is_numeric($key);
+					$numeric_v = is_numeric($v);
+					if ($numeric_key xor $numeric_v) {
+						$match = false;
+					} else {
+						$match = ($key == $v);
+					}
 				}
 				if ($match) {
 					$opt_attrs['selected'] = 'selected';

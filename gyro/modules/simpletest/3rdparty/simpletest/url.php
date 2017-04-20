@@ -3,7 +3,6 @@
  *  base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage WebTester
- *  @version    $Id: url.php 1997 2010-07-27 09:53:01Z pp11 $
  */
 
 /**#@+
@@ -22,7 +21,8 @@ require_once(dirname(__FILE__) . '/encoding.php');
  *    @package SimpleTest
  *    @subpackage WebTester
  */
-class SimpleUrl {
+class SimpleUrl
+{
     private $scheme;
     private $username;
     private $password;
@@ -35,13 +35,14 @@ class SimpleUrl {
     private $y;
     private $target;
     private $raw = false;
-    
+
     /**
      *    Constructor. Parses URL into sections.
      *    @param string $url        Incoming URL.
      *    @access public
      */
-    function __construct($url = '') {
+    public function __construct($url = '')
+    {
         list($x, $y) = $this->chompCoordinates($url);
         $this->setCoordinates($x, $y);
         $this->scheme = $this->chompScheme($url);
@@ -71,7 +72,7 @@ class SimpleUrl {
         $this->fragment = (strncmp($url, "#", 1) == 0 ? substr($url, 1) : false);
         $this->target = false;
     }
-    
+
     /**
      *    Extracts the X, Y coordinate pair from an image map.
      *    @param string $url   URL so far. The coordinates will be
@@ -79,14 +80,15 @@ class SimpleUrl {
      *    @return array        X, Y as a pair of integers.
      *    @access private
      */
-    protected function chompCoordinates(&$url) {
+    protected function chompCoordinates(&$url)
+    {
         if (preg_match('/(.*)\?(\d+),(\d+)$/', $url, $matches)) {
             $url = $matches[1];
             return array((integer)$matches[2], (integer)$matches[3]);
         }
         return array(false, false);
     }
-    
+
     /**
      *    Extracts the scheme part of an incoming URL.
      *    @param string $url   URL so far. The scheme will be
@@ -94,14 +96,15 @@ class SimpleUrl {
      *    @return string       Scheme part or false.
      *    @access private
      */
-    protected function chompScheme(&$url) {
+    protected function chompScheme(&$url)
+    {
         if (preg_match('#^([^/:]*):(//)(.*)#', $url, $matches)) {
             $url = $matches[2] . $matches[3];
             return $matches[1];
         }
         return false;
     }
-    
+
     /**
      *    Extracts the username and password from the
      *    incoming URL. The // prefix will be reattached
@@ -112,7 +115,8 @@ class SimpleUrl {
      *                          password. Will urldecode() them.
      *    @access private
      */
-    protected function chompLogin(&$url) {
+    protected function chompLogin(&$url)
+    {
         $prefix = '';
         if (preg_match('#^(//)(.*)#', $url, $matches)) {
             $prefix = $matches[1];
@@ -128,7 +132,7 @@ class SimpleUrl {
         $url = $prefix . $url;
         return array(false, false);
     }
-    
+
     /**
      *    Extracts the host part of an incoming URL.
      *    Includes the port number part. Will extract
@@ -140,7 +144,8 @@ class SimpleUrl {
      *    @return string        Host part guess or false.
      *    @access private
      */
-    protected function chompHost(&$url) {
+    protected function chompHost(&$url)
+    {
         if (preg_match('!^(//)(.*?)(/.*|\?.*|#.*|$)!', $url, $matches)) {
             $url = $matches[3];
             return $matches[2];
@@ -157,7 +162,7 @@ class SimpleUrl {
         }
         return false;
     }
-    
+
     /**
      *    Extracts the path information from the incoming
      *    URL. Strips this path from the URL.
@@ -166,14 +171,15 @@ class SimpleUrl {
      *    @return string         Path part or '/'.
      *    @access private
      */
-    protected function chompPath(&$url) {
+    protected function chompPath(&$url)
+    {
         if (preg_match('/(.*?)(\?|#|$)(.*)/', $url, $matches)) {
             $url = $matches[2] . $matches[3];
             return ($matches[1] ? $matches[1] : '');
         }
         return '';
     }
-    
+
     /**
      *    Strips off the request data.
      *    @param string $url  URL so far. The request will be
@@ -181,21 +187,23 @@ class SimpleUrl {
      *    @return string      Raw request part.
      *    @access private
      */
-    protected function chompRequest(&$url) {
+    protected function chompRequest(&$url)
+    {
         if (preg_match('/\?(.*?)(#|$)(.*)/', $url, $matches)) {
             $url = $matches[2] . $matches[3];
             return $matches[1];
         }
         return '';
     }
-        
+
     /**
      *    Breaks the request down into an object.
      *    @param string $raw           Raw request.
      *    @return SimpleFormEncoding    Parsed data.
      *    @access private
      */
-    protected function parseRequest($raw) {
+    protected function parseRequest($raw)
+    {
         $this->raw = $raw;
         $request = new SimpleGetEncoding();
         foreach (explode("&", $raw) as $pair) {
@@ -207,110 +215,120 @@ class SimpleUrl {
         }
         return $request;
     }
-    
+
     /**
      *    Accessor for protocol part.
      *    @param string $default    Value to use if not present.
      *    @return string            Scheme name, e.g "http".
      *    @access public
      */
-    function getScheme($default = false) {
+    public function getScheme($default = false)
+    {
         return $this->scheme ? $this->scheme : $default;
     }
-    
+
     /**
      *    Accessor for user name.
      *    @return string    Username preceding host.
      *    @access public
      */
-    function getUsername() {
+    public function getUsername()
+    {
         return $this->username;
     }
-    
+
     /**
      *    Accessor for password.
      *    @return string    Password preceding host.
      *    @access public
      */
-    function getPassword() {
+    public function getPassword()
+    {
         return $this->password;
     }
-    
+
     /**
      *    Accessor for hostname and port.
      *    @param string $default    Value to use if not present.
      *    @return string            Hostname only.
      *    @access public
      */
-    function getHost($default = false) {
+    public function getHost($default = false)
+    {
         return $this->host ? $this->host : $default;
     }
-    
+
     /**
      *    Accessor for top level domain.
      *    @return string       Last part of host.
      *    @access public
      */
-    function getTld() {
+    public function getTld()
+    {
         $path_parts = pathinfo($this->getHost());
         return (isset($path_parts['extension']) ? $path_parts['extension'] : false);
     }
-    
+
     /**
      *    Accessor for port number.
      *    @return integer    TCP/IP port number.
      *    @access public
      */
-    function getPort() {
+    public function getPort()
+    {
         return $this->port;
-    }        
-            
+    }
+
     /**
      *    Accessor for path.
      *    @return string    Full path including leading slash if implied.
      *    @access public
      */
-    function getPath() {
+    public function getPath()
+    {
         if (! $this->path && $this->host) {
             return '/';
         }
         return $this->path;
     }
-    
+
     /**
      *    Accessor for page if any. This may be a
      *    directory name if ambiguious.
      *    @return            Page name.
      *    @access public
      */
-    function getPage() {
+    public function getPage()
+    {
         if (! preg_match('/([^\/]*?)$/', $this->getPath(), $matches)) {
             return false;
         }
         return $matches[1];
     }
-    
+
     /**
      *    Gets the path to the page.
      *    @return string       Path less the page.
      *    @access public
      */
-    function getBasePath() {
+    public function getBasePath()
+    {
         if (! preg_match('/(.*\/)[^\/]*?$/', $this->getPath(), $matches)) {
             return false;
         }
         return $matches[1];
     }
-    
+
     /**
      *    Accessor for fragment at end of URL after the "#".
      *    @return string    Part after "#".
      *    @access public
      */
-    function getFragment() {
+    public function getFragment()
+    {
         return $this->fragment;
     }
-    
+
     /**
      *    Sets image coordinates. Set to false to clear
      *    them.
@@ -318,7 +336,8 @@ class SimpleUrl {
      *    @param integer $y    Vertical position.
      *    @access public
      */
-    function setCoordinates($x = false, $y = false) {
+    public function setCoordinates($x = false, $y = false)
+    {
         if (($x === false) || ($y === false)) {
             $this->x = $this->y = false;
             return;
@@ -326,25 +345,27 @@ class SimpleUrl {
         $this->x = (integer)$x;
         $this->y = (integer)$y;
     }
-    
+
     /**
      *    Accessor for horizontal image coordinate.
      *    @return integer        X value.
      *    @access public
      */
-    function getX() {
+    public function getX()
+    {
         return $this->x;
     }
-        
+
     /**
      *    Accessor for vertical image coordinate.
      *    @return integer        Y value.
      *    @access public
      */
-    function getY() {
+    public function getY()
+    {
         return $this->y;
     }
-    
+
     /**
      *    Accessor for current request parameters
      *    in URL string form. Will return teh original request
@@ -353,7 +374,8 @@ class SimpleUrl {
      *    @return string   Form is string "?a=1&b=2", etc.
      *    @access public
      */
-    function getEncodedRequest() {
+    public function getEncodedRequest()
+    {
         if ($this->raw) {
             $encoded = $this->raw;
         } else {
@@ -364,38 +386,41 @@ class SimpleUrl {
         }
         return '';
     }
-    
+
     /**
      *    Adds an additional parameter to the request.
      *    @param string $key            Name of parameter.
      *    @param string $value          Value as string.
      *    @access public
      */
-    function addRequestParameter($key, $value) {
+    public function addRequestParameter($key, $value)
+    {
         $this->raw = false;
         $this->request->add($key, $value);
     }
-    
+
     /**
      *    Adds additional parameters to the request.
      *    @param hash/SimpleFormEncoding $parameters   Additional
      *                                                parameters.
      *    @access public
      */
-    function addRequestParameters($parameters) {
+    public function addRequestParameters($parameters)
+    {
         $this->raw = false;
         $this->request->merge($parameters);
     }
-    
+
     /**
      *    Clears down all parameters.
      *    @access public
      */
-    function clearRequest() {
+    public function clearRequest()
+    {
         $this->raw = false;
         $this->request = new SimpleGetEncoding();
     }
-    
+
     /**
      *    Gets the frame target if present. Although
      *    not strictly part of the URL specification it
@@ -403,26 +428,29 @@ class SimpleUrl {
      *    @return boolean/string    Frame name or false if none.
      *    @access public
      */
-    function getTarget() {
+    public function getTarget()
+    {
         return $this->target;
     }
-    
+
     /**
      *    Attaches a frame target.
      *    @param string $frame        Name of frame.
      *    @access public
      */
-    function setTarget($frame) {
+    public function setTarget($frame)
+    {
         $this->raw = false;
         $this->target = $frame;
     }
-    
+
     /**
      *    Renders the URL back into a string.
      *    @return string        URL in canonical form.
      *    @access public
      */
-    function asString() {
+    public function asString()
+    {
         $path = $this->path;
         $scheme = $identity = $host = $port = $encoded = $fragment = '';
         if ($this->username && $this->password) {
@@ -438,7 +466,7 @@ class SimpleUrl {
             // URIs to local file paths, but that requires more research.
             $scheme = 'file://';
         }
-        if ($this->getPort() && $this->getPort() != 80 ) {
+        if ($this->getPort() && $this->getPort() != 80) {
             $port = ':'.$this->getPort();
         }
 
@@ -450,7 +478,7 @@ class SimpleUrl {
         $coords = $this->getX() === false ? '' : '?' . $this->getX() . ',' . $this->getY();
         return "$scheme$identity$host$port$path$encoded$fragment$coords";
     }
-    
+
     /**
      *    Replaces unknown sections to turn a relative
      *    URL into an absolute one. The base URL can
@@ -458,7 +486,8 @@ class SimpleUrl {
      *    @param string/SimpleUrl $base       Base URL.
      *    @access public
      */
-    function makeAbsolute($base) {
+    public function makeAbsolute($base)
+    {
         if (! is_object($base)) {
             $base = new SimpleUrl($base);
         }
@@ -482,7 +511,7 @@ class SimpleUrl {
         $coords = $this->getX() === false ? '' : '?' . $this->getX() . ',' . $this->getY();
         return new SimpleUrl("$scheme://$identity$host$port$path$encoded$fragment$coords");
     }
-    
+
     /**
      *    Replaces unknown sections of the path with base parts
      *    to return a complete absolute one.
@@ -490,7 +519,8 @@ class SimpleUrl {
      *    @param string                       Absolute path.
      *    @access private
      */
-    protected function extractAbsolutePath($base) {
+    protected function extractAbsolutePath($base)
+    {
         if ($this->getHost()) {
             return $this->path;
         }
@@ -502,49 +532,52 @@ class SimpleUrl {
         }
         return $base->getPath();
     }
-    
+
     /**
      *    Simple test to see if a path part is relative.
      *    @param string $path        Path to test.
      *    @return boolean            True if starts with a "/".
      *    @access private
      */
-    protected function isRelativePath($path) {
+    protected function isRelativePath($path)
+    {
         return (substr($path, 0, 1) != '/');
     }
-    
+
     /**
      *    Extracts the username and password for use in rendering
      *    a URL.
      *    @return string/boolean    Form of username:password or false.
      *    @access public
      */
-    function getIdentity() {
+    public function getIdentity()
+    {
         if ($this->username && $this->password) {
             return $this->username . ':' . $this->password;
         }
         return false;
     }
-    
+
     /**
      *    Replaces . and .. sections of the path.
      *    @param string $path    Unoptimised path.
      *    @return string         Path with dots removed if possible.
      *    @access public
      */
-    function normalisePath($path) {
+    public function normalisePath($path)
+    {
         $path = preg_replace('|/\./|', '/', $path);
         return preg_replace('|/[^/]+/\.\./|', '/', $path);
     }
-    
+
     /**
      *    A pipe seperated list of all TLDs that result in two part
      *    domain names.
      *    @return string        Pipe separated list.
      *    @access public
      */
-    static function getAllTopLevelDomains() {
+    public static function getAllTopLevelDomains()
+    {
         return 'com|edu|net|org|gov|mil|int|biz|info|name|pro|aero|coop|museum';
     }
 }
-?>

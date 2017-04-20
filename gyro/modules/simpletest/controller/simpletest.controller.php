@@ -37,9 +37,10 @@ class SimpleTestController extends ControllerBase {
 		}
 		
 		Load::directories('simpletests/mocks');
-		$suite->run(new DefaultReporter());
+		// Simpletest as of 1.1 runs tests automagically. Invoking run() executes everything twices
+		//$suite->run(new DefaultReporter());
 		ob_flush();
-		exit(); 		
+		exit();
  	} 		 	 			 	
  	
  	/**

@@ -57,14 +57,6 @@ class RefererTest extends GyroUnitTestCase {
 		$this->assertEqual('www.google.de', $sei['host']);
 		$this->assertEqual('searchme', $sei['keywords']);		
 
-		$test = 'http://www.google.de/search?hl=de&ie=ISO-8859-1&q=Betriebsformen+des+Gro%DF-+und+Au%DFenhandels&meta=';
-		$referer = new Referer($test);
-		$this->assertEqual($test, $referer->get_original_referer_url());
-		// We have ANSI encoding in $test,m this should have become UTF-8
-		$this->assertNotEqual($test, $referer->build());
-		$sei = $referer->search_engine_info();
-		$this->assertEqual('Betriebsformen des Groß- und Außenhandels', $sei['keywords']);		
-
 		$test = 'http://www.google.de/search?hl=de&q=www.weihnachtspl%C3%A4tzchen.de&meta=';
 		$referer = new Referer($test);
 		// We have UTF-8 encoding in $test, this should have stayed UTF-8

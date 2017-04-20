@@ -313,7 +313,8 @@ class WidgetPager implements IWidget {
 	const DONT_INDEX_PAGE_2PP = 2048;
 	const DONT_CHANGE_TITLE = 4096;
 	const DONT_ADD_BREADCRUMB = 8192;
-	
+	const ALSO_FOR_ONE_PAGE = 16384;
+
 	public $data;
 	
 	public static function output($data, $policy = self::NONE) {
@@ -326,8 +327,14 @@ class WidgetPager implements IWidget {
 	}
 	
 	public function render($policy = self::NONE) {
+		if ($policy == self::NONE) {
+			$policy = Config::get_value(Config::PAGER_DEFAULT_POLICY, self::NONE);
+		}
+
 		if (Arr::get_item($this->data, 'pages_total', 0) <= 1) {
-			return '';
+			if (!Common::flag_is_set($policy, self::ALSO_FOR_ONE_PAGE)) {
+				return '';
+			}
 		}
 		
 		$policy = $policy | ($this->data['policy'] * 2048); // Compatability
