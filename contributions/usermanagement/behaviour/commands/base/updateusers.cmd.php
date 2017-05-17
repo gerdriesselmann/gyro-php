@@ -110,6 +110,8 @@ class UpdateUsersBaseCommand extends CommandChain {
 	 * @since 0.5.1
 	 */
 	protected function send_email_notification($user, $email) {
+        Load::models('confirmations');
+        
 		// Indirectly change mail, if desired
 		$params = array(
 			'id_item' => $user->id,
