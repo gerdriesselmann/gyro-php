@@ -1,6 +1,6 @@
 CREATE TABLE `countries2polygons` (
   `id_country` CHAR(2) NOT NULL,
-  `polygon` TEXT NOT NULL,
+  `polygon` LONGTEXT NOT NULL,
   `lat1` FLOAT NOT NULL,
   `lon1` FLOAT NOT NULL,
   `lat2` FLOAT NOT NULL,

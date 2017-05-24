@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS `tmp_c2p` (
   `id_country` CHAR(2),
   `id_country_3` CHAR(3),
-  `poly` TEXT NOT NULL,
+  `poly` LONGTEXT NOT NULL,
   `lat1` FLOAT NOT NULL,
   `lon1` FLOAT NOT NULL,
   `lat2` FLOAT NOT NULL,
