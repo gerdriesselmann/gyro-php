@@ -336,7 +336,7 @@ class GyroDate {
 	/**
 	 * Casts date to day (That is 0:00:00)
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return date
 	 */
 	public static function day($date) {
@@ -350,7 +350,7 @@ class GyroDate {
 	/**
 	 * Casts date to month (That is 1st, 0:00:00)
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return date
 	 */
 	public static function month($date) {
@@ -363,7 +363,7 @@ class GyroDate {
 	/**
 	 * Casts date to end of month (E.g. December 31st). Time is set to 23:59:59)
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @return date
 	 */
 	public static function end_of_month($date) {
@@ -379,7 +379,7 @@ class GyroDate {
 	/**
 	 * Return weekday of given Date
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 	 */
 	public static function get_weekday($date) {
@@ -390,7 +390,7 @@ class GyroDate {
 	/**
 	 * Return week in year of given Date
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int
 	 */
 	public static function get_week($date) {
@@ -400,7 +400,7 @@ class GyroDate {
 	/**
 	 * Returns day of given date
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int 0 on error
 	 */
 	public static function get_day($date) {
@@ -410,7 +410,7 @@ class GyroDate {
 	/**
 	 * Returns day of given date
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int
 	 */
 	public static function get_hour($date) {
@@ -420,7 +420,7 @@ class GyroDate {
 	/**
 	 * Returns day of given date
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int
 	 */
 	public static function get_minute($date) {
@@ -432,7 +432,7 @@ class GyroDate {
 	 * 
 	 * 1 = January, 2 = February etc
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int 0 on error
 	 */
 	public static function get_month($date) {
@@ -442,7 +442,7 @@ class GyroDate {
 	/**
 	 * Returns year of given date
 	 * 
-	 * @param date $date
+	 * @param mixed $date
 	 * @return int 0 on error
 	 */
 	public static function get_year($date) {
@@ -455,7 +455,7 @@ class GyroDate {
 	 * Attention: This method will not necessarily recognize Sundays as holidays! It only 
 	 * compares given date with self::$holidays.
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @return bool
 	 */
 	public static function is_holiday($date) {
@@ -473,7 +473,7 @@ class GyroDate {
 	/**
 	 * Returns if given date is a work day (that is: not saturday or sunday) 
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @return bool
 	 */
 	public static function is_workday($date) {
@@ -503,7 +503,7 @@ class GyroDate {
 	/**
 	 * Sets day on given date (keeps date)
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @param int $day
 	 * @return date
 	 */
@@ -522,7 +522,7 @@ class GyroDate {
 	 * $date will be forced to be a workday, which is: Saturday and Sunday will be turned into Monday,
 	 * but all other days will be kept untouched 
 	 *
-	 * @param date $date
+	 * @param mixed $date
 	 * @param int $days_to_add
 	 * @return date
 	 */
