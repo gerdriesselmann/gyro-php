@@ -27,7 +27,7 @@ class Binaries {
 		/* @var $b DAOBinaries */
 		$b = self::get($id);
 		if ($b) {
-			$ret = $b->data;
+			$ret = $b->get_data();
 		}
 		return $ret;
 	}
