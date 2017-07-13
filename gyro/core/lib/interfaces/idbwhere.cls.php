@@ -14,6 +14,7 @@ interface IDBWhere extends IDBSQLBuilder {
 	const OP_IN = 'IN';
 	const OP_NOT_IN = 'NOT IN';
 	const OP_LIKE = 'LIKE';
+	const OP_NOT_LIKE = 'NOT LIKE';
 	const OP_IS_NULL = 'IS NULL';
 	const OP_NOT_NULL = 'IS NOT NULL';
 	
