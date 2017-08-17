@@ -9,9 +9,6 @@ require_once dirname(__FILE__) . '/dbfilter.cls.php';
  * @ingroup Model
  */
 class DBFilterGroup implements IDBQueryModifier {
-    const FILTER_POLICY_GET_URL = 0;
-    const FILTER_POLICY_SESSION = 1;
-    
 	/**
 	 * An associative array of DBFilter instances 
 	 */
@@ -20,26 +17,18 @@ class DBFilterGroup implements IDBQueryModifier {
 	protected $group_key = ''; 
 	protected $key_default_filter = '';
 	protected $key_current_filter = '';
-    protected $policy;
 	
 	/**
 	 * Constructor
 	 * 
 	 * @param array Associative array of DBFilter instances
 	 */
-	public function __construct($key = '', $name = '', $filters = array(), $default = '', $policy = self::FILTER_POLICY_GET_URL) {
+	public function __construct($key = '', $name = '', $filters = array(), $default = '') {
 		$this->name = $name;
 		$this->group_key = $key;
 		foreach($filters as $key => $value) {
 			$this->add_filter(strval($key), $value);
 		}
-        $this->policy = $policy;
-        if ($policy == self::FILTER_POLICY_SESSION) {
-            $lookup = $this->get_session_lookup_str();
-            if ($lookup !== false && isset($_SESSION[$lookup])) {
-                $default = $_SESSION[$lookup];
-            }
-        }
 		$this->set_default_key($default);
 		$this->set_current_key($default);
 	}
@@ -119,13 +108,6 @@ class DBFilterGroup implements IDBQueryModifier {
 	 */
 	public function set_current_key($key) {
 		$this->key_current_filter = $key;
-        
-        if ($this->policy == self::FILTER_POLICY_SESSION) {
-            $lookup = $this->get_session_lookup_str();
-            if ($lookup !== false) {
-                $_SESSION[$lookup] = $key;
-            }
-        }
 	}
 
 	/**
@@ -154,8 +136,4 @@ class DBFilterGroup implements IDBQueryModifier {
 	public function apply($query) {
 		$query->apply_modifier($this->get_current_filter());
 	}
-
-    protected function get_session_lookup_str() {
-        return 'filter_'.Url::current()->clear_query()->__toString().$this->get_name();
-    }
 }
