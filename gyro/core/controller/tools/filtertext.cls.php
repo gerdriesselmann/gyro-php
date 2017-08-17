@@ -141,3 +141,24 @@ class FilterTextDefaultAdapter implements IFilterTextAdapter {
 	}	
 }
 
+/**
+ * Optional Implementation to remember filter value in session
+ *
+ * @author Heiko Weber
+ * @ingroup Controller
+ */
+class FilterTextSessionAdapter extends FilterTextDefaultAdapter {
+    
+	public function get_value() {
+        $param = $this->get_param();
+        $default_value = '';
+        $session_param = 'flttxt'.$param;
+        if (isset($_SESSION[$session_param])) {
+            $default_value = $_SESSION[$session_param];
+        }
+		$reset = $this->page_data->get_get()->contains($this->get_reset_param());
+		$return_value = ($reset) ? '' : $this->page_data->get_get()->get_item($param, $default_value);
+        $_SESSION[$session_param] = $return_value;
+        return $return_value;
+	}
+}
