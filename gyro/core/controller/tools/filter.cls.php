@@ -33,7 +33,8 @@ class Filter implements IDBQueryModifier {
 	 * @param IFilterAdapter $adapter 
 	 */
 	public function __construct($page_data, $filtergroups, $adapter = false, $policy = self::FILTER_POLICY_NONE) {
-		$this->adapter = ($adapter instanceof IFilterAdapter) ? $adapter : new FilterDefaultAdapter($page_data);
+		$this->adapter = ($adapter instanceof IFilterAdapter) ? $adapter :
+                         (($policy == self::FILTER_POLICY_SESSION) ? new FilterSessionAdapter($page_data) : new FilterDefaultAdapter($page_data));
 		$this->policy  = $policy;
         
 		if ($filtergroups instanceof ISearchAdapter) {
@@ -112,6 +113,10 @@ class Filter implements IDBQueryModifier {
 	public static function apply_to_url($url, $filter, $group_id = '') {
 		return FilterDefaultAdapter::apply_to_url($url, $filter, $group_id);
 	}
+
+    public function get_policy() {
+        return $this->policy;
+    }
 }
 
 /**
@@ -138,7 +143,8 @@ class FilterDefaultAdapter implements IFilterAdapter {
 
 	public function get_filter_link($filter, $group_id) {
 		$key = $filter->is_default() ? '' : $filter->get_key();
-		
+		$key = $filter->get_key();
+
 		$url = Url::current();
 		self::apply_to_url($url, $key, $group_id, $this->param);
 		return $url->build(Url::RELATIVE);	
@@ -157,4 +163,23 @@ class FilterDefaultAdapter implements IFilterAdapter {
 	public static function apply_to_url($url, $filter, $group_id = '', $parameter = 'fl') {
 		$url->replace_query_parameter($parameter . GyroString::plain_ascii($group_id), $filter);
 	}	
+}
+
+/**
+ * Optional Implementation of Filter adapter
+ * 
+ * Helps to keep filter settings in SESSION
+ *  
+ * @author Heiko Weber
+ * @ingroup Controller
+ */
+class FilterSessionAdapter extends FilterDefaultAdapter {
+
+    public function get_filter_link($filter, $group_id) {
+		$key = $filter->get_key();
+
+		$url = Url::current();
+		self::apply_to_url($url, $key, $group_id, $this->param);
+		return $url->build(Url::RELATIVE);	
+	}
 }
