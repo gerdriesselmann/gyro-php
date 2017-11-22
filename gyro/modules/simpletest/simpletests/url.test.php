@@ -240,5 +240,34 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual("http://www.example.org/?unenc= n\n\r&%=", $a->build(Url::ABSOLUTE, Url::NO_ENCODE_PARAMS));
 		$this->assertEqual("http://www.example.org/?unenc=+n%0A%0D%26%25%3D", $a->build());
 	}
+
+	public function test_with_mailto() {
+		$a = Url::create('mailto:user@domain.com', Url::ALL_PROTOCOLS);
+		$this->assertEqual('mailto', $a->get_scheme());
+		$this->assertEqual('user@domain.com', $a->get_path());
+		$this->assertEqual('', $a->get_host());
+	}
+
+	public function test_with_data() {
+		$a = Url::create('data:image/gif;base64,R0lGODlhyAAiALM...DfD0QAADs=', Url::ALL_PROTOCOLS);
+		$this->assertEqual('data', $a->get_scheme());
+		$this->assertEqual('image/gif;base64,R0lGODlhyAAiALM...DfD0QAADs=', $a->get_path());
+		$this->assertEqual('', $a->get_host());
+	}
+
+	public function test_with_tel() {
+		$a = Url::create('tel:+1234567890', Url::ALL_PROTOCOLS);
+		$this->assertEqual('tel', $a->get_scheme());
+		$this->assertEqual('+1234567890', $a->get_path());
+		$this->assertEqual('', $a->get_host());
+	}
+
+	public function test_with_javascript() {
+		$a = Url::create('javascript:alert("a")', Url::ALL_PROTOCOLS);
+		$this->assertEqual('javascript', $a->get_scheme());
+		$this->assertEqual('alert("a")', $a->get_path());
+		$this->assertEqual('', $a->get_host());
+	}
+
 }
 

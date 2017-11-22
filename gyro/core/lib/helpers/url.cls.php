@@ -14,6 +14,16 @@ class Url {
 	
 	const ENCODE_PARAMS = 'encode';
 	const NO_ENCODE_PARAMS = 'encodenot';
+
+	/**
+	 * When parsing, accept only HTTP URLs, and force so
+	 */
+	const HTTP_ONLY = 0;
+
+	/**
+	 * When parsing, try a broader approach and accept all protocols
+	 */
+	const ALL_PROTOCOLS = 1;
 	
 	/**
 	 * When comparing URLs, ignore only fragment
@@ -26,14 +36,18 @@ class Url {
 	
 	
 	private $data = array();
-	
+
 	/**
 	 * Constructor
-	 * 
-	 * @param string The URL to wrap around
+	 *
+	 * @param string $url
+	 * @param string $fallback_host Hostname used if no host in given URL
+	 * @param int $policy Defines wether the URL is forces to HTTP or not
+	 *
+	 * @internal param The $string URL to wrap around
 	 */
-	public function __construct($url = '', $fallback_host = '') {
-		$this->parse($url, $fallback_host);
+	public function __construct($url = '', $fallback_host = '', $policy = self::HTTP_ONLY) {
+		$this->parse($url, $fallback_host, $policy);
 	}
 	
 	/**
@@ -43,13 +57,27 @@ class Url {
 	 * @param string $fallback_host host to use if URL is relative
 	 * @return array
 	 */
-	protected function do_parse_url($url, $fallback_host = '') {
+	protected function do_parse_url($url, $fallback_host = '', $policy = self::HTTP_ONLY) {
 		// Make http default protocol
-		if (strpos($url, '://') === false) {
-			if (substr($url, 0, 1) == '/') {
-				$url = $fallback_host . $url;
+		$has_protocol = true;
+		if ($policy === self::ALL_PROTOCOLS) {
+			$pos_slash = strpos($url, '/');
+			$pos_double_colon = strpos($url, ':');
+			if ($pos_slash === false) {
+				$has_protocol = $pos_double_colon !== false;
+			} else {
+				$has_protocol == ($pos_double_colon !== false) && $pos_double_colon < $pos_slash;
 			}
-			$url = 'http://' . $url; 
+		} else {
+			if (strpos($url, '://') === false) {
+				$has_protocol = false;
+				if (substr($url, 0, 1) == '/') {
+					$url = $fallback_host . $url;
+				}
+			}
+		}
+		if (!$has_protocol) {
+			$url = 'http://' . $url;
 		}
 		$ret = false;
 		try {
@@ -68,11 +96,11 @@ class Url {
 	/**
 	 * Parse URL into Urls 
 	 */
-	protected function parse($url, $fallback_host = '') {
+	protected function parse($url, $fallback_host = '', $policy = self::HTTP_ONLY) {
 		$url = trim($url);
 		$data = array();
 		if (!empty($url)) {
-			$data = $this->do_parse_url($url, $fallback_host);
+			$data = $this->do_parse_url($url, $fallback_host, $policy);
 		}
 		
 		$this->set_scheme(Arr::get_item($data, 'scheme', 'http'));
@@ -202,27 +230,30 @@ class Url {
 			$_url = new Url(RequestInfo::current()->url_invoked());
 		}
 		return clone($_url);
-	}	
-	
+	}
+
 	/**
 	 * Create new Url instance
-	 * 
-	 * @param string Path 
+	 *
+	 * @param string $url Path
+	 * @param int $policy Either HTTP_ONLY or ALL_PROTOCOLS
+	 *
 	 * @return Url
 	 */
-	public static function create($url) {
-		return new Url($url);
+	public static function create($url, $policy = self::HTTP_ONLY) {
+		return new Url($url, '', $policy);
 	}
 	
 	/**
 	 * Create new Url instance. If url's host is empty use the given one
 	 * 
-	 * @param string Path
-	 * @param string Fallback host
+	 * @param string $url Path
+	 * @param string $host Fallback host
+	 * @param int $policy Either HTTP_ONLY or ALL_PROTOCOLS
 	 * @return Url
 	 */
-	public static function create_with_fallback_host($url, $host) {
-		return new Url($url, $host);
+	public static function create_with_fallback_host($url, $host, $policy = self::HTTP_ONLY) {
+		return new Url($url, $host, $policy);
 	}
 		
 	/**
@@ -631,7 +662,7 @@ class Url {
 	/**
 	 * Prints this query as a string
 	 *
-	 * @return void  
+	 * @return string
 	 * @exception Throws an exception if hostname is empty
 	 */
 	public function __toString() {
@@ -648,11 +679,7 @@ class Url {
 		$this->data['path'] = GyroString::plain_ascii($ret);
 		return $this;	
 	}
-	
-	/**
-	 * 
-	 */
-	
+
 	/**
 	 * Redirect to this Url
 	 * 

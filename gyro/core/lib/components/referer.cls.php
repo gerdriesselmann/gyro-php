@@ -25,7 +25,7 @@ class Referer extends Url {
 	 * @param string $s_url
 	 * @return Referer
 	 */
-	public static function create($s_url) {
+	public static function create($s_url, $policy = self::HTTP_ONLY) {
 		return new Referer($s_url);
 	}
 	
