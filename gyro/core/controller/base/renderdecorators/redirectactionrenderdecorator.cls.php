@@ -13,16 +13,13 @@ class RedirectActionRenderDecorator extends RenderDecoratorBase {
 	 *
 	 * @var string
 	 */
-	private $target_path = null;
+	private $action = null;
 
 	/**
 	 * Constructor
-	 *
-	 * @param ICacheManager $cache_manager Desired Cache Manager
-	 * @return void
 	 */
-	public function __construct($target_path) {
-		$this->target_path = $target_path;
+	public function __construct($action) {
+		$this->action = $action;
 	}
 
 	/**
@@ -32,7 +29,11 @@ class RedirectActionRenderDecorator extends RenderDecoratorBase {
 	 * @return void
 	 */
 	public function initialize($page_data) {
-		Url::current()->clear_query()->set_path($this->target_path)->redirect(Url::PERMANENT);
+		$url = ActionMapper::get_url($this->action);
+		$redirect_type = Config::has_feature(Config::TESTMODE)
+			? Url::TEMPORARY
+			: Url::PERMANENT;
+		Url::create($url)->redirect($redirect_type);
 		exit;
 	}
 }

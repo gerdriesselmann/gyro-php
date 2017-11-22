@@ -70,6 +70,7 @@ class DBFilter implements IDBQueryModifier {
 		$ret = $value;
 		switch ($operator) {
 			case DBWhere::OP_LIKE:
+			case DBWhere::OP_NOT_LIKE:
 				if ($value !== '') {
 					$ret = '%' . $value . '%';
 				}

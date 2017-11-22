@@ -56,7 +56,10 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 				$url = $url->clear_query();
 			}
 		}
-		$url->redirect(Url::PERMANENT);
+		$redirect_type = Config::has_feature(Config::TESTMODE)
+			? Url::TEMPORARY
+			: Url::PERMANENT;
+		$url->redirect($redirect_type);
 		exit;
 	}
 	
