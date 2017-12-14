@@ -13,6 +13,20 @@ class DB {
 	 * @deprecated Left for backward compatability only
 	 */
 	const DEFAULT_CONNNECTION = 'default';
+
+	/**
+	 * When using get_* first read from cache and fill cache if was empty
+	 */
+	const CACHE_READ_WRITE = true;
+	/**
+	 * When using get_* do not use cache at all
+	 */
+	const CACHE_NO_CACHE = false;
+	/**
+	 * When using get_* do not read from cache but fill it with result afterwards
+	 */
+	const CACHE_WRITE_ONLY = 1;
+
 	
 	/**
 	 * A single dataobject to perform queries, escape values, etc
@@ -89,7 +103,7 @@ class DB {
 	 * 
 	 * @return mixed Object or false 
 	 */
-	public static function get_item_by_pk($table, $value, $use_cache = true) {
+	public static function get_item_by_pk($table, $value, $use_cache = self::CACHE_READ_WRITE) {
 		$model = self::create($table); // Throws!
 		/* @var $model IDataObject */
 		$pks = $model->get_table_keys();
@@ -106,7 +120,7 @@ class DB {
 	 * 
 	 * @return mixed Object or false 
 	 */
-	public static function get_item($table, $key, $value, $use_cache = true) {
+	public static function get_item($table, $key, $value, $use_cache = self::CACHE_READ_WRITE) {
 		$ret = false;
 		if (!empty($value) && !$value instanceof DBNull) {
 			$ret = self::get_item_multi($table, array($key => $value), $use_cache);
@@ -121,10 +135,13 @@ class DB {
 	 * @param array $values Associative array with column => value
 	 * @return IDataObject  False if not found
 	 */
-	public static function get_item_multi($table, $arr_values, $use_cache = true) {
+	public static function get_item_multi($table, $arr_values, $use_cache = self::CACHE_READ_WRITE) {
+		$cache_read = $use_cache && $use_cache !== self::CACHE_WRITE_ONLY;
+		$cache_write = $use_cache;
+
 		ksort($arr_values);
 		$keys = array('db', $table, strtr(http_build_query($arr_values), '[]', '__'));
-		$ret = $use_cache ? RuntimeCache::get($keys, null) : null;
+		$ret = $cache_read ? RuntimeCache::get($keys, null) : null;
 		if (is_null($ret)) {
 			$ret = false;
 			$dao = self::create($table);
@@ -135,7 +152,9 @@ class DB {
 			if ($dao->find(IDataObject::AUTOFETCH)) {
 				$ret = clone($dao); // Get rid of Query related properties
 			}
-			if ($use_cache) { RuntimeCache::set($keys, $ret); }
+			if ($cache_write) {
+				RuntimeCache::set($keys, $ret);
+			}
 		}
 		return $ret;
 	}
