@@ -14,7 +14,7 @@ class InputWidgetDateTime extends InputWidgetDateTimeBase {
 	protected function extend_attributes(&$attrs, $params, $name, $title, $value, $policy) {
 		parent::extend_attributes($attrs, $params, $name, $title, $value, $policy);
 		if ($value) {
-			$value = date('Y-m-d\TH:m', GyroDate::datetime($value));
+			$value = date('Y-m-d\TH:i', GyroDate::datetime($value));
 		}
 		$attrs['value'] = $value;
 		$attrs['class'] = trim(Arr::get_item($attrs, 'class', '') . ' datetime');
