@@ -7,12 +7,11 @@
  */
 class CacheFileImpl implements ICachePersister {
 	private $cache_dir;
-	private $cache_item = null;
 
 	public function __construct() {
 		$app_dir = GyroString::plain_ascii(Config::get_url(Config::URL_DOMAIN));
 		$cache_base_dir = Config::get_value(ConfigFileCache::CACHE_DIR);
-		$this->cache_dir = "$cache_base_dir/cache/$app_dir/";
+		$this->cache_dir = "${cache_base_dir}cache/$app_dir/";
 	}
 
 	/**
@@ -31,7 +30,7 @@ class CacheFileImpl implements ICachePersister {
 	 * Read from cache
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string
-	 * @return ICacheItem The cache as array with members "content" and "data", false if cache is not found
+	 * @return ICacheItem|false The cache as array with members "content" and "data", false if cache is not found
 	 */
 	public function read($cache_keys) {
 		$file_name = $this->build_file_name($cache_keys);
@@ -81,9 +80,9 @@ class CacheFileImpl implements ICachePersister {
 	public function clear($cache_keys = NULL) {
 		if (!empty($cache_keys)) {
 			$file_name = $this->build_file_name($cache_keys);
-			unset($file_name);
+			unlink($file_name);
 			$dir_name = $this->build_dir_name($cache_keys);
-			rmdir($dir_name);
+			unlink($dir_name . '--*');
 		} else {
 			rmdir($this->cache_dir);
 		}
@@ -111,7 +110,9 @@ class CacheFileImpl implements ICachePersister {
 	 */
 	private function build_dir_name($cache_keys) {
 		$dirs = $this->extract_keys($cache_keys);
-		return $this->cache_dir . implode('/', $dirs);
+		$dirs = array_map(function($v) { return GyroString::plain_ascii($v); }, $dirs);
+		$path = implode('--', $dirs);
+		return $this->cache_dir . $path;
 	}
 
 	/**
@@ -142,14 +143,14 @@ class FileCacheItem implements ICacheItem {
 	/**
 	 * Item data
 	 *
-	 * @var Associative array
+	 * @var array Cache entry + meta data
 	 */
 	protected $item_data;
 
 	/**
 	 * Constructor
 	 *
-	 * @param array $item_data
+	 * @param array|string $item_data
 	 */
 	public function __construct($item_data) {
 		if (is_string($item_data)) {
