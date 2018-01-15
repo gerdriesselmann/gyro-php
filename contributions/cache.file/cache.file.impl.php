@@ -34,16 +34,20 @@ class CacheFileImpl implements ICachePersister {
 	 */
 	public function read($cache_keys) {
 		$file_name = $this->build_file_name($cache_keys);
-		$content = @file_get_contents($file_name);
-		if ($content === false) {
-			return false;
-		} else {
-			$item = new FileCacheItem($content);
-			if ($item->get_expirationdate() > time()) {
-				return $item;
-			} else {
+		if (file_exists($file_name)) {
+			$content = @file_get_contents($file_name);
+			if ($content === false) {
 				return false;
+			} else {
+				$item = new FileCacheItem($content);
+				if ($item->get_expirationdate() > time()) {
+					return $item;
+				} else {
+					return false;
+				}
 			}
+		} else {
+			return false;
 		}
 	}
 
