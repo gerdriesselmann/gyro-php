@@ -88,9 +88,9 @@ class CacheFileImpl implements ICachePersister {
 			$file_name = $this->build_file_name($cache_keys);
 			unlink($file_name);
 			$dir_name = $this->build_dir_name($cache_keys);
-			unlink($dir_name . '--*');
+			$this->remove_wildcard($dir_name . '--*');
 		} else {
-			unlink($this->cache_dir. '*' . $this->ext);
+			$this->remove_wildcard($this->cache_dir. '*' . $this->ext);
 		}
 	}
 	
@@ -135,6 +135,14 @@ class CacheFileImpl implements ICachePersister {
 	 */
 	public function remove_expired() {
 		// Do nothing, since we can not tell without opening al files
+	}
+
+	private function remove_wildcard($pattern) {
+		array_map(function($file) {
+			unlink($file);
+		},
+		glob($pattern)
+		);
 	}
 }
 
