@@ -8,6 +8,8 @@
 class CacheFileImpl implements ICachePersister {
 	private $cache_dir;
 
+	private $ext = '.cache';
+
 	public function __construct() {
 		$app_dir = GyroString::plain_ascii(Config::get_url(Config::URL_DOMAIN));
 		$cache_base_dir = Config::get_value(ConfigFileCache::CACHE_DIR);
@@ -88,7 +90,7 @@ class CacheFileImpl implements ICachePersister {
 			$dir_name = $this->build_dir_name($cache_keys);
 			unlink($dir_name . '--*');
 		} else {
-			rmdir($this->cache_dir);
+			unlink($this->cache_dir. '*' . $this->ext);
 		}
 	}
 	
@@ -125,7 +127,7 @@ class CacheFileImpl implements ICachePersister {
 	 * @return string
 	 */
 	private function build_file_name($cache_keys) {
-		return $this->build_dir_name($cache_keys) . '.cache';
+		return $this->build_dir_name($cache_keys) . $this->ext;
 	}
 
 	/**
