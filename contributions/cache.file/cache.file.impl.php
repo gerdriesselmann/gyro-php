@@ -9,6 +9,7 @@ class CacheFileImpl implements ICachePersister {
 	private $cache_dir;
 
 	private $ext = '.cache';
+	private $divider = '__';
 
 	public function __construct() {
 		$app_dir = GyroString::plain_ascii(Config::get_url(Config::URL_DOMAIN));
@@ -35,7 +36,7 @@ class CacheFileImpl implements ICachePersister {
 	 * @return ICacheItem|false The cache as array with members "content" and "data", false if cache is not found
 	 */
 	public function read($cache_keys) {
-		$file_name = $this->build_file_name($cache_keys);
+		$file_name = $this->build_file_name($cache_keys, true);
 		if (file_exists($file_name)) {
 			$content = @file_get_contents($file_name);
 			if ($content === false) {
@@ -73,7 +74,7 @@ class CacheFileImpl implements ICachePersister {
 			'expirationdate' => time() + $cache_life_time
 		);
 
-		$file = $this->build_file_name($cache_keys);
+		$file = $this->build_file_name($cache_keys, true);
 		$serialized = serialize($data);
 		file_put_contents($file, $serialized);
 	}
@@ -85,49 +86,65 @@ class CacheFileImpl implements ICachePersister {
 	 */
 	public function clear($cache_keys = NULL) {
 		if (!empty($cache_keys)) {
-			$file_name = $this->build_file_name($cache_keys);
-			unlink($file_name);
-			$dir_name = $this->build_dir_name($cache_keys);
-			$this->remove_wildcard($dir_name . '--*');
+			$file_name = $this->build_file_name($cache_keys, false);
+			@unlink($file_name);
+			$dir_name = $this->build_dir_name($cache_keys, false);
+			$this->remove_wildcard($dir_name . '*');
 		} else {
+			@unlink($this->cache_dir. $this->ext);
 			$this->remove_wildcard($this->cache_dir. '*' . $this->ext);
 		}
 	}
-	
+
 	/**
 	 * Transform the given param into an array of keys
-	 * 
-	 * @param Mixed A set of key params, may be an array or a string
+	 *
+	 * @param $cache_keys
+	 * @param $strip_empty
+	 * @return array
 	 */
-	private function extract_keys($cache_keys) {
+	private function extract_keys($cache_keys, $strip_empty) {
+		$ret = array();
 		if (is_array($cache_keys)) {
-			return array_values($cache_keys);
+			$ret = array_values($cache_keys);
+		} else if (is_string($cache_keys) || is_numeric($cache_keys)) {
+			$ret = array($cache_keys);
 		}
-		else if (is_string($cache_keys) || is_numeric($cache_keys)) {
-			return array($cache_keys);
+		if ($strip_empty) {
+			for ($i = count($ret) - 1; $i >= 0; $i--) {
+				if ($ret[$i] === '') {
+					unset($ret[$i]);
+				} else {
+					break;
+				}
+			}
 		}
-		return array();		
+
+		return $ret;
 	}
 
 	/**
 	 * Each cache key becomes a directory
 	 * @param array $cache_keys
+	 * @param bool $strip_empty
 	 * @return string
 	 */
-	private function build_dir_name($cache_keys) {
-		$dirs = $this->extract_keys($cache_keys);
+	private function build_dir_name($cache_keys, $strip_empty) {
+		$dirs = $this->extract_keys($cache_keys, $strip_empty);
+		$dirs[] = ''; // This makes an empty array and an array of 1 empty string distinct
 		$dirs = array_map(function($v) { return GyroString::plain_ascii($v); }, $dirs);
-		$path = implode('--', $dirs);
+		$path = implode($this->divider, $dirs);
 		return $this->cache_dir . $path;
 	}
 
 	/**
 	 * Each cache key becomes a directory, accept the last, which is assigned an extension .cache
 	 * @param array $cache_keys
+	 * @param bool $strip_empty
 	 * @return string
 	 */
-	private function build_file_name($cache_keys) {
-		return $this->build_dir_name($cache_keys) . $this->ext;
+	private function build_file_name($cache_keys, $strip_empty) {
+		return $this->build_dir_name($cache_keys, $strip_empty) . $this->ext;
 	}
 
 	/**
@@ -138,10 +155,11 @@ class CacheFileImpl implements ICachePersister {
 	}
 
 	private function remove_wildcard($pattern) {
-		array_map(function($file) {
-			unlink($file);
-		},
-		glob($pattern)
+		array_map(
+			function($file) {
+				unlink($file);
+			},
+			glob($pattern)
 		);
 	}
 }
