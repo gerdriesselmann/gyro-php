@@ -13,6 +13,7 @@ class AjaxView extends PageViewBase {
 	 * Contructor takes the page data
 	 */	
 	public function __construct($page_data) {
+		$page_data->in_history = false;
 		parent::__construct($page_data, '');
 	} 
 	
