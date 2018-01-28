@@ -40,10 +40,16 @@ class ConfigSASS {
 	 */
 	const OUTPUT_FORMAT = 'SASS_OUTPUT_FORMAT';
 
+
+	/**
+	 * IF set to true, ignores files that start with an uderscore
+	 */
+	const IGNORE_PRIVATE_FILES = 'SASS_IGNORE_PRIVATE_FILES';
 }
 
 Config::set_value_from_constant(ConfigSASS::OUTPUT_DIR, 'APP_SASS_OUTPUT_DIR', 'www/css/generated/');
 Config::set_value_from_constant(ConfigSASS::OUTPUT_FORMAT, 'APP_SASS_OUTPUT_FORMAT', 'default');
 Config::set_feature_from_constant(ConfigSASS::KEEP_DIRECTORY_STRUCTURE, 'APP_SASS_KEEP_DIRECTORY_STRUCTURE', true);
+Config::set_feature_from_constant(ConfigSASS::IGNORE_PRIVATE_FILES, 'APP_SASS_IGNORE_PRIVATE_FILES', false);
 
 

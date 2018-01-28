@@ -73,6 +73,13 @@ class SASS {
 	 * @return Status
 	 */
 	private static function run_cli_with($in_file, $out_file) {
+		if (Config::has_feature(ConfigSASS::IGNORE_PRIVATE_FILES)) {
+			$file = basename($in_file);
+			if (GyroString::starts_with($file, '_')) {
+				return new Status();
+			}
+		}
+		
 		$style = Config::get_value(ConfigSASS::OUTPUT_FORMAT, 'default');
 		if ($style === 'default') {
 			if (Config::has_feature(Config::TESTMODE)) {
