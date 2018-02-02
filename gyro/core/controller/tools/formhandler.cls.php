@@ -80,13 +80,20 @@ class FormHandler {
  	public function prepare_view($view, $data = false) {
  		$token = $this->create_token();
 
+ 		$validation_token_field = Config::get_value(Config::FORMVALIDATION_FIELD_NAME);
+ 		$validation_handler_field = Config::get_value(Config::FORMVALIDATION_HANDLER_NAME);
+
 	 	$token_html = '';
  		if ($token) {
-	 		$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_FIELD_NAME), array('value' => $token));
-			$token_html .= html::input('hidden', Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), array('value' => $this->name));
+	 		$token_html .= html::input('hidden', $validation_token_field, array('value' => $token));
+			$token_html .= html::input('hidden', $validation_handler_field, array('value' => $this->name));
 
  		}
  		$view->assign('form_validation', $token_html);
+ 		$view->assign('form_validation_data', array(
+			$validation_token_field => $token,
+			$validation_handler_field => $this->name,
+		));
 
 		if (!empty($data)) {
  			$this->set_form_data_on_view((array)$data,$view);
