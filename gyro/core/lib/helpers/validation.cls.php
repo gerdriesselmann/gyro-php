@@ -190,5 +190,29 @@ class Validation {
 	public static function is_ip(&$ip) {
 		return self::is_ip4($ip) || self::is_ip6($ip);
 	}
-	
+
+	/**
+	 * Checks if the given string is an international phone number, conforming to
+	 * ITU-T E.123 standard.
+	 *
+	 * @see https://en.wikipedia.org/wiki/E.123
+	 *
+	 * @param string $in
+	 * @return bool
+	 */
+	public static function is_e123_phone($in) {
+		$regex = '@' . self::e123_phone_regex() . '@';
+		return preg_match($regex, $in);
+	}
+
+	/**
+	 * Returns regex to check if the given string is an international phone number, conforming to
+	 * ITU-T E.123 standard. The regex is not usable in PHP directly, since it misses the trailing
+	 * and ending delimiter
+	 *
+	 * @see https://en.wikipedia.org/wiki/E.123
+	 */
+	public static function e123_phone_regex() {
+		return '^\+[1-9][0-9 ]+$';
+	}
 }
