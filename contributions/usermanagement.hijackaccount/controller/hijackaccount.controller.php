@@ -13,8 +13,12 @@ class HijackaccountController extends ControllerBase {
 	
 	/**
 	 * Hijack given account
+	 * 
+	 * @var PageData $page_data
+	 * @var int $id ID of user to highjack
+	 * @var string|false URL to redirect after successful highjacking or false to use default (home page)
 	 */
-	public function action_users_hijack(PageData $page_data, $id) {
+	public function action_users_hijack(PageData $page_data, $id, $redirect_target = false) {
 		$user = Users::get($id);
 		if ($user === false) {
 			return self::NOT_FOUND;
@@ -34,6 +38,6 @@ class HijackaccountController extends ControllerBase {
 				array('%name' => $user->get_title())
 			));
 		}
-		History::go_to(0, $err);
+		History::go_to(0, $err, $redirect_target);
 	}
 }
