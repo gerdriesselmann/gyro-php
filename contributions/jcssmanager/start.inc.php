@@ -10,11 +10,11 @@ class ConfigJCSSManager {
 	const JS_DIR = 'JCSS_JS_DIR';
 	
 	/**
-	 * CSS Compression method. Only 'yui' and 'csstidy' and 'concat' are supported
+	 * CSS Compression method. Only 'yui' and 'csstidy' and 'concat' and `webpack` are supported
 	 */
 	const CSS_COMPRESSOR = 'JCSS_CSS_COMPRESSOR';
 	/**
-	 * Javascript Compression method. Possible values are 'yui' or 'closure' or 'concat'
+	 * Javascript Compression method. Possible values are 'yui' or 'closure' or 'concat' or `webpack`
 	 */
 	const JS_COMPRESSOR = 'JCSS_JS_COMPRESSOR';
 	
@@ -46,13 +46,17 @@ class ConfigJCSSManager {
 	 * APP_3RDPARTY_DIR . '/yuicompressor/' . YUI_VERSION . '/yuicompressor.jar'
 	 */
 	const YUI_VERSION = 'JCSS_YUI_VERSION';
-	const YUI_VERSION_LATEST = '2.4.8'; 
+	const YUI_VERSION_LATEST = '2.4.8';
+
+	const WEBPACK_CONFIG_FILE = 'JCSS_WEBPACK_CONFIG_FILE';
 }
 
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_DIR, 'APP_JCSS_CSS_DIR', 'css/');
 Config::set_value_from_constant(ConfigJCSSManager::JS_DIR, 'APP_JCSS_JS_DIR', 'js/');
 Config::set_value_from_constant(ConfigJCSSManager::YUI_VERSION, 'APP_JCSS_YUI_VERSION', '2.4.2');
+
+Config::set_value_from_constant(ConfigJCSSManager::WEBPACK_CONFIG_FILE, 'APP_JCSS_WEBPACK_CONFIG_FILE', '');
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_COMPRESSOR, 'APP_JCSS_CSS_COMPRESSOR', 'yui');
 Config::set_value_from_constant(ConfigJCSSManager::JS_COMPRESSOR, 'APP_JCSS_JS_COMPRESSOR', 'yui');
@@ -73,8 +77,12 @@ Config::set_feature_from_constant(ConfigJCSSManager::ALSO_GZIP, 'APP_JCSS_ALSO_G
  * @li Closure Compiler 20100330 (http://code.google.com/closure/compiler/) for JavaScript only. Closure Compression Level is
  *     SIMPLE_OPTIMIZATIONS
  * @li CSS Tidy 1.3 (http://csstidy.sourceforge.net/index.php) for CSS compression. Compression level is default + removing last ";"
+ * @li Webpack Uses locally installed webpack
  *     
- * @attention JCSSManager need Java to be installed on your system to run both YUI Compressoor or Closure Compiler!
+ * @attention JCSSManager needs Java to be installed on your system to run both YUI Compressoor or Closure Compiler!
+ *
+ * @attention JCSSManager needs webpack and NodeJS to be installed to run webpack. It assume webpack is installed with the project and
+ *            accessible at {project root}/node_modules/.bin/webpack
  * 
  * @section Usage Usage
  *

@@ -36,6 +36,10 @@ class JCSSManager {
 			self::TYPE_CSS_IE7 => tr(self::TYPE_CSS_IE7, 'jcssmanager'),
 		);		
 	}
+
+	public static function root_dir() {
+		return Config::get_value(Config::URL_ABSPATH);
+	}
 	
 	/**
 	 * Make path relativ to web root 
@@ -44,7 +48,7 @@ class JCSSManager {
 	 * @return string
 	 */
 	public static function make_relativ($path) {
-		return str_replace(Config::get_value(Config::URL_ABSPATH), '', $path);
+		return str_replace(self::root_dir(), '', $path);
 	}
 	
 	/**
@@ -54,7 +58,7 @@ class JCSSManager {
 	 * @return string
 	 */
 	public static function make_absolute($path) {
-		return Config::get_value(Config::URL_ABSPATH) . $path;
+		return self::root_dir() . $path;
 	}
 
 	public static function make_absolute_with_base($path, $base) {
