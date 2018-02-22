@@ -42,7 +42,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
 
                 if (!$dao_countries->is_deprecated) {
                     $rest_country = $this->get_country_for_alpha2code($alpha2Code);
-                    $this->assertFalse(empty($rest_country));
+                    $this->assertFalse(empty($rest_country), "Country $alpha2Code not found in REST Api");
                     $this->assertEqual($rest_country['alpha2Code'], $alpha2Code);
                 }
             }

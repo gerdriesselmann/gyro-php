@@ -21,6 +21,7 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 	public $lon2;
 	public $lat_capital;
 	public $lon_capital;
+	public $is_deprecated;
 
     /**
      * Create table definition
@@ -46,6 +47,7 @@ class DAOCountries extends DataObjectBase implements ISelfDescribing, IHierarchi
 				new DBFieldFloat('lon2', null, DBField::NONE),
 				new DBFieldFloat('lat_capital', null, DBField::NONE),
 				new DBFieldFloat('lon_capital', null, DBField::NONE),
+				new DBFieldBool('is_deprecated', false, DBField::NONE),
             ),
             'id',
             new DBRelation(
