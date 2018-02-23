@@ -14,7 +14,13 @@ class ConfigJCSSManager {
 	 */
 	const CSS_COMPRESSOR = 'JCSS_CSS_COMPRESSOR';
 	/**
-	 * Javascript Compression method. Possible values are 'yui' or 'closure' or 'concat' or `webpack`
+	 * Javascript Compression method. Possible values are
+	 *
+	 * - 'yui'
+	 * - 'closure'
+	 * - 'concat'
+	 * - 'webpack'
+	 * - 'uglifyjs'
 	 */
 	const JS_COMPRESSOR = 'JCSS_JS_COMPRESSOR';
 	
