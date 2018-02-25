@@ -55,6 +55,12 @@ class ConfigJCSSManager {
 	const YUI_VERSION_LATEST = '2.4.8';
 
 	const WEBPACK_CONFIG_FILE = 'JCSS_WEBPACK_CONFIG_FILE';
+
+	/**
+	 * Supply a special postcss config instead of postcss.config.js
+	 */
+	const POSTCSS_CONFIG_FILE = 'JCSS_POSTCSS_CONFIG_FILE';
+
 }
 
 
@@ -84,14 +90,13 @@ Config::set_feature_from_constant(ConfigJCSSManager::ALSO_GZIP, 'APP_JCSS_ALSO_G
  *     SIMPLE_OPTIMIZATIONS
  * @li CSS Tidy 1.3 (http://csstidy.sourceforge.net/index.php) for CSS compression. Compression level is default + removing last ";"
  * @li Webpack Uses locally installed webpack
- *     
+ * @li UglifyJS for JavaScript compression
+ * @li PostCSS for CSS compression
+ * @li csso for CSS compression
+ *
  * @attention JCSSManager needs Java to be installed on your system to run both YUI Compressoor or Closure Compiler!
  *
- * @attention JCSSManager needs webpack and NodeJS to be installed to run webpack. It assume webpack is installed with the project and
- *            accessible at {project root}/node_modules/.bin/webpack
- * 
- * @section Usage Usage
+ * @attention JCSSManager needs NodeJS based tools to be installed to run them. It assume webpack, csso or PostCSS are installed within the project and
+ *            accessible at {project root}/node_modules/.bin/
  *
- *
- * 
  */
