@@ -74,7 +74,8 @@ class HeadData implements IRenderer {
 	public $links = array();
 
 	public $subresource_integrities = array();
-	
+	public $async_scripts = array();
+
 	const META_INFORMATION = 256;
 	const JAVASCRIPT_INCLUDES = 512;
 	const CSS_INCLUDES = 1024;
@@ -121,15 +122,19 @@ class HeadData implements IRenderer {
 	 * 
 	 * @param string|HeadDataFile $file
 	 * @param bool $to_front If true, the javascript file is included before other
+	 * @param bool $async If true, the javascript file is loaded with async attribute set
 	 * @return void
 	 */
-	public function add_js_file($file, $to_front = false) {
+	public function add_js_file($file, $to_front = false, $async = false) {
 		if (!empty($file)) {
 			$file = $this->adapt_file($file);
 			if ($to_front) {
 				array_unshift($this->js_files, $file);
 			} else {
 				$this->js_files[] = $file;
+			}
+			if ($async) {
+				$this->async_scripts[] = $file;
 			}
 		}
 	}
@@ -366,7 +371,15 @@ class HeadData implements IRenderer {
 		}
 		return $ret;
 	}
-	
+
+	public function async_attr($file) {
+		$ret = array();
+		if (in_array($file, $this->async_scripts)) {
+			$ret['async'] = 'async';
+		}
+		return $ret;
+	}
+
 	protected function escape_file($file) {
 		if (strpos($file, '://') === false && substr($file, 0, 2) !== '//') {
 			$file = Config::get_value(Config::URL_BASEDIR) . ltrim($file, '/');
@@ -419,6 +432,7 @@ class HeadData implements IRenderer {
 		foreach ($js_files as $file) {
 			$attr = array_merge(
 				$this->subresource_integrity_attr($file),
+				$this->async_attr($file),
 				array(
 					'src' => $this->escape_file($file),
 					'type' => 'text/javascript',
