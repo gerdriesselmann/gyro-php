@@ -87,12 +87,20 @@ class CacheFileImpl implements ICachePersister {
 	public function clear($cache_keys = NULL) {
 		if (!empty($cache_keys)) {
 			$file_name = $this->build_file_name($cache_keys, false);
-			@unlink($file_name);
+			$this->safe_unlink($file_name);
 			$dir_name = $this->build_dir_name($cache_keys, false);
 			$this->remove_wildcard($dir_name . '*');
 		} else {
-			@unlink($this->cache_dir. $this->ext);
+			$this->safe_unlink($this->cache_dir. $this->ext);
 			$this->remove_wildcard($this->cache_dir. '*' . $this->ext);
+		}
+	}
+
+	private function safe_unlink($file) {
+		try {
+			unlink($file);
+		} catch (Exception $ex) {
+			// Ignore
 		}
 	}
 
@@ -157,7 +165,7 @@ class CacheFileImpl implements ICachePersister {
 	private function remove_wildcard($pattern) {
 		array_map(
 			function($file) {
-				unlink($file);
+				$this->safe_unlink($file);
 			},
 			glob($pattern)
 		);
