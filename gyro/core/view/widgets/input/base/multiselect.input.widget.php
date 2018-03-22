@@ -19,7 +19,7 @@ class InputWidgetMultiselectBase extends InputWidgetBase {
 		$c = count($options);
 		unset($attrs['options']);
 
-		$ret .= html::input('hidden', $name, '');
+		$ret .= html::input('hidden', $name, array());
 		
 		$name .= '[]';
 		$value = Arr::force($value, false);
