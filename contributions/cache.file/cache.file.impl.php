@@ -98,7 +98,9 @@ class CacheFileImpl implements ICachePersister {
 
 	private function safe_unlink($file) {
 		try {
-			unlink($file);
+			if (file_exists($file)) {
+				@unlink($file);
+			}
 		} catch (Exception $ex) {
 			// Ignore
 		}
