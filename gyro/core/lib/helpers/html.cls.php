@@ -654,23 +654,39 @@ class html
 		
 		return $ret;
 	}
-	
+
 	/**
 	 * Build rows
-	 * 
+	 *
 	 * @param array  $rows Array or Array of arrays of cells. Cells must be already formated with either <td> or <th>
 	 */
 	private static function table_build_rows($rows) {
 		$ret = '';
-		$i = 0;		
+		$i = 0;
 		$c = count($rows);
-		// Test if $rwos is array or array of arrays;
+
+		// Test if $rows is array or array of arrays;
 		if ($c && !is_array(reset($rows))) {
 			$rows = array($rows);
 		}
+
 		// Iterate and output
-		foreach($rows as $cells) {
+		foreach($rows as $row) {
 			$arr_cls = array();
+
+			// row is
+			// EITHER array("content" => $content, "class" => $class)
+			// OR array of strings
+			if (array_key_exists('content', $row)) {
+				$cells = $row['content'];
+				$cls = Arr::get_item($row, 'class', '');
+				if ($cls) {
+					$arr_cls[] = $cls;
+				}
+			} else {
+				$cells = $row;
+			}
+
 			$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
 			if ($i === 1) {
 				$arr_cls[] = 'first';
@@ -678,11 +694,12 @@ class html
 			if ($i === $c) {
 				$arr_cls[] = 'last';
 			}
+
 			$ret .= html::tr($cells, array('class' => $arr_cls));
 		}
 		return $ret;
 	}
-	
+
 	private static function _appendClass(&$attrs, $cls) {
 		$oldcls = Arr::get_item($attrs, 'class', '');
 		if (!empty($oldcls)) {
