@@ -100,10 +100,10 @@ class GyroHttpRequest {
 	private static function set_body_options($options, $fields, $policy) {
 		if (Common::flag_is_set($policy, self::SEND_JSON)) {
 			$options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/json');
+			$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
 		} else {
 			$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
+			$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/x-www-form-urlencoded');
 		}
 		$options[CURLOPT_HTTPHEADER][] =
 			'Expect: '; // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
