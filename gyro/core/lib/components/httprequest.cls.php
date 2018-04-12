@@ -14,6 +14,7 @@ class GyroHttpRequest {
 	const SSL_NO_VERIFY = 1;
 	const NO_ERROR_ON_4XX_5XX = 2;
 	const SEND_JSON = 4;
+    const INFO_HEADERS = 8;
 
 	/**
 	 * Read content from given url
@@ -26,7 +27,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function get_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
 	}
@@ -44,7 +45,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function get_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -62,7 +63,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function post_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_post_options($options, $fields, $policy);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -82,7 +83,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function post_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_post_options($options, $fields, $policy);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
@@ -98,12 +99,15 @@ class GyroHttpRequest {
 	 * @return array
 	 */
 	private static function set_body_options($options, $fields, $policy) {
+        if (!isset($options[CURLOPT_HTTPHEADER])) {
+            $options[CURLOPT_HTTPHEADER] = array();
+        }
 		if (Common::flag_is_set($policy, self::SEND_JSON)) {
-			$options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/json');
+			$options[CURLOPT_POSTFIELDS]   = ConverterFactory::encode($fields, CONVERTER_JSON);
+			$options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
 		} else {
-			$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type: application/x-www-form-urlencoded');
+			$options[CURLOPT_POSTFIELDS]   = http_build_query($fields);
+			$options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/x-www-form-urlencoded';
 		}
 		$options[CURLOPT_HTTPHEADER][] =
 			'Expect: '; // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
@@ -136,7 +140,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function put_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_put_options($options, $fields, $policy);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -156,7 +160,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function put_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_put_options($options, $fields, $policy);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
@@ -188,7 +192,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function delete_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_delete_options($options);
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
 		return $ret;
@@ -207,7 +211,7 @@ class GyroHttpRequest {
 	 * @return String The content of the file or NULL, if file was not found
 	 */
 	public static function delete_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		$options = self::set_delete_options($options);
 		$options[CURLOPT_USERPWD] = "$user:$pwd";
 		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
@@ -235,7 +239,7 @@ class GyroHttpRequest {
 	 * @return string Content fetched or false on error
 	 */
 	public static function get_head($url, $err = null, $timeout = 30, $policy = self::NONE) {
-		$options = self::get_default_opts($policy);
+		$options = self::get_default_opts($policy, $info);
 		//curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
 		$options[CURLOPT_HEADER] = 1;
 		// NOBODY turns GET into HEAD, though it is not documented
@@ -261,7 +265,7 @@ class GyroHttpRequest {
 	 * @param int $timeout
 	 * @return array
 	 */
-	private static function get_default_opts($policy) {
+	private static function get_default_opts($policy, $info) {
 		$ret = array(
 			CURLOPT_RETURNTRANSFER => 1,
 			CURLOPT_FAILONERROR => 1,
@@ -283,7 +287,12 @@ class GyroHttpRequest {
 			$ret[CURLOPT_SSL_VERIFYHOST] = 0;
 			$ret[CURLOPT_SSL_VERIFYPEER] = 0;
 		}
-		
+        if (Common::flag_is_set($policy, self::INFO_HEADERS)) {
+            if (is_array($info) && isset($info[self::INFO_HEADERS])) {
+                $ret[CURLOPT_HTTPHEADER] = $info[self::INFO_HEADERS];
+            }
+        }
+
 		return $ret;
 	}
 	
