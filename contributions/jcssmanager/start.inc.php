@@ -61,6 +61,8 @@ class ConfigJCSSManager {
 	 */
 	const POSTCSS_CONFIG_FILE = 'JCSS_POSTCSS_CONFIG_FILE';
 
+	const UGLIFY_COMPRESS_OPTIONS = 'JCSS_UGLIFY_COMPRESS_OPTIONS';
+
 }
 
 
@@ -69,6 +71,8 @@ Config::set_value_from_constant(ConfigJCSSManager::JS_DIR, 'APP_JCSS_JS_DIR', 'j
 Config::set_value_from_constant(ConfigJCSSManager::YUI_VERSION, 'APP_JCSS_YUI_VERSION', '2.4.2');
 
 Config::set_value_from_constant(ConfigJCSSManager::WEBPACK_CONFIG_FILE, 'APP_JCSS_WEBPACK_CONFIG_FILE', '');
+Config::set_value_from_constant(ConfigJCSSManager::POSTCSS_CONFIG_FILE, 'APP_JCSS_POSTCSS_CONFIG_FILE', '');
+Config::set_value_from_constant(ConfigJCSSManager::UGLIFY_COMPRESS_OPTIONS, 'APP_JCSS_UGLIFY_COMPRESS_OPTIONS', '');
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_COMPRESSOR, 'APP_JCSS_CSS_COMPRESSOR', 'yui');
 Config::set_value_from_constant(ConfigJCSSManager::JS_COMPRESSOR, 'APP_JCSS_JS_COMPRESSOR', 'yui');

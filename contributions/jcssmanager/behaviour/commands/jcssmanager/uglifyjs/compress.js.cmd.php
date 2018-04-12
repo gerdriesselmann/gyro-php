@@ -39,16 +39,9 @@ class JCSSManagerCompressJSUglifyjsCommand extends JCSSManagerCompressBaseComman
 		$uglifyjs_cmd = 'node_modules/.bin/uglifyjs';
 
 		$uglifyjs_options = array();
-		$uglifyjs_options['--compress'] = '';
+		$uglifyjs_options['--compress'] = Config::get_value(ConfigJCSSManager::UGLIFY_COMPRESS_OPTIONS);
 		$uglifyjs_options['--mangle'] = '';
 		$uglifyjs_options['--output'] = $out_file;
-
-		/**
-		$possible_config = Config::get_value(ConfigJCSSManager::UGLIFYJS_CONFIG_FILE);
-		if ($possible_config) {
-			$uglifyjs_options['--config'] = $possible_config;
-		}
-		*/
 
 		$in_files = array_map(function($f) {
 			return  JCSSManager::make_absolute($f);
@@ -61,7 +54,7 @@ class JCSSManagerCompressJSUglifyjsCommand extends JCSSManagerCompressBaseComman
 
 		$output = array();
 		$return = 0;
-		//echo $uglifyjs_cmd . "\n";
+		echo $uglifyjs_cmd . "\n";
 		exec($uglifyjs_cmd, $output, $return);
 
 		if ($return) {
