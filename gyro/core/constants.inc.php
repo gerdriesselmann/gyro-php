@@ -41,6 +41,7 @@ Config::set_feature_from_constant(Config::DISABLE_CACHE, 'APP_DISABLE_CACHE', AP
 Config::set_feature_from_constant(Config::DISABLE_ERROR_CACHE, 'APP_DISABLE_ERROR_CACHE', APP_TESTMODE);
 Config::set_feature_from_constant(Config::FORCE_FULL_DOMAINNAME, 'APP_FORCE_FULL_DOMAINNAME', true);
 Config::set_feature_from_constant(Config::VALIDATE_URL, 'APP_VALIDATE_URL', true);
+Config::set_feature_from_constant(Config::UNICODE_URLS, 'APP_UNICODE_URLS', false);
 /**
  * Enable some specific behaviours
  */

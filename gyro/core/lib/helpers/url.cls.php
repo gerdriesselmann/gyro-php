@@ -1,6 +1,10 @@
 <?php
 /**
  * Wrapper around URL handling and processing
+ *
+ * if Config option UNICODE_URLS is set to true, the class
+ * accepts unicode domains as valid. Else Unicode domain
+ * names will return false when validated.
  * 
  * @author Gerd Riesselmann
  * @ingroup Lib
@@ -36,6 +40,7 @@ class Url {
 	
 	
 	private $data = array();
+	private $support_unicode_domains = false;
 
 	/**
 	 * Constructor
@@ -47,7 +52,9 @@ class Url {
 	 * @internal param The $string URL to wrap around
 	 */
 	public function __construct($url = '', $fallback_host = '', $policy = self::HTTP_ONLY) {
+		$this->support_unicode_domains = Config::has_feature(Config::UNICODE_URLS);
 		$this->parse($url, $fallback_host, $policy);
+
 	}
 	
 	/**
@@ -179,9 +186,9 @@ class Url {
 	}
 	
 	/**
-	 * Serialize in a freindly format
+	 * Serialize in a friendly format
 	 *
-	 * @return unknown
+	 * @return array
 	 */
 	public function __sleep() {
 		$this->url = $this->build();
@@ -588,6 +595,9 @@ class Url {
 		$ret = !$this->is_empty();
 		
 		$src_host = $this->get_host();
+		if ($this->support_unicode_domains) {
+			$src_host = idn_to_ascii($src_host);
+		}
 		if ($ret && !Validation::is_ip($src_host)) {
 			$ret = $ret && (preg_match('|^([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+$|i', $src_host) != 0);
 			if ($ret) {
