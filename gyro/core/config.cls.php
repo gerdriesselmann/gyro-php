@@ -114,6 +114,13 @@ class Config {
 	 * True to validate url on start 
 	 */
 	const VALIDATE_URL = 'VALIDATE_URL';
+	/**
+	 * Support Unicode domain name, requires the PHP intl module to be installed
+	 * @see http://php.net/manual/de/book.intl.php
+	 *
+	 * Default is false for backward compatibility reasons
+	 */
+	const UNICODE_URLS = 'UNICODE_URLS';
 	
 	/**
 	 * Temporary directory

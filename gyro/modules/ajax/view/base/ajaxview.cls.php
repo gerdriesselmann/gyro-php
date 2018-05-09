@@ -50,6 +50,11 @@ class AjaxView extends PageViewBase {
 		} 
 		$data['is_error'] = $is_error;
 		$rendered_content = ConverterFactory::encode($data, CONVERTER_JSON);
+
+		if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
+			$rendered_content = gzdeflate($rendered_content, 9);
+		}
+
 	}
 
 	protected function after_render(&$rendered_content, $policy) {
@@ -82,14 +87,10 @@ class AjaxView extends PageViewBase {
 	 * @return void
 	 */
 	protected function render_postprocess(&$rendered_content, $policy) {
-		$this->send_status();
-		
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
-			header('Cache-Control: maxage=3600'); //Fix for IE in SSL 
-			header('Pragma: public');
-			//header('Content-Length: ') . strlen($rendered_content);			
 			header('Content-Type: application/json');
 		}
+		parent::render_postprocess($rendered_content, $policy);
 	}	
 }
 ?>

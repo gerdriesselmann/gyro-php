@@ -29,6 +29,12 @@ function core_check_preconditions() {
 			$ret->append('Could not create file in temporary directory ' . $dir);
 		}
 	}
+
+	if (Config::has_feature(Config::UNICODE_URLS)) {
+		if (!function_exists('idn_to_ascii')) {
+			$ret->append('Function idn_to_ascii must be available for Unicode domain support. Install the intl package.');
+		}
+	}
 	
 	return $ret;
 }

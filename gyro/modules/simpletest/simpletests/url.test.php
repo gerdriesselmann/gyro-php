@@ -101,6 +101,14 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual('a', $arr_host['sld']);
 		$this->assertEqual('a.co', $arr_host['domain']);
 		$this->assertEqual('www', $arr_host['subdomain']);
+
+		$url = Url::create('http://ümlaut.com');
+		$arr_host = $url->parse_host();
+		$this->assertEqual('com', $arr_host['tld']);
+		$this->assertEqual('ümlaut', $arr_host['sld']);
+		$this->assertEqual('ümlaut.com', $arr_host['domain']);
+		$this->assertEqual('', $arr_host['subdomain']);
+
 	}
 	
 	function test_host_to_lower() {
@@ -111,6 +119,9 @@ class UrlTest extends GyroUnitTestCase {
 		$url->set_host('www.domain.INFO');
 		$this->assertEqual('www.domain.info', $url->get_host());
 		$this->assertEqual('http://www.domain.info/Some/Path', $url->build());
+
+		$url->set_host('www.ÜMLAUT.INFO');
+		$this->assertEqual('www.ümlaut.info', $url->get_host());
 	}
 	
 	public function test_is_valid() {
@@ -126,7 +137,12 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertFalse(Url::create('http://www.aula-institut..de')->is_valid());
 		$this->assertFalse(Url::create('http://www..bam-bini-shop.de')->is_valid());
 		$this->assertFalse(Url::create('http://www,pkv-preiswaerter.de')->is_valid());
-		$this->assertFalse(Url::create('http://www.deltus-mDeltus Media, Bücher über erfolgreiche Menschenedia.de')->is_valid());		
+		$this->assertFalse(Url::create('http://www.deltus-mDeltus Media, Bücher über erfolgreiche Menschenedia.de')->is_valid());
+
+		$this->assertEqual(
+			Config::has_feature(Config::UNICODE_URLS),
+			Url::create("http://ümlaut.com/")->is_valid()
+		);
 	}
 	
 	public function test_current() {
