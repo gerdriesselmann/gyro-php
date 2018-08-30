@@ -596,7 +596,7 @@ class Url {
 		
 		$src_host = $this->get_host();
 		if ($this->support_unicode_domains) {
-			$src_host = idn_to_ascii($src_host);
+			$src_host = idn_to_ascii($src_host,0, INTL_IDNA_VARIANT_UTS46);
 		}
 		if ($ret && !Validation::is_ip($src_host)) {
 			$ret = $ret && (preg_match('|^([A-Z0-9][A-Z0-9_-]*)(\.[A-Z0-9][A-Z0-9_-]*)+$|i', $src_host) != 0);
