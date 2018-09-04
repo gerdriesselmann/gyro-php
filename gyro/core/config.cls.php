@@ -48,6 +48,11 @@ class Config {
 	const LOG_TRANSLATIONS = 'LOG_TRANSLATIONS';
 	const LOG_HTML_ERROR_STATUS = 'LOG_HTML_ERROR_STATUS';
 	const LOG_HTTPREQUESTS = 'LOG_HTTPREQUESTS';
+    /**
+     * DB UTF8 / UTF8MB4
+     */
+    const DB_USE_UTF8MB4_ON_UTF8 = 'DB_USE_UTF8MB4_ON_UTF8';
+    const DB_TR_UTF8_TO_UTF8MB4 = 'DB_TR_UTF8_TO_UTF8MB4';
 	/**
 	 * Added to each email subject line
 	 */

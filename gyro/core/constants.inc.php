@@ -173,6 +173,12 @@ Config::set_value_from_constant(Config::QUERY_PARAM_PATH_INVOKED, 'APP_QUERY_PAR
 Config::set_value_from_constant(Config::DB_SLOW_QUERY_THRESHOLD, 'APP_DB_SLOW_QUERY_THRESHOLD', 0.0100);
 
 /**
+ * DB UTF8 / UTF8MB4
+ */
+Config::set_value_from_constant(Config::DB_USE_UTF8MB4_ON_UTF8, 'APP_DB_USE_UTF8MB4_ON_UTF8', false);
+Config::set_value_from_constant(Config::DB_TR_UTF8_TO_UTF8MB4, 'APP_DB_TR_UTF8_TO_UTF8MB4', false);
+
+/**
  * Cache headers
  */
 Config::set_value_from_constant(Config::CACHEHEADER_CLASS_CACHED, 'APP_CACHEHEADER_CLASS_CACHED', 'PrivateRigid');

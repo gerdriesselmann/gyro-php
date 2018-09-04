@@ -102,7 +102,11 @@ class DBDriverMysql implements IDBDriver {
 			if ($err->is_ok()) {
 				// We are connected
 				if (GyroLocale::get_charset() == 'UTF-8') {
-					$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+                    if (Config::has_feature(Config::DB_USE_UTF8MB4_ON_UTF8)) {
+                        $this->execute("SET NAMES 'utf8mb4' COLLATE 'utf8mb4_general_ci'");
+                    } else {
+                        $this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+                    }
 				}
 				//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
 				$this->execute("SET sql_mode='TRADITIONAL'");
