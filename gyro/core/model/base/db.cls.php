@@ -326,6 +326,9 @@ class DB {
 			$dao = self::create('cache');
 			while($query = self::extract_next_sql_statement($handle)) {
 				if ($query != ';') {
+                    if (Config::has_feature(Config::DB_USE_UTF8MB4_ON_UTF8) && Config::has_feature(Config::DB_TR_UTF8_TO_UTF8MB4)) {
+                        $query = self::translate_query_utf8_utf8mb4($query);
+                    }
 					$status->merge($conn->execute($query));
 					if ($status->is_error()) {
 						break;
@@ -341,7 +344,27 @@ class DB {
 		}
 		return $status;
 	}
-	
+
+    /**
+     * Experimental sql statement translation of:
+     *
+     * - "CHARSET=utf8"             => "CHARSET=utf8mb4"
+     * - "CHARACTER SET 'utf8'"     => "CHARACTER SET 'utf8mb4'"
+     * - "COLLATE=utf8_general_ci"  => "COLLATE=utf8mb4_general_ci"
+     *
+     * This should cover all utf8 use cases in install.sql and update.sql scripts,
+     * but currently only used for table=`sessions`.
+     */
+    protected static function translate_query_utf8_utf8mb4($query) {
+        if (stripos($query, 'CREATE TABLE IF NOT EXISTS `sessions`') !== false) {
+            $query = preg_replace('/CHARSET\s*=\s*utf8(?!mb4)/i', 'CHARSET=utf8mb4', $query);
+            $query = preg_replace('/CHARACTER\s+SET\s*\'utf8\'/i', 'CHARACTER SET \'utf8mb4\'', $query);
+            $query = preg_replace('/COLLATE\s*=\s*utf8_general_ci/i', 'COLLATE=utf8mb4_general_ci', $query);
+        }
+        
+        return $query;    
+    }
+    
 	public static function extract_next_sql_statement($handle) {
 		$ret = '';
 		$last = '';
