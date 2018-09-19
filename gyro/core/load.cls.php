@@ -501,8 +501,9 @@ class Load {
 	}
 }
 
-if (!function_exists('__autoload')) {
-	function __autoload($class_name) {
+if (!function_exists('gyro_autoload')) {
+	function gyro_autoload($class_name) {
 		Load::autoload($class_name);
 	}
+	spl_autoload_register('gyro_autoload');
 }

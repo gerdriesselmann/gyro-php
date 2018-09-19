@@ -58,7 +58,7 @@ class ConverterFactory {
 	/**
 	 * Encode teyt with converter of given type
 	 *
-	 * @param string $value Text to encode
+	 * @param mixed $value Text to encode
 	 * @param string $type Type of conversion
 	 * @return string Converted text
 	 */
@@ -75,7 +75,7 @@ class ConverterFactory {
 	 *
 	 * @param string $value Text to decode
 	 * @param string $type Type of conversion
-	 * @return string Converted text
+	 * @return mixed Converted text
 	 */
 	public static function decode($value, $type, $params  = false) {
 		$converter = self::create($type);
