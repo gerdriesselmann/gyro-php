@@ -88,7 +88,17 @@ class SASS {
 				$style = 'compressed';
 			}
 		}
-		$elems = array('sass', '--style', $style, '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
+
+		if (Config::has_feature(ConfigSASS::USE_LOCAL_NODE_SASS)) {
+			$elems = array(
+				'node_modules/.bin/node-sass',
+				'--output-style', $style,
+				'--output', escapeshellarg(dirname($out_file)),
+				escapeshellarg($in_file),
+				escapeshellarg($out_file));
+		} else {
+			$elems = array('sass', '--style', $style, '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
+		}
 		$cli = implode(' ', $elems);
 
 		Load::commands('generics/execute.shell');
