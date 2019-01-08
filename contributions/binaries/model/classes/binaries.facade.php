@@ -87,10 +87,13 @@ class Binaries {
 					$handle = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
 					$mime_type = finfo_file($handle, $file);
 					finfo_close($handle);
-				}
-				else if (function_exists('mime_content_type')) {
+				} else if (function_exists('mime_content_type')) {
 					$mime_type = mime_content_type($file);
 				}
+				// This is a fix, since on some Linux machines, .png returns a mime type of
+				// image/png; charset=binary, which troubles some browsers and Google, as
+				// binary is not a valid charset after all
+				$mime_type = str_replace('; charset=binary', '', $mime_type);
 			}
 			$ret->merge(self::create(file_get_contents($file), $name, $mime_type, $created));
 		}
