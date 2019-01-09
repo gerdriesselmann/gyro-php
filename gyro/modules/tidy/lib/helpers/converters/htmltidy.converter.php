@@ -56,14 +56,21 @@ class ConverterHtmlTidy implements IConverter {
 		if (GyroString::starts_with(trim(GyroString::to_lower($value)), '<script')) {
 			return $value;
 		}
-		$is_partial_doc = (strpos($value, '<html') === false);
-		$predefined_params = $this->predefined_params;
-		$predefined_params['clean'] = !$is_partial_doc;
-		$predefined_params['show-body-only'] = $is_partial_doc;
-		$params = array_merge($predefined_params, Arr::force($params, false));
-		$tidy = tidy_parse_string($value, $params, GyroString::plain_ascii(GyroLocale::get_charset(), ''));
-		$tidy->cleanRepair();
-		return tidy_get_output($tidy);
+		if (function_exists('tidy_parse_string')) {
+			$is_partial_doc = (strpos($value, '<html') === false);
+			$predefined_params = $this->predefined_params;
+			$predefined_params['clean'] = !$is_partial_doc;
+			$predefined_params['show-body-only'] = $is_partial_doc;
+			$params = array_merge($predefined_params, Arr::force($params, false));
+
+			$tidy = tidy_parse_string($value, $params, GyroString::plain_ascii(GyroLocale::get_charset(), ''));
+			$tidy->cleanRepair();
+			return tidy_get_output($tidy);
+		} elseif (GYRO_TIDY_IGNORE_NOT_INSTALLED) {
+			return $value;
+		} else {
+			throw new Exception('Tidy is not install, could not encode value');
+		}
 	}
 
 	/**
