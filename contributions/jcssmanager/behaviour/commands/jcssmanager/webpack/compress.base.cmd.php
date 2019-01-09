@@ -41,6 +41,7 @@ class JCSSManagerCompressBaseWebpackCommand extends JCSSManagerCompressBaseComma
 
 		$webpack_options = array();
 		$webpack_options['--optimize-minimize'] = '';
+		$webpack_options['--define process.env.NODE_ENV'] = 'production';
 		$webpack_options['--env.production'] = '';
 		$webpack_options['--output-path'] = JCSSManager::root_dir();
 		$webpack_options['--output-filename'] = $out_file;

@@ -134,7 +134,7 @@ class StaticPagesBaseController extends ControllerBase {
 	 */
 	public function on_event($name, $params, &$result) {
 		if ($name == 'gsitemap_site' && $params == 'main') {
-			$arr = $this->collect_templates();
+			$arr = $this->collect_templates_for_sitemap();
 			foreach($arr as $template => $path) {
 				$templates = $this->build_template_paths($template);
 				$template_file = TemplatePathResolver::resolve($templates);
@@ -144,5 +144,12 @@ class StaticPagesBaseController extends ControllerBase {
 				);
 			}
 		}
-	}		 	 		
+	}
+
+	/**
+	 * Collect templates that should be part of sitemap.xml
+	 */
+	protected function collect_templates_for_sitemap() {
+		return $this->collect_templates();
+	}
 }

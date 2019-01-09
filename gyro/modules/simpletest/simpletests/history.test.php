@@ -19,15 +19,15 @@ class HistoryTest extends GyroUnitTestCase {
 
 	public function test_get_empty() {
 		$url = History::get(0);
-		$this->assertIsA($url, Url);
+		$this->assertIsA($url, 'Url');
 		$this->assertEqual(Url::create(Config::get_url(Config::URL_DEFAULT_PAGE))->build(), $url->build());
 		
 		$url = History::get(2, Url::current());
-		$this->assertIsA($url, Url);
+		$this->assertIsA($url, 'Url');
 		$this->assertEqual(Url::current()->build(), $url->build());
 		
 		$url = History::get(-1, 'http://www.example.org/test.html');
-		$this->assertIsA($url, Url);
+		$this->assertIsA($url, 'Url');
 		$this->assertEqual('http://www.example.org/test.html', $url->build());
 	}
 	
@@ -37,23 +37,23 @@ class HistoryTest extends GyroUnitTestCase {
 			History::push(Url::create('http://www.example.org/2.html'));
 	
 			$url = History::get(0);
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual('http://www.example.org/2.html', $url->build());		
 	
 			$url = History::get(1);
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual('http://www.example.org/1.html', $url->build());		
 			
 			$url = History::get(2);
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual(Url::create(Config::get_url(Config::URL_DEFAULT_PAGE))->build(), $url->build());
 			
 			$url = History::get(3, Url::current());
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual(Url::current()->build(), $url->build());
 			
 			$url = History::get(-1, 'http://www.example.org/test.html');
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual('http://www.example.org/test.html', $url->build());
 	
 			// Check if history respects limits		
@@ -62,7 +62,7 @@ class HistoryTest extends GyroUnitTestCase {
 			}
 			
 			$url = History::get(HISTORY_NUMBER_OF_ITEMS);
-			$this->assertIsA($url, Url);
+			$this->assertIsA($url, 'Url');
 			$this->assertEqual(Url::create(Config::get_url(Config::URL_DEFAULT_PAGE))->build(), $url->build());
 		}
 	}
