@@ -31,7 +31,7 @@ class XmlViewBase extends ContentViewBase {
 		$rendered_content = $xml_header . $rendered_content;
 		parent::after_render($rendered_content, $policy);
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
-			header('Content-Type: application/xml; charset=' . GyroLocale::get_charset(), true);
+			GyroHeaders::set('Content-Type', 'application/xml; charset=' . GyroLocale::get_charset(), true);
 			$this->page_data->head->robot_headers();
 		}
 	}	
