@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $settings DAONotificationssettings
+ */
 $title = tr('Notification Settings', 'notifications');
 $page_data->head->title = $title;
 $page_data->breadcrumb = WidgetBreadcrumb::output(array(
@@ -19,27 +22,31 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(array(
 	?>
 	</fieldset>
 
-	<fieldset>
-	<legend><?=tr('E-mail digest', 'notifications')?></legend>
-	<?php 
-	print WidgetInput::output('digest_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
-	print WidgetInput::output('digest_settings', tr('Choose sources', 'notifications'), $form_data, WidgetInput::MULTISELECT, array('options' => $sources), WidgetInput::FORCE_CHECKBOXES);
-	?>
-	</fieldset>
+	<?php if (Config::has_feature(ConfigUserNotifications::ENABLE_DELIVERY_DIGEST)): ?>
+		<fieldset>
+		<legend><?=tr('E-mail digest', 'notifications')?></legend>
+		<?php
+		print WidgetInput::output('digest_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
+		print WidgetInput::output('digest_settings', tr('Choose sources', 'notifications'), $form_data, WidgetInput::MULTISELECT, array('options' => $sources), WidgetInput::FORCE_CHECKBOXES);
+		?>
+		</fieldset>
+	<?php endif; ?>
 
-	<fieldset>
-	<legend><?=tr('Feed', 'notifications')?></legend>
-	<?php
-	print WidgetInput::output('feed_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
-	if ($settings && $settings->is_feed_enabled()) {
-		print html::info(GyroString::escape(
-			tr('Your feed url is %url', 'notifications', array('%url' => ActionMapper::get_url('notifications_feed', $settings)))
-		));
-	}	
-	
-	print WidgetInput::output('feed_settings', tr('Choose sources', 'notifications'), $form_data, WidgetInput::MULTISELECT, array('options' => $sources), WidgetInput::FORCE_CHECKBOXES);
-	?>
-	</fieldset>
-	
+	<?php if (Config::has_feature(ConfigUserNotifications::ENABLE_DELIVERY_FEED)): ?>
+		<fieldset>
+		<legend><?=tr('Feed', 'notifications')?></legend>
+		<?php
+		print WidgetInput::output('feed_enable', tr('Enable', 'notifications'), $form_data, WidgetInput::CHECKBOX);
+		if ($settings && $settings->is_feed_enabled()) {
+			print html::info(GyroString::escape(
+				tr('Your feed url is %url', 'notifications', array('%url' => ActionMapper::get_url('notifications_feed', $settings)))
+			));
+		}
+
+		print WidgetInput::output('feed_settings', tr('Choose sources', 'notifications'), $form_data, WidgetInput::MULTISELECT, array('options' => $sources), WidgetInput::FORCE_CHECKBOXES);
+		?>
+		</fieldset>
+	<?php endif; ?>
+
 	<?php print WidgetInput::output('submit', '', tr('Save', 'notifications'), WidgetInput::SUBMIT)?>
 </form>

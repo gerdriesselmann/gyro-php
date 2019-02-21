@@ -81,7 +81,7 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 	 */
 	public function get_message($click_track_source = false) {
 		$ret = $this->message;
-		if ($click_track_source) {
+		if ($click_track_source && Config::has_feature(ConfigUserNotifications::ENABLE_CLICK_TRACKING)) {
 			$injector = new ClickTrackInjecter($this, $click_track_source);
 			$reg = '@<a(.*?)href="(.*?)"(.*?)>@';
 			$ret = GyroString::preg_replace_callback($reg, array($injector, 'callback'), $ret);	
@@ -110,11 +110,15 @@ class DAONotifications extends DataObjectTimestampedCached implements ISelfDescr
 	 * Turn given URL into a clicktracked URL
 	 */
 	public function create_click_track_link($source, $url) {
-		$new_url = Url::create(ActionMapper::get_url('clicktrack', $this));
-		$new_url->replace_query_parameter('src', $source);
-		$new_url->replace_query_parameter('url', $url);
-		$new_url->replace_query_parameter('token', $this->click_track_fingerprint($source, $url));
-		return $new_url->build();
+		if (Config::has_feature(ConfigUserNotifications::ENABLE_CLICK_TRACKING)) {
+			$new_url = Url::create(ActionMapper::get_url('clicktrack', $this));
+			$new_url->replace_query_parameter('src', $source);
+			$new_url->replace_query_parameter('url', $url);
+			$new_url->replace_query_parameter('token', $this->click_track_fingerprint($source, $url));
+			return $new_url->build();
+		} else {
+			return $url;
+		}
 	}
 	
 	/**
