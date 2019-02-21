@@ -48,7 +48,10 @@ class HijackUsersCommand extends CommandComposite {
 		$user = $this->get_instance();
 		$this->append(new LoginknownUsersCommand($user));
 		// Notify USer
-		if (Load::is_module_loaded('usermanagement.notifications')) {
+		if (
+			Config::has_feature(ConfigHijackAccounts::INTEGRATE_WITH_NOTIFICATIONS) &&
+			Load::is_module_loaded('usermanagement.notifications')
+		) {
 			$notify = $this->create_notification_command($cur_user, $user);
 			if ($notify->can_execute($user)) {
 				$this->append($notify);
