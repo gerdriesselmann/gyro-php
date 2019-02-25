@@ -23,11 +23,22 @@ class NotificationsSettings {
 	 * - Select DISTINCT from DB
 	 */
 	public static function collect_sources(DAOUsers $user) {
-		$ret = array(
+		Load::components('notifications/sources');
+		$collected = array(
 			Notifications::SOURCE_ALL => tr(Notifications::SOURCE_ALL, 'notifications'),
 			Notifications::SOURCE_APP => tr(Notifications::SOURCE_APP, 'notifications'),
 		);
-		EventSource::Instance()->invoke_event('notifications_collect_sources', $user, $ret);
+		EventSource::Instance()->invoke_event('notifications_collect_sources', $user, $collected);
+
+		$ret = array();
+		// Collected may contain instances of INotificationSource or just key-value pairs
+		foreach ($collected as $key => $item_or_title) {
+			if ($item_or_title instanceof INotificationsSource) {
+				$ret[$item_or_title->get_key()] = $item_or_title;
+			} else {
+				$ret[$key] = new NotificationSource($key, $item_or_title);
+			}
+		}
 		
 		$dao = new DAONotifications();
 		$dao->id_user = $user->id;
@@ -38,9 +49,9 @@ class NotificationsSettings {
 		
 		$result = DB::query($query);
 		while($row = $result->fetch()) {
-			$s = $row['source'];
-			if (!array_key_exists($s, $ret)) {
-				$ret[$s] = tr($s);
+			$key = $row['source'];
+			if (!array_key_exists($key, $ret)) {
+				$ret[$key] = new NotificationSourceByKey($key);
 			}
 		}
 		

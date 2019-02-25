@@ -203,6 +203,8 @@ class Notifications {
 	 * @return array
 	 */
 	public static function get_all_sources($id_user) {
+
+
 		$dao = new DAONotifications();
 		$dao->id_user = $id_user;
 		$query = $dao->create_select_query();
@@ -216,7 +218,7 @@ class Notifications {
 		}
 		return $ret;
 	}
-	
+
 	/**
 	 * Translates source
 	 */
