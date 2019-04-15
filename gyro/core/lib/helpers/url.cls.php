@@ -41,6 +41,12 @@ class Url {
 	
 	private $data = array();
 	private $support_unicode_domains = false;
+	/**
+	 * Keep track if an empty query is found during parsing, for URLs
+	 * like http://example.com/index.html? (which indicates another
+	 * resource than http://example.com/index.html)	 *
+	 */
+	private $has_empty_query = false;
 
 	/**
 	 * Constructor
@@ -115,8 +121,13 @@ class Url {
 		$this->set_port(Arr::get_item($data, 'port', ''));
 		$this->set_path_internal(Arr::get_item($data, 'path', ''));
 		$this->set_fragment(Arr::get_item($data, 'fragment', ''));
-		$this->set_query(Arr::get_item($data, 'query', ''));
 		$this->set_user_info(Arr::get_item($data, 'user', ''), Arr::get_item($data, 'pass', ''));
+
+		$query = Arr::get_item($data, 'query', '');
+		$this->set_query($query);
+		if (empty($query) && GyroString::contains($url, '?')) {
+			$this->has_empty_query = true;
+		}
 	}
 
 	public static function decode_path($path) {
@@ -327,6 +338,7 @@ class Url {
 	 */
 	public function set_query($query) {
 		$this->data['query'] = $this->parse_query($query);
+		$this->has_empty_query = false;
 		return $this;
 	}
 	
@@ -645,7 +657,7 @@ class Url {
 		$out .= $this->get_path();
 
 		$query = $this->get_query($encoding);
-		if (!empty($query)) {
+		if (!empty($query) || $this->has_empty_query) {
 			$out .= '?' . $query;
 		}
 		
@@ -723,6 +735,7 @@ class Url {
 	 */
 	public function clear_query() {
 		$this->data['query'] = array();
+		$this->has_empty_query = false;
 		return $this;
 	}
 	
