@@ -285,5 +285,14 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual('', $a->get_host());
 	}
 
+	public function test_empty_query() {
+		$url = Url::create('http://www.example.com/?');
+		$this->assertEqual('http://www.example.com/?', $url->build(Url::ABSOLUTE));
+
+		$url->set_query("");
+		$this->assertEqual('http://www.example.com/', $url->build(Url::ABSOLUTE));
+
+	}
+
 }
 
