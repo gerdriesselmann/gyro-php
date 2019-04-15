@@ -61,6 +61,6 @@ class SchedulerBaseController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
 	public function action_scheduler_test($page_data) {
-		sleep(0.5 * Date::ONE_MINUTE);
+		sleep(0.5 * GyroDate::ONE_MINUTE);
 	}
 }
