@@ -3,25 +3,29 @@
  * Created on 21.09.2006
  */
  
-define ('TEST_URL', 'https://www.host.org/dir/file.ext?arg=value#anchor'); 
+define ('TEST_URL', 'https://www.host.org/dir/file.ext?arg=value#anchor');
 define ('TEST_URL2', 'http://at.www.host.co.jp/dir/file.ext?arg=value&barg=othervalue&carg=&carg[]=1&carg[]=2#anchor');
 define ('TEST_URL3', 'www.host.org:8080/dir/file.ext');
- 
+define ('TEST_URL4', 'http://example.com/?a&b=');
+
 class UrlTest extends GyroUnitTestCase {
 	private $url;
-	private $url1;
 	private $url2;
+	private $url3;
+	private $url4;
 
 	function setUp() {
   		$this->url = new Url(TEST_URL);
 		$this->url2 = new Url(TEST_URL2);
 		$this->url3 = new Url(TEST_URL3);
+		$this->url4 = new Url(TEST_URL4);
 	}
     
 	function test_build() {
 		$this->assertEqual(TEST_URL, $this->url->build());
 		$this->assertEqual(TEST_URL2, $this->url2->build());
 		$this->assertEqual('http://' .TEST_URL3, $this->url3->build());
+		$this->assertEqual(TEST_URL4, $this->url4->build());
 	}
 	
 	function test_replace_param() {
@@ -37,9 +41,9 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual($expect, $this->url->replace_query_parameter('arg', 'other')->build());		
 
 		$expect = str_replace('value', 'other%26me', TEST_URL); // %26 = &!
-		$this->assertEqual($expect, $this->url->replace_query_parameter('arg', 'other&me')->build());		
+		$this->assertEqual($expect, $this->url->replace_query_parameter('arg', 'other&me')->build());
 	}
-	
+
 	function test_set_path() {
 		$expect = str_replace('dir/file.ext', 'ext/file.dir', TEST_URL);
 		$this->assertEqual($expect, $this->url->set_path('ext/file.dir')->build());

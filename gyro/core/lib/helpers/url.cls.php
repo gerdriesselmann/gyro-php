@@ -62,12 +62,13 @@ class Url {
 		$this->parse($url, $fallback_host, $policy);
 
 	}
-	
+
 	/**
 	 * This wraps PHP parse_url.
 	 *
 	 * @param string $url
 	 * @param string $fallback_host host to use if URL is relative
+	 * @param int $policy IF set to HTTP_ONLY, it will only parse http/https URLs
 	 * @return array
 	 */
 	protected function do_parse_url($url, $fallback_host = '', $policy = self::HTTP_ONLY) {
@@ -92,7 +93,6 @@ class Url {
 		if (!$has_protocol) {
 			$url = 'http://' . $url;
 		}
-		$ret = false;
 		try {
 			$ret = @parse_url($url);
 		}
@@ -107,7 +107,10 @@ class Url {
 	}
 
 	/**
-	 * Parse URL into Urls 
+	 * Parse URL into Urls
+	 * @param $url
+	 * @param string $fallback_host Host do use if URL does not provide any
+	 * @param int $policy If set to HTTP_ONLY, it will only parse http/https URLs
 	 */
 	protected function parse($url, $fallback_host = '', $policy = self::HTTP_ONLY) {
 		$url = trim($url);
@@ -142,7 +145,7 @@ class Url {
 	 * Split a query into items and return them as associative array
 	 * 
 	 * @param string $query
-	 * @return string
+	 * @return array
 	 */
 	protected function parse_query($query) {
 		$ret = array();
@@ -165,6 +168,9 @@ class Url {
 			$arr = explode('=', $query_item, 2);
 			$pname = GyroString::convert(urldecode($arr[0]));
 			$pvalue = (count($arr) > 1) ? GyroString::convert(urldecode($arr[1])) : '';
+			if ($pvalue === '' && !GyroString::contains($query_item, '=')) {
+				$pvalue = null;
+			}
 			if (!empty($pname)) {
 				if (substr($pname, -2) == '[]') {
 					$ret[$pname][] = $pvalue;
@@ -176,36 +182,22 @@ class Url {
 		}
 		
 		return $ret;
-		
-		// GR: What is disadvantage of this code? 
-		// - Will understand arrays, this class however won't (get_query_params(), get_query_param()) - which maybe is a bug of Url class. 
-		// - "my value=something" wil become array['my_value' => 'something'], note the underscore
-		// - Does not respect setting of arg_seperator.input
-		//
-		// Left here as reminder, though
-		// $ret = array();
-		// $temp = array();
-		// parse_str($query, $temp);
-		// foreach($temp as $key => $value) {
-		// 	$pname = GyroString::convert(urldecode($key));
-		// 	$pvalue = GyroString::convert(urldecode($value));
-		// 	if (!empty($pname)) {
-		// 		$ret[$pname] = $pvalue;
-		// 	}
-		// }
-		// return $ret;
 	}
-	
+
 	/**
 	 * Serialize in a friendly format
 	 *
 	 * @return array
+	 * @throws Exception
 	 */
 	public function __sleep() {
 		$this->url = $this->build();
 		return array('url');
 	}
-	
+
+	/**
+	 * Called to unserialize
+	 */
 	public function __wakeup() {
 		$this->parse($this->url); 
 	}
@@ -214,7 +206,7 @@ class Url {
 	 * Compare this URL to an other
 	 * 
 	 * @param string|Url $other Other URL
-	 * @param enum $mode Either EQUALS_FULL or EQUALS_IGNORE_QUERY
+	 * @param int $mode Either EQUALS_FULL or EQUALS_IGNORE_QUERY
 	 * @return bool
 	 */
 	public function equals($other, $mode = self::EQUALS_FULL) {
@@ -373,13 +365,20 @@ class Url {
 				if ($current) {
 					$current .= $sep;
 				}
-				$current .= $key . '=' . $value;
+				$current .= $key;
+				if (!is_null($value)) {
+					$current .= '=' . $value;
+				}
 			}
 		}
 	}
 
 	/**
 	 * Return query paramter
+	 * @param $name
+	 * @param bool $default
+	 * @param string $encode
+	 * @return mixed
 	 */
 	public function get_query_param($name, $default = false, $encode = Url::NO_ENCODE_PARAMS) {
 		$ret = Arr::get_item($this->data['query'], $name, $default);
@@ -393,16 +392,24 @@ class Url {
 		}
 		return $ret;		
 	}
-	
+
 	/**
 	 * Callback to urlencode values - does not actually walk
+	 *
+	 * @param string $value The value to encide
+	 * @param mixed $key The key, can be used by subclasses
 	 */
 	protected function callback_urlencode(&$value, $key = false) {
-		$value = str_replace(' ', '+', urlencode($value));
+		if (!is_null($value)) {
+			$value = str_replace(' ', '+', urlencode($value));
+		}
 	}
 
 	/**
-	 * Return query paramters  as associative array
+	 * Return query parameters  as associative array
+	 *
+	 * @param string $encode Encoding mode
+	 * @return array
 	 */
 	public function get_query_params($encode = Url::NO_ENCODE_PARAMS) {
 		$ret = Arr::get_item($this->data, 'query', array());
@@ -421,6 +428,9 @@ class Url {
 
 	/**
 	 * Set scheme (http, ftp etc)
+	 *
+	 * @param string $scheme
+	 * @return Url
 	 */
 	public function set_scheme($scheme) {
 		$this->data['scheme'] = $scheme;
@@ -434,26 +444,30 @@ class Url {
 		// to_lower() removed, since it is already done in setter
 		return $this->data['host']; 
 	}
-	
+
 	/**
 	 * Set Host
-	 * 
+	 *
+	 * @param string $host
 	 * @return Url
 	 */
 	public function set_host($host) {
 		$this->data['host'] = GyroString::to_lower($host);
 		return $this;
 	}
-	
+
 	/**
 	 * Set host data from array
-	 * 
-	 * The array posted should be an associative array with these members: 
-	 * 
+	 *
+	 * The array posted should be an associative array with these members:
+	 *
 	 * tld => (semi) top level domain like 'com' or 'co.uk'
 	 * sld => second level domain like 'example' in www.example.com
 	 * domain => sld.tld - Only if tld and sld are ommitted!
 	 * subdomain => rest, e.g. 'www' from www.example.com
+	 *
+	 * @param array $arr_host
+	 * @return Url
 	 */
 	public function set_host_array($arr_host) {
 		$arr_temp = $this->parse_host();
@@ -504,7 +518,7 @@ class Url {
 	 * subdomain => rest, e.g. 'www' from www.example.com
 	 * data => Array of parts, like ('www', 'example', 'com')
 	 * 
-	 * @return Array Associative array
+	 * @return array Associative array
 	 */
 	public function parse_host() {
 		$host = $this->get_host();
@@ -591,7 +605,8 @@ class Url {
 
 	/**
 	 * Set fragment (stuff after "#")
-	 * 
+	 *
+	 * @param string $fragment
 	 * @return Url
 	 */
 	public function set_fragment($fragment) {
@@ -621,14 +636,17 @@ class Url {
 				
 		return $ret; 
 	}
-	
+
 	/**
 	 * Returns this query as a string
 	 *
 	 * The URL is not ready for outputting it on an HTML page, it must be HTMLescaped before! It is however URL escaped.
-	 * 
-	 * @return string This Url as a string.   
-	 * @exception Throws an exception if hostname is empty
+	 *
+	 * @param string $mode
+	 * @param string $encoding
+	 *
+	 * @return string This Url as a string.
+	 * @throws Exception Throws an exception if hostname is empty
 	 */
 	public function build($mode = Url::ABSOLUTE, $encoding = Url::ENCODE_PARAMS) {
 		$out = '';
@@ -668,24 +686,24 @@ class Url {
 		
 		return $out;
 	}
-	
+
 	/**
 	 * Prints this query as a string
 	 *
-	 * @return Url Reference to self  
-	 * @exception Throws an exception if hostname is empty
+	 * @return Url Reference to self
+	 * @throws Exception Throws an exception if hostname is empty
 	 */
 	public function output() {
 		$out = $this->build(true);
 		print $out;
 		return $this;
 	}
-	 	
+
 	/**
 	 * Prints this query as a string
 	 *
 	 * @return string
-	 * @exception Throws an exception if hostname is empty
+	 * @throws Exception Throws an exception if hostname is empty
 	 */
 	public function __toString() {
 		return $this->build();
@@ -704,8 +722,9 @@ class Url {
 
 	/**
 	 * Redirect to this Url
-	 * 
+	 *
 	 * @param bool If true, a permanent, else a temporary redirect is done
+	 * @throws Exception
 	 */
 	public function redirect($permanent = self::TEMPORARY) {
 		if (headers_sent() == false) {
@@ -738,11 +757,14 @@ class Url {
 		$this->has_empty_query = false;
 		return $this;
 	}
-	
+
 	/**
 	 * Returns true, if this URL is identical or below the given $path_to_check
-	 * 
+	 *
 	 * E.g. Checking an URL of /a/b/c against /a/b would return true, checking against /a/b/c/d would return false
+	 *
+	 * @param string $path_to_check
+	 * @return bool
 	 */
 	public function is_ancestor_of($path_to_check) {
 		$path_to_check = trim($this->clean_path_for_comparison($path_to_check), '/');
@@ -764,6 +786,9 @@ class Url {
 	 *
 	 * Query and fragment are ignored. Other than equals() this function works on a path or even a malformed
 	 * URL. It's similar to is_ancestor_of() in how it works.
+	 *
+	 * @param string $path_to_check
+	 * @return bool
 	 */
 	public function is_same_as($path_to_check) {
  	 	$path_to_check = $this->clean_path_for_comparison($path_to_check);
@@ -783,7 +808,14 @@ class Url {
 		$path_to_check = ltrim($path_to_check, "/");
 		return $path_to_check;
 	}
-	
+
+	/**
+	 * Validate current URL, fix possible problems by redirecting to canonical form
+	 *
+	 * If there are no problems, code wull continue
+	 *
+	 * @throws Exception
+	 */
 	public static function validate_current() {
 		if (!empty($_POST)) {
 			return;
@@ -847,4 +879,4 @@ class Url {
 		}
 	}
 }
-?>
+
