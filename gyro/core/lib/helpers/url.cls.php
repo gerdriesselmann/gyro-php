@@ -18,6 +18,7 @@ class Url {
 	
 	const ENCODE_PARAMS = 'encode';
 	const NO_ENCODE_PARAMS = 'encodenot';
+	const PARAMS_UNCHANGED = 'unchanged';
 
 	/**
 	 * When parsing, accept only HTTP URLs, and force so
@@ -167,7 +168,7 @@ class Url {
 		foreach($arrItems as $query_item) {
 			$arr = explode('=', $query_item, 2);
 			$pname = GyroString::convert(urldecode($arr[0]));
-			$pvalue = (count($arr) > 1) ? GyroString::convert(urldecode($arr[1])) : '';
+			$pvalue = (count($arr) > 1) ? $arr[1] : '';
 			if ($pvalue === '' && !GyroString::contains($query_item, '=')) {
 				$pvalue = null;
 			}
@@ -381,16 +382,37 @@ class Url {
 	 * @return mixed
 	 */
 	public function get_query_param($name, $default = false, $encode = Url::NO_ENCODE_PARAMS) {
-		$ret = Arr::get_item($this->data['query'], $name, $default);
-		if ($encode == Url::ENCODE_PARAMS) {
-			if (is_array($ret)) {
-				array_walk_recursive($ret, array($this, 'callback_urlencode'));
-			}
-			else {
-				$this->callback_urlencode($ret);
-			}
+		$value = Arr::get_item($this->data['query'], $name, $default);
+		return $this->encode_any_param($value, $encode, $name);
+	}
+
+	private function encode_any_param($value, $encode, $key = false) {
+		if (is_array($value)) {
+			$ret = $value;
+			array_walk_recursive(
+				$ret,
+				function(&$v, $k) use ($encode) {
+					$v = $this->encode_string_param($v, $encode, $k);
+				}
+			);
+		} else {
+			$ret = $this->encode_string_param($value, $encode);
 		}
-		return $ret;		
+		return $ret;
+	}
+
+	private function encode_string_param($value, $encode, $key = false) {
+		switch ($encode) {
+			case self::ENCODE_PARAMS:
+				$this->callback_urlencode($value, $key);
+				return $value;
+			case self::NO_ENCODE_PARAMS:
+				return GyroString::convert(urldecode($value));
+			case self::PARAMS_UNCHANGED:
+			default:
+				// Do nothing
+				return $value;
+		}
 	}
 
 	/**
@@ -401,7 +423,7 @@ class Url {
 	 */
 	protected function callback_urlencode(&$value, $key = false) {
 		if (!is_null($value)) {
-			$value = str_replace(' ', '+', urlencode($value));
+			$value = str_replace(' ', '+', urlencode(urldecode($value)));
 		}
 	}
 
@@ -412,9 +434,10 @@ class Url {
 	 * @return array
 	 */
 	public function get_query_params($encode = Url::NO_ENCODE_PARAMS) {
-		$ret = Arr::get_item($this->data, 'query', array());
-		if ($encode == Url::ENCODE_PARAMS) {
-			array_walk_recursive($ret, array($this, 'callback_urlencode'));
+		$ret = array();
+		$params = Arr::get_item($this->data, 'query', array());
+		foreach($params as $k => $v) {
+			$ret[$k] = $this->encode_any_param($v, $encode, $k);
 		}
 		return $ret;
 	}
