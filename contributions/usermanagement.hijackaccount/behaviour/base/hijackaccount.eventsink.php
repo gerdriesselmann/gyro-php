@@ -22,7 +22,9 @@ class HijackAccountEventSink implements IEventSink {
 				}
 				break;
 			case 'notifications_collect_sources':
-				$result['usermanagement.hijackaccount'] = tr('usermanagement.hijackaccount', 'hijackaccount');
+				if (Config::has_feature(ConfigHijackAccounts::INTEGRATE_WITH_NOTIFICATIONS)) {
+					$result['usermanagement.hijackaccount'] = tr('usermanagement.hijackaccount', 'hijackaccount');
+				}
 				break;
 			case 'notifications_translate':
 				if ($event_params == 'usermanagement.hijackaccount') {

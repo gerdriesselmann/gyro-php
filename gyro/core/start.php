@@ -78,7 +78,7 @@ if (Config::has_feature(Config::FORCE_FULL_DOMAINNAME)) {
 	$url_cur = Url::current();
 	$url_domain = Url::current()->set_host(Config::get_value(Config::URL_DOMAIN));
 	if ($url_domain->build() != $url_cur->build()) {
-		$url_domain->redirect(Url::PERMANENT);
+		$url_domain->redirect(Config::has_feature(Config::TESTMODE) ? Url::TEMPORARY : Url::PERMANENT);
 		exit;
 	}	
 }

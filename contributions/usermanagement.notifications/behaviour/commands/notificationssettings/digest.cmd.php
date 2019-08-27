@@ -20,7 +20,19 @@ class DigestNotificationssettingsCommand extends CommandBase {
 		
 		/* @var $settings DAONotificationssettings */
 		$settings = $this->get_instance();
+
+		if ($settings->is_type_enabled(NotificationsSettings::TYPE_DIGEST)) {
+			$ret->merge($this->build_digest($settings));
+		}
+
+		return $ret;
+	}
+
+	private function build_digest(DAONotificationssettings $settings) {
+		$ret = new Status();
+
 		$user = $settings->get_user();
+
 		$nots = array();
 		$dao = NotificationsSettings::create_digest_adapter($settings);
 		$dao->find();
@@ -48,9 +60,9 @@ class DigestNotificationssettingsCommand extends CommandBase {
 		}
 		if ($ret->is_ok()) {
 			$settings->digest_last_sent = time();
-			$ret->merge($settings->update());			
+			$ret->merge($settings->update());
 		}
-		
+
 		return $ret;
 	}
 } 

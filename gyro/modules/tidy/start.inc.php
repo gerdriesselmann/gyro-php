@@ -4,8 +4,6 @@
  * @ingroup Modules
  *  
  * Encoding and decoding using Html Tidy library
- * 
- * \attention Requires the Tidy PECL extension: http://pecl.php.net/package/tidy
  */
 
 define('CONVERTER_TIDY', 'tidy');
@@ -19,3 +17,9 @@ ConverterFactory::register_converter(CONVERTER_TIDY_HTML5, new ConverterHtmlTidy
 	'output-xhtml' => false,
 	'doctype' => '<!DOCTYPE HTML>'
 )));
+
+// If tidy is not installed, do not throw exception, but do nothing
+//
+// A hack for systems that depend on modules that depend on the tidy module, but run on systems
+// that do not support it. Namely the Synology NAS....
+if (!defined('GYRO_TIDY_IGNORE_NOT_INSTALLED')) define('GYRO_TIDY_IGNORE_NOT_INSTALLED', false); 

@@ -1,6 +1,15 @@
 <?php
 /**
  * Send a notification to user
+ *
+ * Takes DAOUsers as instance
+ *
+ * Takes params:
+ *   - message - Message to send to user
+ *   - title (optional). Title of message
+ *   - source_data (optional) - Additional data
+ *   - source  (optional) - Source of notification
+ *   - source_id  (optional) - ID of source, if any
  */
 class NotifyUsersCommand extends CommandTransactional {
 	/**

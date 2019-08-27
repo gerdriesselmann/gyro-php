@@ -75,13 +75,13 @@ class DAONotificationssettings extends DataObjectCached {
 		$ret = false;
 		switch($type) {
 			case NotificationsSettings::TYPE_FEED:
-				$ret = $this->feed_enable;
+				$ret = $this->feed_enable && Config::has_feature(ConfigUserNotifications::ENABLE_DELIVERY_FEED);
 				break; 
 			case NotificationsSettings::TYPE_MAIL:
 				$ret = $this->mail_enable;
 				break; 
 			case NotificationsSettings::TYPE_DIGEST:
-				$ret = $this->digest_enable;
+				$ret = $this->digest_enable && Config::has_feature(ConfigUserNotifications::ENABLE_DELIVERY_DIGEST);
 				break; 
 		}
 		return $ret;
@@ -153,6 +153,6 @@ class DAONotificationssettings extends DataObjectCached {
 	 * @return bool
 	 */
 	public function is_feed_enabled() {
-		return $this->feed_enable && $this->feed_token;
+		return $this->is_type_enabled(NotificationsSettings::TYPE_FEED) && $this->feed_token;
 	}
 }
