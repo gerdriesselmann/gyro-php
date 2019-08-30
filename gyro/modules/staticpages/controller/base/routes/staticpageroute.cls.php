@@ -11,16 +11,34 @@ class StaticPageRoute extends ExactMatchRoute {
 	 * 
 	 * @param string $prefix Part before static page, e.g. a directory
 	 * @param string $page The static page this route is responsible for
-	 * @param string $prefix Part after page, e.g. ".html"
+	 * @param string $postfix Part after page, e.g. ".html"
 	 * @param IController $controller The controller to invoke
 	 * @param string $action The function to invoke on controller
-	 * @param mixed Array or single instance of IRouteDecorator 
+	 * @param mixed $decorators Array or single instance of IRouteDecorator
 	 */
 	public function __construct($prefix, $page, $postfix, $template, $controller, $action, $decorators = null) {
 		$this->org_page = $template;
 		$this->org_action = $action;
 		$page_action = 'static_' . $page;
-		parent::__construct($prefix . $page . $postfix, $controller, $page_action, $decorators);			
+
+		$path = $prefix . $page . $postfix;
+		if (STATICPAGES_ENFORCE_DIR && empty($postfix)) {
+			$append_no_slash = false;
+			$last_char = substr($page, -1, 1);
+			$append_no_slash = $append_no_slash ||  $last_char === '/';
+			if (!$append_no_slash) {
+				$pos_dot = strrpos($page, '.');
+				if ($pos_dot !== false) {
+					$pos_slash = strrpos($page, '/');
+					$has_ending = $pos_dot > $pos_slash; // if $pos_slash is false, this is still true
+					$append_no_slash = $append_no_slash || $has_ending;
+				}
+			}
+			if (!$append_no_slash) {
+				$path .= '/';
+			}
+		}
+		parent::__construct($path, $controller, $page_action, $decorators);
 	}
 	
 	/**
