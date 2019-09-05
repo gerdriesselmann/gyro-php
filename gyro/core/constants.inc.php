@@ -177,3 +177,8 @@ Config::set_value_from_constant(Config::DB_SLOW_QUERY_THRESHOLD, 'APP_DB_SLOW_QU
  */
 Config::set_value_from_constant(Config::CACHEHEADER_CLASS_CACHED, 'APP_CACHEHEADER_CLASS_CACHED', 'PrivateRigid');
 Config::set_value_from_constant(Config::CACHEHEADER_CLASS_UNCACHED, 'APP_CACHEHEADER_CLASS_UNCACHED', 'NoCache');
+
+/**
+ * Support preloading CSS via link HTTP Header
+ */
+Config::set_feature_from_constant(Config::PRELOAD_CSS, 'APP_PRELOAD_CSS', false);

@@ -346,18 +346,23 @@ class HeadData implements IRenderer {
 	 * @return string
 	 */
 	protected function render_css($css_files) {
+		$preload = Config::has_feature(Config::PRELOAD_CSS);
 		$ret = '';
 		$css_files = array_unique($css_files);
 		foreach ($css_files as $file) {
+			$file_escaped = $this->escape_file($file);
 			$attr = array_merge(
 				$this->subresource_integrity_attr($file),
 				array(
 					'rel' => 'stylesheet',
 					'type' => 'text/css',
-					'href' => $this->escape_file($file),
+					'href' => $file_escaped,
 				)
 			);
 			$ret .= html::tag_selfclosing('link', $attr) . "\n";
+			if ($preload) {
+				$this->preload_css($attr);
+			}
 		}
 		return $ret;
 	}
@@ -372,6 +377,23 @@ class HeadData implements IRenderer {
 		return $ret;
 	}
 
+	private function preload_css($attr) {
+		$href = $attr['href'];
+		unset($attr['href']);
+		$attr['rel'] = 'preload';
+
+		$value = "<$href>";
+		foreach($attr as $key => $v) {
+			$value .= "; $key=\"$v\"";
+		}
+
+		Common::header(
+			'link',
+			$value,
+			false
+		);
+	}
+	
 	public function async_attr($file) {
 		$ret = array();
 		if (in_array($file, $this->async_scripts)) {
