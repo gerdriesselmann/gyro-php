@@ -380,12 +380,14 @@ class HeadData implements IRenderer {
 	private function preload_css($attr) {
 		$href = $attr['href'];
 		unset($attr['href']);
+		unset($attr['type']);
 		$attr['rel'] = 'preload';
 
 		$value = "<$href>";
 		foreach($attr as $key => $v) {
 			$value .= "; $key=\"$v\"";
 		}
+		$value .= '; as=style; nopush';
 
 		Common::header(
 			'link',
