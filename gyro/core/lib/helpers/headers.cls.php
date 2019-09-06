@@ -34,7 +34,27 @@ class GyroHeaders {
 			self::$headers[$name] = $value;	
 		}
 	}
-	
+
+	/**
+	 * Append to a given header or create a new one
+	 *
+	 * @param string $name Name of header or complete header (if $value is false)
+	 * @param string $value Value of header
+	 */
+	public static function append($name, $value = false) {
+		if ($value === false) {
+			$tmp = self::split($name);
+			$name = array_shift($tmp);
+			$value = array_shift($tmp);
+		}
+		if (!self::is_set($name)) {
+			self::set($name, $value, true);
+		} else {
+			$existing = self::$headers[$name];
+			self::$headers[$name] = $existing . ', ' . $value;
+		}
+	}
+
 	/**
 	 * Remove given header
 	 */

@@ -389,10 +389,9 @@ class HeadData implements IRenderer {
 		}
 		$value .= '; as=style; nopush';
 
-		Common::header(
+		GyroHeaders::append(
 			'link',
-			$value,
-			false
+			$value
 		);
 	}
 	
