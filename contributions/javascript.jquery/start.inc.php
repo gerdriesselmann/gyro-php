@@ -53,7 +53,7 @@ class ConfigJQuery {
 	 * - "ms" for the Microsoft CDN
 	 * - "jquery" for the JQuery CDN
 	 * 
-	 * @attention %version% will be allways 3 digits (e.g. 1.6.0). Use %version_min% to force this to 1.6
+	 * @attention %version% will be always 3 digits (e.g. 1.6.0). Use %version_min% to force this to 1.6
 	 * 
 	 * Files will be loaded using https always
 	 */
@@ -65,6 +65,8 @@ Config::set_value_from_constant(ConfigJQuery::CDN, 'APP_JQUERY_CDN', '');
 
 // To be changed on new releases
 Config::set_value_from_constant(ConfigJQuery::VERSION, 'APP_JQUERY_VERSION', '1.11');
+
+// Deprecated, kept for backward compatability. Version managment is now in jQuery class
 define('JQUERY_VERSION_1_11', '1.11.3');
 define('JQUERY_SRI_1_11', 'sha384-6ePHh72Rl3hKio4HiJ841psfsRJveeS+aLoaEf3BWfS+gTF0XdAqku2ka8VddikM');
 define('JQUERY_VERSION_1_10', '1.10.2');

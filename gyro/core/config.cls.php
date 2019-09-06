@@ -160,7 +160,12 @@ class Config {
 	/** CacheHeaderManager policy for cached stuff. Class name without CacheHeaderManager, e.g. FullCache for FullCacheCacheHeaderManager */
 	const CACHEHEADER_CLASS_CACHED = 'CACHEHEADER_CLASS_CACHED';
 	/** CacheHeaderManager policy for uncached stuff. Class name without CacheHeaderManager, e.g. NoCache for NoCacheCacheHeaderManager */
-	const CACHEHEADER_CLASS_UNCACHED = 'CACHEHEADER_CLASS_UNCACHED'; 
+	const CACHEHEADER_CLASS_UNCACHED = 'CACHEHEADER_CLASS_UNCACHED';
+
+	/**
+	 * If set to true, CSS is preloaded via Link HTTP Header
+	 */
+	const PRELOAD_CSS = 'PRELOAD_CSS';
 	
 	/**
 	 * Features array

@@ -31,3 +31,18 @@
  */
 if (!defined('STATICPAGES_PREPEND')) define('STATICPAGES_PREPEND', '');
 if (!defined('STATICPAGES_APPEND')) define('STATICPAGES_APPEND', '');
+
+/**
+ * If set to true, the system will treat templates that do not contain a dot when ".tpl.php" is removed
+ * as directories.
+ *
+ * Only works if STATICPAGES_APPEND is empty
+ *
+ * Examples:
+ *
+ * \li The file app/view/templates/default/static/test.html.tpl.php will be served as /test.html
+ * \li The file app/view/templates/default/static/subdir/test.tpl.php will be served as /subdir/test/
+ * \li The file app/view/templates/default/static/subdir/index.tpl.php will be served as /subdir/
+ * \li The file app/view/templates/default/static/subdir/index.html.tpl.php will be served as /subdir/index.html *
+ */
+if (!defined('STATICPAGES_ENFORCE_DIR')) define('STATICPAGES_ENFORCE_DIR', false);
