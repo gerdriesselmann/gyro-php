@@ -22,7 +22,7 @@ class UpdateCommand extends CommandTransactional  {
 			unset($params[$col]);
 		}
 		
-		$inst->read_from_array($this->get_params());
+		$inst->read_from_array($params);
 		$ret->merge($inst->validate());
 		if ($ret->is_ok()) {
 			$ret->merge($inst->update());
