@@ -36,7 +36,9 @@ class JCSSManagerCompressJSUglifyjsCommand extends JCSSManagerCompressBaseComman
 	protected function invoke_uglifyjs($in_files, $out_file) {
 		$ret = new Status();
 
-		$uglifyjs_cmd = 'node_modules/.bin/uglifyjs';
+		$uglifyjs_cmd = Config::has_feature(ConfigJCSSManager::UGLIFY_USE_TERSER)
+			? 'node_modules/.bin/terser'
+			: 'node_modules/.bin/uglifyjs';
 
 		$uglifyjs_options = array();
 		$uglifyjs_options['--compress'] = Config::get_value(ConfigJCSSManager::UGLIFY_COMPRESS_OPTIONS);
