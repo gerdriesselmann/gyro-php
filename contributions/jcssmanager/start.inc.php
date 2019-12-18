@@ -21,6 +21,8 @@ class ConfigJCSSManager {
 	 * - 'concat'
 	 * - 'webpack'
 	 * - 'uglifyjs'
+	 *
+	 *  To use terser (=uglifyjs for ED6+) set UGLIFY_USE_TERSER to true
 	 */
 	const JS_COMPRESSOR = 'JCSS_JS_COMPRESSOR';
 	
@@ -62,6 +64,7 @@ class ConfigJCSSManager {
 	const POSTCSS_CONFIG_FILE = 'JCSS_POSTCSS_CONFIG_FILE';
 
 	const UGLIFY_COMPRESS_OPTIONS = 'JCSS_UGLIFY_COMPRESS_OPTIONS';
+	const UGLIFY_USE_TERSER = 'JCSS_UGLIFY_USE_TERSER';
 
 }
 
@@ -73,6 +76,7 @@ Config::set_value_from_constant(ConfigJCSSManager::YUI_VERSION, 'APP_JCSS_YUI_VE
 Config::set_value_from_constant(ConfigJCSSManager::WEBPACK_CONFIG_FILE, 'APP_JCSS_WEBPACK_CONFIG_FILE', '');
 Config::set_value_from_constant(ConfigJCSSManager::POSTCSS_CONFIG_FILE, 'APP_JCSS_POSTCSS_CONFIG_FILE', '');
 Config::set_value_from_constant(ConfigJCSSManager::UGLIFY_COMPRESS_OPTIONS, 'APP_JCSS_UGLIFY_COMPRESS_OPTIONS', '');
+Config::set_feature_from_constant(ConfigJCSSManager::UGLIFY_USE_TERSER, 'APP_JCSS_UGLIFY_USE_TERSER', false);
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_COMPRESSOR, 'APP_JCSS_CSS_COMPRESSOR', 'yui');
 Config::set_value_from_constant(ConfigJCSSManager::JS_COMPRESSOR, 'APP_JCSS_JS_COMPRESSOR', 'yui');

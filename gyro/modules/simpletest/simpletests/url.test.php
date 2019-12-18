@@ -298,5 +298,14 @@ class UrlTest extends GyroUnitTestCase {
 
 	}
 
+	public function test_wrong_query() {
+		$test = 'https://example.com/path/?=a';
+		$url = Url::create($test);
+		$this->assertEqual($test, $url->build(Url::ABSOLUTE));
+
+		$query = $url->get_query_params();
+		$this->assertEqual(array('' => 'a'), $query);
+	}
+
 }
 

@@ -150,6 +150,9 @@ class Url {
 	 */
 	protected function parse_query($query) {
 		$ret = array();
+		if ($query === '') {
+			return $ret;
+		}
 		
 		// Input separator may be a list of chars!
 		$sep = ini_get('arg_separator.input');
@@ -172,14 +175,14 @@ class Url {
 			if ($pvalue === '' && !GyroString::contains($query_item, '=')) {
 				$pvalue = null;
 			}
-			if (!empty($pname)) {
+			//if (!empty($pname)) {
 				if (substr($pname, -2) == '[]') {
 					$ret[$pname][] = $pvalue;
 				}
 				else {
 					$ret[$pname] = $pvalue;
 				}
-			}
+			//}
 		}
 		
 		return $ret;
@@ -356,22 +359,24 @@ class Url {
 	 * @param mixed $value Value of param 
 	 */
 	protected function query_reduce(&$current, $sep, $key, $value) {
-		if ($key) {
+		//if ($key) {
 			if (is_array($value)) {
 				foreach($value as $v) {
 					$this->query_reduce($current, $sep, $key, $v);
 				}
 			}
 			else {
-				if ($current) {
-					$current .= $sep;
-				}
-				$current .= $key;
-				if (!is_null($value)) {
-					$current .= '=' . $value;
+				if ($key !== '' || !is_null($value)) {
+					if ($current) {
+						$current .= $sep;
+					}
+					$current .= $key;
+					if (!is_null($value)) {
+						$current .= '=' . $value;
+					}
 				}
 			}
-		}
+		//}
 	}
 
 	/**
