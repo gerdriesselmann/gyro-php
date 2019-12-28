@@ -70,9 +70,6 @@ class WidgetJCSS implements IWidget {
 				case HeadData::IE7:
 					$type = JCSSManager::TYPE_CSS_IE7;
 					break;
-				default:
-					continue;
-					break;
 			}
 			$page_data->head->conditional_css_files[$browser] = $this->replace_by_compressed($type, $files);
 		}

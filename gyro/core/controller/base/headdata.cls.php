@@ -433,9 +433,6 @@ class HeadData implements IRenderer {
 				case self::IE7:
 					$token = 'IE 7';
 					break;
-				default:
-					continue;
-					break; 
 			}
 			$ret .= "<!--[if $token]>\n" . $this->render_css($css_files) . "<![endif]-->\n";
 		}
