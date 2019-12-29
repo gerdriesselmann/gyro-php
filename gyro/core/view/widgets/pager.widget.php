@@ -78,6 +78,17 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	public function get_total_pages() {
 		return $this->data['pages_total'];
 	}
+
+	/**
+	 * Returns whether a page is in the range of pages
+	 * (that is 1 to total pages) or not
+	 *
+	 * @param int $page Page numbner
+	 * @return bool
+	 */
+	public function is_valid_page($page) {
+		return $page > 0 && $page <= $this->get_total_pages();
+	}
 	
 	/**
 	 * Returns previous link
@@ -153,7 +164,9 @@ class WidgetPagerCalculator implements IPolicyHolder {
 	 * Returns URL for page $page
 	 */
 	public function get_page_url($page) {
-		if ($page != $this->get_data_item('page', 0)) {
+		$is_valid_page = $this->is_valid_page($page);
+		$is_not_current = $page != $this->get_current_page();
+		if ($is_not_current && $is_valid_page) {
 			return $this->adapter->get_url_for_page($page);
 		} else {
 			return '';
