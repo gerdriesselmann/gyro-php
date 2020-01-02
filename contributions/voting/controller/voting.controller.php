@@ -8,7 +8,7 @@ class VotingController extends ControllerBase {
  	 */
  	public function get_routes() {
  		$ret = array(
- 			new InstanceReferenceRoute('http://voting/vote/{instance:inst}%', $this, 'voting_vote', new NoCacheCacheManager()),
+ 			new InstanceReferenceRoute('voting/vote/{instance:inst}%', $this, 'voting_vote', new NoCacheCacheManager()),
  		);
  		return $ret;
  	}
