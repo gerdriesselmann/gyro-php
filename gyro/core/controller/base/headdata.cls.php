@@ -419,7 +419,7 @@ class HeadData implements IRenderer {
 	protected function render_conditional_css($arr_browsers) {
 		$ret = '';
 		foreach($arr_browsers as $browser => $css_files) {
-			$token = '';
+			$token = null;
 			switch ($browser) {
 				case self::IE50:
 					$token = 'IE 5.0';
@@ -434,10 +434,11 @@ class HeadData implements IRenderer {
 					$token = 'IE 7';
 					break;
 				default:
-					continue;
-					break; 
+					break;
 			}
-			$ret .= "<!--[if $token]>\n" . $this->render_css($css_files) . "<![endif]-->\n";
+			if (!is_null($token)) {
+				$ret .= "<!--[if $token]>\n" . $this->render_css($css_files) . "<![endif]-->\n";
+			}
 		}
 		return $ret;
 	}

@@ -57,6 +57,7 @@ class WidgetJCSS implements IWidget {
 	protected function preprocess_css($page_data) {
 		$page_data->head->css_files = $this->replace_by_compressed(JCSSManager::TYPE_CSS, $page_data->head->css_files);
 		foreach($page_data->head->conditional_css_files as $browser => $files) {
+			$type = null;
 			switch ($browser) {
 				case HeadData::IE50:
 					$type = JCSSManager::TYPE_CSS_IE50;
@@ -71,10 +72,11 @@ class WidgetJCSS implements IWidget {
 					$type = JCSSManager::TYPE_CSS_IE7;
 					break;
 				default:
-					continue;
 					break;
 			}
-			$page_data->head->conditional_css_files[$browser] = $this->replace_by_compressed($type, $files);
+			if (!is_null($type)) {
+				$page_data->head->conditional_css_files[$browser] = $this->replace_by_compressed($type, $files);
+			}
 		}
 	}
 
