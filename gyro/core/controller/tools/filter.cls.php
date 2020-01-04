@@ -6,6 +6,9 @@
  * @ingroup Controller
  */ 
 class Filter implements IDBQueryModifier {
+    const FILTER_POLICY_NONE    = 0;
+    const FILTER_POLICY_SESSION = 1;
+    
 	protected $filter_data = array();
 	/**
 	 * Adapter to process Urls
@@ -13,6 +16,12 @@ class Filter implements IDBQueryModifier {
 	 * @var IFilterAdapter
 	 */
 	protected $adapter;
+    /**
+     * Policy
+     *
+     * @var int $policy
+     */
+    protected $policy;
 
 	/**
 	 * Contructor
@@ -23,9 +32,11 @@ class Filter implements IDBQueryModifier {
 	 *   In later case, get_filters() is invoked in the search adapter. 
 	 * @param IFilterAdapter $adapter 
 	 */
-	public function __construct($page_data, $filtergroups, $adapter = false) {
-		$this->adapter = ($adapter instanceof IFilterAdapter) ? $adapter : new FilterDefaultAdapter($page_data);
-		
+	public function __construct($page_data, $filtergroups, $adapter = false, $policy = self::FILTER_POLICY_NONE) {
+		$this->adapter = ($adapter instanceof IFilterAdapter) ? $adapter :
+                         (($policy == self::FILTER_POLICY_SESSION) ? new FilterSessionAdapter($page_data) : new FilterDefaultAdapter($page_data));
+		$this->policy  = $policy;
+        
 		if ($filtergroups instanceof ISearchAdapter) {
 			$filtergroups = $filtergroups->get_filters();
 		}
@@ -55,7 +66,23 @@ class Filter implements IDBQueryModifier {
 				$filtergroup->set_default_key('all');
 			}
 		}
-		$current_key = $this->adapter->get_current_key($filtergroup->get_group_id(), $filtergroup->get_default_key());
+        
+        $default_value = $filtergroup->get_default_key();
+        $group_id = $filtergroup->get_group_id();
+        $session_group_id = 'flt'.$group_id;
+        if ($this->policy == self::FILTER_POLICY_SESSION) {
+            if (isset($_SESSION[$session_group_id])) {
+                $filter_key = $_SESSION[$session_group_id];
+                if ($filtergroup->get_filter($filter_key) !== false) {
+                    $default_value = $filter_key;
+                }
+            }
+        }
+		$current_key = $this->adapter->get_current_key($group_id, $default_value);
+        
+        if ($this->policy == self::FILTER_POLICY_SESSION) {
+            $_SESSION[$session_group_id] = $current_key;
+        }        
 		$filtergroup->set_current_key($current_key);		
 	}
 	
@@ -86,6 +113,10 @@ class Filter implements IDBQueryModifier {
 	public static function apply_to_url($url, $filter, $group_id = '') {
 		return FilterDefaultAdapter::apply_to_url($url, $filter, $group_id);
 	}
+
+    public function get_policy() {
+        return $this->policy;
+    }
 }
 
 /**
@@ -112,7 +143,8 @@ class FilterDefaultAdapter implements IFilterAdapter {
 
 	public function get_filter_link($filter, $group_id) {
 		$key = $filter->is_default() ? '' : $filter->get_key();
-		
+		$key = $filter->get_key();
+
 		$url = Url::current();
 		self::apply_to_url($url, $key, $group_id, $this->param);
 		return $url->build(Url::RELATIVE);	
@@ -131,4 +163,23 @@ class FilterDefaultAdapter implements IFilterAdapter {
 	public static function apply_to_url($url, $filter, $group_id = '', $parameter = 'fl') {
 		$url->replace_query_parameter($parameter . GyroString::plain_ascii($group_id), $filter);
 	}	
+}
+
+/**
+ * Optional Implementation of Filter adapter
+ * 
+ * Helps to keep filter settings in SESSION
+ *  
+ * @author Heiko Weber
+ * @ingroup Controller
+ */
+class FilterSessionAdapter extends FilterDefaultAdapter {
+
+    public function get_filter_link($filter, $group_id) {
+		$key = $filter->get_key();
+
+		$url = Url::current();
+		self::apply_to_url($url, $key, $group_id, $this->param);
+		return $url->build(Url::RELATIVE);	
+	}
 }
