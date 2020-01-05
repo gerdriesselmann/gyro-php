@@ -8,14 +8,23 @@
 class DBFilter implements IDBQueryModifier {
 	/**
 	 * Title of filter
+	 *
+	 * @var string
 	 */
 	private $title;
 	
 	/**
 	 * Key for filter
+	 *
+	 * @var string
 	 */
 	private $key;
-	
+
+	/**
+	 * If is default or not
+	 *
+	 * @var bool
+	 */
 	private $is_default = false;
 	
 	/**
@@ -29,18 +38,30 @@ class DBFilter implements IDBQueryModifier {
 		$this->key = ($key) ? $key : $title;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_title() {
 		return $this->title;
 	}
 
+	/**
+	 * @param string $title
+	 */
 	public function set_title($title) {
 		$this->title = $title;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_key() {
 		return $this->key;
 	}
 
+	/**
+	 * @param string $key
+	 */
 	public function set_key($key) {
 		$this->key = $key;
 	}
@@ -48,7 +69,10 @@ class DBFilter implements IDBQueryModifier {
 	public function apply($query) {
 		// Do nothng here
 	}
-	
+
+	/**
+	 * @return bool
+	 */
 	public function is_default() {
 		return $this->is_default;		
 	}
