@@ -143,7 +143,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
  	public function save() {
  		$bInsert = true;
 		foreach($this->get_table_keys() as $column => $field) {
- 			$bInsert = $bInsert && empty($this->$column);
+ 			$bInsert = $bInsert && !$this->field_is_set($column);
  		}
  		if ($bInsert) {
  			return $this->insert();
@@ -176,11 +176,21 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
 		$id_field = array_shift($table_keys);
 		if ($id_field && $id_field instanceof DBFieldInt && $id_field->has_policy(DBFieldInt::AUTOINCREMENT)) {
 			$fieldname = $id_field->get_field_name();
-			if (empty($this->$fieldname)) {
+			if (!$this->field_is_set($fieldname)) {
 				$this->$fieldname = DB::last_insert_id($connection);
 			}
 		}
  	}
+
+	/**
+	 * Returns true if field with given column name has a value on this instance
+	 *
+	 * @param string $column_name
+	 * @return bool
+	 */
+ 	protected function field_is_set($column_name) {
+ 		return isset($this->$column_name);
+	}
  	
  	/**
  	 * Returns aoociative array of fields and values
@@ -213,7 +223,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
  		$b_keys_complete = true;
  		foreach($arr_keys as $key_column => $field) {
  			// All keys empty => Insert
- 			if (empty($this->$key_column)) {
+ 			if (!$this->field_is_set($key_column)) {
  				$b_keys_complete = false;
  				break;
  			}
@@ -222,7 +232,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
 		// Only run if all keys are set
  		if (!$b_keys_complete) {
  			return new Status(tr(
- 			 	'Replace cannot be called with a key beeing empty',
+ 			 	'Replace cannot be called with a key being empty',
  				'core' 
  			));
  		}
@@ -378,7 +388,7 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
  	 * @return Bool. True on success, false, if no record was found
  	 */
  	public function get($column_or_value, $value = null) {
- 		if (empty($value)) {
+ 		if (is_null($value)) {
  			$value = $column_or_value;
  			$keys = array_keys($this->get_table_keys());
  			$column_or_value = Arr::get_item($keys, 0, false);	
