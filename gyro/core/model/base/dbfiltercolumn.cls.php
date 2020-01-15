@@ -33,17 +33,17 @@ class DBFilterColumn extends DBFilter {
 	/**
 	 * Column name
 	 */
-	private $column;
+	protected $column;
 	
 	/**
 	 * Value to filter for
 	 */
-	private $value;
+	protected $value;
 	
 	/**
 	 * Operator for filter comparison
 	 */	
-	private $operator;
+	protected $operator;
 	
 	/**
 	 * contructor
