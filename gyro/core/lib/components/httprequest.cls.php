@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/httprequestconfig.cls.php';
+
 /**
  * Download files using http protocols. 
  * 
@@ -16,19 +18,36 @@ class GyroHttpRequest {
 	const SEND_JSON = 4;
 
 	/**
+	 * Execute request with given configuration
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param GyroHttpRequestConfig $config
+	 * @param Status|null $err Set to errors if any
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return string The content of the file or NULL, if file was not found
+	 * @throws Exception
+	 */
+	public static function request($url, GyroHttpRequestConfig $config, $err = null, &$info = false) {
+		$option = $config->create_config_array();
+		$ret = self::execute_curl($url, $option, $config->timeout_sec, $err, $info);
+		return $ret;
+	}
+
+	/**
 	 * Read content from given url
 	 *
 	 * @param string|Url $url URL to invoke
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function get_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::get()->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -40,14 +59,15 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function get_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options[CURLOPT_USERPWD] = "$user:$pwd";
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::get()->set_timeout_seconds($timeout);
+		$config->set_auth($user, $pwd);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -58,14 +78,14 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function post_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_post_options($options, $fields, $policy);
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::post($fields)->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -78,50 +98,15 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function post_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_post_options($options, $fields, $policy);
-		$options[CURLOPT_USERPWD] = "$user:$pwd";
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
-	}
-
-	/**
-	 * Configure curl for BODY of POST/PUT requests
-
-	 * @param array $options Options already set
-	 * @param array $fields Data as associative array
-	 * @param array $policy Policy. Either NONE or SEND_JSON
-	 * @return array
-	 */
-	private static function set_body_options($options, $fields, $policy) {
-		if (Common::flag_is_set($policy, self::SEND_JSON)) {
-			$options[CURLOPT_POSTFIELDS] = ConverterFactory::encode($fields, CONVERTER_JSON);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/json');
-		} else {
-			$options[CURLOPT_POSTFIELDS] = http_build_query($fields);
-			$options[CURLOPT_HTTPHEADER] = array('Content-Type' => 'application/x-www-form-urlencoded');
-		}
-		$options[CURLOPT_HTTPHEADER][] =
-			'Expect: '; // Fixes an issue with NginX. See http://stackoverflow.com/questions/3755786/php-curl-post-request-and-error-417
-		return $options;
-	}
-
-	/**
-	 * Configure curl for POST requests
-
-	 * @param array $options Options already set
-	 * @param array $fields Data as associative array
-	 * @param array $policy Policy. Either NONE or SEND_JSON
-	 * @return array
-	 */
-	private static function set_post_options($options, $fields, $policy) {
-		$options[CURLOPT_POST] = true;
-		$options = self::set_body_options($options, $fields, $policy);
-		return $options;
+		$config = GyroHttpRequestConfig::post($fields)->set_timeout_seconds($timeout);
+		$config->set_auth($user, $pwd);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -132,14 +117,14 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function put_content($url, $fields, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_put_options($options, $fields, $policy);
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::put($fields)->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -152,29 +137,15 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function put_content_with_auth($url, $fields, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_put_options($options, $fields, $policy);
-		$options[CURLOPT_USERPWD] = "$user:$pwd";
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
-	}
-
-	/**
-	 * Configure curl for PUT requests
-
-	 * @param array $options Options already set
-	 * @param array $fields Data as associative array
-	 * @param array $policy Policy. Either NONE or SEND_JSON
-	 * @return array
-	 */
-	private static function set_put_options($options, $fields, $policy) {
-		$options[CURLOPT_CUSTOMREQUEST] = "PUT";
-		$options = self::set_body_options($options, $fields, $policy);
-		return $options;
+		$config = GyroHttpRequestConfig::put($fields)->set_timeout_seconds($timeout);
+		$config->set_auth($user, $pwd);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -184,14 +155,14 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function delete_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_delete_options($options);
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::delete()->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
 
 	/**
@@ -203,28 +174,16 @@ class GyroHttpRequest {
 	 * @param Status $err Set to errors if any
 	 * @param int $timeout Timeout in seconds
 	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
-	 * @param array $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
 	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
 	 */
 	public static function delete_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
-		$options = self::get_default_opts($policy);
-		$options = self::set_delete_options($options);
-		$options[CURLOPT_USERPWD] = "$user:$pwd";
-		$ret = self::execute_curl($url, $options, $timeout, $err, $info);
-		return $ret;
+		$config = GyroHttpRequestConfig::delete()->set_timeout_seconds($timeout);
+		$config->set_auth($user, $pwd);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
-
-	/**
-	 * Configure curl for DELETE requests
-
-	 * @param array $options Options already set
-	 * @return array
-	 */
-	private static function set_delete_options($options) {
-		$options[CURLOPT_CUSTOMREQUEST] = 'DELETE';
-		return $options;
-	}
-
 
 	/**
 	 * Fetch only head
@@ -233,22 +192,20 @@ class GyroHttpRequest {
 	 * @param Status $err
 	 * @param int $timeout
 	 * @return string Content fetched or false on error
+	 * @throws Exception
 	 */
 	public static function get_head($url, $err = null, $timeout = 30, $policy = self::NONE) {
-		$options = self::get_default_opts($policy);
-		//curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'HEAD');
-		$options[CURLOPT_HEADER] = 1;
-		// NOBODY turns GET into HEAD, though it is not documented
-		// explicitely
-		$options[CURLOPT_NOBODY] = 1;
-		$ret = self::execute_curl($url, $options, $timeout, $err);
-		return $ret;		
+		$config = GyroHttpRequestConfig::head()->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::request($url, $config, $err, $info);
 	}
-	
+
 	/**
 	 * Starts a header-request and returns true if site exists otherwise returns false.
 	 *
+	 * @param string|Url $url
 	 * @return boolean
+	 * @throws Exception
 	 */
 	public static function site_exists($url) {
 		$ret = self::get_head($url);
@@ -256,45 +213,16 @@ class GyroHttpRequest {
 	}
 
 	/**
-	 * Fet standard curl options for the given curl handle.
-	 *
-	 * @param int $timeout
-	 * @return array
-	 */
-	private static function get_default_opts($policy) {
-		$ret = array(
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_FAILONERROR => 1,
-			CURLOPT_REFERER => Config::get_url(Config::URL_SERVER),
-			CURLOPT_USERAGENT => Config::get_value(Config::TITLE). ' bot',
-			CURLOPT_CONNECTTIMEOUT => 5,
-			CURLOPT_FRESH_CONNECT => 1,
-			CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1 // Only use TLS, due to POODLE and others
-		);
-		//curl_setopt($curl_handle, CURLOPT_COOKIE, '');
-		if (!ini_get('safe_mode')) {
-			$ret[CURLOPT_FOLLOWLOCATION] =  1;
-		}
-		
-		if (Common::flag_is_set($policy, self::NO_ERROR_ON_4XX_5XX)) {
-			$ret[CURLOPT_FAILONERROR] = 0;
-		}
-		if (Common::flag_is_set($policy, self::SSL_NO_VERIFY)) {
-			$ret[CURLOPT_SSL_VERIFYHOST] = 0;
-			$ret[CURLOPT_SSL_VERIFYPEER] = 0;
-		}
-		
-		return $ret;
-	}
-	
-	/**
-	 * Execute a curl request 
+	 * Execute a curl request
 	 *
 	 * @param Url|string $url
 	 * @param array $options
 	 * @param int $timeout
-	 * @param Status $status
+	 * @param $err
+	 * @param bool $info
 	 * @return string Content fetched or false on error
+	 * 
+	 * @throws Exception
 	 */
 	private static function execute_curl($url, $options, $timeout, $err, &$info = false) {
 		$address = $url;
@@ -344,6 +272,18 @@ class GyroHttpRequest {
 			Logger::log('httprequests', $log);
 		}
 		return $ret;
+	}
+	
+	private static function configure_policy(GyroHttpRequestConfig $config, $policy) {
+		$config->set_no_error_on_4xx_5xx(
+			Common::flag_is_set($policy, self::NO_ERROR_ON_4XX_5XX)
+		);
+		$config->set_ssl_no_verify(
+			Common::flag_is_set($policy, self::SSL_NO_VERIFY)
+		);
+		if (Common::flag_is_set($policy, self::SEND_JSON)) {
+			$config->set_body_mime_type(GyroHttpRequestConfig::BODY_JSON);
+		}		
 	}
 }
 

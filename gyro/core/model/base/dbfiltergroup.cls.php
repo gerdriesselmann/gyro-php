@@ -60,6 +60,8 @@ class DBFilterGroup implements IDBQueryModifier {
 	
 	/**
 	 * Get filter for give key
+	 *
+	 * @return DBFilter|false
 	 */
 	public function get_filter($key) {
 		return Arr::get_item($this->filters, $key, false);
@@ -74,6 +76,8 @@ class DBFilterGroup implements IDBQueryModifier {
 	
 	/**
 	 * Returns an array of all filters
+	 *
+	 * @return DBFilter[]
 	 */
 	public function get_filters() {
 		return array_values($this->filters);

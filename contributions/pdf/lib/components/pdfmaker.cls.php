@@ -6,14 +6,17 @@
  * @author Gerd Riesselmann
  */
 
-$thirdparty_dir = dirname(__FILE__) . '/../../3rdparty/fpdf/';
+$fpdf_dir = dirname(__FILE__) . '/../../3rdparty/fpdf/';
+$fpdi_dir = dirname(__FILE__) . '/../../3rdparty/fpdi/src/';
 if (!defined('FPDF_FONTPATH')) {
-	define('FPDF_FONTPATH', $thirdparty_dir . 'font/');
+	define('FPDF_FONTPATH', $fpdf_dir . 'font/');
 } 
-require_once $thirdparty_dir . 'fpdf.php';
-require_once $thirdparty_dir . 'fpdi.php';
+require_once $fpdf_dir . 'fpdf.php';
+require_once $fpdi_dir . 'autoload.php';
+
+use setasign\Fpdi;
  
-class PDFMaker extends FPDI
+class PDFMaker extends Fpdi\Fpdi
 {
 	private $text;
 	private $template;
@@ -39,7 +42,7 @@ class PDFMaker extends FPDI
 			$this->template_pagecount = $this->setSourceFile($this->template);
 		}
 				
-		FPDI::FPDI("P", "mm", "A4");
+		parent::__construct("P", "mm", "A4");
 	}
 	
 	/**
