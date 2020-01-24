@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS `confirmations` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `iu_confirmations`(`id_item`, `code`)
 )
-ENGINE = InnoDB;
+ENGINE = InnoDB CHARSET=utf8;
