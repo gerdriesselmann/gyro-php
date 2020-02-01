@@ -1,0 +1,1 @@
+DELETE from countries2countriesgroups WHERE id_group = 1 and id_country = 'GB';
