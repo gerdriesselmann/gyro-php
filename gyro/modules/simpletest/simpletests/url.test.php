@@ -9,9 +9,13 @@ define ('TEST_URL3', 'www.host.org:8080/dir/file.ext');
 define ('TEST_URL4', 'http://example.com/?a&b=');
 
 class UrlTest extends GyroUnitTestCase {
+	/** @var Url */
 	private $url;
+	/** @var Url */
 	private $url2;
+	/** @var Url */
 	private $url3;
+	/** @var Url */
 	private $url4;
 
 	function setUp() {
@@ -34,6 +38,9 @@ class UrlTest extends GyroUnitTestCase {
 
 		$expect = str_replace('?arg=value', '?arg=value&key=other', TEST_URL);
 		$this->assertEqual($expect, $this->url->replace_query_parameter('key', 'other')->build());
+
+		$expect = str_replace('?arg=value', '?arg=value&key=set&key=twice', TEST_URL);
+		$this->assertEqual($expect, $this->url->replace_query_parameter('key', array('set', 'twice'))->build());
 
 		$this->assertEqual(TEST_URL, $this->url->replace_query_parameter('key', '')->build());
 
@@ -305,6 +312,18 @@ class UrlTest extends GyroUnitTestCase {
 
 		$query = $url->get_query_params();
 		$this->assertEqual(array('' => 'a'), $query);
+	}
+
+	public function test_get_query_param() {
+		$this->assertEqual('value', $this->url->get_query_param('arg'));
+
+		// Unsupported multi parameter return only first (PHP behaviour)
+		$this->url->set_query("q=a&q=b");
+		$this->assertEqual('a', $this->url->get_query_param('q'));
+
+		// Multi parameter array syntax return array (PHP behaviour)
+		$this->url->set_query("q[]=a&q[]=b");
+		$this->assertEqual(array('a', 'b'), $this->url->get_query_param('q[]'));
 	}
 
 }
