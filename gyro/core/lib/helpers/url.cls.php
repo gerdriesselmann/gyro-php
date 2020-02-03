@@ -175,14 +175,18 @@ class Url {
 			if ($pvalue === '' && !GyroString::contains($query_item, '=')) {
 				$pvalue = null;
 			}
-			//if (!empty($pname)) {
-				if (substr($pname, -2) == '[]') {
-					$ret[$pname][] = $pvalue;
+
+			if (isset($ret[$pname])) {
+				// append to existing
+				$existing = $ret[$pname];
+				if (!is_array($existing)) {
+					$existing = array($existing);
 				}
-				else {
-					$ret[$pname] = $pvalue;
-				}
-			//}
+				$existing[] = $pvalue;
+				$ret[$pname] = $existing;
+			} else {
+				$ret[$pname] = $pvalue;
+			}
 		}
 		
 		return $ret;
@@ -388,6 +392,11 @@ class Url {
 	 */
 	public function get_query_param($name, $default = false, $encode = Url::NO_ENCODE_PARAMS) {
 		$value = Arr::get_item($this->data['query'], $name, $default);
+		if (is_array($value) && !GyroString::contains($name, '[]')) {
+			// If there are double parameters, but parameter is no array, return first
+			// value to simulate PHP behavior
+			$value = Arr::get_item($value, 0, $default);
+		}
 		return $this->encode_any_param($value, $encode, $name);
 	}
 
