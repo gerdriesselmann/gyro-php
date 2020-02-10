@@ -5,7 +5,7 @@
  * @author Gerd Riesselmann
  * @ingroup Lib
  */ 
-class Cookie {
+class GyroCookie {
 	/**
 	 * Create Cookie
 	 * 
@@ -42,4 +42,8 @@ class Cookie {
 	public static function get_cookie_value($name) {
 		return Arr::get_item($_COOKIE, $name, false);
 	}
+}
+
+if (!class_exists('Cookie')) {
+	class Cookie extends GyroCookie {}
 }
