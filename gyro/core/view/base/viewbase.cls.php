@@ -8,6 +8,9 @@ Load::models('cache');
  * @ingroup View
  */
 class ViewBase implements IView, ICache {
+	const EVENT_BEFORE_RENDER = 'view_before_render';
+	const EVENT_AFTER_RENDER = 'view_after_render';
+
 	/**
 	 * Cached content
 	 *
@@ -274,7 +277,7 @@ class ViewBase implements IView, ICache {
 	 * @return void
 	 */
 	protected function before_render(&$rendered_content, $policy) {
-		EventSource::Instance()->invoke_event('view_before_render', array('view' => $this, 'policy' => $policy), $rendered_content);
+		EventSource::Instance()->invoke_event(self::EVENT_BEFORE_RENDER, array('view' => $this, 'policy' => $policy), $rendered_content);
 	}
 
 	/**
@@ -285,7 +288,7 @@ class ViewBase implements IView, ICache {
 	 * @return void
 	 */
 	protected function after_render(&$rendered_content, $policy) {
-		EventSource::Instance()->invoke_event('view_after_render', array('view' => $this, 'policy' => $policy), $rendered_content);
+		EventSource::Instance()->invoke_event(self::EVENT_AFTER_RENDER, array('view' => $this, 'policy' => $policy), $rendered_content);
 	}
 	
 	/**

@@ -18,7 +18,7 @@ class JavascriptCookieConsentEventSink implements IEventSink {
 	 * @param mixed Event parameter(s)
 	 */
 	public function on_event($event_name, $event_params, &$result) {
-		if ($event_name == 'view_before_render') {
+		if ($event_name == ViewBase::EVENT_BEFORE_RENDER) {
 			$view = $event_params['view'];
 			$enabled = Config::has_feature(ConfigCookieConsent::ENABLED);
 			if ($enabled && $view instanceof PageViewBase) {
