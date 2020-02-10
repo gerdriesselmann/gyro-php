@@ -10,7 +10,7 @@ class Common {
 	/**
 	 * Returns true, if PHP runs as CGI (and not mod_php)
 	 * 
-	 * @return unknown_type
+	 * @return boolean
 	 */
 	public static function is_cgi() {
 		return 	( substr(php_sapi_name(), 0, 3) == 'cgi' );				
@@ -160,7 +160,7 @@ class Common {
 	 * 
 	 * @deprecated Use GyroHeaders instead
 	 * 
-	 * @param $arr_headers Array of headers retrieved by Common::get_headers()
+	 * @param array $arr_headers Array of headers retrieved by Common::get_headers()
 	 */
 	public static function header_restore($arr_headers) {
 		GyroHeaders::restore($arr_headers);
@@ -280,16 +280,28 @@ class Common {
 	/**
 	 * Creates a token, which is 40 characters long 
 	 * 
-	 * @param string $salt Optional extra salt, if ommitted mt_rand() is used 
+	 * @param string|false $salt Optional extra salt, if omitted mt_rand() is used
+	 * @return string
 	 */
 	public static function create_token($salt = false) {
 		return sha1(uniqid($salt ? $salt : mt_rand(), true));
 	}
 
 	/**
-	 * Reeturns temporary directory
+	 * Creates a token, which is 64 characters long
+	 *
+	 * @param string|false $salt Optional extra salt, if omitted mt_rand() is used
+	 * @return string
+	 */
+	public static function create_long_token($salt = false) {
+		return hash('sha3-256', uniqid($salt ? $salt : mt_rand(), true));
+	}
+
+	/**
+	 * Returns temporary directory
 	 * @static
 	 * @return string
+	 * @throws Exception
 	 */
 	public static function get_temp_dir() {
 		$ret = '';
@@ -299,7 +311,7 @@ class Common {
 
 		if (empty($ret)) {
 			foreach(array('TMP','TEMP','TMPDIR') as $env) {
-				$ret = getenc($env);
+				$ret = getenv($env);
 				if ($ret) {
 					break;
 				}
@@ -317,6 +329,14 @@ class Common {
 		return $ret;
 	}
 
+	/**
+	 * Create a temporary file with given content. Returns filename, if
+	 * successful, false otherwise
+	 *
+	 * @param string $content
+	 * @return false|string
+	 * @throws Exception
+	 */
 	public static function create_temp_file($content) {
 		$ret = false;
 		$file = tempnam(self::get_temp_dir(), 'gyro');
