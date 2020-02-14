@@ -132,3 +132,6 @@ if (file_exists(APP_INCLUDE_ABSPATH . 'enabled.inc.php')) {
 Load::files('start.inc.php', Load::ORDER_DECORATORS);
 
 AccessControl::load();
+
+// If everything is up, invoke started.inc.php on all modules and app
+Load::files('started.inc.php', Load::ORDER_DECORATORS);
