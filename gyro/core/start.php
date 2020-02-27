@@ -83,12 +83,12 @@ if (Config::has_feature(Config::FORCE_FULL_DOMAINNAME)) {
 	}	
 }
 
+// Load all interfaces
+Load::directories('lib/interfaces');
 // Load all helpers
 Load::directories('lib/helpers');
 // Sync headers
 GyroHeaders::sync();
-// Load all interfaces
-Load::directories('lib/interfaces');
 
 if (Config::has_feature(Config::TESTMODE)) {
 	// Load logger
@@ -132,3 +132,6 @@ if (file_exists(APP_INCLUDE_ABSPATH . 'enabled.inc.php')) {
 Load::files('start.inc.php', Load::ORDER_DECORATORS);
 
 AccessControl::load();
+
+// If everything is up, invoke started.inc.php on all modules and app
+Load::files('started.inc.php', Load::ORDER_DECORATORS);
