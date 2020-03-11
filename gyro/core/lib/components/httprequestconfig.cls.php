@@ -99,7 +99,7 @@ class GyroHttpRequestConfig {
 			CURLOPT_CONNECTTIMEOUT => 5,
 			CURLOPT_FRESH_CONNECT => 1,
 			CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1, // Only use TLS, due to POODLE and others
-			CURLOPT_HEADER => $this->headers
+			CURLOPT_HTTPHEADER => $this->headers
 		);
 		//curl_setopt($curl_handle, CURLOPT_COOKIE, '');
 		if (!ini_get('safe_mode')) {
@@ -156,7 +156,11 @@ class GyroHttpRequestConfig {
 				$options[CURLOPT_HEADER] = 1;
 				// NOBODY turns GET into HEAD, though it is not documented
 				// explicitely
-				$options[CURLOPT_NOBODY] = 1;
+                if (is_null($this->body)) {
+                    $options[CURLOPT_NOBODY] = 1;
+                } else {
+                    $this->configure_body($options);
+                }
 				break;
 			case self::GET:
 			default:
