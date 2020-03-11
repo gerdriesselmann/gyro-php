@@ -99,7 +99,7 @@ class GyroHttpRequestConfig {
 			CURLOPT_CONNECTTIMEOUT => 5,
 			CURLOPT_FRESH_CONNECT => 1,
 			CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1, // Only use TLS, due to POODLE and others
-			CURLOPT_HEADER => $this->headers
+			CURLOPT_HTTPHEADER => $this->headers
 		);
 		//curl_setopt($curl_handle, CURLOPT_COOKIE, '');
 		if (!ini_get('safe_mode')) {
