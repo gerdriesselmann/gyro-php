@@ -12,12 +12,12 @@
 if(!defined('PHP_VERSION_ID')) {
     $version = PHP_VERSION;
 
-    define('PHP_VERSION_ID', ($version{0} * 10000 + $version{2} * 100 + $version{4}));
+    define('PHP_VERSION_ID', (intval($version[0]) * 10000 + intval($version[2]) * 100 + intval($version[4])));
 }
 if(PHP_VERSION_ID < 50207) {
-    define('PHP_MAJOR_VERSION',     $version{0});
-    define('PHP_MINOR_VERSION',     $version{2});
-    define('PHP_RELEASE_VERSION',     $version{4});
+    define('PHP_MAJOR_VERSION',     $version[0]);
+    define('PHP_MINOR_VERSION',     $version[2]);
+    define('PHP_RELEASE_VERSION',     $version[4]);
 }
 
 if( !function_exists('memory_get_usage') ) {

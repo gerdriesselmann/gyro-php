@@ -171,7 +171,8 @@ class Common {
 	 */
 	public static function preprocess_input() {
 		// Is magic quotes on?
-		if ( function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() ) {
+		// deprecated ssince PHP 7.4, hence version check
+		if (PHP_VERSION_ID < 70400 && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() ) {
  			// Yes? Strip the added slashes
 			$_REQUEST = self::transcribe($_REQUEST);
 			$_GET = self::transcribe($_GET);

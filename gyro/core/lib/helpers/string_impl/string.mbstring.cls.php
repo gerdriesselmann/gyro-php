@@ -83,7 +83,13 @@ class StringMBString {
 		if ($haystack == '') {
 			return false;
 		}
-		return mb_strrpos($haystack, $needle, GyroLocale::get_charset());
+		if (PHP_VERSION_ID < 50200) {
+			// Before PHP 5.2 charset is at 3rd position
+			return mb_strrpos($haystack, $needle, GyroLocale::get_charset());
+		} else {
+			// afterwards at 4th
+			return mb_strrpos($haystack, $needle, 0, GyroLocale::get_charset());
+		}
 	}
 	
 	/**
