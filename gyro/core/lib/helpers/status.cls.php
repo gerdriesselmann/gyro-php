@@ -84,10 +84,10 @@ class Status {
 	public function to_string($policy = self::OUTPUT_HTML) {
 		$ret = '';
 		if ($policy == self::OUTPUT_PLAIN) {
-			$ret .= implode("\n", $this->messages); 
+			$ret .= implode("\n", $this->get_messages());
 		}
 		else {
-			$tmp = array_map(array('GyroString', 'escape'), $this->messages);
+			$tmp = array_map(array('GyroString', 'escape'), $this->get_messages());
 			$ret .= implode('<br />', $tmp);
 		}
 		return $ret; 
@@ -99,7 +99,7 @@ class Status {
 	 * @return array
 	 */
 	public function get_messages() {
-		return $this->messages;
+		return array_unique($this->messages);
 	}
 
 	/**
