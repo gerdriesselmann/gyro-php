@@ -51,7 +51,8 @@ class StatusTest extends GyroUnitTestCase {
 
 		$s->merge($s2);
 		$this->assertStatusError($s);
-		$this->assertEqual('message1<br />message1', $s->to_string());
+		// Messages are unique
+		$this->assertEqual('message1', $s->to_string());
 
 		// Exception
 		$s = new Status();
@@ -63,7 +64,8 @@ class StatusTest extends GyroUnitTestCase {
 
 		$s->merge($s2);
 		$this->assertStatusError($s);
-		$this->assertEqual('message1<br />message1', $s->to_string());
+		// Messages are unique
+		$this->assertEqual('message1', $s->to_string());
 		
 		// String
 		$s = new Status();
@@ -72,9 +74,9 @@ class StatusTest extends GyroUnitTestCase {
 		$this->assertStatusError($s);
 		$this->assertEqual('message1', $s->to_string());
 
-		$s->merge('message1');
+		$s->merge('message2');
 		$this->assertStatusError($s);
-		$this->assertEqual('message1<br />message1', $s->to_string());
+		$this->assertEqual('message1<br />message2', $s->to_string());
 	}
 	
 	public function test_to_string() {
