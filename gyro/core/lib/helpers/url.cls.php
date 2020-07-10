@@ -138,6 +138,10 @@ class Url {
 		return str_replace(array('%252F', '%253F', '%2526'), array('%2F', '%3F', '%26'), $path);
 	}
 
+	/**
+	 * @param $path
+	 * @return string
+	 */
 	public static function encode_path($path) {
 		return str_replace(array('%2F', '%3F', '%26'), array('%252F', '%253F', '%2526'), $path);
 	}
@@ -146,7 +150,7 @@ class Url {
 	 * Split a query into items and return them as associative array
 	 * 
 	 * @param string $query
-	 * @return array
+	 * @return UrlQueryItem[]
 	 */
 	protected function parse_query($query) {
 		$ret = array();
@@ -172,21 +176,9 @@ class Url {
 			$arr = explode('=', $query_item, 2);
 			$pname = GyroString::convert(urldecode($arr[0]));
 			$pvalue = (count($arr) > 1) ? $arr[1] : '';
-			if ($pvalue === '' && !GyroString::contains($query_item, '=')) {
-				$pvalue = null;
-			}
 
-			if (isset($ret[$pname])) {
-				// append to existing
-				$existing = $ret[$pname];
-				if (!is_array($existing)) {
-					$existing = array($existing);
-				}
-				$existing[] = $pvalue;
-				$ret[$pname] = $existing;
-			} else {
-				$ret[$pname] = $pvalue;
-			}
+			$has_assignment = GyroString::contains($query_item, '=');
+			$ret[] = new UrlQueryItem($pname, $pvalue, $has_assignment);
 		}
 		
 		return $ret;
@@ -282,12 +274,23 @@ class Url {
 	 * @return Url Reference to self
 	 */
 	public function replace_query_parameter($name, $value) {
-		if ($value === '' || $value === false) {
-			unset($this->data['query'][$name]);
+		$query = $this->data['query'];
+		// remove old params
+		$query = array_filter(
+			$query,
+			function(UrlQueryItem $item) use ($name) {
+				return $item->name != $name;
+			}
+		);
+		$only_unset = $value === '' || $value === false;
+		if (!$only_unset) {
+			$values = Arr::force($value, false);
+			foreach($values as $v) {
+				$query[] = new UrlQueryItem($name, $v);
+			}
 		}
-		else {
-			$this->data['query'][$name] = $value;
-		}
+		$this->data['query'] = $query;
+		$this->has_empty_query = false;
 		return $this;
 	}
 	
@@ -344,43 +347,19 @@ class Url {
 	
 	/**
 	 * Return full query
+	 *
+	 * @return string
 	 */
 	public function get_query($encode = Url::ENCODE_PARAMS) {
-		$sep = html_entity_decode(ini_get('arg_separator.output'), ENT_QUOTES, GyroLocale::get_charset());
-		$ret = '';
-		foreach($this->get_query_params($encode) as $key => $value) {
-			$this->query_reduce($ret, $sep, $key, $value);
+		/* @var UrlQueryItem[] $params */
+		$params = $this->data['query'];
+		$s_params = array();
+		foreach($params as $param) {
+			$s_params[] = $param->build($encode);
 		}
-		return $ret;
-	}
-	
-	/**
-	 * Reduces set of params to query string (a=b&c=d...)
-	 * 
-	 * @param string $current Recent output 
-	 * @param string $sep Separator
-	 * @param string $key Name of param
-	 * @param mixed $value Value of param 
-	 */
-	protected function query_reduce(&$current, $sep, $key, $value) {
-		//if ($key) {
-			if (is_array($value)) {
-				foreach($value as $v) {
-					$this->query_reduce($current, $sep, $key, $v);
-				}
-			}
-			else {
-				if ($key !== '' || !is_null($value)) {
-					if ($current) {
-						$current .= $sep;
-					}
-					$current .= $key;
-					if (!is_null($value)) {
-						$current .= '=' . $value;
-					}
-				}
-			}
-		//}
+
+		$sep = html_entity_decode(ini_get('arg_separator.output'), ENT_QUOTES, GyroLocale::get_charset());
+		return implode($sep, $s_params);
 	}
 
 	/**
@@ -391,45 +370,19 @@ class Url {
 	 * @return mixed
 	 */
 	public function get_query_param($name, $default = false, $encode = Url::NO_ENCODE_PARAMS) {
-		$value = Arr::get_item($this->data['query'], $name, $default);
+		$params = $this->get_query_params($encode);
+		$value = Arr::get_item($params, $name, $default);
 		if (is_array($value) && !GyroString::contains($name, '[]')) {
 			// If there are double parameters, but parameter is no array, return first
 			// value to simulate PHP behavior
 			$value = Arr::get_item($value, 0, $default);
 		}
-		return $this->encode_any_param($value, $encode, $name);
-	}
-
-	private function encode_any_param($value, $encode, $key = false) {
-		if (is_array($value)) {
-			$ret = $value;
-			array_walk_recursive(
-				$ret,
-				function(&$v, $k) use ($encode) {
-					$v = $this->encode_string_param($v, $encode, $k);
-				}
-			);
-		} else {
-			$ret = $this->encode_string_param($value, $encode);
-		}
-		return $ret;
-	}
-
-	private function encode_string_param($value, $encode, $key = false) {
-		switch ($encode) {
-			case self::ENCODE_PARAMS:
-				$this->callback_urlencode($value, $key);
-				return $value;
-			case self::NO_ENCODE_PARAMS:
-				return GyroString::convert(urldecode($value));
-			case self::PARAMS_UNCHANGED:
-			default:
-				// Do nothing
-				return $value;
-		}
+		return $value;
 	}
 
 	/**
+	 * @deprecated
+	 *
 	 * Callback to urlencode values - does not actually walk
 	 *
 	 * @param string $value The value to encide
@@ -449,9 +402,22 @@ class Url {
 	 */
 	public function get_query_params($encode = Url::NO_ENCODE_PARAMS) {
 		$ret = array();
+		/* @var UrlQueryItem[] $params */
 		$params = Arr::get_item($this->data, 'query', array());
-		foreach($params as $k => $v) {
-			$ret[$k] = $this->encode_any_param($v, $encode, $k);
+		foreach($params as $param) {
+			$pname = $param->name;
+			$pvalue = $param->encoded_value($encode);
+			if (isset($ret[$pname])) {
+				// append to existing
+				$existing = $ret[$pname];
+				if (!is_array($existing)) {
+					$existing = array($existing);
+				}
+				$existing[] = $pvalue;
+				$ret[$pname] = $existing;
+			} else {
+				$ret[$pname] = $pvalue;
+			}
 		}
 		return $ret;
 	}
@@ -917,3 +883,67 @@ class Url {
 	}
 }
 
+class UrlQueryItem {
+	/**
+	 * @var string Name of item (a in a=b)
+	 */
+	public $name;
+	/**
+	 * @var string Value of item (b in a=b)
+	 */
+	public $value;
+	/**
+	 * @var bool If there is assignent operator, to distinct between a= and a
+	 */
+	private $force_assignment = false;
+
+	/**
+	 * UrlQueryItem constructor.
+	 * @param string $name
+	 * @param string $value
+	 * @param bool $force_assignment
+	 */
+	public function __construct($name, $value, $force_assignment = false) {
+		$this->name = $name;
+		$this->value = $value;
+		$this->force_assignment = $force_assignment;
+	}
+
+	/**
+	 * Build query item as string
+	 *
+	 * @param string $encode How to encode params
+	 * @return string
+	 */
+	public function build($encode) {
+		$ret = $this->name;
+		if ($this->value || $this->force_assignment) {
+			$ret .= '=';
+		}
+		$ret .= $this->encode_string_param($this->value, $encode);
+		return $ret;
+	}
+
+	/**
+	 * Value encoded with given encoding methid
+	 *
+	 * @param string $encode How to encode params
+	 * @return string
+	 */
+	public function encoded_value($encode) {
+		return $this->encode_string_param($this->value, $encode);
+	}
+
+	private function encode_string_param($value, $encode) {
+		switch ($encode) {
+			case Url::ENCODE_PARAMS:
+				return str_replace(' ', '+', urlencode(urldecode($value)));
+			case Url::NO_ENCODE_PARAMS:
+				return GyroString::convert(urldecode($value));
+			case Url::PARAMS_UNCHANGED:
+			default:
+				// Do nothing
+				return $value;
+		}
+	}
+}
