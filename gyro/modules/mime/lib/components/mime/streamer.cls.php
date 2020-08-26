@@ -12,21 +12,32 @@ class Streamer implements IStreamer {
 	private $file;
 
 	/**
+	 * @var IStreamer
+	 */
+	private $delegate;
+
+	/**
 	 * Streamer constructor.
 	 * @param string $file
 	 */
 	public function __construct($file) {
 		$this->file = $file;
+
+		$range_header_value = strtolower(RequestInfo::current()->header_value('range'));
+		if (!empty($range_header_value)) {
+			require_once __DIR__ . '/streamer.range.cls.php';
+			$this->delegate = new StreamerRange($file);
+		} else {
+			require_once __DIR__ . '/streamer.full.cls.php';
+			$this->delegate = new StreamerFull($file);
+		}
 	}
 
 	public function prepare() {
-		GyroHeaders::append("Content-Length: " . filesize($this->file));
-		GyroHeaders::append('Content-Transfer-Encoding: binary');
-
+		$this->delegate->prepare();
 	}
 
 	public function stream() {
-		$handle = fopen($this->file, 'rb');
-		@fpassthru($handle);
+		$this->delegate->stream();
 	}
 }

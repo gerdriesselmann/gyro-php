@@ -209,6 +209,16 @@ class RequestInfo {
 	 * @return string
 	 */
 	public function user_agent() {
-		return Arr::get_item($this->data, 'HTTP_USER_AGENT', '');		
+		return $this->header_value('User-Agent');
+	}
+
+	/**
+	 * Returns value of given HTTP request header
+	 * @param string $name
+	 * @return string
+	 */
+	public function header_value($name) {
+		$translated_name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+		return trim(Arr::get_item($this->data, $translated_name, ''));
 	}
 }
