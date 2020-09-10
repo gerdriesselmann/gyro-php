@@ -62,7 +62,7 @@ class StreamerRangeHeaderValid implements IStreamerRangeHeader {
 		fseek($handle, $this->start);
 		$current_pos = $this->start;
 
-		$bytes_to_read = min($chunk_size, $this->end - $current_pos);
+		$bytes_to_read = min($chunk_size, $this->calc_num_bytes($current_pos, $this->end));
 		while ($bytes_to_read > 0) {
 			$bytes = fread($handle, $bytes_to_read);
 
@@ -71,7 +71,7 @@ class StreamerRangeHeaderValid implements IStreamerRangeHeader {
 			flush();
 
 			$current_pos += $bytes_to_read;
-			$bytes_to_read = min($chunk_size, $this->end - $current_pos);
+			$bytes_to_read = min($chunk_size, $this->calc_num_bytes($current_pos, $this->end));
 		}
 
 		fclose($handle);
@@ -79,7 +79,11 @@ class StreamerRangeHeaderValid implements IStreamerRangeHeader {
 
 
 	private function length() {
-		return $this->end - $this->start + 1;
+		return $this->calc_num_bytes($this->start, $this->end);
+	}
+
+	private function calc_num_bytes($start, $end) {
+		return max($end - $start + 1, 0);
 	}
 }
 
