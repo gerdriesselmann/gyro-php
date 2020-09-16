@@ -801,7 +801,7 @@ class UserBaseController extends ControllerBase {
 					History::push($goto_url->build(Url::ABSOLUTE));
 				}
 				else if ($this->has_feature(self::SUPPORT_DASHBOARD)) {
-					History::push(Config::get_url(ConfigUsermanagement::DEFAULT_PAGE));
+					History::push($this->get_dashboard_url());
 				}
 				Session::pull('login_goto');
 			}
@@ -809,6 +809,15 @@ class UserBaseController extends ControllerBase {
 		$formhandler->finish($err, tr('Welcome! You are now logged in.', 'users'));
 		exit;
  	}
+
+	/**
+	 * URL for dashboard
+	 *
+	 * @return string
+	 */
+ 	protected function get_dashboard_url() {
+	    return Config::get_url(ConfigUsermanagement::DEFAULT_PAGE);
+    }
 
 	/**
 	 * Process delete account request
