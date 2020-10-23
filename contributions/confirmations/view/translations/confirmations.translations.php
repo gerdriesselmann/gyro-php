@@ -18,6 +18,12 @@ function confirmations_load_translations($languages) {
 		),
 		'Confirmation' => array(
 			'de' => 'Bestätigung'
+		),
+		'Confirm' => array(
+			'de' => 'Bestätigen'
+		),
+		'Please confirm' => array(
+			'de' => 'Bitte bestätigen Sie'
 		)
 	);
 }
