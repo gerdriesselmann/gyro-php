@@ -388,9 +388,8 @@ class Users {
 			$cmd = CommandsFactory::create_command('confirmations', 'create', $params);
 			$ret->merge($cmd->execute());
 		}
-		else {
-			$ret->append(tr('Unknown email', 'users'));
-		}
+		// If user not found, treat as successful, so attackers cannot figure out who has an account or not
+
 		return $ret;
 	}
 	
