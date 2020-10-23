@@ -13,7 +13,8 @@ class Countries {
 	const GROUP_TYPE_CULTURAL = 'CULTURAL';
 
 	const GROUP_ID_EU = 1;
-	
+	const GROUP_ID_EEA = 4;
+
 	/**
 	 * Return possible types for country groups
 	 * 
@@ -32,6 +33,7 @@ class Countries {
      * Returns country for given code (de, fr etc.
      *
      * @param string $country_code
+     * @return DAOCountries|false
      */
     public static function get($country_code) {
         return DB::get_item('countries', 'id', $country_code);

@@ -35,6 +35,8 @@ class MimeView extends ContentViewBase {
 	const MIMETYPE = 'mimetype';
 	const EXPIRES = 'expires';
 
+	private $headers_sent = false;
+
 	/**
 	 * Contructor takes a name and the page data
 	 */	
@@ -52,8 +54,8 @@ class MimeView extends ContentViewBase {
 	 */
 	protected function should_cache() {
 		return false;
-	}	
-	
+	}
+
 	/**
 	 * Called after content is rendered, always
 	 * 
@@ -63,20 +65,111 @@ class MimeView extends ContentViewBase {
 	 */
 	protected function render_postprocess(&$rendered_content, $policy) {
 		parent::render_postprocess($rendered_content, $policy);
-		
+
 		if (!Common::flag_is_set($policy, self::CONTENT_ONLY)) {
+			$this->send_mime_related_headers();
+		}
+	}
+	
+	/**
+	 * Send given File to the browser
+	 * 
+	 * @param string $file Path to file
+	 */
+	public function display_file($file) {
+		if (file_exists($file)) {
+			$this->set_file_related_headers($file);
+			$this->assign('data', file_get_contents($file));
+		}
+	}
+
+	/**
+	 * Send given File to the browser, but do this in chunks, so memory is
+	 * not overused
+	 *
+	 * Does not utilize views and usual rendering, but streams file and exits.
+	 *
+	 * @param string $file Path to file
+	 * @throws Exception
+	 */
+	public function stream_file($file) {
+		if (file_exists($file)) {
+			@set_time_limit(0);
+
+			$this->page_data->in_history = false;
+			$this->set_file_related_headers($file);
+			$this->send_mime_related_headers();
+
+			Load::components('mime/streamer');
+			$streamer = new Streamer($file);
+
+			$streamer->prepare();
+
+			GyroHeaders::send();
+			session_write_close();
+			ob_end_clean();//required here or large files will not work
+
+			$streamer->stream();
+			exit();
+		}
+	}
+
+	/**
+	 * Set headers related to file, liek mime type, modification time etc.
+	 *
+	 * @param string $file VALID path to file
+	 */
+	private function set_file_related_headers($file) {
+		$modification = filemtime($file);
+		if ($modification) {
+			$this->page_data->get_cache_manager()->set_creation_datetime($modification);
+		}
+
+		// Detect mime type
+		$mime_type = 'application/octect-stream';
+		if (function_exists('finfo_open')) {
+			$handle = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
+			$mime_type = finfo_file($handle, $file);
+			finfo_close($handle);
+		}
+		else if (function_exists('mime_content_type')) {
+			$mime_type = mime_content_type($file);
+		}
+		else {
+			$path_info = pathinfo($file);
+			$path_ext = $path_info['extension'];
+			// No MAGIC functions enabled, do a primitiv lookup based upon file ending
+			$types = array(
+				'gif' => 'image/gif',
+				'png' => 'image/png',
+				'jpg' => 'image/jpeg',
+			);
+			foreach($types as $extension => $type) {
+				if ($path_ext === $extension) {
+					$mime_type = $type;
+					break;
+				}
+			}
+		}
+		$this->assign(self::MIMETYPE, $mime_type);
+	}
+
+	private function send_mime_related_headers() {
+		if (!$this->headers_sent) {
+			$this->headers_sent = true;
+
 			$mimetype = $this->retrieve(self::MIMETYPE);
-			
+
 			// GR: Disabled, since this is too generic. Left to app to handle
 			//if (RequestInfo::current()->is_ssl()) {
-			//	Common::header('Cache-Control', 'maxage=3600', true); //Fix for IE in SSL 
+			//	Common::header('Cache-Control', 'maxage=3600', true); //Fix for IE in SSL
 			//}
-			
+
 			if (strpos($mimetype, 'charset') === false) {
 				$mimetype .= '; charset=' . GyroLocale::get_charset();
-			}			
+			}
 			GyroHeaders::set('Content-Type', $mimetype, true);
-			
+
 			// Expires Header
 			$ex = $this->retrieve(self::EXPIRES);
 			if ($ex) {
@@ -88,50 +181,6 @@ class MimeView extends ContentViewBase {
 			}
 
 			$this->page_data->head->robot_headers();
-		}
-	}	
-	
-	/**
-	 * Send given File to the browser
-	 * 
-	 * @param string $file Path to file
-	 */
-	public function display_file($file) {
-		if (file_exists($file)) {
-			$modification = filemtime($file);
-			if ($modification) {
-				$this->page_data->get_cache_manager()->set_creation_datetime($modification);
-			}
-			
-			// Detect mime type
-			$mime_type = 'application/octect-stream';
-			if (function_exists('finfo_open')) {
-				$handle = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
-				$mime_type = finfo_file($handle, $file);
-				finfo_close($handle);
-			}
-			else if (function_exists('mime_content_type')) {
-				$mime_type = mime_content_type($file);
-			}
-			else {
-				$path_info = pathinfo($file);
-    			$path_ext = $path_info['extension'];
-				// No MAGIC functions enabled, do a primitiv lookup based upon file ending
-				$types = array(
-					'gif' => 'image/gif',
-					'png' => 'image/png',
-					'jpg' => 'image/jpeg',
-				);
-				foreach($types as $extension => $type) {
-					if ($path_ext === $extension) {
-						$mime_type = $type;
-						break;	
-					}
-				}				
-			}
-			$this->assign(self::MIMETYPE, $mime_type);
-
-			$this->assign('data', file_get_contents($file));
 		}
 	}
 }
