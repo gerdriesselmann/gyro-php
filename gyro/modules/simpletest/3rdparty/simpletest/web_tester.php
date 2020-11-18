@@ -523,7 +523,7 @@ class WebTestCase extends SimpleTestCase
 
     /**
      *    Sets the HTML parser to use within this browser.
-     *    @param object         The parser, one of SimplePHPPageBuilder or
+     *    @param object         The parser, one of SimplePhpPageBuilder or
      *                          SimpleTidyPageBuilder.
      */
     public function setParser($parser)
