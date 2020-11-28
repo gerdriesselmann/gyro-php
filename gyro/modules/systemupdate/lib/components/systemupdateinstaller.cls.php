@@ -140,7 +140,7 @@ class SystemUpdateInstaller {
 		$htaccess_path = Config::get_value(Config::URL_ABSPATH) . '.htaccess';
 		$htaccess = @file_get_contents($htaccess_path);
 		// Remove old
-		$pattern = preg_quote($start) . '.*' . preg_quote($end);
+		$pattern = preg_quote($start, '|') . '.*' . preg_quote($end,'|');
 		$htaccess = preg_replace('|' . $pattern . '|s', '', $htaccess);
 		// Insert new
 		$section_string = "### BEGIN $section ###";

@@ -43,7 +43,7 @@ class TextPlaceholderBase implements ITextPlaceholder {
 	 * @return string
 	 */
 	protected function build_regex() {
-		$cmd = preg_quote($this->cmd);
+		$cmd = preg_quote($this->cmd, '@');
 		return "@{{$cmd}:(.*?)}@i";
 	}
 
