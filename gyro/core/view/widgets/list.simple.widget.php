@@ -23,14 +23,14 @@ class WidgetListSimple implements IWidget {
 		$ret = '';
 		$items = Arr::force($this->items, false);
 		$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/list.simple');
-		$view->assign('items', $this->render_items($items, $policy));
+		$view->assign('items', $this->render_items($this->page_data, $items, $policy));
 		$view->assign('policy', $policy);
 		$view->assign('empty_message', $this->empty_message);
 		$ret = $view->render();
 		return trim($ret);
 	}
 	
-	protected function render_items($items, $policy) {
+	protected function render_items($page_data, $items, $policy) {
 		$ret = array();
 		$i = 1;
 		$c = count($items);
