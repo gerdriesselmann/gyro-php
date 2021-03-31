@@ -10,7 +10,7 @@ $page_data->head->title = $title;
 $page_data->breadcrumb = WidgetBreadcrumb::output(
 	array(
 		$instance,
-		tr('Delete', 'deletedialog')
+		GyroString::escape(tr('Delete', 'deletedialog'))
 	)
 );
 ?>

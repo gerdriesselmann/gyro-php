@@ -4,7 +4,7 @@ $page_data->head->title = $title;
 $page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
 
 $page_data->breadcrumb = WidgetBreadcrumb::output(
-	$title
+	GyroString::escape($title)
 );
 ?>
 <h1><?=$title?></h1>
