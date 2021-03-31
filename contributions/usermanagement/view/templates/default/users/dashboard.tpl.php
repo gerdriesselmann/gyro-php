@@ -3,7 +3,7 @@ $page_title = tr('Welcome %name', 'users', array('%name' => $current_user->name)
 $page_data->head->robots_index = ROBOTS_NOINDEX;
 $page_data->head->title = $page_title; 
 $page_data->breadcrumb = WidgetBreadcrumb::output(
-	tr('Your personal site', 'users')
+	GyroString::escape(tr('Your personal site', 'users'))
 );
 ?>
 

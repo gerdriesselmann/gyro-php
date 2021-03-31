@@ -14,7 +14,7 @@ class WidgetActionLink implements IWidget {
 	/**
 	 * @param string|ISelfDescribing $text The content of the anchor to create. Gets escaped if instance of ISelfDescribing, else it is printed as given
 	 * @param string $action The action to retrieve URL for
-	 * @param array|null $params The parameters for aboev action
+	 * @param array|null $params The parameters for above action
 	 * @param array $html_attrs Attributes to pass to HTML anchor. If a gyro_query is passed, this is added as query to the generated action URL
 	 * @return string
 	 */
