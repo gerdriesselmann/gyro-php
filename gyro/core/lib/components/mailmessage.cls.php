@@ -262,7 +262,7 @@ class MailMessage {
 		);
 		$temp = preg_replace($find, '**!HEADERINJECTION!**', $value);
 		if (strpos($temp, '**!HEADERINJECTION!**') !== false) {
-			$err->append('%type: "To:", "Bcc:", "Subject:" and other reserved words are not allowed.', 'core', array('%type' => $type));
+			$err->append(tr('%type: "To:", "Bcc:", "Subject:" and other reserved words are not allowed.', 'core', array('%type' => $type)));
 		}
 
 		return $err;
