@@ -406,7 +406,7 @@ class ParameterizedRoute extends RouteBase {
 						$path = $this->replace_path_variable($path, $v, $params->$func_name());
 					}
 				} else {
-					$path = $this->replace_path_variable($path, $v, $params->$v);
+					$path = $this->replace_path_variable($path, $v, $params->$v ?? null);
 				}
 			}
 		} else if (is_array($params)) {
