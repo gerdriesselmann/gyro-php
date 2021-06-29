@@ -168,6 +168,14 @@ class RouterBase implements IEventSink {
 		foreach ($this->controllers as $controller) {
 			$ret->merge($controller->on_event($name, $params, $result));
 		}
+		if ($name == 'debugblock' && $params == 'properties') {
+			$result['Route'] = $this->current_route ? $this->current_route->identify() : '-';
+			$controllers = array_map(
+				function($c) { return get_class($c); },
+				$this->controllers
+			);
+			$result['Controllers'] = implode(', ', $controllers);
+		}
 		return $ret;
 	}
 }
