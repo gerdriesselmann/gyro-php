@@ -93,12 +93,25 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 	 * Create a block for an attachment 
 	 */
 	protected function create_attachment_block(MailAttachment $attachment) {
+		$content_disposition = $attachment->is_inlined()
+			? 'inline'
+			: 'attachment; filename=' . $this->encode_attachment_name($attachment->get_name());
+		$content_disposition_header = array(
+			'Content-Disposition' => $content_disposition
+		);
 		return $this->create_block(
-			$attachment->get_mime_type() . '; name=' . ConverterFactory::encode($attachment->get_name(), ConverterFactory::MIMEHEADER),
+			$attachment->get_mime_type() . '; name=' . $this->encode_attachment_name($attachment->get_name()),
 			'base64',
-			chunk_split(base64_encode($attachment->get_data()))
-		);		
-	}	
+			chunk_split(base64_encode($attachment->get_data())),
+			$content_disposition_header
+		);
+	}
+
+	private function encode_attachment_name($name) {
+		$ret = ConverterFactory::encode($name, ConverterFactory::MIMEHEADER);
+		$ret = '"' . $ret . '"';
+		return $ret;
+	}
 	
 	/**
 	 * Create a block in the body 
@@ -114,26 +127,13 @@ class AttachmentsBuilder implements IMailMessageBuilder {
 		$ret = Arr::implode("\n", $header, ': ') . "\n\n" . $content;
 		return $ret;
 	}
-	
-	/**
-	 * Figure out content mime type of file
-	 * 
-	 * @param string Filename
-	 * @return string Mime Type
-	 */	
-	private function get_attachment_mime($file) {
-		if (function_exists('mime_content_type')) {
-			return mime_content_type($file);
-		}
-		return 'application/octet-stream';
-	}	
 
 	/**
 	 * Return additional mail headers
 	 * 
 	 * @attention Content-Type header is already added
 	 * 
-	 * @return $headers Associative array with header name as key
+	 * @return array Associative array with header name as key
 	 */
 	public function get_additional_headers() {
 		return array();
