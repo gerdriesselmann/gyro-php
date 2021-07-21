@@ -38,7 +38,7 @@ class TemplatedBlock extends BlockBase {
 	 * @return IView
 	 */
 	protected function create_view($template) {
-		$view = ViewFactory::create_view(IViewFactory::MESSAGE, $template, $page_data);
+		$view = ViewFactory::create_view(IViewFactory::MESSAGE, $template);
 		$view->assign('block', $this);
 		$this->configure_view($view);					
 		return $view;

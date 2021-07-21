@@ -179,7 +179,7 @@ class CommandBase implements ICommand {
 			$arr = array();
 			foreach($params as $key => $value) {
 				$arr[] = $key;
-				$arr[] = $value;
+				$arr[] = is_array($value) ? serialize($value) : $value;
 			}
 			$ret = implode(GYRO_COMMAND_SEP, $arr);
 		}

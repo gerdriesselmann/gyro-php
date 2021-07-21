@@ -18,8 +18,8 @@ require_once dirname(__FILE__) . '/selector.php';
 require_once dirname(__FILE__) . '/frames.php';
 require_once dirname(__FILE__) . '/user_agent.php';
 if (! SimpleTest::getParsers()) {
-    SimpleTest::setParsers(array(new SimpleTidyPageBuilder(), new SimplePHPPageBuilder()));
-    //SimpleTest::setParsers(array(new SimplePHPPageBuilder()));
+    SimpleTest::setParsers(array(new SimpleTidyPageBuilder(), new SimplePhpPageBuilder()));
+    //SimpleTest::setParsers(array(new SimplePhpPageBuilder()));
 }
 /**#@-*/
 
@@ -216,7 +216,7 @@ class SimpleBrowser
      *    Get the HTML parser to use. Can be overridden by
      *    setParser. Otherwise scans through the available parsers and
      *    uses the first one which is available.
-     *    @return object SimplePHPPageBuilder or SimpleTidyPageBuilder
+     *    @return object SimplePhpPageBuilder or SimpleTidyPageBuilder
      */
     protected function getParser()
     {

@@ -109,7 +109,7 @@ class Sorter implements IDBQueryModifier {
 		}
 
 		$this->sorter_data['columns'] = $arr_colums;
-		$this->sorter_data['current_column'] = $current_column;
+		$this->sorter_data['current_column'] = $current_column ?? null;
 		$view->assign('sorter_data', $this->sorter_data);
 	}
 	

@@ -64,7 +64,7 @@ class GyroJSON implements IConverter {
 		include_once 'Services/JSON.php';
 		if (class_exists('Services_JSON')) {
 			$json = new Services_JSON();
-			return $json->encode($str);
+			return $json->encode($data);
 		}
 		throw new Exception(tr('No JSON implementation found', 'ajax'));		
 	}

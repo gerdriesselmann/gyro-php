@@ -10,4 +10,4 @@
  *   compatabile with Apache web server (and Lighttpd, eventually) only.
  */
 
-Load::enable_module('console', 'systemupdate');
+Load::enable_module(['console', 'systemupdate']);

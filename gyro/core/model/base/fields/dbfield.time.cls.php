@@ -24,7 +24,7 @@ class DBFieldTime extends DBFieldDateTime {
 	 * @return string
 	 */
 	protected function format_date_value($value) {
-		return $this->quote(GyroDate::mysql_time($value, false));	
+		return $this->quote(GyroDate::mysql_time($value));
 	}	
 
 	/**

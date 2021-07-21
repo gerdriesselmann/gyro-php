@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/idbsqlbuilder.cls.php';
  * @author Gerd Riesselmann
  * @ingroup Interfaces
  */
-interface IDBWhere extends IDBSQLBuilder {
+interface IDBWhere extends IDBSqlBuilder {
 	const LOGIC_AND = 'AND';
 	const LOGIC_OR = 'OR';
 

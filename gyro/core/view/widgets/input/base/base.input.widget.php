@@ -76,7 +76,7 @@ class InputWidgetBaseBase implements IWidget {
  	 * Create default attribute array
 	 */
 	protected function create_default_attributes($params, $name, $policy) {
-		$id = strtr(arr::get_item($params, 'id', $name), '[]', '__');
+		$id = strtr(Arr::get_item($params, 'id', $name), '[]', '__');
 		$attrs = array(
 			'id' => $id
 		);
@@ -110,7 +110,7 @@ class InputWidgetBaseBase implements IWidget {
 		$lbl_class = Arr::get_item($params, 'label:class', '');
 		$label = '';
 		if ($title) {
-			$notes = Cast::int(arr::get_item($params, 'notes', 0));
+			$notes = Cast::int(Arr::get_item($params, 'notes', 0));
 			if ($notes > 0) {
 				$title .= ' '. html::span(str_repeat('*', $notes), 'notes');
 			}
