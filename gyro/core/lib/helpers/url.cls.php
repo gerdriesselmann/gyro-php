@@ -174,7 +174,7 @@ class Url {
 		$arrItems = explode($sep, $query);
 		foreach($arrItems as $query_item) {
 			$arr = explode('=', $query_item, 2);
-			$pname = GyroString::convert(urldecode($arr[0]));
+			$pname = GyroString::convert($arr[0]);
 			$pvalue = (count($arr) > 1) ? $arr[1] : '';
 
 			$has_assignment = GyroString::contains($query_item, '=');

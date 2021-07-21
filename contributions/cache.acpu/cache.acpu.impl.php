@@ -164,7 +164,7 @@ class CacheACPuImpl implements ICachePersister {
 	}
 
 	private function clear_by_prefix($prefix) {
-		$regex_escaped = preg_quote($prefix);
+		$regex_escaped = preg_quote($prefix, '/');
 		$it = new APCUIterator("/^$regex_escaped.*/");
 		apcu_delete($it);
 	}

@@ -281,6 +281,7 @@ class MailAttachment {
 	private $name;
 	private $data;
 	private $mime_type;
+	private $inlined = false;
 
 	public function get_mime_type() {
 		$ret = 'application/octet-stream';
@@ -315,27 +316,58 @@ class MailAttachment {
 			return $this->data;
 		}
 	}
+	
+	public function is_inlined() {
+		return $this->inlined;	
+	}
 
-	public static function from_data($data, $mime_type, $name) {
+	/**
+	 * Create mail attachment from data
+	 * 
+	 * @param string $data Binary data represented as string
+	 * @param string $mime_type Mime type of attachment
+	 * @param string $name Name of attachment (will be filename when downloaded)
+	 * @param boolean $inlined If true, Content-Disposition will be inlined, else attachment
+	 * @return MailAttachment
+	 */
+	public static function from_data($data, $mime_type, $name, $inlined = false) {
 		$ret = new MailAttachment();
 		$ret->data = $data;
 		$ret->mime_type = $mime_type;
 		$ret->name = $name;
+		$ret->inlined = $inlined;
 		return $ret;
 	}
 
-	public static function from_file($filename, $name = '') {
+	/**
+	 * Create mail attachment from file
+	 * 
+	 * @param string $filename The file name of attachment
+	 * @param string $name An option name, set to filename if empty
+	 * @param boolean $inlined If true, Content-Disposition will be inlined, else attachment
+	 * @return MailAttachment
+	 */
+	public static function from_file($filename, $name = '', $inlined = false) {
 		$ret = new MailAttachment();
 		$ret->filename = $filename;
 		$ret->name = $name ? $name : $filename;
+		$ret->inlined = $inlined;
 		return $ret;
 	}
 
-	public static function from_binary(DAOBinaries $binary) {
+	/**
+	 * Create mail attachment from DAOBinaries
+	 * 
+	 * @param DAOBinaries $binary
+	 * @param boolean $inlined If true, Content-Disposition will be inlined, else attachment
+	 * @return MailAttachment
+	 */
+	public static function from_binary(DAOBinaries $binary, $inlined = false) {
 		$ret = new MailAttachment();
 		$ret->data = $binary->get_data();
 		$ret->name = $binary->name;
 		$ret->mime_type = $binary->mimetype;
+		$ret->inlined = $inlined;
 		return $ret;
 	}
 }
