@@ -221,4 +221,13 @@ class RequestInfo {
 		$translated_name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
 		return trim(Arr::get_item($this->data, $translated_name, ''));
 	}
+
+	/**
+	 * Referer as string
+	 *
+	 * @return string
+	 */
+	public function referer() {
+		return Arr::get_item($this->data, 'HTTP_REFERER', '');
+	}
 }
