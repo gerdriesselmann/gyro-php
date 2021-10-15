@@ -15,7 +15,7 @@ class Referer extends Url {
 	 * @return Referer
 	 */
 	public static function current() {
-		$referer = Arr::get_item($_SERVER, 'HTTP_REFERER', '');
+		$referer = RequestInfo::current()->referer();
 		return new Referer($referer);
 	}
 	
