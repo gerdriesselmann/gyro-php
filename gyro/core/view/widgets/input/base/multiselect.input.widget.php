@@ -114,7 +114,8 @@ class InputWidgetMultiselectBase extends InputWidgetBase {
 		if (in_array($key, $values)) {
 			$attrs['checked'] = 'checked';
 		}
-		unset($attrs['id']);
+		$attrs['id'] = GyroString::plain_ascii($name . '-' . $key);
+		//unset($attrs['id']);
 		$checkbox_html = html::input('checkbox', $name, $attrs);
 		$checkbox_html .= ' ' . $display;
 		$ret .= html::label($checkbox_html, '', 'spanning ' . $lbl_class);
