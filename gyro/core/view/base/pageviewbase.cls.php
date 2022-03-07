@@ -177,10 +177,11 @@ class PageViewBase extends ViewBase {
 			$this->page_data->get_cache_manager()->set_cache_header_manager($cache_header_manager);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
+			// Cache key is path + query, so there cannot be unused query parameters left
+			$this->page_data->get_get()->mark_all_as_used();
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
 				$ret = $cache->get_content_compressed();
-			}
-			else {
+			} else {
 				$ret = $cache->get_content_plain();
 			}
 		}
