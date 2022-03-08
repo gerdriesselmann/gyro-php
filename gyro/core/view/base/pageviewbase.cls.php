@@ -149,7 +149,8 @@ class PageViewBase extends ViewBase {
 			'status' => $this->page_data->status_code,
 			'in_history' => $this->page_data->in_history,
 			'headers' => $headers,
-			'cacheheadermanager' => $this->page_data->get_cache_manager()->get_cache_header_manager()
+			'cacheheadermanager' => $this->page_data->get_cache_manager()->get_cache_header_manager(),
+			'used_get_params' => $this->page_data->get_get()->get_used()
 		);
 		$gziped = Common::flag_is_set($policy, self::POLICY_GZIP);
 		Cache::store($cache_key, $content, $lifetime, $cache_data, $gziped);
@@ -177,8 +178,13 @@ class PageViewBase extends ViewBase {
 			$this->page_data->get_cache_manager()->set_cache_header_manager($cache_header_manager);
 			$this->page_data->status_code = Arr::get_item($cache_data, 'status', '');
 			$this->page_data->in_history = Arr::get_item($cache_data, 'in_history', true);
-			// Cache key is path + query, so there cannot be unused query parameters left
-			$this->page_data->get_get()->mark_all_as_used();
+			// Mark GET params that were used when building cache as used
+			$used_params = Arr::get_item($cache_data, 'used_get_params', array());
+			$get = $this->page_data->get_get();
+			foreach (Arr::force($used_params, false) as $param) {
+				// This marks param as used
+				$get->get_item($param);
+			}
 			if (Common::flag_is_set($policy, self::POLICY_GZIP)) {
 				$ret = $cache->get_content_compressed();
 			} else {
