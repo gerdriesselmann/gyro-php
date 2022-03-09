@@ -112,5 +112,15 @@ class TracedArray {
 		}
 		$url->redirect($permanent ? Url::PERMANENT : Url::TEMPORARY);
 		exit();
-	}		 
+	}
+
+	/**
+	 * Returns name of all used keys in this array. Used are keys that were used in the
+	 * get_item() function
+	 *
+	 * @return array
+	 */
+	public function get_used() {
+		return array_keys($this->trace);
+	}
 }

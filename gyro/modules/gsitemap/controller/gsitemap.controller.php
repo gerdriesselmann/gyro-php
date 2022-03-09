@@ -40,10 +40,7 @@ class GsitemapController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
  	public function action_gsitemap_index($page_data) {
-		$page_data->head->robots_index = ROBOTS_NOINDEX;
- 		$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/index', $page_data);
- 		$this->gsitemap_index($page_data, $view);
- 		$view->render();
+	    $this->handle_gsitemap_site_or_index($page_data);
  	}
  	
  	/**
@@ -53,19 +50,35 @@ class GsitemapController extends ControllerBase {
  	 * @return mixed
  	 */
 	public function action_gsitemap_site($page_data) {
+		$this->handle_gsitemap_site_or_index($page_data);
+ 	}
+
+ 	/**
+ 	 * Show a sitemap site
+ 	 *
+ 	 * @param PageData $page_data
+ 	 * @return mixed
+ 	 */
+	private function handle_gsitemap_site_or_index($page_data) {
 		$page_data->head->robots_index = ROBOTS_NOINDEX;
 		// Somehat hackish. Let two routes work on same path
-		if ($page_data->get_get()->count() == 0) {
- 			return $this->action_gsitemap_index($page_data); 
+		$is_sitemap = $page_data->get_get()->contains('i');
+		if (!$is_sitemap) {
+			// Sitemap index
+			$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/index', $page_data);
+			$this->gsitemap_index($page_data, $view);
+			$view->render();
+ 			return self::OK;
+		} else {
+			$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/site', $page_data);
+			$ret = $this->gsitemap_site($page_data, $view);
+			if ($ret === self::OK) {
+				$view->render();
+			}
+			return $ret;
 		}
-		$view = ViewFactory::create_view(IViewFactory::XML, 'core::gsitemap/site', $page_data);
-		$ret = $this->gsitemap_site($page_data, $view);
- 		if ($ret === self::OK) {
- 			$view->render();
- 		}
-		return $ret;
- 	}  
- 	
+ 	}
+
 	/**
 	 * Show sitemap index as HTML
 	 *
@@ -95,7 +108,7 @@ class GsitemapController extends ControllerBase {
  		}
   		return $ret;
 	}
-	
+
 	protected function collect_models() {
 		$ret = array();
 		$models = array();
@@ -123,7 +136,7 @@ class GsitemapController extends ControllerBase {
  		EventSource::Instance()->invoke_event('gsitemap_index', null, $arrret);
  		$view->assign('files', $arrret); 
  	}
- 
+
  	/**
  	 * Show a sitemap site
  	 *
