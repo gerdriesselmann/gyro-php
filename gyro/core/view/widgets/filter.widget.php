@@ -30,13 +30,13 @@ class WidgetFilter implements IWidget {
 		$groups = Arr::force(Arr::get_item($this->data, 'filter_groups', array()));
 		$ret = '';
 		foreach($groups as $group) {
-			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'core::widgets/filter.meta');
+			$view = ViewFactory::create_view(IViewFactory::MESSAGE, $group->get_meta_template_name());
 			$view->assign('filter_group', $group);
 			$view->assign('page_data', $page_data);
 			$view->assign('policy', $policy);
 			$view->render(); // No output!
 			
-			$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'core::widgets/filter');
+			$view = ViewFactory::create_view(IViewFactory::MESSAGE, $group->get_template_name());
 			$view->assign('filter_group', $group);
 			$view->assign('filter_url_builder', $builder);
 			$view->assign('page_data', $page_data);
