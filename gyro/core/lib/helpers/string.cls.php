@@ -269,11 +269,11 @@ class GyroString {
 		return self::$impl->length($val);
 	}
 
-	public static function strpos($haystack, $needle, $offset = NULL) {
+	public static function strpos($haystack, $needle, $offset = 0) {
 		return self::$impl->strpos($haystack, $needle, $offset);
 	}
 
-	public static function stripos($haystack, $needle, $offset = NULL) {
+	public static function stripos($haystack, $needle, $offset = 0) {
 		return self::$impl->stripos($haystack, $needle, $offset);
 	}
 

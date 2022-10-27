@@ -24,7 +24,12 @@ class DBWhere implements IDBWhere {
 	public function __construct(IDBTable $table, $column, $operator = null, $value = null, $mode = IDBWhere::LOGIC_AND) {
 		$this->table = $table;
 		$this->column = $column;
-		$this->operator = strtoupper(trim($operator)); // $operator is ASCII
+		if (is_string($operator)) {
+			$this->operator = strtoupper(trim($operator)); // $operator is ASCII
+		} else {
+			$this->operator = '';
+		}
+
 		$this->value = $value;
 		$this->logical_operator = $mode;
 	}

@@ -33,7 +33,7 @@ class CKEditor {
 	/**
 	 * Create a new config
 	 * 
-	 * @param sring $name
+	 * @param string $name
 	 * @param string $template Name of config to use as template
 	 * @return CKEditorConfig
 	 */

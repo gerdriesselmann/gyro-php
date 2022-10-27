@@ -50,7 +50,7 @@ class GyroDate {
 	 * Static. Converts string retrieved from PHP to date
 	 *
 	 * @param String Anything that possible can be interpreted as a date
-	 * @return date
+	 * @return int
 	 */
 	public static function datetime($string) {
 		if (is_int($string)) {

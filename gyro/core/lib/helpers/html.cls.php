@@ -442,7 +442,9 @@ class html
 	 * @return string Empty string if passed value is empty
 	 */
 	public static function attr($name, $value) {
-		$value = str_replace("\n", ' ', $value);
+		if (is_string($value)) {
+			$value = str_replace("\n", ' ', $value);
+		}
 		if ($value === self::EMPTY_ATTRIBUTE) {
 			$value = '';
 		} else if (empty($value) && strval($value) !== '0') {

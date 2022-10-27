@@ -31,28 +31,28 @@ interface ICacheManager {
 	/**
 	 * Returns the datetime this cache has been created
 	 *
-	 * @return timestamp
+	 * @return int
 	 */
 	public function get_creation_datetime();
 	
 	/**
 	 * Sets the datetime this cache has been created
 	 *
-	 * @param timestamp $datetime
+	 * @param int $datetime
 	 */
 	public function set_creation_datetime($datetime);	
 	
 	/**
 	 * Returns the datetime this cache expires
 	 *
-	 * @return timestamp
+	 * @return int
 	 */
 	public function get_expiration_datetime();
 	
 	/**
 	 * Sets the expiration datetime this cache expires
 	 *
-	 * @param timestamp $datetime
+	 * @param int $datetime
 	 */
 	public function set_expiration_datetime($datetime);
 	

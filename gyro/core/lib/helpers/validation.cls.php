@@ -38,23 +38,26 @@ class Validation {
 	 */
 	public static function is_domain($value) {
 		$ret = true;
+		$ret = $ret && is_string($value);
 		$ret = $ret && (strlen($value) <= 255);
-		
-		$elements = explode('.', $value);
-		$ret = $ret && (count($elements) > 1);
 
-		// Check elements
-		foreach($elements as $e) {
-			$l = strlen($e);
-			$ret = $ret && ($l > 0);
-			$ret = $ret && ($l <= 63);
-			$ret = $ret && preg_match('|^[^@ ]+$|', $e);
-		}  
-		
-		// Check TLD
-		$tld = array_pop($elements);
-		$ret = $ret && !preg_match('|^\d+$|', $tld); // TLD not only numbers 
-		
+		if ($ret) {
+			$elements = explode('.', $value);
+			$ret = $ret && (count($elements) > 1);
+
+			// Check elements
+			foreach ($elements as $e) {
+				$l = strlen($e);
+				$ret = $ret && ($l > 0);
+				$ret = $ret && ($l <= 63);
+				$ret = $ret && preg_match('|^[^@ ]+$|', $e);
+			}
+
+			// Check TLD
+			$tld = array_pop($elements);
+			$ret = $ret && !preg_match('|^\d+$|', $tld); // TLD not only numbers
+		}
+
 		return $ret;
 	}
 	

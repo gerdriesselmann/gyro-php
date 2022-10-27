@@ -93,16 +93,23 @@ class DBDriverMysql implements IDBDriver {
 			if (mysqli_connect_errno()) {
 				$err->merge($this->conn->connect_error);
 			}
+			$charset = GyroLocale::get_charset();
+			$is_utf8 = $charset == "UTF-8";
+			if ($is_utf8) {
+				$charset_mysql = "utf8mb4";
+			} else {
+				$charset_mysql = $charset;
+			}
 			if ($err->is_ok()) {
-				$this->conn->set_charset(GyroLocale::get_charset());
+				$this->conn->set_charset($charset_mysql);
 				if ($this->type == self::PRIMARY) {
 					$err->merge($this->make_default());
 				}
 			}
 			if ($err->is_ok()) {
 				// We are connected
-				if (GyroLocale::get_charset() == 'UTF-8') {
-					$this->execute("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+				if ($is_utf8) {
+					$this->execute("SET NAMES 'utf8mb4' COLLATE 'utf8mb4_general_ci'");
 				}
 				//$this->execute("SET sql_mode=STRICT_ALL_TABLES");
 				$this->execute("SET sql_mode='TRADITIONAL'");

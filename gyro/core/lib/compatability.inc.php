@@ -56,7 +56,7 @@ if (!function_exists('memory_get_peak_usage')) {
  * @param string $path
  * @param int $flags
  */
-function gyro_glob($path, $flags = null) {
+function gyro_glob($path, $flags = 0) {
 	$ret = glob($path, $flags);
 	if ($ret === false) {
 		$ret = array();

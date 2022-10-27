@@ -7,8 +7,8 @@ class BaseCacheHeaderManager implements ICacheHeaderManager {
 	 * Send cache headers
 	 * 
 	 * @param string $content
-	 * @param timestamp $expirationdate
-	 * @param timestamp $lastmodifieddate
+	 * @param int $expirationdate A timestamp
+	 * @param int $lastmodifieddate A timestamp
 	 */
 	public function send_headers(&$content, $expirationdate, $lastmodifieddate)	{
 		// POST, DELETE etc should not be cached
