@@ -2,7 +2,7 @@
 if (count($actions) || count($commands)) {
 	$out = '';
 	$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/menu/items');
-	$view->assign('form_validation', $form_validation);
+	$view->assign('form_validation', isset($form_validation) ? $form_validation : '');
 
 	$view->assign('actions', $actions);
 	$view->assign('class', 'actions');
@@ -14,6 +14,6 @@ if (count($actions) || count($commands)) {
 
 	$view = ViewFactory::create_view(IViewFactory::MESSAGE, 'widgets/menu/group');
 	$view->assign('content', $out);
-	$view->assign('css_class', $css_class);
+	$view->assign('css_class', isset($css_class) ? $css_class : '');
 	print $view->render();
 }
