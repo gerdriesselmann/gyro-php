@@ -49,7 +49,7 @@ class GyroDate {
 	/**
 	 * Static. Converts string retrieved from PHP to date
 	 *
-	 * @param String Anything that possible can be interpreted as a date
+	 * @param mixed $string Anything that possible can be interpreted as a date
 	 * @return int
 	 */
 	public static function datetime($string) {
@@ -183,11 +183,12 @@ class GyroDate {
 	/**
 	 * Static. Converts timestamp to DateTime string that respects locale settings
 	 *
-	 * @param int Timestamp
+	 * @param int $date Timestamp
 	 * @param bool $includetime True to include time
 	 * @return string
 	 */
 	public static function local_date($date, $includetime = true) {
+		$date = self::datetime($date);
 		$format = '';
 		switch (self::$local_date_order) {
 			case self::DAY_MONTH_YEAR:
