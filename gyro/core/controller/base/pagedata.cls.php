@@ -180,7 +180,8 @@ class PageData {
 			$tmp = array();
 			foreach($file_data as $key => $value) {
 				if (is_array($value)) {
-					array_walk_recursive($value, array($this, 'callback_transform_files'), $key);
+					$callback = array($this, 'callback_transform_files');
+					array_walk_recursive($value, $callback, $key);
 					$value = Arr::force_keys_to_string($value);
 					$tmp = array_merge_recursive($tmp, $value);
 				}
@@ -194,7 +195,7 @@ class PageData {
 		return array_merge_recursive($arr, $ret);		
 	}
 	
-	private function callback_transform_files(&$item, &$key, $userdata = false) {
+	private function callback_transform_files(&$item, $key, $userdata = false) {
 		$item = array($userdata => $item);
 	}
 	
