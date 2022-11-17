@@ -254,7 +254,7 @@ class HeadData implements IRenderer {
     	$ret .= html::tag('title', GyroString::escape($title)) . "\n";
     	if ($description) {
     		$description = GyroString::preg_replace('|\s\s+|s', ' ', $description);
-    		$ret .= html::meta('description', GyroString::substr_word($description, 0, 200)) . "\n";
+    		$ret .= html::meta('description', $description) . "\n";
     	}
     	if ($keywords) {
     		$ret .= html::meta('keywords', $keywords) . "\n";
