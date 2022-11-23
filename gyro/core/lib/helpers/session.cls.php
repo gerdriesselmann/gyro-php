@@ -143,7 +143,11 @@ class Session {
 				$_SESSION = $backup;
 			}
 			else {
-				session_regenerate_id(true);
+				if (self::is_started()) {
+					session_regenerate_id(true);
+				} else {
+					self::do_start();
+				}
 			}
 		}
 	}
