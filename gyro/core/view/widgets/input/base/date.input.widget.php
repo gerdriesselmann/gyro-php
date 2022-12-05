@@ -12,7 +12,7 @@ class InputWidgetDateBase extends InputWidgetBase {
 	protected function extend_attributes(&$attrs, $params, $name, $title, $value, $policy) {
 		parent::extend_attributes($attrs, $params, $name, $title, $value, $policy);
 		if ($value) {
-			$value = GyroDate::local_date($value, false);
+			$value = GyroDate::local_date(GyroDate::datetime($value), false);
 		}
 		$attrs['value'] = $value;
 		$attrs['class'] = trim(Arr::get_item($attrs, 'class', '') . ' date');

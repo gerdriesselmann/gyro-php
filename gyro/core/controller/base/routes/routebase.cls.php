@@ -58,9 +58,12 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	 */
 	public static function split_route_id($route_id) {
 		$tmp = explode('::', $route_id);
+		while (count($tmp) < 2) {
+			$tmp[] = '';
+		}
 		return array(
-			'action' => array_pop($tmp),
-			'controller' => array_pop($tmp)
+			'action' => $tmp[0],
+			'controller' => $tmp[1]
 		);
 	}
 

@@ -27,7 +27,7 @@ class RequestInfo {
 	 * @return RequestInfo
 	 */
 	public static function current() {
-		if (self::$_current === null) {
+		if (is_null(self::$_current)) {
 			self::$_current = new RequestInfo($_SERVER);
 		}
 		return clone(self::$_current);

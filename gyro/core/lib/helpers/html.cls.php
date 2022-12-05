@@ -31,9 +31,13 @@ class html
 	 */
 	public static function a($text, $href, $descr, $attrs = array()) {
 		// We need path here, but cannot rely on URL class, since href may be
-		// horribly broken 
+		// horribly broken
+		if (is_null($href)) {
+			$href = '';
+		}
+
 		$url = str_replace(Config::get_url(Config::URL_SERVER), "", $href);
-		$url = str_replace(Config::get_url(Config::URL_SERVER_SAFE), "", $href);
+		$url = str_replace(Config::get_url(Config::URL_SERVER_SAFE), "", $url);
 
 		if (Url::current()->is_ancestor_of($url)) {
 	  		html::_appendClass($attrs, 'active');
@@ -442,7 +446,9 @@ class html
 	 * @return string Empty string if passed value is empty
 	 */
 	public static function attr($name, $value) {
-		$value = str_replace("\n", ' ', $value);
+		if (is_string($value)) {
+			$value = str_replace("\n", ' ', $value);
+		}
 		if ($value === self::EMPTY_ATTRIBUTE) {
 			$value = '';
 		} else if (empty($value) && strval($value) !== '0') {

@@ -91,7 +91,7 @@ class Session {
 			$cookie_params['httponly'] = false;
 		} 
 		$lifetime = $cookie_params['lifetime'];
-		$expire = empty($lifetime) ? null : time() + $lifetime;
+		$expire = empty($lifetime) ? 0 : time() + $lifetime;
 		setcookie(
 			session_name(), session_id(), $expire, 
 			$cookie_params['path'], $cookie_params['domain'], 
@@ -143,7 +143,11 @@ class Session {
 				$_SESSION = $backup;
 			}
 			else {
-				session_regenerate_id(true);
+				if (self::is_started()) {
+					session_regenerate_id(true);
+				} else {
+					self::do_start();
+				}
 			}
 		}
 	}

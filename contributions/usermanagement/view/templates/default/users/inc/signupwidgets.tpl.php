@@ -15,7 +15,7 @@
 <p><?php print tr('Please provide a valid e-mail, so we can send an activation key to you.', 'users'); ?></p>
 	
 <?php if ($feature_resend): ?>
-<p><?print WidgetActionLink::output(tr('Registered but got no e-mail?', 'users'), 'resend_registration_mail'); ?></p>
+<p><?php print WidgetActionLink::output(tr('Registered but got no e-mail?', 'users'), 'resend_registration_mail'); ?></p>
 <?php endif; ?>
 
 <?php if ($feature_tos): ?>

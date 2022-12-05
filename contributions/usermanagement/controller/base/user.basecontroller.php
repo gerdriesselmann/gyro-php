@@ -666,7 +666,8 @@ class UserBaseController extends ControllerBase {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
 			$post = $page_data->get_post();
-			$err->merge($this->process_confirm_data($post->get_array(), $post->get_item('tos'), $user, $validate_email_cmd));
+			$params = $post->get_array(); // Variable passed by ref since PHP 7
+			$err->merge($this->process_confirm_data($params, $post->get_item('tos'), $user, $validate_email_cmd));
 			
 			// Update
 			if ($err->is_ok()) {
@@ -694,15 +695,16 @@ class UserBaseController extends ControllerBase {
 		
 		// If email is not validated, validate it
 		$email = Arr::get_item($params, 'email', '');
-		if (!$user->confirmed_email() && ($user->email == $email) && Validation::is_email($email)) {
+		if ($user->email != $email && Validation::is_email($email)) {
 			// Send email validation request
-			$params = array(
+			unset($params['email']);
+			$params_validate = array(
 				'id_item' => $user->id,
 				'action' => 'validateemail',
 				'data' => $email
 			);
 			Session::push('user_confirm_mail_send', true);
-			$validate_email_cmd = CommandsFactory::create_command('confirmations', 'create', $params);
+			$validate_email_cmd = CommandsFactory::create_command('confirmations', 'create', $params_validate);
 		}
 		
  		return $err;

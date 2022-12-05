@@ -350,7 +350,9 @@ class WidgetPager implements IWidget {
 			}
 		}
 		
-		$policy = $policy | ($this->data['policy'] * 2048); // Compatability
+		if (isset($this->data['policy'])) {
+			$policy = $policy | ($this->data['policy'] * 2048); // Compatability
+		}
 		$calculator = Arr::get_item($this->data, 'calculator', Config::get_value(Config::PAGER_CALCULATOR));
 		if (!$calculator instanceof WidgetPagerCalculator) {
 			$calculator = new WidgetPagerCalculator();
