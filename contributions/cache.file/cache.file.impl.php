@@ -14,7 +14,7 @@ class CacheFileImpl implements ICachePersister {
 	public function __construct() {
 		$app_dir = GyroString::plain_ascii(Config::get_url(Config::URL_DOMAIN));
 		$cache_base_dir = Config::get_value(ConfigFileCache::CACHE_DIR);
-		$this->cache_dir = "${cache_base_dir}cache/$app_dir/";
+		$this->cache_dir = "{$cache_base_dir}cache/$app_dir/";
 	}
 
 	/**
