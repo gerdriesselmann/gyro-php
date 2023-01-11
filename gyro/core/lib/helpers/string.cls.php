@@ -35,6 +35,7 @@ class GyroString {
 	 * @return String The cleaned text
 	 */
 	public static function escape($val, $target = self::HTML) {
+		$val = Cast::string($val);
 		if ($target === self::HTML) {
 			return htmlentities(trim($val), ENT_QUOTES, GyroLocale::get_charset());
 		}
