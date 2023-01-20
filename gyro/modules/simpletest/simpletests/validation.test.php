@@ -53,11 +53,12 @@ class ValidationTest extends GyroUnitTestCase {
         	);
         	$true = in_array($chr, $allowed);
         	foreach($test as $t)
+				$title = str_replace('%', '%%', $t);
         		if ($true) { 
-        			$this->assertTrue(Validation::is_email($t), $t . ' should be considered a VALID email address, but was not');
+        			$this->assertTrue(Validation::is_email($t), $title . ' should be considered a VALID email address, but was not');
         		}
         		else {
-        			$this->assertFalse(Validation::is_email($t), $t . ' should be considered an INVALID email address, but was not');
+        			$this->assertFalse(Validation::is_email($t), $title . ' should be considered an INVALID email address, but was not');
         		}
         }		
 	}
