@@ -94,7 +94,18 @@ class Pager implements IDBQueryModifier {
 		
 		$this->pager_data['page'] = $page;
 		$this->pager_data['pages_total'] = $page_total;
-		
+
+		if ($page_total > 1) {
+			if ($page > 1) {
+				$this->pager_data['first_link'] = $this->get_url_for_page(1);
+				$this->pager_data['previous_link'] = $this->get_url_for_page($page - 1);
+			}
+			if ($page < $page_total) {
+				$this->pager_data['next_link'] = $this->get_url_for_page($page + 1);
+				$this->pager_data['last_link'] = $this->get_url_for_page($page_total);
+			}
+		}
+
 		$this->pager_data['start_record'] = ($page - 1) * $items_per_page;
 	} 
 		
@@ -116,27 +127,13 @@ class Pager implements IDBQueryModifier {
 	 * Generate pager realted data and set it on view
 	 */
 	public function prepare_view($view) {
-		$page = $this->pager_data['page'];
-		$page_total = $this->pager_data['pages_total'];		
-		if ($page_total > 1) {
-			if ($page > 1) {
-				$this->pager_data['first_link'] = $this->get_url_for_page(1);
-				$this->pager_data['previous_link'] = $this->get_url_for_page($page - 1);
-			}
-			if ($page < $page_total) {
-				$this->pager_data['next_link'] = $this->get_url_for_page($page + 1);
-				$this->pager_data['last_link'] = $this->get_url_for_page($page_total);
-			}
-		
-//			for($i = 1; $i <= $page_total; $i++) {
-//				$this->pager_data['pages'][] = array(
-//					'page' => $i,
-//					'url' => $this->get_url_for_page($i)
-//				);
-//			}
-		}
 		$view->assign('pager_data', $this->pager_data);
 	}
+
+
+    public function get_pager_data() {
+        return $this->pager_data;
+    }
 	
 	/**
 	 * Compute url for page
