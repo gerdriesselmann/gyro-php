@@ -114,7 +114,12 @@ class Url {
 	 * @param int $policy If set to HTTP_ONLY, it will only parse http/https URLs
 	 */
 	protected function parse($url, $fallback_host = '', $policy = self::HTTP_ONLY) {
-		$url = trim($url);
+		if (is_string($url)) {
+			$url = trim($url);
+		} else {
+			$url = '';
+		}
+
 		$data = array();
 		if (!empty($url)) {
 			$data = $this->do_parse_url($url, $fallback_host, $policy);
