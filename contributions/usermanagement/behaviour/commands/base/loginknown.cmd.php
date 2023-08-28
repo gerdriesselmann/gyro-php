@@ -26,8 +26,15 @@ class LoginknownUsersBaseCommand extends CommandChain {
 			AccessControl::set_current_aro($user);
 
 			if (Config::has_feature(ConfigUsermanagement::TRACE_LAST_LOGIN)) {
-				$cmd = CommandsFactory::create_command($user, 'update', array('lastlogindate' => time()));
-				$cmd->execute();
+				$hijack_enabled = Load::is_module_loaded('usermanagement.hijackaccount');
+				$update_last_login = $hijack_enabled
+					? !HijackAccount::is_hijacked()
+					: true;
+
+				if ($update_last_login) {
+					$cmd = CommandsFactory::create_command($user, 'update', array('lastlogindate' => time()));
+					$cmd->execute();
+				}
 			}
 			
 			Load::commands('generics/triggerevent');
