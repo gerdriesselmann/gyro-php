@@ -44,9 +44,19 @@ class HijackUsersCommand extends CommandComposite {
 		Session::push('current_user', clone($cur_user));
 		// Delete expired
 		$this->append(new MassDeleteCommand('hijackaccountsavedsessions', new DBCondition('expirationdate', '<', time())));
+
+		// Set cookie. Get secure settings from session cookie settings
+		$this->append(new CookieSetCommand(
+			HijackAccount::COOKIE_NAME, $saved_session_id, 0,
+			Session::cookies_are_http_only(), Session::cookies_are_secure()
+		));
+
+		Config::set_feature(ConfigUsermanagement::TRACE_LAST_LOGIN, false);
+
 		// Login as given user
 		$user = $this->get_instance();
 		$this->append(new LoginknownUsersCommand($user));
+
 		// Notify USer
 		if (
 			Config::has_feature(ConfigHijackAccounts::INTEGRATE_WITH_NOTIFICATIONS) &&
@@ -57,11 +67,6 @@ class HijackUsersCommand extends CommandComposite {
 				$this->append($notify);
 			}
 		}
-		// Set cookie. Get secure settings from session cookie settings
-		$this->append(new CookieSetCommand(
-			HijackAccount::COOKIE_NAME, $saved_session_id, 0,
-			Session::cookies_are_http_only(), Session::cookies_are_secure()
-		));
 		return $ret;
 	}
 	
