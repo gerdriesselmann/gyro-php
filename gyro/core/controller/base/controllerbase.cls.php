@@ -9,11 +9,11 @@ Load::directories('controller/base/routes');
  */ 
 class ControllerBase implements IController {
 	// Return values for action functions
-	const OK = 'ok';
-	const REDIRECT = 'redirect';
-	const NOT_FOUND = 'not found';
-	const ACCESS_DENIED = 'denied';
-	const INTERNAL_ERROR = 'internal error';
+	const OK = CONTROLLER_OK;
+	const REDIRECT = CONTROLLER_REDIRECT;
+	const NOT_FOUND = CONTROLLER_NOT_FOUND;
+	const ACCESS_DENIED = CONTROLLER_ACCESS_DENIED;
+	const INTERNAL_ERROR = CONTROLLER_INTERNAL_ERROR;
 	
 	/**
 	 * Return array of Route instances which are handled by this controller
