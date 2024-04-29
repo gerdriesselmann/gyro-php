@@ -14,7 +14,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
 
     public function __construct()
     {
-        $this->countries_from_api = json_decode(file_get_contents('https://restcountries.eu/rest/v2/all'), true);
+        $this->countries_from_api = json_decode(file_get_contents('https://restcountries.com/v2/all'), true);
     }
 
     public function test_values_of_countries_api()
@@ -68,7 +68,9 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
             foreach ($this->countries_from_api as $country) {
                 $dao_country = Countries::get($country['alpha2Code']);
 
-                if (!in_array($country['capital'], $capitals_to_ignore)) {
+                $capital = isset($country['capital']) ? $country['capital'] : null;
+
+                if (!in_array($capital, $capitals_to_ignore)) {
                     $this->assertEqual(
                         $dao_country->capital,
                         $country['capital'],
@@ -115,7 +117,8 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
         if ($this->countries_from_api) {
             foreach ($this->countries_from_api as $country) {
                 $dao_country = Countries::get($country['alpha2Code']);
-                $score = $this->calculation_of_difference_in_area($dao_country->area, $country['area']);
+                $area = isset($country['area']) ? $country['area'] : null;
+                $score = $this->calculation_of_difference_in_area($dao_country->area, $area);
 
                 $this->assertTrue(
                     $score <= $MAX_DIFFERENCE_PERCENT,
@@ -124,7 +127,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
                         $dao_country->area,
                         $dao_country->id,
                         $country['name'],
-                        $country['area'],
+                        $area,
                         $score
                     )
                 );
