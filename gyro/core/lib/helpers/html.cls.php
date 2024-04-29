@@ -631,11 +631,11 @@ class html
 	 * 
 	 * @since 0.5.1
 	 * 
-	 * @param array $rows Array of arrays of body cells. Cells must be already formated with either <td> or <th>
-	 * @param array $head Array of arrays of head cells. Cells must be already formated with either <td> or <th>
+	 * @param array $rows Array of arrays of body cells. Cells must be already formated with either &lt;td> or &lt;th>
+	 * @param array $head Array of arrays of head cells. Cells must be already formated with either &lt;td> or &lt;th>
 	 * @param string $summary Table summary
 	 * @param array $attr Additional html attributes
-	 * @param array $foot Array of arrays of foot cells. Cells must be already formated with either <td> or <th>
+	 * @param array $foot Array of arrays of foot cells. Cells must be already formated with either &lt;td> or &lt;th>
 	 *
 	 * @return string
 	 */
