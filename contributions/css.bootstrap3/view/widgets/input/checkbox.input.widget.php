@@ -12,7 +12,8 @@ class InputWidgetCheckbox extends InputWidgetCheckboxBase {
 	 */
 	protected function render_input($attrs, $params, $name, $title, $value, $policy) {
 		$lbl_class = Arr::get_item($params, 'label:class', '');
-		$lbl = html::label($title, $name, $lbl_class);
+		$id = Arr::get_item($params, 'id', $name);
+		$lbl = html::label($title, $id, $lbl_class);
 		return html::div(
 			html::input('hidden', $name, array('value' => 0)) .
 			html::input('checkbox', $name, $attrs) . ' ' .
