@@ -50,7 +50,7 @@ class StringMBString {
 	 * @return String converted string
 	 */
 	public function to_lower($val) {
-		return mb_strtolower($val, GyroLocale::get_charset());
+		return mb_strtolower($this->safeval($val), GyroLocale::get_charset());
 	}
 	
 	/**
@@ -61,14 +61,14 @@ class StringMBString {
 	 * @return String converted string
 	 */
 	public function to_upper($val) {
-		return mb_strtoupper($val, GyroLocale::get_charset());
+		return mb_strtoupper($this->safeval($val), GyroLocale::get_charset());
 	}
 	
 	/**
 	 * Character set aware strlen()
 	 */
 	public function length($val) {
-		return mb_strlen($val, GyroLocale::get_charset());
+		return mb_strlen($this->safeval($val), GyroLocale::get_charset());
 	}
 
 	public function strpos($haystack, $needle, $offset = NULL) {
@@ -80,7 +80,7 @@ class StringMBString {
 	}
 
 	public function strrpos($haystack, $needle) {
-		if ($haystack == '') {
+		if (is_null($haystack) || $haystack == '') {
 			return false;
 		}
 		if (PHP_VERSION_ID < 50200) {
@@ -96,9 +96,20 @@ class StringMBString {
 	 * Character set aware substr
 	 */
 	public function substr($val, $start = 0, $length = NULL) {
+		$safe_val = $this->safeval($val);
 		if ($length === NULL) {
-			$length = $this->length($val);
+			$length = $this->length($safe_val);
 		}
-		return mb_substr($val, $start, $length, GyroLocale::get_charset());
+		return mb_substr($safe_val, $start, $length, GyroLocale::get_charset());
+	}
+
+	/**
+	 * PHP 8.x does not allow NULL anymore, so clean possible wroing input
+	 *
+     * @param string $val
+	 * @return string
+	 */
+	private function safeval($val) {
+		return is_null($val) ? '' : $val;
 	}
 }
