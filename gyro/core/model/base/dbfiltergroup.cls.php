@@ -17,6 +17,8 @@ class DBFilterGroup implements IDBQueryModifier {
 	protected $group_key = ''; 
 	protected $key_default_filter = '';
 	protected $key_current_filter = '';
+    protected $template_name = 'core::widgets/filter';
+    protected $template_meta_name = 'core::widgets/filter.meta';
 	
 	/**
 	 * Constructor
@@ -140,4 +142,32 @@ class DBFilterGroup implements IDBQueryModifier {
 	public function apply($query) {
 		$query->apply_modifier($this->get_current_filter());
 	}
+
+    /**
+     * Change template name
+     */
+    public function set_template_name($template_name) {
+        $this->template_name = $template_name;
+    }
+    
+    /**
+     * Change meta template name
+     */
+    public function set_meta_template_name($template_meta_name) {
+        $this->template_meta_name = $template_meta_name;
+    }
+    
+    /**
+     * @return string : template name
+     */
+    public function get_template_name() {
+        return $this->template_name;
+    }
+    
+    /**
+     * @return string : meta template name
+     */
+    public function get_meta_template_name() {
+        return $this->template_meta_name;
+    }
 }
