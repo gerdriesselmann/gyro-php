@@ -27,6 +27,10 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # Below is for Apache 2:
 RewriteRule ^(.*)$ index.php?path=$1 [L,QSA,B]
+# If your app has GET parameters that contain URLs, you may need to explicitly allow %3F (escaped question mark)
+# since modern Apache forbids this for security reason (CVE-2024-38474).
+# See https://httpd.apache.org/docs/current/rewrite/flags.html#flag_unsafe_allow_3f
+# RewriteRule ^(.*)$ index.php?path=$1 [L,QSA,B,UnsafeAllow3F]
 # This is for Apache 1:
 #RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
 

@@ -148,9 +148,9 @@ class JCSSManager {
 				'<IfModule mod_expires.c>',
 				'ExpiresActive On',			
 				'<FilesMatch "^compressed">',
-				"ExpiresByType text/css 'access plus 2 years'",
-				"ExpiresByType text/javascript 'access plus 2 years'",
-				"ExpiresByType application/x-javascript 'access plus 2 years'",
+				"ExpiresByType text/css 'access plus 730 days'",
+				"ExpiresByType text/javascript 'access plus 730 days'",
+				"ExpiresByType application/x-javascript 'access plus 730 days'",
 				'</FilesMatch>',
 				'</IfModule>'				
 			); 
