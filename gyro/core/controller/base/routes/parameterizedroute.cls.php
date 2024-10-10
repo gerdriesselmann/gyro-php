@@ -357,7 +357,17 @@ class ParameterizedRoute extends RouteBase {
 	 * @return mixed
 	 */
 	protected function call_user_func_named($controller, $function, $page_data, $params) {
-		$reflect = new ReflectionMethod($controller, $function);
+		// Advanced controller may dynamically create action functions as closures like
+		// $this->action_do_it = function(PageData $page_data) {
+		//   // Render stuff here
+		// }
+		// We should be able to call them
+		$is_closure = isset($controller->$function);
+		if ($is_closure) {
+			$reflect = new ReflectionFunction($controller->$function);
+		} else {
+			$reflect = new ReflectionMethod($controller, $function);
+		}
     	$params['page_data'] = $page_data;
     	$real_params = array();
 	    foreach ($reflect->getParameters() as $i => $param) {
@@ -376,7 +386,11 @@ class ParameterizedRoute extends RouteBase {
             	throw new Exception('Call to function ' . $function . ' missing parameter ' . $pname);
         	}
 	    }
-    	return call_user_func_array(array($controller, $function), $real_params);
+
+		$invoke = $is_closure
+			? $controller->$function
+			: array($controller, $function);
+    	return call_user_func_array($invoke, $real_params);
 	}
 
 	// **************************************
