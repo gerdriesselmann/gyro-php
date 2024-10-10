@@ -492,7 +492,7 @@ class html
 	 * @return string
 	 */
 	public static function script_js($content) {
-		$content = "<!--// <![CDATA[\n" . $content . "\n// ]]> -->";
+		//$content = "<!--// <![CDATA[\n" . $content . "\n// ]]> -->";
 		$attrs = array(
 			'type' => 'text/javascript'
 		);
