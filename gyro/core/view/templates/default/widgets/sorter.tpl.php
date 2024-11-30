@@ -15,7 +15,7 @@
 			if ($sorter_loop_column['column'] != $sorter_current_column['column']) {
 				$sorter_loop_column_title = GyroString::escape($sorter_loop_column['title']);
 				$out[] = html::a(
-					GyroString::escape($sorter_loop_column_title),
+					$sorter_loop_column_title,
 					$sorter_loop_column['link'],
 					tr('Sort by %column', array('app', 'core'), array('%column' => $sorter_loop_column_title))
 				); 
