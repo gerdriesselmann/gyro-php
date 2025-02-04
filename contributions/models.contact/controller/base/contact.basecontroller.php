@@ -50,7 +50,9 @@ class ContactBaseController extends ControllerBase {
 		}
 
 		$view = ViewFactory::create_view(IViewFactory::CONTENT, 'contact/form', $page_data);
-		$formhandler->prepare_view($view);
+		$formhandler->prepare_view($view, array(
+			'subject' => $page_data->get_get()->get_item('subject')
+		));
 		$view->assign('show_sender_if_logged_in', $this->show_sender_if_logged_in());
 		$view->render(); 
  	}
