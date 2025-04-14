@@ -26,7 +26,7 @@ class HijackaccountAccessControl extends AccessControlBase {
 		switch ($action) {
 			case 'hijack':
 				// Admins are allowed to hijack
-				$ret = $this->to_result($user->has_role(USER_ROLE_ADMIN));
+				$ret = $this->to_result($user->has_role(USER_ROLE_ADMIN) && $item->is_active());
 				break;
 		}
 		return $ret;
