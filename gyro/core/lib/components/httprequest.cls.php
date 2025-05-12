@@ -34,6 +34,30 @@ class GyroHttpRequest {
 	}
 
 	/**
+	 * Stream request with given configuration
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param GyroHttpRequestConfig $config
+	 * @param Status|null $err Set to errors if any
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return string The content of the file or NULL, if file was not found
+	 * @throws Exception
+	 */
+	public static function stream($url, GyroHttpRequestConfig $config, $err = null, &$info = false) {
+		$option = $config->create_config_array();
+		$option[CURLOPT_HEADERFUNCTION] = function($curl, $header) {
+			header($header);
+			return strlen($header);
+		};
+		$option[CURLOPT_WRITEFUNCTION] = function($curl, $body)	{
+			echo $body;
+			return strlen($body);
+		};
+		$ret = self::execute_curl($url, $option, $config->timeout_sec, $err, $info);
+		return $ret;
+	}
+
+	/**
 	 * Read content from given url
 	 *
 	 * @param string|Url $url URL to invoke
@@ -200,6 +224,44 @@ class GyroHttpRequest {
 		return self::request($url, $config, $err, $info);
 	}
 
+
+	/**
+	 * Stream content from given url
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
+	 */
+	public static function stream_content($url, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$config = GyroHttpRequestConfig::get()->set_timeout_seconds($timeout);
+		self::configure_policy($config, $policy);
+		return self::stream($url, $config, $err, $info);
+	}
+
+	/**
+	 * Stream content from given url using authentication
+	 *
+	 * @param string|Url $url URL to invoke
+	 * @param string $user Username for authentication
+	 * @param string $pwd Password for authentication
+	 * @param Status $err Set to errors if any
+	 * @param int $timeout Timeout in seconds
+	 * @param int $policy Policy. Either NONE or SSL_NO_VERIFY
+	 * @param array|bool $info Set to CURL info array. See http://www.php.net/manual/de/function.curl-getinfo.php
+	 * @return String The content of the file or NULL, if file was not found
+	 * @throws Exception
+	 */
+	public static function stream_content_with_auth($url, $user, $pwd, $err = null, $timeout = 30, $policy = self::NONE, &$info = false) {
+		$config = GyroHttpRequestConfig::get()->set_timeout_seconds($timeout);
+		$config->set_auth($user, $pwd);
+		self::configure_policy($config, $policy);
+		return self::stream($url, $config, $err, $info);
+	}
+
 	/**
 	 * Starts a header-request and returns true if site exists otherwise returns false.
 	 *
@@ -230,6 +292,7 @@ class GyroHttpRequest {
 			$address = $url->build();
 		}
 		$options[CURLOPT_URL] = $address;
+		$options[CURLINFO_HEADER_OUT] = 1;
 		if ($timeout > 0) {
 			$options[CURLOPT_TIMEOUT] =  $timeout;
 		}
