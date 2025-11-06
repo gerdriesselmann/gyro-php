@@ -15,10 +15,17 @@ class Url {
 	
 	const ABSOLUTE = 'absolute';
 	const RELATIVE = 'relative';
-	
+
+	// Encode params, but decode first. Usually a good choice
 	const ENCODE_PARAMS = 'encode';
+	// Decode params only
 	const NO_ENCODE_PARAMS = 'encodenot';
+	// Leave params untouched
 	const PARAMS_UNCHANGED = 'unchanged';
+	// Encode params, do not decode first
+	const FORCE_ENCODE_PARAMS = 'forceencode';
+
+	const ENCODE_HOST = 'encode';
 
 	/**
 	 * When parsing, accept only HTTP URLs, and force so
@@ -945,6 +952,8 @@ class UrlQueryItem {
 				return str_replace(' ', '+', urlencode(urldecode($value)));
 			case Url::NO_ENCODE_PARAMS:
 				return GyroString::convert(urldecode($value));
+			case Url::FORCE_ENCODE_PARAMS:
+				return str_replace(' ', '+', urlencode($value));
 			case Url::PARAMS_UNCHANGED:
 			default:
 				// Do nothing
