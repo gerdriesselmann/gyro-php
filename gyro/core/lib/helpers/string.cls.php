@@ -10,8 +10,9 @@ define("STRING_SANITIZE_HTML", 2);
  * @ingroup Lib
  */
 class GyroString {
-	const HTML = 'html';
+    const HTML = 'html';
 	const XML = 'xml';
+    const NUMERICAL = 'numerical';
 	
 	public static $impl;
 	
@@ -28,17 +29,35 @@ class GyroString {
 		return htmlspecialchars(strip_tags($val), ENT_QUOTES, GyroLocale::get_charset());
 	}
 
-	/**
-	 * Static. Preprocesses a string to not contain "<", ">" and other special chars
-	 *
-	 * @param String The text to process
-	 * @return String The cleaned text
-	 */
+    /**
+     * Escapes a given string for a specific target context.
+     *
+     * If target is self::HTML, the string is escaped for HTML.
+     * If target is self::XML, the string is escaped for XML.
+     * If target is self::NUMERICAL, the string is escaped for HTML, and unicode characters are encoded as numeric entities.
+     *
+     * @param string $val The string value to be escaped.
+     * @param string $target The target context for escaping. Defaults to self::HTML.
+     *                       Possible values are self::HTML or self::NUMERICAL.
+     * @return string The escaped string.
+     */
 	public static function escape($val, $target = self::HTML) {
 		$val = Cast::string($val);
 		if ($target === self::HTML) {
 			return htmlentities(trim($val), ENT_QUOTES, GyroLocale::get_charset());
-		}
+		} else if ($target == self::NUMERICAL) {
+            $tmp = self::escape($val, self::HTML);
+            $tmp = mb_encode_numericentity( $tmp, [0x80, 0x10FFFF, 0, 0x10FFFF], GyroLocale::get_charset(), true );
+            $tmp = self::preg_replace_callback('@[^\x20-\x7E]@', function($char) {
+                $code = ord($char[0]);
+                if ($code != 10 && $code != 13) {
+                    return '&#x' . dechex($code) . ';';
+                } else {
+                    return $char[0];
+                }
+            }, $tmp);
+            return $tmp;
+        }
 		else {
 			return htmlspecialchars(trim($val), ENT_QUOTES, GyroLocale::get_charset()); 
 		}
