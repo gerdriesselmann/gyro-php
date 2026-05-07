@@ -97,6 +97,9 @@ class SASS {
 
     private static function build_cli($in_file, $out_file, $style) {
         if (Config::has_feature(ConfigSASS::USE_LOCAL_DART_SASS)) {
+            if ($style == "nested") {
+                $style = "expanded";
+            }
             $elems = array(
                 'node_modules/.bin/sass',
                 '--style', $style,
