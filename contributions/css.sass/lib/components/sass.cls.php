@@ -89,20 +89,35 @@ class SASS {
 			}
 		}
 
-		if (Config::has_feature(ConfigSASS::USE_LOCAL_NODE_SASS)) {
-			$elems = array(
-				'node_modules/.bin/node-sass',
-				'--output-style', $style,
-				'--output', escapeshellarg(dirname($out_file)),
-				escapeshellarg($in_file),
-				escapeshellarg($out_file));
-		} else {
-			$elems = array('sass', '--style', $style, '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
-		}
-		$cli = implode(' ', $elems);
-
+        $cli = self::build_cli($in_file, $out_file, $style);
 		Load::commands('generics/execute.shell');
 		$cmd = new ExecuteShellCommand($cli);
 		return $cmd->execute();
 	}
+
+    private static function build_cli($in_file, $out_file, $style) {
+        if (Config::has_feature(ConfigSASS::USE_LOCAL_DART_SASS)) {
+            if ($style == "nested") {
+                $style = "expanded";
+            }
+            $elems = array(
+                'node_modules/.bin/sass',
+                '--style', $style,
+                escapeshellarg($in_file),
+                escapeshellarg($out_file)
+            );
+        } else if (Config::has_feature(ConfigSASS::USE_LOCAL_NODE_SASS)) {
+            $elems = array(
+                'node_modules/.bin/node-sass',
+                '--output-style', $style,
+                '--output', escapeshellarg(dirname($out_file)),
+                escapeshellarg($in_file),
+                escapeshellarg($out_file)
+            );
+        } else {
+            $elems = array('sass', '--style', $style, '-f', '--update', escapeshellarg($in_file . ':' . $out_file));
+        }
+        $cli = implode(' ', $elems);
+        return $cli;
+    }
 }
