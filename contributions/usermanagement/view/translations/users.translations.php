@@ -25,7 +25,7 @@ function users_load_translations($languages) {
 		),	
 		'CONFIRMED' => array(
 			'en' => 'Confirmed',
-			'de' => 'Bestätitgt'
+			'de' => 'Bestätigt'
 		),	
 		'EXPIRED' => array(
 			'en' => 'Expired',
