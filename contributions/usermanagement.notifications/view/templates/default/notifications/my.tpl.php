@@ -1,7 +1,7 @@
 <?php
 $title = tr('Your Notifications', 'notifications');
 $page_data->head->title = $title;
-$page_data->breadcrumb = WidgetBreadcrumb::output($title);
+$page_data->breadcrumb = WidgetBreadcrumb::output(GyroString::escape($title));
 ?>
 <h1><?=$title?></h1>
 

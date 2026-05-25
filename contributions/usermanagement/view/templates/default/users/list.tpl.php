@@ -4,7 +4,7 @@ $page_data->head->description = tr('List of all users known to the system.', 'us
 
 $title = tr('Users List', 'users');
 $page_data->breadcrumb = WidgetBreadcrumb::output(
-	$title
+	GyroString::escape($title)
 );
 ?>
 <h1><?=$title?></h1>

@@ -4,7 +4,7 @@ $page_data->head->title = $title;
 $page_data->breadcrumb = WidgetBreadcrumb::output(
 	array(
 		WidgetActionLink::output('Users', 'users_list_all'),
-		$title
+		GyroString::escape($title)
 	)
 );
 ?>
