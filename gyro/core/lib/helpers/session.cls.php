@@ -1,9 +1,11 @@
 <?php
 // Force cookie usage
-ini_set('session.use_cookies', 1);	 
+ini_set('session.use_cookies', 1);
 ini_set('session.use_only_cookies', 1);
-ini_set('session.bug_compat_42', 1);
 ini_set('session.use_trans_sid', 0);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Lax');
 
 /**
  * Covers session handling
@@ -88,15 +90,26 @@ class Session {
 		// Cookie header may have gone lost.... So send it manually
 		$cookie_params = session_get_cookie_params();
 		if (!isset($cookie_params['httponly'])) {
-			$cookie_params['httponly'] = false;
-		} 
+			$cookie_params['httponly'] = true;
+		}
 		$lifetime = $cookie_params['lifetime'];
 		$expire = empty($lifetime) ? 0 : time() + $lifetime;
-		setcookie(
-			session_name(), session_id(), $expire, 
-			$cookie_params['path'], $cookie_params['domain'], 
-			$cookie_params['secure'], $cookie_params['httponly']
-		);
+		if (version_compare(PHP_VERSION, '7.3.0') >= 0) {
+			setcookie(session_name(), session_id(), [
+				'expires' => $expire,
+				'path' => $cookie_params['path'],
+				'domain' => $cookie_params['domain'],
+				'secure' => $cookie_params['secure'],
+				'httponly' => $cookie_params['httponly'],
+				'samesite' => 'Lax'
+			]);
+		} else {
+			setcookie(
+				session_name(), session_id(), $expire,
+				$cookie_params['path'], $cookie_params['domain'],
+				$cookie_params['secure'], $cookie_params['httponly']
+			);
+		}
 	}
 	
 	/**

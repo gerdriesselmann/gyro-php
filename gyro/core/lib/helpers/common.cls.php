@@ -285,17 +285,17 @@ class Common {
 	 * @return string
 	 */
 	public static function create_token($salt = false) {
-		return sha1(uniqid($salt ? $salt : mt_rand(), true));
+		return bin2hex(random_bytes(20));
 	}
 
 	/**
 	 * Creates a token, which is 64 characters long
 	 *
-	 * @param string|false $salt Optional extra salt, if omitted mt_rand() is used
+	 * @param string|false $salt Optional extra salt (unused, kept for API compatibility)
 	 * @return string
 	 */
 	public static function create_long_token($salt = false) {
-		return hash('sha3-256', uniqid($salt ? $salt : mt_rand(), true));
+		return bin2hex(random_bytes(32));
 	}
 
 	/**

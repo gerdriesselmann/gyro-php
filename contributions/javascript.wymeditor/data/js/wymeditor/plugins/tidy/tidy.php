@@ -1,7 +1,8 @@
 <?php
+header('Content-Type: text/html; charset=utf-8');
 
-if (get_magic_quotes_gpc()) $html = stripslashes($_REQUEST['html']);
-else $html = $_REQUEST['html'];
+if (PHP_VERSION_ID < 70400 && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) $html = stripslashes($_REQUEST['html']);
+else $html = isset($_REQUEST['html']) ? $_REQUEST['html'] : '';
 
 if(strlen($html) > 0) {
 

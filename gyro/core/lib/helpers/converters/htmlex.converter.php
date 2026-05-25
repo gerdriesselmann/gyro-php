@@ -19,7 +19,7 @@ class ConverterHtmlEx extends ConverterHtml {
 	protected function process_paragraph($text, $params) {
 		if (GyroString::length($text) <= 70 && GyroString::right($text, 1) != '.') {
 			$level = intval(Arr::get_item($params, 'h', 2));
-			return html::tag('h' . $level, $text);  
+			return html::tag('h' . $level, GyroString::escape($text));
 		}
 		else {
 			return parent::process_paragraph($text, $params);

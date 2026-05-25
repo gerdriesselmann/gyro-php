@@ -23,7 +23,7 @@ if (isset($_REQUEST['decode'])) {
 $lang = 'en';
 if (isset($_REQUEST['lang'])) {
     if ('de' == $_REQUEST['lang'] || 'en' == $_REQUEST['lang']) $lang = $_REQUEST['lang'];
-    $add .= '<input type="hidden" name="lang" value="'.$_REQUEST['lang'].'" />'."\n";
+    $add .= '<input type="hidden" name="lang" value="'.htmlspecialchars($_REQUEST['lang'], ENT_QUOTES, 'UTF-8').'" />'."\n";
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -109,14 +109,14 @@ h5 {margin:0;font-size:11pt;font-weight:bold;}
   <tbody>
    <tr>
     <td align="right">
-     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="get">
       <input type="text" name="decoded" value="<?php echo htmlentities($decoded, null, 'UTF-8'); ?>" size="48" maxlength="255" /><br />
       <?php echo $version_select; ?>
       <input type="submit" name="encode" value="Encode &gt;&gt;" /><?php echo $add; ?>
      </form>
     </td>
     <td align="left">
-     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="get">
+     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>" method="get">
       <input type="text" name="encoded" value="<?php echo htmlentities($encoded, null, 'UTF-8'); ?>" size="48" maxlength="255" /><br />
       <input type="submit" name="decode" value="&lt;&lt; Decode" /><?php echo $add; ?>
      </form>

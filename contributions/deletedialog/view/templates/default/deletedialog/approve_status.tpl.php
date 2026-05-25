@@ -21,7 +21,8 @@ $page_data->breadcrumb = WidgetBreadcrumb::output(
 <h1><?php print tr('Approve status', 'deletedialog'); ?>: <?=$title ?></h1>
 
 <?php
-$tpl = 'deletedialog/infos/'.$table_name;
+$safe_table_name = basename(str_replace(array('/', '\\', '..'), '', $table_name));
+$tpl = 'deletedialog/infos/'.$safe_table_name;
 if (TemplatePathResolver::exists($tpl)) {
 	include($this->resolve_path($tpl));
 } else {

@@ -202,7 +202,7 @@ class DBDriverSphinx implements IDBDriver {
 	public function query($query) {
 		$this->connect();
 		
-		$arr_query = unserialize($query);
+		$arr_query = unserialize($query, ['allowed_classes' => false]);
 		$features = Arr::get_item($arr_query, 'features', false);
 		
 		$terms = Arr::get_item_recursive($arr_query, 'conditions[query]', '');

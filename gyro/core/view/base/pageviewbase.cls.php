@@ -91,7 +91,10 @@ class PageViewBase extends ViewBase {
 			}
 			GyroHeaders::set('Vary', 'Accept-Encoding', false);
 			GyroHeaders::set('Date', GyroDate::http_date(time()), true);
-			
+			GyroHeaders::set('X-Content-Type-Options', 'nosniff', false);
+			GyroHeaders::set('X-Frame-Options', 'SAMEORIGIN', false);
+			GyroHeaders::set('Referrer-Policy', 'strict-origin-when-cross-origin', false);
+
 			GyroHeaders::send();
 		}
 	}

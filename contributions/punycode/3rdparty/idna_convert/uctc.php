@@ -39,8 +39,8 @@ class uctc {
         if (self::$safe_mode) self::$allow_overlong = true;
         if (!in_array($from, self::$mechs)) throw new Exception('Invalid input format specified');
         if (!in_array($to, self::$mechs)) throw new Exception('Invalid output format specified');
-        if ($from != 'ucs4array') eval('$data = self::'.$from.'_ucs4array($data);');
-        if ($to != 'ucs4array') eval('$data = self::ucs4array_'.$to.'($data);');
+        if ($from != 'ucs4array') $data = call_user_func(array('self', $from.'_ucs4array'), $data);
+        if ($to != 'ucs4array') $data = call_user_func(array('self', 'ucs4array_'.$to), $data);
         return $data;
     }
 

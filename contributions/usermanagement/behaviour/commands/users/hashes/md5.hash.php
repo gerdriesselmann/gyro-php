@@ -13,6 +13,6 @@ class Md5Hash implements IHashAlgorithm {
 	}
 	
 	public function check($source, $hash) {
-		return $hash == $this->hash($source);
+		return hash_equals($hash, $this->hash($source));
 	}
 }

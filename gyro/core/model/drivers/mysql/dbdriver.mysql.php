@@ -144,8 +144,10 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function escape_database_entity($obj, $type = self::FIELD) {
 		$ret = '';
+		$obj = str_replace('`', '``', $obj);
 		if ($type === self::TABLE) {
-			$ret .= '`' . $this->get_db_name() . '`.';
+			$db_name = str_replace('`', '``', $this->get_db_name());
+			$ret .= '`' . $db_name . '`.';
 		}
 		$ret .= '`' . $obj . '`';
 		return $ret;
