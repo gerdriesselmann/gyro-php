@@ -6,14 +6,14 @@
  * @ingroup Lib
  */
 class ConverterCallback implements IConverter {
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		if (is_callable($params)) {
 			return $params($value);
 		}
 		throw new Exception('Callback in ConverterCallback::encode not callable');
 	}
 	
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		if (is_callable($params)) {
 			return $params($value);
 		}

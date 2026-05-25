@@ -12,7 +12,7 @@ class ConverterHtmlPurifier implements IConverter {
 	 * @param string $value
 	 * @param array See http://htmlpurifier.org/live/configdoc/plain.html for all possible values
 	 */
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		require_once Load::get_module_dir('text.htmlpurifier') . '3rdparty/htmlpurifier-4/HTMLPurifier.standalone.php';
 		
 		$config = HTMLPurifier_Config::createDefault();
@@ -33,7 +33,7 @@ class ConverterHtmlPurifier implements IConverter {
 	/**
 	 * This function does nothing! Especially it does NOT purify HTML! 
 	 */
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		return $value;		
 	} 	
 } 

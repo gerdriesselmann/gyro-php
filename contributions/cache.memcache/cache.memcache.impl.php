@@ -11,7 +11,7 @@ class MemcacheCacheItem implements ICacheItem {
 	 * 
 	 * @var Associative array 
 	 */
-	private $item_data;
+	private array $item_data;
 	
 	/**
 	 * Constructor
@@ -27,34 +27,34 @@ class MemcacheCacheItem implements ICacheItem {
 	 * 
 	 * @return datetime
 	 */
-	public function get_creationdate() {
+	public function get_creationdate(): mixed {
 		return $this->item_data['creationdate'];
-	}	
-	
-	/**
-	 * Return expiration date 
-	 * 
-	 * @return datetime
-	 */
-	public function get_expirationdate() {
-		return $this->item_data['expirationdate'];
 	}
-	
+
 	/**
-	 * Return data associated with this item
-	 * 
+	 * Return expiration date
+	 *
 	 * @return mixed
 	 */
-	public function get_data() {
+	public function get_expirationdate(): mixed {
+		return $this->item_data['expirationdate'];
+	}
+
+	/**
+	 * Return data associated with this item
+	 *
+	 * @return mixed
+	 */
+	public function get_data(): mixed {
 		return $this->item_data['data'];
 	}
-	
+
 	/**
 	 * Return the content in plain form
-	 * 
+	 *
 	 * @return string
 	 */
-	public function get_content_plain() {
+	public function get_content_plain(): string {
 		$ret = $this->get_content_compressed();
 		if ($ret && function_exists('gzinflate')) {
 			$ret = gzinflate($ret);
@@ -67,9 +67,9 @@ class MemcacheCacheItem implements ICacheItem {
 	 * 
 	 * @return string
 	 */
-	public function get_content_compressed() {
+	public function get_content_compressed(): string {
 		return $this->item_data['content'];
-	}	
+	}
 }
 
 /**
@@ -82,7 +82,7 @@ class CacheMemcacheImpl implements ICachePersister {
 	/**
 	 * Returns true, if item is chaced 
 	 */
-	public function is_cached($cache_keys) {
+	public function is_cached(mixed $cache_keys): bool {
 		$key = $this->flatten_keys($cache_keys);
 		return (GyroMemcache::get($key) !== false);
 	}
@@ -93,7 +93,7 @@ class CacheMemcacheImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @return ICacheItem The cache as array with members "content" and "data", false if cache is not found
 	 */
-	public function read($cache_keys) {
+	public function read(mixed $cache_keys): ICacheItem|false {
 		$key = $this->flatten_keys($cache_keys);
 		$ret = GyroMemcache::get($key);
 		if ($ret) {
@@ -108,7 +108,7 @@ class CacheMemcacheImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @param string The cache
 	 */
-	public function store($cache_keys, $content, $cache_life_time, $data = '', $is_compressed = false) {
+	public function store(mixed $cache_keys, string $content, int $cache_life_time, mixed $data = '', bool $is_compressed = false): void {
 		if (!$is_compressed) {
 			if (function_exists('gzdeflate')) {
 				$content = gzdeflate($content, 9);
@@ -129,7 +129,7 @@ class CacheMemcacheImpl implements ICachePersister {
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string, or an ICachable instance. If NULL, all is cleared
 	 */
-	public function clear($cache_keys = NULL) {
+	public function clear(mixed $cache_keys = NULL): void {
 		if (empty($cache_keys)) {
 			$this->do_clear(array());
 		}
@@ -242,7 +242,7 @@ class CacheMemcacheImpl implements ICachePersister {
 	/**
 	 * Removes expired cache entries
 	 */
-	public function remove_expired() {
+	public function remove_expired(): void {
 		// Nothing to do, memcache does this for us
 	}
 	

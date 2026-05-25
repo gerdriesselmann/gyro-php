@@ -20,7 +20,7 @@ class GyroJSON implements IConverter {
 	 * @param string $str
 	 * @return mixed
 	 */	
-	public function decode($str, $params = false) {
+	public function decode(mixed $str, mixed $params = false): mixed {
 		$ret = false;
 		if (function_exists('json_decode')) {
 			// PHP 5.2 or PECL extension
@@ -49,7 +49,7 @@ class GyroJSON implements IConverter {
 	 * @param mixed $data
 	 * @return string
 	 */
-	public function encode($data, $params = false) {
+	public function encode(mixed $data, mixed $params = false): mixed {
 		if (function_exists('json_encode')) {
 			// PHP 5.2 or PECL extension
 			// There is a bug in json_encode and floating values before PHP 5.2.2

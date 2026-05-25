@@ -11,7 +11,7 @@ class ACPuCacheItem implements ICacheItem {
 	 * 
 	 * @var array Associative array
 	 */
-	protected $item_data;
+	protected array $item_data;
 	
 	/**
 	 * Constructor
@@ -20,7 +20,7 @@ class ACPuCacheItem implements ICacheItem {
 	 */
 	public function __construct($item_data) {
 		if (is_string($item_data)) {
-			$item_data = unserialize($item_data);
+			$item_data = unserialize($item_data, ['allowed_classes' => false]);
 		}
 		$this->item_data = $item_data;
 	}
@@ -30,34 +30,34 @@ class ACPuCacheItem implements ICacheItem {
 	 * 
 	 * @return datetime
 	 */
-	public function get_creationdate() {
+	public function get_creationdate(): mixed {
 		return $this->item_data['creationdate'];
-	}	
-	
-	/**
-	 * Return expiration date 
-	 * 
-	 * @return datetime
-	 */
-	public function get_expirationdate() {
-		return $this->item_data['expirationdate'];
 	}
-	
+
 	/**
-	 * Return data associated with this item
-	 * 
+	 * Return expiration date
+	 *
 	 * @return mixed
 	 */
-	public function get_data() {
+	public function get_expirationdate(): mixed {
+		return $this->item_data['expirationdate'];
+	}
+
+	/**
+	 * Return data associated with this item
+	 *
+	 * @return mixed
+	 */
+	public function get_data(): mixed {
 		return $this->item_data['data'];
 	}
-	
+
 	/**
 	 * Return the content in plain form
-	 * 
+	 *
 	 * @return string
 	 */
-	public function get_content_plain() {
+	public function get_content_plain(): string {
 		$ret = $this->get_content_compressed();
 		if ($ret && function_exists('gzinflate')) {
 			$ret = gzinflate($ret);
@@ -70,11 +70,11 @@ class ACPuCacheItem implements ICacheItem {
 	 * 
 	 * @return string
 	 */
-	public function get_content_compressed() {
+	public function get_content_compressed(): string {
 		$content = $this->item_data['content'];
 		//$content = base64_decode($content);
 		return $content;
-	}	
+	}
 }
 
 /**
@@ -87,7 +87,7 @@ class CacheACPuImpl implements ICachePersister {
 	/**
 	 * Returns true, if item is chaced 
 	 */
-	public function is_cached($cache_keys) {
+	public function is_cached(mixed $cache_keys): bool {
 		$key = $this->flatten_keys($cache_keys);
 		return apcu_exists($key);
 	}
@@ -98,7 +98,7 @@ class CacheACPuImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @return ICacheItem The cache as array with members "content" and "data", false if cache is not found
 	 */
-	public function read($cache_keys) {
+	public function read(mixed $cache_keys): ICacheItem|false {
 		$ret = false;
 		$key = $this->flatten_keys($cache_keys);
 		if (apcu_exists($key)) {
@@ -113,7 +113,7 @@ class CacheACPuImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @param string The cache
 	 */
-	public function store($cache_keys, $content, $cache_life_time, $data = '', $is_compressed = false) {
+	public function store(mixed $cache_keys, string $content, int $cache_life_time, mixed $data = '', bool $is_compressed = false): void {
 		if (!$is_compressed) {
 			if (function_exists('gzdeflate')) {
 				$content = gzdeflate($content, 9);
@@ -137,7 +137,7 @@ class CacheACPuImpl implements ICachePersister {
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string, or an ICachable instance. If NULL, all is cleared
 	 */
-	public function clear($cache_keys = NULL) {
+	public function clear(mixed $cache_keys = NULL): void {
 		if (empty($cache_keys)) {
 			$this->do_clear_all();
 		}
@@ -211,7 +211,7 @@ class CacheACPuImpl implements ICachePersister {
 	/**
 	 * Removes expired cache entries
 	 */
-	public function remove_expired() {
+	public function remove_expired(): void {
 		// Nothing to do, ACPu does this for us
 	}
 	

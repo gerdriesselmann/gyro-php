@@ -1,43 +1,35 @@
 <?php
 /**
  * Interface for stepping through DB result set
- * 
+ *
  * @author Gerd Riesselmann
  * @ingroup Interfaces
  */
 interface IDBResultSet {
 	/**
 	 * Closes internal cursor
-	 * 
-	 * @return void
 	 */
-	public function close();
-	
+	public function close(): void;
+
 	/**
 	 * Returns number of columns in result set
-	 *
-	 * @return int
 	 */
-	public function get_column_count();
-	
+	public function get_column_count(): int;
+
 	/**
 	 * Returns number of rows in result set
-	 * 
-	 * @return int
 	 */
-	public function get_row_count();
-	
+	public function get_row_count(): int;
+
 	/**
 	 * Returns row as associative array
 	 *
-	 * @return array
+	 * @return array|false False if no more data is available
 	 */
-	public function fetch();
-	
+	public function fetch(): array|false;
+
 	/**
-	 * Returns status 
-	 *
-	 * @return Status
+	 * Returns status
 	 */
-	public function get_status(); 
+	public function get_status(): Status;
 }

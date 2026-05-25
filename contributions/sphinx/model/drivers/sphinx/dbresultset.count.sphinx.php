@@ -7,7 +7,7 @@ require_once dirname(__FILE__) . '/dbresultset.sphinx.php';
  * @ingroup Sphinx
  */
 class DBResultSetCountSphinx extends DBResultSetSphinx {
-	protected $done = false;
+	protected bool $done = false;
 	
 	/**
 	 * Returns row as associative array

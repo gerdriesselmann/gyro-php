@@ -1,7 +1,7 @@
 <?php
 /**
  * Result set for MySQL
- * 
+ *
  * @author Gerd Riesselmann
  * @ingroup Model
  */
@@ -9,56 +9,41 @@ class DBResultSetMysql implements IDBResultSet {
 	/**
 	 * Handle to query result
 	 *
-	 * @var mysqli_result
+	 * @var mysqli_result|null
 	 */
-	protected $result_set = null;
+	protected ?mysqli_result $result_set = null;
 	/**
 	 * Status for query
 	 *
 	 * @var Status
 	 */
-	protected $status = null;
+	protected ?Status $status = null;
 
 	public function __construct($result_set, $status) {
 		$this->result_set = $result_set;
 		$this->status = $status;
 	}
-	
+
 	public function __destruct() {
 		$this->close();
 	}
 
-	/**
-	 * Closes internal cursor
-	 * 
-	 * @return void
-	 */
-	public function close() {
+	public function close(): void {
 		if ($this->result_set) {
 			$this->result_set->close();
 			$this->result_set = null;
 		}
 	}
-	
-	/**
-	 * Returns number of columns in result set
-	 *
-	 * @return int
-	 */
-	public function get_column_count() {
+
+	public function get_column_count(): int {
 		if ($this->result_set) {
 			return $this->result_set->field_count;
 		} else {
 			return 0;
 		}
 	}
-	
-	/**
-	 * Returns number of rows in result set
-	 * 
-	 * @return int
-	 */
-	public function get_row_count() {
+
+	public function get_row_count(): int {
 		if ($this->result_set) {
 			return $this->result_set->num_rows;
 		}
@@ -66,27 +51,18 @@ class DBResultSetMysql implements IDBResultSet {
 			return 0;
 		}
 	}
-	
-	/**
-	 * Returns row as associative array
-	 *
-	 * @return array | bool False if no more data is available
-	 */
-	public function fetch() {
+
+	public function fetch(): array|false {
 		if ($this->result_set) {
-			return $this->result_set->fetch_assoc();
+			$row = $this->result_set->fetch_assoc();
+			return $row === null ? false : $row;
 		}
 		else {
-			return array();
+			return false;
 		}
 	}
-	
-	/**
-	 * Returns status 
-	 *
-	 * @param Status
-	 */
-	public function get_status() {
+
+	public function get_status(): Status {
 		return $this->status;
 	}
 }

@@ -159,10 +159,10 @@ class FormHandler {
  		if ($this->token_policy != self::TOKEN_POLICY_NONE) {
 			$token = Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_FIELD_NAME), '');
 			// Validate if token is in DB
-			$success = $success && ($this->name == Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
+			$success = $success && ($this->name === Arr::get_item($data, Config::get_value(Config::FORMVALIDATION_HANDLER_NAME), ''));
 	 		$success = $success && FormValidations::validate_token($this->name, $token);
  		}
- 		if ($success == false) {
+ 		if ($success === false) {
  			$ret->append(tr('Form verification token is too old. Please try again.', 'core'));
  		}
  		return $ret;

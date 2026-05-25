@@ -17,7 +17,7 @@ require_once GYRO_CORE_DIR . 'lib/helpers/converters/html.converter.php';
 class ConverterTwitter implements IConverter {
 	const EXPAND_LINKS = 1024;
 	
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		$value = GyroString::escape($this->decode($value));
 		// Try to find hash tags and make them bold
 		$search = '@(\s#[\S]*)@';
@@ -59,7 +59,7 @@ class ConverterTwitter implements IConverter {
 	}
 
 
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		$value = str_replace('&gt;', ">", $value);
 		$value = str_replace('&lt;', "<", $value);
 		return trim($value);		

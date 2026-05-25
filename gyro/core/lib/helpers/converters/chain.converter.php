@@ -6,10 +6,10 @@
  * @ingroup Lib
  */
 class ConverterChain implements IConverter {
-	protected $converters = array();
-	protected $params = array();
+	protected array $converters = array();
+	protected array $params = array();
 	
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		reset($this->params);
 		foreach($this->converters as $c) {
 			$p = current($this->params);
@@ -19,7 +19,7 @@ class ConverterChain implements IConverter {
 		return $value;
 	}
 	
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		reset($this->params);
 		foreach($this->converters as $c) {
 			$p = current($this->params);
@@ -35,7 +35,7 @@ class ConverterChain implements IConverter {
 	 * @param IConverter $converter The converter
 	 * @param mixed $params The converters params
 	 */
-	public function append(IConverter $converter, $params = false) {
+	public function append(IConverter $converter, mixed $params = false): void {
 		$this->converters[] = $converter;
 		$this->params[] = $params;
 	}

@@ -52,17 +52,21 @@ class JCSSManagerCompressBaseWebpackCommand extends JCSSManagerCompressBaseComma
 		}
 
 		$in_files = array_map(function($f) {
-			return  JCSSManager::make_absolute($f);
+			return  escapeshellarg(JCSSManager::make_absolute($f));
 		}, $in_files);
 
+		$escaped_options = array();
+		foreach ($webpack_options as $key => $value) {
+			$escaped_options[] = $value === '' ? escapeshellarg($key) : escapeshellarg($key) . ' ' . escapeshellarg($value);
+		}
+
 		$webpack_cmd =
-			$webpack_cmd . ' ' .
-			Arr::implode(' ', $webpack_options, ' ') . ' ' .
+			escapeshellarg($webpack_cmd) . ' ' .
+			implode(' ', $escaped_options) . ' ' .
 			implode(' ', $in_files);
 
 		$output = array();
 		$return = 0;
-		//echo $webpack_cmd . "\n";
 		exec($webpack_cmd, $output, $return);
 
 		if ($return) {

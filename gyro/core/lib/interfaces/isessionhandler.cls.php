@@ -5,31 +5,31 @@
 interface ISessionHandler {
 	/**
 	 * Open a session
-	 */ 
-	public function open($save_path, $session_name);
-	
+	 */
+	public function open(string $save_path, string $session_name): bool;
+
 	/**
 	 * Close a session
 	 */
-	public function close();
-	
+	public function close(): bool;
+
 	/**
-	 * Load session data 
+	 * Load session data
 	 */
-	public function read($key);
-	
+	public function read(string $key): string|false;
+
 	/**
-	 * Write session data to DB
+	 * Write session data
 	 */
-	public function write($key, $value);
-	
+	public function write(string $key, string $value): bool;
+
 	/**
 	 * Delete a session
 	 */
-	public function destroy($key);
-	
+	public function destroy(string $key): bool;
+
 	/**
 	 * Delete outdated sessions
 	 */
-	public function gc($lifetime);	
+	public function gc(int $lifetime): int|false;
 }

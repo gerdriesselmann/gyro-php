@@ -144,8 +144,10 @@ class DBDriverMysql implements IDBDriver {
 	 */
 	public function escape_database_entity($obj, $type = self::FIELD) {
 		$ret = '';
+		$obj = str_replace('`', '``', $obj);
 		if ($type === self::TABLE) {
-			$ret .= '`' . $this->get_db_name() . '`.';
+			$db_name = str_replace('`', '``', $this->get_db_name());
+			$ret .= '`' . $db_name . '`.';
 		}
 		$ret .= '`' . $obj . '`';
 		return $ret;
@@ -298,5 +300,94 @@ class DBDriverMysql implements IDBDriver {
 			default:
 				return false;
 		}
-	}	
+	}
+
+	/**
+	 * Auto-detect mysqli bind_param type string from parameter values.
+	 *
+	 * @param array $params
+	 * @return string Type string (e.g. 'ssi')
+	 */
+	protected function detect_param_types($params) {
+		$types = '';
+		foreach ($params as $param) {
+			if (is_int($param)) {
+				$types .= 'i';
+			} elseif (is_float($param)) {
+				$types .= 'd';
+			} else {
+				$types .= 's';
+			}
+		}
+		return $types;
+	}
+
+	/**
+	 * Prepare and bind a mysqli statement
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Bind parameters
+	 * @param string $types Type string for bind_param (auto-detected if empty)
+	 * @return mysqli_stmt|false
+	 */
+	protected function prepare_statement($sql, $params, $types) {
+		$this->connect();
+		$stmt = $this->conn->prepare($sql);
+		if ($stmt === false) {
+			return false;
+		}
+		if (!empty($params)) {
+			if (empty($types)) {
+				$types = $this->detect_param_types($params);
+			}
+			$stmt->bind_param($types, ...$params);
+		}
+		return $stmt;
+	}
+
+	/**
+	 * Execute a prepared statement (INSERT, UPDATE, DELETE)
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Bind parameters
+	 * @param string $types Type string for bind_param (auto-detected if empty)
+	 * @return Status
+	 */
+	public function execute_prepared($sql, $params = array(), $types = '') {
+		$ret = new Status();
+		$stmt = $this->prepare_statement($sql, $params, $types);
+		if ($stmt === false) {
+			$ret->append($this->conn->error);
+			return $ret;
+		}
+		if (!$stmt->execute()) {
+			$ret->append($stmt->error);
+		}
+		$stmt->close();
+		return $ret;
+	}
+
+	/**
+	 * Execute a prepared SELECT statement
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Bind parameters
+	 * @param string $types Type string for bind_param (auto-detected if empty)
+	 * @return IDBResultSet
+	 */
+	public function query_prepared($sql, $params = array(), $types = '') {
+		$ret = new Status();
+		$stmt = $this->prepare_statement($sql, $params, $types);
+		if ($stmt === false) {
+			$ret->append($this->conn->error);
+			return new DBResultSetMysql(false, $ret);
+		}
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if ($stmt->errno) {
+			$ret->append($stmt->error);
+		}
+		$stmt->close();
+		return new DBResultSetMysql($result, $ret);
+	}
 }

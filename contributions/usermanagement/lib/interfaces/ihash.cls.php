@@ -23,14 +23,14 @@ interface IHashAlgorithm {
 	 * @param string $source
 	 * @return string
 	 */
-	public function hash($source);
-	
+	public function hash(string $source): string;
+
 	/**
-	 * Validate if given hash matches source 
-	 * 
+	 * Validate if given hash matches source
+	 *
 	 * @param string $source
 	 * @param string $hash
 	 * @return bool
 	 */
-	public function check($source, $hash);
+	public function check(string $source, string $hash): bool;
 }

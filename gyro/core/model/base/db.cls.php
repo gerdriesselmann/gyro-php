@@ -291,6 +291,40 @@ class DB {
 	}
 	
 	/**
+	 * Execute a SELECT query using prepared statements
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Parameter values
+	 * @param string $types Optional type string (s=string, i=int, d=double, b=blob)
+	 * @param string|IDBDriver $connection
+	 * @return IDBResultSet
+	 */
+	public static function query_prepared($sql, $params = array(), $types = '', $connection = self::DEFAULT_CONNECTION) {
+		$timer = new Timer();
+		$conn = self::get_connection($connection);
+		$ret = $conn->query_prepared($sql, $params, $types);
+		self::log_query($sql, $timer->seconds_elapsed(), $ret->get_status(), $conn);
+		return $ret;
+	}
+
+	/**
+	 * Execute a non-SELECT query using prepared statements
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Parameter values
+	 * @param string $types Optional type string (s=string, i=int, d=double, b=blob)
+	 * @param string|IDBDriver $connection
+	 * @return Status
+	 */
+	public static function execute_prepared($sql, $params = array(), $types = '', $connection = self::DEFAULT_CONNECTION) {
+		$timer = new Timer();
+		$conn = self::get_connection($connection);
+		$ret = $conn->execute_prepared($sql, $params, $types);
+		self::log_query($sql, $timer->seconds_elapsed(), $ret, $conn);
+		return $ret;
+	}
+
+	/**
 	 * Explain the given query
 	 * 
 	 * @since 0.5.1

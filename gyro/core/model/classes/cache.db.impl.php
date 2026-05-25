@@ -6,12 +6,12 @@
  * @ingroup Model
  */
 class CacheDBImpl implements ICachePersister {
-	private $cache_item = null;
+	private mixed $cache_item = null;
 
 	/**
 	 * Returns true, if item is chaced 
 	 */
-	public function is_cached($cache_keys) {
+	public function is_cached(mixed $cache_keys): bool {
 		$dao = new DAOCache();
 		$dao->add_where('content_gzip', DBWhere::OP_NOT_NULL);
 		$dao->set_keys($this->extract_keys($cache_keys));
@@ -33,7 +33,7 @@ class CacheDBImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @return ICacheItem The cache as array with members "content" and "data", false if cache is not found
 	 */
-	public function read($cache_keys) {
+	public function read(mixed $cache_keys): ICacheItem|false {
 		$dao = new DAOCache();
 		$dao->add_where('content_gzip', DBWhere::OP_NOT_NULL);
 		$dao->set_keys($this->extract_keys($cache_keys));
@@ -53,7 +53,7 @@ class CacheDBImpl implements ICachePersister {
 	 * @param Mixed A set of key params, may be an array or a string
 	 * @param string The cache
 	 */
-	public function store($cache_keys, $content, $cache_life_time, $data = '', $is_compressed = false) {
+	public function store(mixed $cache_keys, string $content, int $cache_life_time, mixed $data = '', bool $is_compressed = false): void {
 		try {
 			// Clear old items
 			$this->remove_expired();
@@ -87,7 +87,7 @@ class CacheDBImpl implements ICachePersister {
 	 * 
 	 * @param Mixed A set of key params, may be an array or a string. If NULL, all is cleared
 	 */
-	public function clear($cache_keys = NULL) {
+	public function clear(mixed $cache_keys = NULL): void {
 		$dao = new DAOCache();
 		if (!empty($cache_keys)) {
 			$keys = $this->extract_keys($cache_keys);
@@ -114,7 +114,7 @@ class CacheDBImpl implements ICachePersister {
 	/**
 	 * Removes expired cache entries
 	 */
-	public function remove_expired() {
+	public function remove_expired(): void {
 		$dao = new DAOCache();
 		$dao->add_where('expirationdate', '<', DBFieldDateTime::NOW);
 		$dao->delete(DAOCache::WHERE_ONLY);

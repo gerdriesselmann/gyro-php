@@ -13,14 +13,14 @@ class MemcacheSession implements ISessionHandler {
 	/**
 	 * Open a session
 	 */ 
-	public function open($save_path, $session_name) {
+	public function open(string $save_path, string $session_name): bool {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	public function close() {
+	public function close(): bool {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
@@ -36,7 +36,7 @@ class MemcacheSession implements ISessionHandler {
 	/**
 	 * Load session data from xcache
 	 */
-	public function read($key) {
+	public function read(string $key): string|false {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
@@ -53,7 +53,7 @@ class MemcacheSession implements ISessionHandler {
 	/**
 	 * Write session data to XCache
 	 */
-	public function write($key, $value) {
+	public function write(string $key, string $value): bool {
 		try {
 			GyroMemcache::set($this->create_key($key), $value, ini_get('session.gc_maxlifetime'));
 			return true;
@@ -66,7 +66,7 @@ class MemcacheSession implements ISessionHandler {
 	/**
 	 * Delete a session
 	 */
-	public function destroy($key) {
+	public function destroy(string $key): bool {
 		GyroMemcache::delete($this->create_key($key));
 		return true;
 	}
@@ -74,7 +74,7 @@ class MemcacheSession implements ISessionHandler {
 	/**
 	 * Delete outdated sessions
 	 */
-	public function gc($lifetime) {
+	public function gc(int $lifetime): int|false {
 		// Memcache does this for us
 		return true;
 	}

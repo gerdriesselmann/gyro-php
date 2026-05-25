@@ -8,7 +8,7 @@ require_once  dirname(__FILE__) . '/../../../3rdparty/idna_convert/idna_convert.
  * @ingroup Punycode
  */ 
 class ConverterPunycode implements IConverter {
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		$inst = $this->create_converter();
 		$ret = false;
 		if ($inst) {
@@ -17,7 +17,7 @@ class ConverterPunycode implements IConverter {
 		return $ret;
 	}
 	
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		$inst = $this->create_converter();
 		$ret = false;
 		if ($inst) {

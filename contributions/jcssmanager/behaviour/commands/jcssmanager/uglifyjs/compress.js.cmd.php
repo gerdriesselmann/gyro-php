@@ -46,17 +46,21 @@ class JCSSManagerCompressJSUglifyjsCommand extends JCSSManagerCompressBaseComman
 		$uglifyjs_options['--output'] = $out_file;
 
 		$in_files = array_map(function($f) {
-			return  JCSSManager::make_absolute($f);
+			return  escapeshellarg(JCSSManager::make_absolute($f));
 		}, $in_files);
 
+		$escaped_options = array();
+		foreach ($uglifyjs_options as $key => $value) {
+			$escaped_options[] = $value === '' ? escapeshellarg($key) : escapeshellarg($key) . ' ' . escapeshellarg($value);
+		}
+
 		$uglifyjs_cmd =
-			$uglifyjs_cmd . ' ' .
+			escapeshellarg($uglifyjs_cmd) . ' ' .
 			implode(' ', $in_files) . ' ' .
-			Arr::implode(' ', $uglifyjs_options, ' ');
+			implode(' ', $escaped_options);
 
 		$output = array();
 		$return = 0;
-		echo $uglifyjs_cmd . "\n";
 		exec($uglifyjs_cmd, $output, $return);
 
 		if ($return) {

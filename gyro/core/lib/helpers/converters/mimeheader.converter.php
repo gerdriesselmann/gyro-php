@@ -11,7 +11,7 @@ class ConverterMimeHeader implements IConverter {
 	/**
 	 * ENcode. Takes optional charset as parameter 
 	 */
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		if (!$params) {
 			$params = GyroLocale::get_charset();
 		}
@@ -54,7 +54,7 @@ class ConverterMimeHeader implements IConverter {
 		return $ret;			
 	}
 	
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		return $value;		
 	} 	
 } 

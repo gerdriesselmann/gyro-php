@@ -8,11 +8,11 @@
  * @ingroup Usermanagement
  */
 class Md5Hash implements IHashAlgorithm {
-	public function hash($source) {
+	public function hash(string $source): string {
 		return md5($source);
 	}
 	
-	public function check($source, $hash) {
-		return $hash == $this->hash($source);
+	public function check(string $source, string $hash): bool {
+		return hash_equals($hash, $this->hash($source));
 	}
 }

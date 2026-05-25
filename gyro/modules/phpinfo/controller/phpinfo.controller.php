@@ -37,6 +37,9 @@ class PhpinfoController extends ControllerBase {
 	 * @return void
 	 */
 	public function action_phpinfo(PageData $page_data) {
+		if (!Config::has_feature(Config::TESTMODE)) {
+			return self::NOT_FOUND;
+		}
 		print phpinfo();
 		exit;
 	}

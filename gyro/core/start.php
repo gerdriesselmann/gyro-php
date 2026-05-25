@@ -17,22 +17,24 @@ define ('GYRO_CORE_DIR', dirname(__FILE__) . '/');
 define ('GYRO_ROOT_DIR', GYRO_CORE_DIR . '../');
 require_once GYRO_CORE_DIR . 'config.cls.php';
 Config::set_value(Config::VERSION, 0.6);
+
+// Load .env file if present (defines APP_* constants before constants.inc.php reads them)
+require_once GYRO_CORE_DIR . 'lib/helpers/env.cls.php';
+if (defined('APP_INCLUDE_ABSPATH')) {
+	Env::load(APP_INCLUDE_ABSPATH . '.env');
+}
+
 require_once GYRO_CORE_DIR . 'constants.inc.php';
 
 // Set error reporting settings
 if (Config::has_feature(Config::TESTMODE)) {
 	ini_set('display_errors', 1);
 	ini_set('log_errors', 1);
-	error_reporting(E_ALL | E_STRICT);
+	error_reporting(E_ALL);
 } else {
 	ini_set('display_errors', 0);
 	ini_set('log_errors', 1);
-	if (defined('E_DEPRECATED')) {
-		// PHP 5.3
-		error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-	} else {
-		error_reporting(E_ALL ^ E_NOTICE);
-	}
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 }
 
 

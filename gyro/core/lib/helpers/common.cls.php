@@ -167,34 +167,12 @@ class Common {
 	}
 	
 	/**
-	 * Strips possible slashes added by magic quotes
+	 * Previously stripped slashes added by magic quotes.
+	 * Magic quotes were removed in PHP 7.4 / PHP 8.0, so this is now a no-op.
+	 * Kept for backwards compatibility with callers.
 	 */
 	public static function preprocess_input() {
-		// Is magic quotes on?
-		// deprecated ssince PHP 7.4, hence version check
-		if (PHP_VERSION_ID < 70400 && function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc() ) {
- 			// Yes? Strip the added slashes
-			$_REQUEST = self::transcribe($_REQUEST);
-			$_GET = self::transcribe($_GET);
-			$_POST = self::transcribe($_POST);
-			$_COOKIE = self::transcribe($_COOKIE);
-		}
-	}
-
-	// Taken from here: http://de.php.net/manual/de/function.get-magic-quotes-gpc.php#49612
-	private static function transcribe($aList, $aIsTopLevel = true) {
-	    $gpcList = array();
-	    foreach ($aList as $key => $value) {
-    	    if (is_array($value)) {
-        	    $decodedKey = (!$aIsTopLevel) ? stripslashes($key) : $key;
-            	$decodedValue = self::transcribe($value, false);
-        	} else {
-            	$decodedKey = stripslashes($key);
-            	$decodedValue = stripslashes($value);
-        	}
-        	$gpcList[$decodedKey] = $decodedValue;
-	    }
-    	return $gpcList;
+		// No-op: magic quotes removed in PHP 7.4+
 	}
 	
 	/**
@@ -285,17 +263,17 @@ class Common {
 	 * @return string
 	 */
 	public static function create_token($salt = false) {
-		return sha1(uniqid($salt ? $salt : mt_rand(), true));
+		return bin2hex(random_bytes(20));
 	}
 
 	/**
 	 * Creates a token, which is 64 characters long
 	 *
-	 * @param string|false $salt Optional extra salt, if omitted mt_rand() is used
+	 * @param string|false $salt Optional extra salt (unused, kept for API compatibility)
 	 * @return string
 	 */
 	public static function create_long_token($salt = false) {
-		return hash('sha3-256', uniqid($salt ? $salt : mt_rand(), true));
+		return bin2hex(random_bytes(32));
 	}
 
 	/**

@@ -50,6 +50,11 @@ class Url {
 	private $data = array();
 	private $support_unicode_domains = false;
 	/**
+	 * Serialized URL string (used by __sleep/__wakeup)
+	 * @var string
+	 */
+	private $url = '';
+	/**
 	 * Keep track if an empty query is found during parsing, for URLs
 	 * like http://example.com/index.html? (which indicates another
 	 * resource than http://example.com/index.html)	 *

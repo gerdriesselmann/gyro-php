@@ -19,12 +19,12 @@ class Pas2pHash implements IHashAlgorithm {
 		return new PasswordHash02(8, TRUE);
 	}
 	
-	public function hash($source) {
+	public function hash(string $source): string {
 		$o_hash = $this->create_pass2_instance();
 		return $o_hash->HashPassword($source);
 	}
 	
-	public function check($source, $hash) {
+	public function check(string $source, string $hash): bool {
 		$o_hash = $this->create_pass2_instance();
 		return $o_hash->CheckPassword($source, $hash);
 	}

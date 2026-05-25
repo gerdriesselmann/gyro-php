@@ -50,37 +50,37 @@ class DAOCache extends DataObjectBase implements ICacheItem {
 	 * 
 	 * @return datetime
 	 */
-	public function get_creationdate() {
+	public function get_creationdate(): mixed {
 		return $this->creationdate;
-	}	
-	
-	/**
-	 * Return expiration date 
-	 * 
-	 * @return datetime
-	 */
-	public function get_expirationdate() {
-		return $this->expirationdate;
 	}
-	
+
 	/**
-	 * Return data associated with this item
-	 * 
+	 * Return expiration date
+	 *
 	 * @return mixed
 	 */
-	public function get_data() {
+	public function get_expirationdate(): mixed {
+		return $this->expirationdate;
+	}
+
+	/**
+	 * Return data associated with this item
+	 *
+	 * @return mixed
+	 */
+	public function get_data(): mixed {
 		return $this->data;
 	}
-	
-	public function get_content_plain() {
+
+	public function get_content_plain(): string {
 		$ret = $this->content_gzip;
 		if ($ret && function_exists('gzinflate')) {
 			$ret = gzinflate($ret);
 		}
 		return $ret;
 	}
-	
-	public function get_content_compressed() {
+
+	public function get_content_compressed(): string {
 		return $this->content_gzip;
 	}
 

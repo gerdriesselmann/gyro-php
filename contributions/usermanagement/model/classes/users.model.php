@@ -29,7 +29,7 @@ class DAOUsers extends DataObjectTimestampedCached implements IStatusHolder, ISe
 				new DBFieldText('name', 100, null, DBField::NOT_NULL),
 				new DBFieldTextEmail('email', null, DBField::NOT_NULL),
 				new DBFieldText('password', 100, null, DBField::NOT_NULL),
-				new DBFieldText('hash_type', 5, 'md5', DBField::NOT_NULL | DBField::INTERNAL),
+				new DBFieldText('hash_type', 5, 'bcryp', DBField::NOT_NULL | DBField::INTERNAL),
 				new DBFieldDateTime('emailconfirmationdate', null, DBField::NONE | DBField::INTERNAL), 
 				new DBFieldEnum('emailstatus', array_keys(Users::get_email_statuses()), Users::EMAIL_STATUS_UNCONFIRMED, DBField::NOT_NULL | DBField::INTERNAL),
 				new DBFieldInt('tos_version', 0, DBFieldInt::UNSIGNED | DBField::NOT_NULL | DBField::INTERNAL),
