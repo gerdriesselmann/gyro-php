@@ -126,7 +126,7 @@ class StringTest extends GyroUnitTestCase {
 		
 		//setlocale(LC_ALL, array('de_DE.utf8', 'de_DE@euro', 'de_DE', 'de', 'ge'));
 		$val = 'ich hätte gerne ein äöüß oder ÄÖÜ';
-		$this->assertEqual('ICH HÄTTE GERNE EIN ÄÖÜß ODER ÄÖÜ',GyroString::to_upper($val));
+		$this->assertEqual('ICH HÄTTE GERNE EIN ÄÖÜSS ODER ÄÖÜ',GyroString::to_upper($val));
 		
 		// test partial conversion
 		$val = 'abc';
