@@ -56,6 +56,9 @@ class JCSSManagerCompressCSSCssoCommand extends JCSSManagerCompressBaseCommand {
 		$bin_cmd = 'node_modules/.bin/csso';
 
 		$webpack_options = array();
+		if (Config::get_value(ConfigJCSSManager::CSSO_NO_RESTRUCTURE)) {
+			$webpack_options['--no-restructure'] = '';
+		}
 		$webpack_options['--output'] = $out_file;
 
 		$bin_cmd =

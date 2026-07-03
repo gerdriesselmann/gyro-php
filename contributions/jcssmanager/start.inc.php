@@ -66,6 +66,10 @@ class ConfigJCSSManager {
 	const UGLIFY_COMPRESS_OPTIONS = 'JCSS_UGLIFY_COMPRESS_OPTIONS';
 	const UGLIFY_USE_TERSER = 'JCSS_UGLIFY_USE_TERSER';
 
+	/**
+	 * Set to trrue to disable CSSO restructuring (restructuring may break larger CSS)
+	 */
+	const CSSO_NO_RESTRUCTURE = 'JCSS_CSSO_NO_RESTRUCTURE';
 }
 
 
@@ -77,6 +81,8 @@ Config::set_value_from_constant(ConfigJCSSManager::WEBPACK_CONFIG_FILE, 'APP_JCS
 Config::set_value_from_constant(ConfigJCSSManager::POSTCSS_CONFIG_FILE, 'APP_JCSS_POSTCSS_CONFIG_FILE', '');
 Config::set_value_from_constant(ConfigJCSSManager::UGLIFY_COMPRESS_OPTIONS, 'APP_JCSS_UGLIFY_COMPRESS_OPTIONS', '');
 Config::set_feature_from_constant(ConfigJCSSManager::UGLIFY_USE_TERSER, 'APP_JCSS_UGLIFY_USE_TERSER', false);
+
+Config::set_feature_from_constant(ConfigJCSSManager::CSSO_NO_RESTRUCTURE, 'APP_JCSS_CSSO_NO_RESTRUCTURE', false);
 
 Config::set_value_from_constant(ConfigJCSSManager::CSS_COMPRESSOR, 'APP_JCSS_CSS_COMPRESSOR', 'yui');
 Config::set_value_from_constant(ConfigJCSSManager::JS_COMPRESSOR, 'APP_JCSS_JS_COMPRESSOR', 'yui');

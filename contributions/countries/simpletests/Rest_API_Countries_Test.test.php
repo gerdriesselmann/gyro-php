@@ -14,7 +14,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
 
     public function __construct()
     {
-        $this->countries_from_api = json_decode(file_get_contents('https://restcountries.com/v2/all'), true);
+        $this->countries_from_api = json_decode(file_get_contents('https://countries.dev/countries?full=true'), true);
     }
 
     public function test_values_of_countries_api()
@@ -52,7 +52,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
     public function test_is_capital_of_city_matching_to_country()
     {
         if ($this->countries_from_api) {
-            $capitals_to_ignore = array(
+            $capitals_to_ignore = array(/*
                 'Saint John\'s', # St. John's
                 'Papeetē', # Papeete
                 'Rome', # Vatican
@@ -63,6 +63,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
                 'Nouméa', # Noumea
                 'City of San Marino', # San Marino
                 'Washington, D.C.' # Washington
+                */
             );
 
             foreach ($this->countries_from_api as $country) {
@@ -70,14 +71,14 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
 
                 $capital = isset($country['capital']) ? $country['capital'] : null;
 
-                if (!in_array($capital, $capitals_to_ignore)) {
+                if ($capital && !in_array($capital, $capitals_to_ignore)) {
                     $this->assertEqual(
                         $dao_country->capital,
-                        $country['capital'],
+                        $capital,
                         sprintf(
                             'The capital "%s" does not match to "%s" for country "%s" ("%s")',
                             $dao_country->capital,
-                            $country['capital'],
+                            $capital,
                             $country['alpha2Code'],
                             $country['name']
                         )
@@ -154,7 +155,7 @@ class Rest_API_Countries_Test extends GyroUnitTestCase
     private function get_country_for_alpha2code($alpha2Code)
     {
         $ret = false;
-        foreach($this->countries_from_api as $c)  {
+        foreach ($this->countries_from_api as $c) {
             if ($c['alpha2Code'] === $alpha2Code) {
                 $ret = $c;
                 break;
