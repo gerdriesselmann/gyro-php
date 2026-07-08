@@ -134,7 +134,7 @@ class PDFMaker extends Fpdi\Fpdi
       		}
     		else {
 				//Tags
-				if($content{0} == '/') {
+				if($content[0] == '/') {
 					$this->closeTag(strtoupper(substr($content,1)));
 				}
 				else {
