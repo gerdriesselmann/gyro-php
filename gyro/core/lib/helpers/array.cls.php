@@ -312,4 +312,24 @@ class Arr {
 			}
 		}
 	}
+
+	/**
+	 * Flattens a multi-dimensional array into a single-dimensional array.
+	 *
+	 * @param array $arr The input array to be flattened.
+	 * @return array The flattened array containing all values from the input array in a single dimension.
+	 */
+	public static function flatten($arr) {
+		$ret = array();
+		foreach($arr as $key => $value) {
+			if (is_array($value)) {
+				if (!empty($value)) {
+					$ret = array_merge($ret, self::flatten($value));
+				}
+			} else {
+				$ret[] = $value;
+			}
+		}
+		return $ret;
+	}
 }

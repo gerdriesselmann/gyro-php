@@ -198,4 +198,28 @@ class ArrayTest extends GyroUnitTestCase {
 		$test = array(2 => 3, 'k' => array(), 'l' => array(1, 2 => array('x')));		
 		$this->assertEqual($test, $arr);
 	}
+
+	public function test_flatten() {
+		$arr = array('a', 'b', 'c');
+		$this->assertEqual(array('a', 'b', 'c'), Arr::flatten($arr));
+
+		$arr = array('a', array('b', 'c'));
+		$this->assertEqual(array('a', 'b', 'c'), Arr::flatten($arr));
+
+		$arr = array('a', array('b', array('c', 'd')));
+		$this->assertEqual(array('a', 'b', 'c', 'd'), Arr::flatten($arr));
+
+		$arr = array('a', array(), 'b');
+		$this->assertEqual(array('a', 'b'), Arr::flatten($arr));
+
+		$arr = array(
+			'a' => 1,
+			'b' => array(
+				'c' => 2,
+				'd' => 3
+			)
+		);
+		$this->assertEqual(array(1, 2, 3), Arr::flatten($arr));
+	}
+
 }
