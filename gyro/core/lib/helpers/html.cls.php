@@ -253,20 +253,21 @@ class html
 	}
 
 
-	/**
-	 * Returns HTML code for a list
-	 * 
-	 * The list's items are provided with special classes:
-	 * 
-	 * - Even/uneven
-	 * - First and last 
-	 *
-	 * @param array $items Array of list items
-	 * @param string $cls Possible class name. The class is assigned to both items and container (ul/ol)
-	 * @param Boolean True if list should be ordered, that is coantiner shouldbe ol not ul
-	 * @return String
-	 */
-	public static function li($items, $cls = '', $useOrdered = false) {
+    /**
+     * Returns HTML code for a list
+     *
+     * The list's items are provided with special classes:
+     *
+     * - Even/uneven
+     * - First and last
+     *
+     * @param array $items Array of list items
+     * @param string $cls Possible class name. The class is assigned to both items and container (ul/ol)
+     * @param bool $useOrdered If true, ooutputs an ordered list (ol), instead an unordered list (ul)
+     * @param bool $copy_cls_to_items If true, copy classes to both list (ul/ol) and list items (li>)
+     * @return String
+     */
+	public static function li($items, $cls = '', $useOrdered = false, $copy_cls_to_items = true) {
 		$c = count($items);
 		if ($c == 0) {
 			return ''; 
@@ -275,7 +276,11 @@ class html
 		$li = '';
 		$i = 0;
 		foreach($items as $item) {
-			$arr_cls = array($cls);
+			if ($copy_cls_to_items) {
+				$arr_cls = array($cls);
+			} else {
+				$arr_cls = array();
+			}
 			$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
 			if ($i === 1) {
 				$arr_cls[] = 'first';
@@ -664,7 +669,12 @@ class html
 	/**
 	 * Build rows
 	 *
-	 * @param array  $rows Array or Array of arrays of cells. Cells must be already formated with either <td> or <th>
+	 * Paramter $rows is array that may contain
+	 *   - associate array with fields 'class' and 'content
+	 *   - array of cells as string. Cells must be already formated with either \<td> or \<th>
+	 *   - strings, which must be already formatted \<tr>
+     *
+	 * @param array $rows
 	 */
 	private static function table_build_rows($rows) {
 		$ret = '';
@@ -673,35 +683,43 @@ class html
 
 		// Test if $rows is array or array of arrays;
 		if ($c && !is_array(reset($rows))) {
-			$rows = array($rows);
+			$test = $rows[0];
+			$contains_rows = is_string($test) && GyroString::starts_with($test, '<tr');
+			if (!$contains_rows) {
+				$rows = array($rows);
+			}
 		}
 
 		// Iterate and output
 		foreach($rows as $row) {
-			$arr_cls = array();
-
-			// row is
-			// EITHER array("content" => $content, "class" => $class)
-			// OR array of strings
-			if (array_key_exists('content', $row)) {
-				$cells = $row['content'];
-				$cls = Arr::get_item($row, 'class', '');
-				if ($cls) {
-					$arr_cls[] = $cls;
-				}
+			if (is_string($row)) {
+				$ret .= $row;
 			} else {
-				$cells = $row;
-			}
+				$arr_cls = array();
 
-			$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
-			if ($i === 1) {
-				$arr_cls[] = 'first';
-			}
-			if ($i === $c) {
-				$arr_cls[] = 'last';
-			}
+				// row is
+				// EITHER array("content" => $content, "class" => $class)
+				// OR array of strings
+				if (array_key_exists('content', $row)) {
+					$cells = $row['content'];
+					$cls = Arr::get_item($row, 'class', '');
+					if ($cls) {
+						$arr_cls[] = $cls;
+					}
+				} else {
+					$cells = $row;
+				}
 
-			$ret .= html::tr($cells, array('class' => $arr_cls));
+				$arr_cls[] = (++$i % 2) ? 'uneven' : 'even';
+				if ($i === 1) {
+					$arr_cls[] = 'first';
+				}
+				if ($i === $c) {
+					$arr_cls[] = 'last';
+				}
+
+				$ret .= html::tr($cells, array('class' => $arr_cls));
+			}
 		}
 		return $ret;
 	}
