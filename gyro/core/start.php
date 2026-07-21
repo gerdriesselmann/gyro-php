@@ -75,7 +75,9 @@ if (file_exists(APP_INCLUDE_ABSPATH . 'modules.php')) {
 // Check if domain is OK. That is redirect domain.com to www.domain.com, if www.domain.com is APP_URL_DOMAIN )
 if (Config::has_feature(Config::FORCE_FULL_DOMAINNAME)) {
 	$url_cur = Url::current();
-	$url_domain = Url::current()->set_host(Config::get_value(Config::URL_DOMAIN));
+	$url_domain = Url::current()
+        ->set_host(Config::get_value(Config::URL_DOMAIN))
+		->set_scheme(Config::get_value(Config::DEFAULT_SCHEME));
 	if ($url_domain->build() != $url_cur->build()) {
 		$url_domain->redirect(Config::has_feature(Config::TESTMODE) ? Url::TEMPORARY : Url::PERMANENT);
 		exit;
