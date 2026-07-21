@@ -21,6 +21,11 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	protected $scheme = '';
 	protected $decorators = null;
 	protected $is_directory = false;
+
+	/**
+	 * @var RendererChain|null
+	 */
+	private $renderer_chain = null;
 	
 	/**
 	 * Contructor
@@ -74,21 +79,10 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	 * @return IRenderer
 	 */
 	public function get_renderer($page_data) {
-		// Default render decorators
-		$arr_default_decorator = $this->get_default_render_decorators();
-		$arr_overloaded_default_decorators = $page_data->get_render_decorators($this);
-		$arr_decorators = array();
-		// Alllow cache managers as decorator
-		foreach($this->decorators as $decorator) {
-			if ($decorator instanceof ICacheManager) {
-				$arr_decorators[] = new CacheRenderDecorator($decorator);
-			}
-			else {
-				$arr_decorators[] = $decorator;
-			}
+		if (is_null($this->renderer_chain)) {
+			$this->initialize_renderer_chain($page_data);
 		}
-		$arr_decorators = array_merge($arr_decorators, $arr_overloaded_default_decorators, $arr_default_decorator);
-		return new RendererChain($page_data, $arr_decorators);
+		return $this->renderer_chain;
 	}
 
 	/**
@@ -147,15 +141,84 @@ class RouteBase implements IRoute, IDispatcher, IUrlBuilder  {
 	 * @param PageData $page_data
 	 */
 	public function initialize($page_data) {
-		if ($this->scheme != 'any' && Url::current()->get_scheme() != $this->scheme) {
-			// redirect to given scheme
-			Url::current()->set_scheme($this->scheme)->redirect(Url::PERMANENT);
-			exit;
-		}
-		
 		$this->initialize_adjust_path($page_data);
 		$this->initialize_cache_manager($page_data);
-	}	
+		$this->initialize_renderer_chain($page_data);
+
+		$this->check_possible_redirects($page_data);
+	}
+
+	private function check_possible_redirects(PageData $page_data) {
+		// Verify scheme
+		if ($this->scheme != 'any' && Url::current()->get_scheme() != $this->scheme) {
+			// redirect to given scheme
+			$this->execute_redirect(Url::current()->set_scheme($this->scheme));
+		}
+
+		// Simulate Apache behaviout that /a becomes /a/ if /a/ is defiend, but /a is not
+		$path_current = Url::current()->get_path();
+		$current_is_dir = (substr($path_current, -1) === '/');
+		$route_is_dir = $this->is_directory();
+
+		if ($route_is_dir && !$current_is_dir) {
+			$this->execute_redirect(Url::current()->set_path($path_current . '/'));
+		} else if (!$route_is_dir && $current_is_dir) {
+			$this->execute_redirect(Url::current()->set_path(rtrim($path_current, '/')));
+		}
+	}
+
+	/**
+	 * Execute redirect, unless the route itself will result in a redirect
+	 *
+	 * @param Url $url
+	 * @param $type
+	 * @return void
+	 *
+	 * @throws Exception
+	 */
+	private function execute_redirect(Url $url, $type = Url::PERMANENT) {
+		// If route will redirect, do not do semantic redirects - this prevents redirect chains
+		if (!$this->redirects()) {
+			$url->redirect($type);
+			exit;
+		}
+	}
+
+	/**
+	 * Returns true, if this route will result in a redirect
+	 *
+	 * @return bool
+	 */
+	private function redirects() {
+		if (!is_null($this->renderer_chain)) {
+			return $this->renderer_chain->redirects();
+		}
+		return false;
+	}
+
+	/**
+	 * Initialize the renderer chain
+	 *
+	 * @param PageData $page_data
+	 * @return void
+	 */
+	private function initialize_renderer_chain(PageData $page_data) {
+		// Default render decorators
+		$arr_default_decorator = $this->get_default_render_decorators();
+		$arr_overloaded_default_decorators = $page_data->get_render_decorators($this);
+		$arr_decorators = array();
+		// Alllow cache managers as decorator
+		foreach($this->decorators as $decorator) {
+			if ($decorator instanceof ICacheManager) {
+				$arr_decorators[] = new CacheRenderDecorator($decorator);
+			}
+			else {
+				$arr_decorators[] = $decorator;
+			}
+		}
+		$arr_decorators = array_merge($arr_decorators, $arr_overloaded_default_decorators, $arr_default_decorator);
+		$this->renderer_chain = new RendererChain($page_data, $arr_decorators);
+	}
 
 	/**
 	 * Initialize the cache manager

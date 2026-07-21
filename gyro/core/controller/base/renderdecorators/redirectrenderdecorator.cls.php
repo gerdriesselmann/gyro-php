@@ -62,6 +62,10 @@ class RedirectRenderDecorator extends RenderDecoratorBase {
 		$url->redirect($redirect_type);
 		exit;
 	}
+
+	public function redirects() {
+		return true;
+	}
 	
 	/**
 	 * Change URL to point ot new location

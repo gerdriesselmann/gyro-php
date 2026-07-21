@@ -48,5 +48,15 @@ interface IRenderDecorator {
 	 * @return mixed Success information
 	 */
 	public function render_page($page_data, $content_render_decorator, $policy = 0);
+
+	/**
+	 * If there is a render decorator that will redirect, return true
+	 * 
+	 * This is used to prevent redirects chains that may occur, if 
+	 * routing does semantical redircts (like /a to /a/)
+	 * 
+	 * @return bool
+	 */
+	public function redirects();
 }
 
