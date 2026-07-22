@@ -28,7 +28,7 @@ class RendererChain implements IRenderer {
 	 */	
 	public function __construct($page_data, $arr_decorators) {
 		$this->page_data = $page_data;
-		$this->chain_root = new RenderDecoratorBase(); // Ensure there is at least somethin
+		$this->chain_root = new RenderDecoratorBase(); // Ensure there is at least something
 		foreach($arr_decorators as $decorator) {
 			if ($decorator instanceof IRenderDecorator) {
 				$this->chain_root->append($decorator);
@@ -45,5 +45,9 @@ class RendererChain implements IRenderer {
 	public function render($policy = self::NONE) {
 		$this->chain_root->initialize($this->page_data);
 		return $this->chain_root->render_page($this->page_data, $this->chain_root, $policy);
+	}
+
+	public function redirects() {
+		return $this->chain_root->redirects();
 	}
 }

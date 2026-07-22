@@ -71,6 +71,14 @@ class RenderDecoratorBase implements IRenderDecorator {
 		$this->render_content_next($page_data);
 	}
 	
+	public function redirects() {
+		$next = $this->get_next();
+		if ($next) {
+			return $next->redirects();
+		}
+		return false;
+	}
+	
 	/**
 	 * Render content
 	 *

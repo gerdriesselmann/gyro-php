@@ -36,4 +36,8 @@ class RedirectActionRenderDecorator extends RenderDecoratorBase {
 		Url::create($url)->redirect($redirect_type);
 		exit;
 	}
+
+	public function redirects() {
+		return true;
+	}
 }

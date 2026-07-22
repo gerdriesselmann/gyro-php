@@ -58,20 +58,8 @@ class RouterBase implements IEventSink {
 		if (empty($token)) {
 			$token = new NotFoundRoute($this->path_invoked);
 		}
-		else {
-			// SImualte Apache behaviout that a becomes a/ if a/ is defiend, but a not
-			$path_current = Url::current()->get_path();
-			$current_is_dir = (substr($path_current, -1) === '/');
-			$route_is_dir = $token->is_directory();
-
-			if ($route_is_dir && !$current_is_dir) {
-				Url::current()->set_path($path_current . '/')->redirect(Url::PERMANENT);
-			}
-			else if (!$route_is_dir && $current_is_dir) {
-				Url::current()->set_path(rtrim($path_current, '/'))->redirect(Url::PERMANENT);
-			}
-		}
 		$this->current_route = $token;
+
 		return $token;
 	}
 
@@ -108,6 +96,8 @@ class RouterBase implements IEventSink {
 
 	/**
 	 * Try to find matching controller
+	 * 
+	 * @return IRoute|null
 	 */
 	protected function find_route($path) {
 		if ($path === '') {
