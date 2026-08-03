@@ -66,7 +66,6 @@ class ContactBaseController extends ControllerBase {
 	protected function do_contact_form(PageData $page_data, FormHandler $formhandler) {
 		$err = $formhandler->validate();
 		if ($err->is_ok()) {
-			Load::commands('generics/mail');
 			$post = $page_data->get_post();
 			$data = $post->get_array();
 			if (empty($data['name'])) { $err->merge(tr('Please provide a name.', 'contact')); }
@@ -81,11 +80,17 @@ class ContactBaseController extends ControllerBase {
 				$err->merge($this->check_spam($data['email'], $data['subject'], $data['message'], $data));
 			}
 			if ($err->is_ok()) {
-				$cmd = new MailCommand($data['subject'], Config::get_value(Config::MAIL_SUPPORT), 'contact/mail', $post->get_array());
+				$cmd = $this->create_mail_command($data['subject'], Config::get_value(Config::MAIL_SUPPORT), 'contact/mail', $post->get_array());
 				$err->merge($cmd->execute());
 			}
 		}
 		$formhandler->finish($err, tr('Your message has been sent successfully.', 'contact'));
+	}
+
+	protected function create_mail_command($subject, $email, $template, $template_args) {
+		Load::commands('generics/mail');
+		$cmd = new MailCommand($subject, Config::get_value(Config::MAIL_SUPPORT), $template, $template_args);
+		return $cmd;
 	}
 
 	/**
