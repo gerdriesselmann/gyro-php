@@ -205,6 +205,7 @@ class MailBaseCommand extends CommandBase {
 				$this->view->assign($name, $value);
 			}
 			$this->view->assign('to', $this->get_to());
+			$this->view->assign('subject', $this->get_subject());
 			$this->view->assign('mailcmd', $this);
 			return $this->view->render();
 		}
