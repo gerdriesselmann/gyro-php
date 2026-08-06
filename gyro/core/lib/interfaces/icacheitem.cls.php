@@ -11,33 +11,33 @@ interface ICacheItem {
 	 * 
 	 * @return datetime
 	 */
-	public function get_creationdate();	
-	
+	public function get_creationdate(): mixed;
+
 	/**
-	 * Return expiration date 
-	 * 
-	 * @return datetime
+	 * Return expiration date
+	 *
+	 * @return mixed Unix timestamp or datetime string
 	 */
-	public function get_expirationdate();
-	
+	public function get_expirationdate(): mixed;
+
 	/**
 	 * Return data associated with this item
-	 * 
+	 *
 	 * @return mixed
 	 */
-	public function get_data();
-	
+	public function get_data(): mixed;
+
 	/**
 	 * Return the content in plain form
-	 * 
+	 *
 	 * @return string
 	 */
-	public function get_content_plain();
-	
+	public function get_content_plain(): string;
+
 	/**
 	 * Return the content gzip compressed
-	 * 
+	 *
 	 * @return string
 	 */
-	public function get_content_compressed();
+	public function get_content_compressed(): string;
 }

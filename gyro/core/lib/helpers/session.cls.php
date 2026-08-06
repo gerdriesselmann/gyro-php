@@ -1,9 +1,15 @@
 <?php
-// Force cookie usage
-ini_set('session.use_cookies', 1);	 
+// Force cookie usage with secure defaults
+ini_set('session.use_cookies', 1);
 ini_set('session.use_only_cookies', 1);
-ini_set('session.bug_compat_42', 1);
 ini_set('session.use_trans_sid', 0);
+ini_set('session.use_strict_mode', 1);
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_samesite', 'Lax');
+// Set secure flag when running over HTTPS
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+	ini_set('session.cookie_secure', 1);
+}
 
 /**
  * Covers session handling
@@ -87,16 +93,16 @@ class Session {
 		GyroHeaders::restore($headers);
 		// Cookie header may have gone lost.... So send it manually
 		$cookie_params = session_get_cookie_params();
-		if (!isset($cookie_params['httponly'])) {
-			$cookie_params['httponly'] = false;
-		} 
 		$lifetime = $cookie_params['lifetime'];
 		$expire = empty($lifetime) ? 0 : time() + $lifetime;
-		setcookie(
-			session_name(), session_id(), $expire, 
-			$cookie_params['path'], $cookie_params['domain'], 
-			$cookie_params['secure'], $cookie_params['httponly']
-		);
+		setcookie(session_name(), session_id(), [
+			'expires' => $expire,
+			'path' => $cookie_params['path'],
+			'domain' => $cookie_params['domain'],
+			'secure' => $cookie_params['secure'],
+			'httponly' => true,
+			'samesite' => 'Lax'
+		]);
 	}
 	
 	/**

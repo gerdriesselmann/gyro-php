@@ -6,7 +6,7 @@
  * @ingroup Lib
  */
 class ConverterHtml implements IConverter {
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		$value = $this->decode($value);
 		$value = str_replace("\r", "\n", $value);
 		//var_dump(str_replace("\n", '\n', $value));
@@ -36,7 +36,7 @@ class ConverterHtml implements IConverter {
 		return html::tag('p', GyroString::escape($text));
 	}
 	
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		//$value = str_replace("\n", ' ', $value);
 		//$value = str_replace("\r", ' ', $value);
 		$value = str_replace('</p>', "</p>\n", $value);

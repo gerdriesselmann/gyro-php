@@ -6,7 +6,7 @@
  * @ingroup Unidecode
  */
 class ConverterUnidecode implements IConverter {
-	private static $groups = array();
+	private static array $groups = array();
 	
 	/**
 	 * Convert Unicode chars to ASCII transliterals
@@ -14,7 +14,7 @@ class ConverterUnidecode implements IConverter {
 	 * @param string $value
 	 * @param string Encoding of $value, if different from current GyroLocale
 	 */
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		// We need 
 		if (empty($params)) {
 			$params = GyroLocale::get_charset();
@@ -28,7 +28,7 @@ class ConverterUnidecode implements IConverter {
 	/**
 	 * Using "ConverterUnidecode::encode() may be confusing, so let decode8) just do the same
 	 */
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		return $this->encode($value, $params);		
 	} 	
 	

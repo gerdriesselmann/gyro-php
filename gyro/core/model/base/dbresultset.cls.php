@@ -1,7 +1,7 @@
 <?php
 /**
  * Result set
- * 
+ *
  * @author Gerd Riesselmann
  * @ingroup Model
  */
@@ -11,54 +11,29 @@ class DBResultSet implements IDBResultSet {
 	 *
 	 * @var PDOStatement
 	 */
-	protected $pdo_statement = null;
+	protected ?PDOStatement $pdo_statement = null;
 
 	public function __construct($pdo) {
 		$this->pdo_statement = $pdo;
 	}
 
-	/**
-	 * Closes internal cursor
-	 * 
-	 * @return void
-	 */
-	public function close() {
+	public function close(): void {
 		$this->pdo_statement->closeCursor();
 	}
-	
-	/**
-	 * Returns number of columns in result set
-	 *
-	 * @return int
-	 */
-	public function get_column_count() {
+
+	public function get_column_count(): int {
 		return $this->pdo_statement->columnCount();
 	}
-	
-	/**
-	 * Returns number of rows in result set
-	 * 
-	 * @return int
-	 */
-	public function get_row_count() {
+
+	public function get_row_count(): int {
 		return $this->pdo_statement->rowCount();
 	}
-	
-	/**
-	 * Returns row as associative array
-	 *
-	 * @return array | bool False if no more data is available
-	 */
-	public function fetch() {
+
+	public function fetch(): array|false {
 		return $this->pdo_statement->fetch(PDO::FETCH_ASSOC);
 	}
-	
-	/**
-	 * Returns status 
-	 *
-	 * @param Status
-	 */
-	public function get_status() {
+
+	public function get_status(): Status {
 		$ret = new Status();
 		$stub = substr($this->pdo_statement->errorCode(), 0, 2);
 		switch ($stub) {

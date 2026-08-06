@@ -1,0 +1,26 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 2
+    paths:
+        - gyro/core/
+        - contributions/
+    excludePaths:
+        - */3rdparty/*
+        - */simpletests/*
+        - */simpletest/*
+        - vendor/*
+        # Contributions depending on unloaded external classes/interfaces
+        # These cannot be analysed without their full dependency context
+        - contributions/pdf/lib/components/pdfmaker.cls.php
+        - contributions/sphinx/model/drivers/sphinx/
+        - contributions/scheduler/behaviour/commands/scheduler/status.active.cmd.php
+        - contributions/scheduler/model/classes/scheduler.model.php
+        - contributions/usermanagement/behaviour/commands/users/status.any.cmd.php
+        - contributions/usermanagement/model/classes/users.model.php
+        - contributions/usermanagement.notifications/behaviour/commands/notifications/status.read.cmd.php
+        - contributions/usermanagement.notifications/model/classes/notifications.model.php
+        - contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.imagick.cls.php
+        - contributions/text.htmlpurifier/lib/helpers/converters/htmlpurifier.autoparagraph.converter.php
+    reportUnmatchedIgnoredErrors: false

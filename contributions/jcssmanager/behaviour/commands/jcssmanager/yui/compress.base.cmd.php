@@ -121,16 +121,21 @@ class JCSSManagerCompressBaseYuiCommand extends JCSSManagerCompressBaseCommand {
 		$yui_path = false;
 		$ret->merge(self::get_yui_jar($yui_path));
 		if ($ret->is_ok()) {
-			$yui_cmd = 'java -jar ' . $yui_path;
+			$yui_cmd = 'java -jar ' . escapeshellarg($yui_path);
 
 			$yui_options = array();
 			$yui_options['--type'] = $type;
 			$yui_options['--charset'] = GyroLocale::get_charset();
 			$yui_options['--line-break'] = 1000;
 			$yui_options['-o'] = $out_file;
-		
-			$yui_cmd = $yui_cmd . ' ' . Arr::implode(' ', $yui_options, ' ') . ' ' . $in_file;
-		
+
+			$escaped_options = array();
+			foreach ($yui_options as $key => $value) {
+				$escaped_options[] = escapeshellarg($key) . ' ' . escapeshellarg($value);
+			}
+
+			$yui_cmd = $yui_cmd . ' ' . implode(' ', $escaped_options) . ' ' . escapeshellarg($in_file);
+
 			$output = array();
 			$return = 0;
 			exec($yui_cmd, $output, $return);

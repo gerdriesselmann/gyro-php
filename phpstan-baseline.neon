@@ -1,0 +1,4734 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constant CONVERTER_JSON not found\\.$#"
+			count: 1
+			path: contributions/api.twitter/behaviour/commands/tweets/fetch.cmd.php
+
+		-
+			message: "#^Undefined variable\\: \\$ret$#"
+			count: 1
+			path: contributions/api.twitter/behaviour/commands/tweets/fetch.cmd.php
+
+		-
+			message: "#^Variable \\$tweets might not be defined\\.$#"
+			count: 1
+			path: contributions/api.twitter/view/templates/default/widgets/tweets.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetTweets\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/api.twitter/view/widgets/tweets.widget.php
+
+		-
+			message: "#^Undefined variable\\: \\$page_data$#"
+			count: 1
+			path: contributions/api.twitter/view/widgets/tweets.widget.php
+
+		-
+			message: "#^Access to constant MIME on an unknown class ViewFactoryMime\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/binaries.basecontroller.php
+
+		-
+			message: "#^Access to constant MIMETYPE on an unknown class MimeView\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/binaries.basecontroller.php
+
+		-
+			message: "#^Variable \\$binary in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/binaries.basecontroller.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$duration \\(false\\) of method BinariesCacheManager\\:\\:__construct\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/cachemanager/binaries.cachemanager.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$header_manager \\(false\\) of method BinariesCacheManager\\:\\:__construct\\(\\) is incompatible with type ICacheHeaderManager\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/cachemanager/binaries.cachemanager.php
+
+		-
+			message: "#^Variable \\$header_manager in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/binaries/controller/base/cachemanager/binaries.cachemanager.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/binaries/install/install.php
+
+		-
+			message: "#^Call to static method copy_file_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/binaries/install/install.php
+
+		-
+			message: "#^Access to constant MIMETYPE on an unknown class MimeView\\.$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$binary DAOBinaries\\)\\: Unexpected token \"\\$binary\", expected type at offset 115$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$page_data PageData\\)\\: Unexpected token \"\\$page_data\", expected type at offset 86$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^Variable \\$binary might not be defined\\.$#"
+			count: 4
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/download.tpl.php
+
+		-
+			message: "#^Access to constant MIMETYPE on an unknown class MimeView\\.$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/view.tpl.php
+
+		-
+			message: "#^Variable \\$binary might not be defined\\.$#"
+			count: 3
+			path: contributions/binaries/view/templates/default/binaries/view.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/binaries/view/templates/default/binaries/view.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/binaries/view/templates/default/binaries/view.tpl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 46$#"
+			count: 1
+			path: contributions/cache.acpu/cache.acpu.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 53$#"
+			count: 1
+			path: contributions/cache.acpu/cache.acpu.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string, or an ICachable instance\\. If NULL, all is cleared\\)\\: Unexpected token \"A\", expected variable at offset 46$#"
+			count: 1
+			path: contributions/cache.acpu/cache.acpu.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The cache\\)\\: Unexpected token \"The\", expected variable at offset 120$#"
+			count: 1
+			path: contributions/cache.acpu/cache.acpu.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 46$#"
+			count: 1
+			path: contributions/cache.file/cache.file.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 52$#"
+			count: 1
+			path: contributions/cache.file/cache.file.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\. If NULL, all is cleared\\)\\: Unexpected token \"A\", expected variable at offset 46$#"
+			count: 1
+			path: contributions/cache.file/cache.file.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The cache\\)\\: Unexpected token \"The\", expected variable at offset 119$#"
+			count: 1
+			path: contributions/cache.file/cache.file.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 154$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 56$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 77$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string, or an ICachable instance\\. If NULL, all is cleared\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The cache\\)\\: Unexpected token \"The\", expected variable at offset 124$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @var for property MemcacheCacheItem\\:\\:\\$item_data with type Associative is incompatible with native type array\\.$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^Property MemcacheCacheItem\\:\\:\\$item_data has unknown class Associative as its type\\.$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^Variable \\$ns_key might not be defined\\.$#"
+			count: 1
+			path: contributions/cache.memcache/cache.memcache.impl.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$weight$#"
+			count: 1
+			path: contributions/cache.memcache/lib/components/memcache.cls.php
+
+		-
+			message: "#^Access to property \\$expirationdate on an unknown class DAOConfirmation\\.$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^Call to method delete\\(\\) on an unknown class DAOConfirmation\\.$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 56$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^Property ConfirmationHandlerBase\\:\\:\\$confirmation has unknown class DAOConfirmation as its type\\.$#"
+			count: 1
+			path: contributions/confirmations/behaviour/base/confirmationhandler.base.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$form_validation \\$string\\)\\: Unexpected token \"\\$form_validation\", expected type at offset 50$#"
+			count: 1
+			path: contributions/confirmations/view/templates/default/confirmations/submit.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$handler IConfirmationHandler\\)\\: Unexpected token \"\\$handler\", expected type at offset 12$#"
+			count: 1
+			path: contributions/confirmations/view/templates/default/confirmations/submit.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/confirmations/view/templates/default/confirmations/submit.tpl.php
+
+		-
+			message: "#^Variable \\$handler might not be defined\\.$#"
+			count: 1
+			path: contributions/confirmations/view/templates/default/confirmations/submit.tpl.php
+
+		-
+			message: "#^Access to an undefined property DAOCountries2countriesgroups\\:\\:\\$name\\.$#"
+			count: 1
+			path: contributions/countries/model/classes/countries2countriesgroups.model.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 203$#"
+			count: 1
+			path: contributions/css.bootstrap3/behaviour/base/css.bootstrap3.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 175$#"
+			count: 1
+			path: contributions/css.bootstrap3/behaviour/base/css.bootstrap3.eventsink.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/data/3.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$breadcrumb might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/data/3.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/data/3.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$status might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/data/3.0/template/page.tpl.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 2
+			path: contributions/css.bootstrap3/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 3
+			path: contributions/css.bootstrap3/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/install/install.php
+
+		-
+			message: "#^Call to static method copy_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/install/install.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$id might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 4
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/action.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 4
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/command.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/command.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$class string additional CSS class name\\)\\: Unexpected token \"\\$class\", expected type at offset 107$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$items array Array of items as map of name \\=\\> html\\)\\: Unexpected token \"\\$items\", expected type at offset 48$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: contributions/css.bootstrap3/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/css.defaultstyles/behaviour/base/css.defaultstyles.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/css.defaultstyles/behaviour/base/css.defaultstyles.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.defaultstyles/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.defaultstyles/install/check_preconditions.php
+
+		-
+			message: "#^Constant CONVERTER_JSON not found\\.$#"
+			count: 1
+			path: contributions/css.postcss/lib/helpers/postcss.cls.php
+
+		-
+			message: "#^Constant APP_INCLUDE_ABSPATH not found\\.$#"
+			count: 4
+			path: contributions/css.sass/lib/components/sass.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/css.yaml/behaviour/base/css.yaml.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/css.yaml/behaviour/base/css.yaml.eventsink.php
+
+		-
+			message: "#^Variable \\$breadcrumb might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.2/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.2/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/css.yaml/data/3.2/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$status might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.2/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$breadcrumb might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.3/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.3/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$status might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml/data/3.3/template/page.tpl.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 2
+			path: contributions/css.yaml/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml/install/install.php
+
+		-
+			message: "#^Call to static method copy_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml/install/install.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetYAMLSubtemplates\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/css.yaml/view/widgets/yamlsubtemplates.widget.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/css.yaml4/behaviour/base/css.yaml4.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/css.yaml4/behaviour/base/css.yaml4.eventsink.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$breadcrumb might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$route_controller might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$route_id might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Variable \\$status might not be defined\\.$#"
+			count: 1
+			path: contributions/css.yaml4/data/4.0/template/page.tpl.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml4/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml4/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 2
+			path: contributions/css.yaml4/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml4/install/install.php
+
+		-
+			message: "#^Call to static method copy_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/css.yaml4/install/install.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetYAMLSubtemplates\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/css.yaml4/view/widgets/yamlsubtemplates.widget.php
+
+		-
+			message: "#^Method WidgetYAMLSubtemplates\\:\\:create_slots\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: contributions/css.yaml4/view/widgets/yamlsubtemplates.widget.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IDBDriver\\|string Driver or driver name\\)\\: Unexpected token \"Driver\", expected variable at offset 116$#"
+			count: 1
+			path: contributions/db.driverswitch/model/base/dbtabledriverswitch.csl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Table or model name\\)\\: Unexpected token \"Table\", expected variable at offset 67$#"
+			count: 1
+			path: contributions/db.driverswitch/model/base/dbtabledriverswitch.csl.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$unknown$#"
+			count: 1
+			path: contributions/db.tristate/lib/helpers/tristate.cls.php
+
+		-
+			message: "#^Variable \\$dao in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/deletedialog/controller/deletedialog.controller.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve.tpl.php
+
+		-
+			message: "#^File ends with a trailing whitespace\\. This may cause problems when running the code in the web browser\\. Remove the closing \\?\\> mark or remove the whitespace\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve_status.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve_status.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve_status.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve_status.tpl.php
+
+		-
+			message: "#^Variable \\$this might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/approve_status.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/form.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/form.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/message.tpl.php
+
+		-
+			message: "#^Variable \\$this might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/message.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/status/form.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/status/form.tpl.php
+
+		-
+			message: "#^Variable \\$instance might not be defined\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/status/message.tpl.php
+
+		-
+			message: "#^Variable \\$this might not be defined\\.$#"
+			count: 2
+			path: contributions/deletedialog/view/templates/default/deletedialog/inc/status/message.tpl.php
+
+		-
+			message: "#^File ends with a trailing whitespace\\. This may cause problems when running the code in the web browser\\. Remove the closing \\?\\> mark or remove the whitespace\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/infos/default.tpl.php
+
+		-
+			message: "#^File ends with a trailing whitespace\\. This may cause problems when running the code in the web browser\\. Remove the closing \\?\\> mark or remove the whitespace\\.$#"
+			count: 1
+			path: contributions/deletedialog/view/templates/default/deletedialog/messages/default.tpl.php
+
+		-
+			message: "#^Variable \\$filter_group might not be defined\\.$#"
+			count: 6
+			path: contributions/dropdownsorter/view/templates/default/widgets/filter.tpl.php
+
+		-
+			message: "#^Variable \\$filter_url_builder might not be defined\\.$#"
+			count: 2
+			path: contributions/dropdownsorter/view/templates/default/widgets/filter.tpl.php
+
+		-
+			message: "#^Variable \\$sorter_data might not be defined\\.$#"
+			count: 2
+			path: contributions/dropdownsorter/view/templates/default/widgets/sorter.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method FeedWriter\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/feeds/lib/components/feedwriter/feedwriter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/javascript.ckeditor/behaviour/base/javascript.ckeditor.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/javascript.ckeditor/behaviour/base/javascript.ckeditor.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.ckeditor/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.ckeditor/install/check_preconditions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 203$#"
+			count: 1
+			path: contributions/javascript.cookieconsent/behaviour/base/javascript.cookieconsent.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 175$#"
+			count: 1
+			path: contributions/javascript.cookieconsent/behaviour/base/javascript.cookieconsent.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.cookieconsent/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.cookieconsent/install/check_preconditions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/javascript.googlecharttools/behaviour/base/javascript.googlecharttools.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/javascript.googlecharttools/behaviour/base/javascript.googlecharttools.eventsink.php
+
+		-
+			message: "#^Constant CONVERTER_JSON not found\\.$#"
+			count: 2
+			path: contributions/javascript.googlecharttools/view/widgets/googlechart.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetGoogleChart\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/javascript.googlecharttools/view/widgets/googlechart.widget.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 203$#"
+			count: 1
+			path: contributions/javascript.jquery/behaviour/base/javscript.jquery.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 175$#"
+			count: 1
+			path: contributions/javascript.jquery/behaviour/base/javscript.jquery.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.jquery/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.jquery/install/check_preconditions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/javascript.jqueryui/behaviour/base/javascript.jqueryui.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/javascript.jqueryui/behaviour/base/javascript.jqueryui.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.jqueryui/install/check_preconditions.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/javascript.jqueryui/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 2
+			path: contributions/javascript.jqueryui/install/check_preconditions.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$component$#"
+			count: 2
+			path: contributions/javascript.jqueryui/lib/helpers/jqueryui.cls.php
+
+		-
+			message: "#^Method CommandDelegate\\:\\:__construct\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/base/compress.base.cmd.php
+
+		-
+			message: "#^Method JCSSManagerCompressBaseConcatCommand\\:\\:concat\\(\\) invoked with 3 parameters, 2 required\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/concat/compress.base.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$err$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/concat/compress.base.cmd.php
+
+		-
+			message: "#^Access to property \\$print on an unknown class csstidy\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^Call to method load_template\\(\\) on an unknown class csstidy\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^Call to method parse\\(\\) on an unknown class csstidy\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^Call to method set_cfg\\(\\) on an unknown class csstidy\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^Instantiated class csstidy not found\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^Parameter \\$css of method JCSSManagerCompressCSSCsstidyCommand\\:\\:run_csstidy\\(\\) has invalid type strnig\\.$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/csstidy/compress.css.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$yui_options$#"
+			count: 1
+			path: contributions/jcssmanager/behaviour/commands/jcssmanager/yui/compress.base.cmd.php
+
+		-
+			message: "#^Instantiated class ConsoleOnlyRenderDecorator not found\\.$#"
+			count: 1
+			path: contributions/jcssmanager/controller/jcssmanager.controller.php
+
+		-
+			message: "#^Access to constant HTACCESS_OPTIONS on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/jcssmanager/lib/helpers/jcssmanager.cls.php
+
+		-
+			message: "#^Access to constant HTACCESS_REWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/jcssmanager/lib/helpers/jcssmanager.cls.php
+
+		-
+			message: "#^Call to static method modify_htaccess\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 2
+			path: contributions/jcssmanager/lib/helpers/jcssmanager.cls.php
+
+		-
+			message: "#^Class DAOJcsscompressedfiles referenced with incorrect case\\: DAOJCsscompressedfiles\\.$#"
+			count: 1
+			path: contributions/jcssmanager/model/classes/jcsscompressedfiles.facade.php
+
+		-
+			message: "#^Instantiated class ConsolePageView not found\\.$#"
+			count: 1
+			path: contributions/jcssmanager/view/base/jcssmanagerviewfactory.cls.php
+
+		-
+			message: "#^Method IdentiFrac\\:\\:create\\(\\) has invalid return type handle\\.$#"
+			count: 1
+			path: contributions/lib.identifrac/lib/components/identifrac.cls.php
+
+		-
+			message: "#^Access to an undefined property IImageInformation\\:\\:\\$handle\\.$#"
+			count: 6
+			path: contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.gd.cls.php
+
+		-
+			message: "#^Access to an undefined property IImageInformation\\:\\:\\$type\\.$#"
+			count: 6
+			path: contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.gd.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$text \\(false\\) of method ImageToolsGD\\:\\:watermark\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.gd.cls.php
+
+		-
+			message: "#^Method ImageInformationGD\\:\\:get_extension\\(\\) should return int but return statement is missing\\.$#"
+			count: 1
+			path: contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.gd.cls.php
+
+		-
+			message: "#^Undefined variable\\: \\$sie$#"
+			count: 1
+			path: contributions/lib.imagetools/lib/components/imagetools_impl/imagetools.gd.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$text \\(false\\) of method IImageTools\\:\\:watermark\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: contributions/lib.imagetools/lib/interfaces/iimagetools.cls.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/lib.imagetools/view/templates/default/imagetools/test/index.tpl.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/models.contact/install/check_postconditions.php
+
+		-
+			message: "#^Call to static method copy_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/models.contact/install/check_postconditions.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/models.contact/view/templates/default/contact/form.tpl.php
+
+		-
+			message: "#^File ends with a trailing whitespace\\. This may cause problems when running the code in the web browser\\. Remove the closing \\?\\> mark or remove the whitespace\\.$#"
+			count: 1
+			path: contributions/models.contact/view/templates/default/contact/inc/widgets.tpl.php
+
+		-
+			message: "#^Variable \\$show_sender_if_logged_in might not be defined\\.$#"
+			count: 1
+			path: contributions/models.contact/view/templates/default/contact/inc/widgets.tpl.php
+
+		-
+			message: "#^Variable \\$email might not be defined\\.$#"
+			count: 2
+			path: contributions/models.contact/view/templates/default/contact/mail.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 3
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/content.tpl.php
+
+		-
+			message: "#^Variable \\$model might not be defined\\.$#"
+			count: 1
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/content.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/head.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/head.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 3
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/meta.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 4
+			path: contributions/models.postbase/view/templates/default/postbase/widgets/originating.tpl.php
+
+		-
+			message: "#^Access to an undefined property DataObjectSearchIndexSphinxBase\\:\\:\\$relevance_w\\.$#"
+			count: 1
+			path: contributions/models.searchindex.sphinx/model/base/dataobject.searchindex.base.cls.php
+
+		-
+			message: "#^Method DataObjectSearchIndexSphinxBase\\:\\:compute_model_weight\\(\\) has invalid return type strng\\.$#"
+			count: 1
+			path: contributions/models.searchindex.sphinx/model/base/dataobject.searchindex.base.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\|array Name of model or array of names of models\\)\\: Unexpected token \"Name\", expected variable at offset 67$#"
+			count: 1
+			path: contributions/models.searchindex.sphinx/model/base/dataobject.searchindex.base.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\|array Name of model or array of names of models\\)\\: Unexpected token \"Name\", expected variable at offset 76$#"
+			count: 1
+			path: contributions/models.searchindex.sphinx/model/base/dataobject.searchindex.base.cls.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/models.searchindex/install/check_postconditions.php
+
+		-
+			message: "#^Call to static method copy_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/models.searchindex/install/check_postconditions.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\|array Name of model or array of names of models\\)\\: Unexpected token \"Name\", expected variable at offset 67$#"
+			count: 1
+			path: contributions/models.searchindex/lib/interfaces/isearchindex.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\|array Name of model or array of names of models\\)\\: Unexpected token \"Name\", expected variable at offset 76$#"
+			count: 1
+			path: contributions/models.searchindex/lib/interfaces/isearchindex.cls.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/models.searchindex/view/templates/default/searchindex/search.tpl.php
+
+		-
+			message: "#^Variable \\$result might not be defined\\.$#"
+			count: 1
+			path: contributions/models.searchindex/view/templates/default/searchindex/search.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/models.searchindex/view/templates/default/searchindex/search.tpl.php
+
+		-
+			message: "#^Variable \\$terms might not be defined\\.$#"
+			count: 1
+			path: contributions/models.searchindex/view/templates/default/searchindex/search.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$seed \\(false\\) of method Tokens\\:\\:create_token\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: contributions/models.tokens/model/classes/tokens.facade.php
+
+		-
+			message: "#^Undefined variable\\: \\$limit$#"
+			count: 1
+			path: contributions/newssitemap/controller/newssitemap.controller.php
+
+		-
+			message: "#^Method INewsSiteItem\\:\\:get_publication_date\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: contributions/newssitemap/lib/interfaces/inewssiteitem.cls.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: contributions/newssitemap/view/templates/default/newssitemap/index.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method TemplatedBlock\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.block.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#5 \\$position \\(string\\) of method TemplatedBlock\\:\\:__construct\\(\\) is incompatible with type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.block.cls.php
+
+		-
+			message: "#^Parameter \\$position of method TemplatedBlock\\:\\:__construct\\(\\) has invalid type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.block.cls.php
+
+		-
+			message: "#^Undefined variable\\: \\$page_data$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.block.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#4 \\$position \\(string\\) of method TemplatedFullBlock\\:\\:__construct\\(\\) is incompatible with type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.full.block.cls.php
+
+		-
+			message: "#^Parameter \\$position of method TemplatedFullBlock\\:\\:__construct\\(\\) has invalid type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.full.block.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#6 \\$position \\(string\\) of method TemplatedParameterizedBlock\\:\\:__construct\\(\\) is incompatible with type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.parameterized.block.cls.php
+
+		-
+			message: "#^Parameter \\$position of method TemplatedParameterizedBlock\\:\\:__construct\\(\\) has invalid type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.parameterized.block.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$position \\(string\\) of method TemplatedSimpleBlock\\:\\:__construct\\(\\) is incompatible with type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.simple.block.cls.php
+
+		-
+			message: "#^Parameter \\$position of method TemplatedSimpleBlock\\:\\:__construct\\(\\) has invalid type enum\\.$#"
+			count: 1
+			path: contributions/page.blocks/controller/base/templated.simple.block.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$keys$#"
+			count: 1
+			path: contributions/page.blocks/lib/components/blockrepository.cls.php
+
+		-
+			message: "#^Instantiated class idna_convert not found\\.$#"
+			count: 1
+			path: contributions/punycode/lib/helpers/converters/punycode.converter.php
+
+		-
+			message: "#^Call to an undefined method ISearchAdapter\\:\\:add_where_object\\(\\)\\.$#"
+			count: 1
+			path: contributions/querymodifiers/model/base/dbfiltermulticolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array items\\)\\: Unexpected token \"items\", expected variable at offset 44$#"
+			count: 1
+			path: contributions/querymodifiers/model/base/dbfiltermulticolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string title\\)\\: Unexpected token \"title\", expected variable at offset 69$#"
+			count: 1
+			path: contributions/querymodifiers/model/base/dbfiltermulticolumn.cls.php
+
+		-
+			message: "#^Access to an undefined property DBFilterOnLinkedTable\\:\\:\\$join_condition\\.$#"
+			count: 1
+			path: contributions/querymodifiers/model/base/dbfilteronlinkedtable.cls.php
+
+		-
+			message: "#^Call to static method invoke\\(\\) on an unknown class Console\\.$#"
+			count: 1
+			path: contributions/scheduler/behaviour/commands/base/processscheduler.cmd.php
+
+		-
+			message: "#^Variable \\$task in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/scheduler/behaviour/commands/base/processscheduler.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status The result of task's last run\\)\\: Unexpected token \"The\", expected variable at offset 108$#"
+			count: 1
+			path: contributions/scheduler/behaviour/commands/base/reschedulescheduler.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/24hours.rescheduler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/rescheduler.base.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/rushhour1.rescheduler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/rushhour2.rescheduler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/rushhour3.rescheduler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/behaviour/scheduler/terminator1.rescheduler.php
+
+		-
+			message: "#^Instantiated class ConsoleOnlyRenderDecorator not found\\.$#"
+			count: 3
+			path: contributions/scheduler/controller/base/scheduler.basecontroller.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/scheduler/install/install.php
+
+		-
+			message: "#^Call to static method copy_file_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/scheduler/install/install.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status Indicated if schould be rescheduled on success or failure\\)\\: Unexpected token \"Indicated\", expected variable at offset 133$#"
+			count: 1
+			path: contributions/scheduler/lib/interfaces/irescheduler.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(If true prior tasks with same action will get deleted \\$exclusive\\)\\: Unexpected token \"true\", expected variable at offset 120$#"
+			count: 1
+			path: contributions/scheduler/model/classes/scheduler.facade.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Task created \\$result\\)\\: Unexpected token \"created\", expected variable at offset 89$#"
+			count: 1
+			path: contributions/scheduler/model/classes/scheduler.facade.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$user$#"
+			count: 1
+			path: contributions/scheduler/model/classes/scheduler.facade.php
+
+		-
+			message: "#^Variable \\$error might not be defined\\.$#"
+			count: 1
+			path: contributions/scheduler/view/templates/default/scheduler/mail/error_admin.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/scheduler/view/templates/default/scheduler/mail/error_admin.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/scheduler/view/templates/default/scheduler/mail/error_admin.tpl.php
+
+		-
+			message: "#^Variable \\$task might not be defined\\.$#"
+			count: 2
+			path: contributions/scheduler/view/templates/default/scheduler/mail/error_admin.tpl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/socialbookmarking/behaviour/base/socialbookmarking.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/socialbookmarking/behaviour/base/socialbookmarking.eventsink.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/install/check_postconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/install/check_postconditions.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/view/templates/default/widgets/bookmarking.tpl.php
+
+		-
+			message: "#^Variable \\$services might not be defined\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/view/templates/default/widgets/bookmarking.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetBookmarking\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/view/widgets/bookmarking.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$policy \\(false\\) of method WidgetBookmarking\\:\\:output\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/socialbookmarking/view/widgets/bookmarking.widget.php
+
+		-
+			message: "#^Constant APP_SPHINX_INDEXER_INVOKE not found\\.$#"
+			count: 1
+			path: contributions/sphinx/behaviour/commands/sphinx/index.rotate.cmd.php
+
+		-
+			message: "#^Access to an undefined property DBQuerySelect\\:\\:\\$sphinx_features\\.$#"
+			count: 1
+			path: contributions/sphinx/model/base/dataobjectsphinx.base.cls.php
+
+		-
+			message: "#^Constant APP_SPHINX_DB_NAME not found\\.$#"
+			count: 1
+			path: contributions/sphinx/start.inc.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: contributions/text.html/behaviour/base/text.html.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: contributions/text.html/behaviour/base/text.html.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IConverter\\|array ICOnverter or array of IConverter instances or converter names that can be resolved using ConverterFactory\\:\\:create_chain\\(\\)\\)\\: Unexpected token \"ICOnverter\", expected variable at offset 168$#"
+			count: 1
+			path: contributions/text.html/lib/helpers/htmltext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Array of IConverter instances or converter names that can be resolved using ConverterFactory\\:\\:create_chain\\(\\)\\)\\: Unexpected token \"Array\", expected variable at offset 157$#"
+			count: 1
+			path: contributions/text.html/lib/helpers/htmltext.cls.php
+
+		-
+			message: "#^Call to method purify\\(\\) on an unknown class HTMLPurifier\\.$#"
+			count: 1
+			path: contributions/text.htmlpurifier/lib/helpers/converters/htmlpurifier.converter.php
+
+		-
+			message: "#^Call to static method createDefault\\(\\) on an unknown class HTMLPurifier_Config\\.$#"
+			count: 1
+			path: contributions/text.htmlpurifier/lib/helpers/converters/htmlpurifier.converter.php
+
+		-
+			message: "#^Instantiated class HTMLPurifier not found\\.$#"
+			count: 1
+			path: contributions/text.htmlpurifier/lib/helpers/converters/htmlpurifier.converter.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array See http\\://htmlpurifier\\.org/live/configdoc/plain\\.html for all possible values\\)\\: Unexpected token \"See\", expected variable at offset 71$#"
+			count: 1
+			path: contributions/text.htmlpurifier/lib/helpers/converters/htmlpurifier.converter.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array See http\\://htmlpurifier\\.org/live/configdoc/plain\\.html for all possible values\\)\\: Unexpected token \"See\", expected variable at offset 71$#"
+			count: 1
+			path: contributions/text.placeholders/lib/helpers/converters/textplaceholders.converter.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Encoding of \\$value, if different from current GyroLocale\\)\\: Unexpected token \"Encoding\", expected variable at offset 105$#"
+			count: 1
+			path: contributions/text.unidecode/lib/helpers/converters/unidecode.converter.php
+
+		-
+			message: "#^Variable \\$data might not be defined\\.$#"
+			count: 1
+			path: contributions/text.unidecode/lib/helpers/converters/unidecode.converter.php
+
+		-
+			message: "#^Parameter \\$item of method HijackaccountAccessControl\\:\\:do_is_allowed_for_user\\(\\) has invalid type DAOHtmlpage\\.$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/behaviour/accesscontrol/hijackaccount.access.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 203$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/behaviour/base/hijackaccount.eventsink.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 175$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/behaviour/base/hijackaccount.eventsink.php
+
+		-
+			message: "#^Class Session referenced with incorrect case\\: session\\.$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/behaviour/commands/users/hijack.cmd.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/controller/hijackaccount.controller.php
+
+		-
+			message: "#^PHPDoc tag @var does not specify variable name\\.$#"
+			count: 1
+			path: contributions/usermanagement.hijackaccount/controller/hijackaccount.controller.php
+
+		-
+			message: "#^Variable \\$hijacker might not be defined\\.$#"
+			count: 5
+			path: contributions/usermanagement.hijackaccount/view/templates/de/hijackaccount/notification.tpl.php
+
+		-
+			message: "#^Variable \\$hijacker might not be defined\\.$#"
+			count: 4
+			path: contributions/usermanagement.hijackaccount/view/templates/default/hijackaccount/notification.tpl.php
+
+		-
+			message: "#^Access to constant MIME on an unknown class ViewFactoryMime\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/controller/notifications.controller.php
+
+		-
+			message: "#^Instantiated class ConsoleOnlyRenderDecorator not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/controller/notifications.controller.php
+
+		-
+			message: "#^Variable \\$settings in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/controller/notifications.controller.php
+
+		-
+			message: "#^Access to constant COPY_OVERWRITE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/install/check_preconditions.php
+
+		-
+			message: "#^Call to static method copy_to_webroot\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/install/check_preconditions.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$notifications might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$settings might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/de/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Access to constant MIMETYPE on an unknown class MimeView\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/feed.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/feed.tpl.php
+
+		-
+			message: "#^Variable \\$notifications might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/feed.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/feed.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 6
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/inc/item.tpl.php
+
+		-
+			message: "#^Variable \\$notifications might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$notifications might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$settings might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Abuses\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_abuses_status.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Messages\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_messages.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_messages.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Posts\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_replies.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_replies.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/digest_item_replies_posted.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Abuses\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Abuses\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses_status.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses_status.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses_status.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 5
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses_status.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_abuses_status.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Messages\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_messages.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_messages.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_messages.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 5
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_messages.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_messages.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Posts\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Call to static method get\\(\\) on an unknown class Topics\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 6
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/mail/single_replies_posted.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/my.tpl.php
+
+		-
+			message: "#^Variable \\$filter_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/my.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/my.tpl.php
+
+		-
+			message: "#^Variable \\$pager_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/my.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$settings DAONotificationssettings\\)\\: Unexpected token \"\\$settings\", expected type at offset 12$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 6
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Variable \\$settings might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Variable \\$sources might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/settings.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/view.tpl.php
+
+		-
+			message: "#^Variable \\$notification might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/view.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/notifications/view.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/widgets/notifications.latest.tpl.php
+
+		-
+			message: "#^Variable \\$current_user might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/widgets/notifications.latest.tpl.php
+
+		-
+			message: "#^Variable \\$notifications might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/templates/default/widgets/notifications.latest.tpl.php
+
+		-
+			message: "#^Variable \\$total might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement.notifications/view/templates/default/widgets/notifications.latest.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetLatestNotifications\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/widgets/notifications.latest.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#4 \\$policy \\(false\\) of method WidgetLatestNotifications\\:\\:output\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/usermanagement.notifications/view/widgets/notifications.latest.widget.php
+
+		-
+			message: "#^Instantiated class PasswordHash02 not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2f.hash.php
+
+		-
+			message: "#^Method Pas2fHash\\:\\:create_pass2_instance\\(\\) has invalid return type PasswordHash02\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2f.hash.php
+
+		-
+			message: "#^Call to method CheckPassword\\(\\) on an unknown class PasswordHash02\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2p.hash.php
+
+		-
+			message: "#^Call to method HashPassword\\(\\) on an unknown class PasswordHash02\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2p.hash.php
+
+		-
+			message: "#^Instantiated class PasswordHash02 not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2p.hash.php
+
+		-
+			message: "#^Method Pas2pHash\\:\\:create_pass2_instance\\(\\) has invalid return type PasswordHash02\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas2p.hash.php
+
+		-
+			message: "#^Instantiated class PasswordHash03 not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3f.hash.php
+
+		-
+			message: "#^Method Pas3fHash\\:\\:create_pass3_instance\\(\\) has invalid return type PasswordHash03\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3f.hash.php
+
+		-
+			message: "#^Call to method CheckPassword\\(\\) on an unknown class PasswordHash03\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3p.hash.php
+
+		-
+			message: "#^Call to method HashPassword\\(\\) on an unknown class PasswordHash03\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3p.hash.php
+
+		-
+			message: "#^Instantiated class PasswordHash03 not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3p.hash.php
+
+		-
+			message: "#^Method Pas3pHash\\:\\:create_pass3_instance\\(\\) has invalid return type PasswordHash03\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/hashes/pas3p.hash.php
+
+		-
+			message: "#^Class RestartsessionUsersBaseCommand referenced with incorrect case\\: RestartSessionUsersBaseCommand\\.$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/commands/users/restartsession.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changeemail.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changeemail.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changeemail.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changepassword.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changepassword.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/changepassword.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/createaccount.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/createaccount.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/createaccount.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/onetimelogin.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/onetimelogin.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/onetimelogin.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation\\)\\: Unexpected token \"Data\", expected variable at offset 134$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/validateemail.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DAOConfirmations Data of confirmation, not necessarily up to date, depending on status\\)\\: Unexpected token \"Data\", expected variable at offset 150$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/validateemail.confirmationhandler.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Indicates success or failure\\)\\: Unexpected token \"Indicates\", expected variable at offset 237$#"
+			count: 1
+			path: contributions/usermanagement/behaviour/confirmationhandlers/validateemail.confirmationhandler.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PrivateRigidEtagOnlyCacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/cachemanager/headermanager/privaterigidetagonly.cacheheader.php
+
+		-
+			message: "#^Parameter \\$lastmodifieddate of method PrivateRigidEtagOnlyCacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/cachemanager/headermanager/privaterigidetagonly.cacheheader.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$require_exact_role$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/renderdecorators/accessrenderdecorator.cls.php
+
+		-
+			message: "#^Access to an undefined property DAOUsers\\:\\:\\$roles\\.$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/user.basecontroller.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$user$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/user.basecontroller.php
+
+		-
+			message: "#^Variable \\$user in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/usermanagement/controller/base/user.basecontroller.php
+
+		-
+			message: "#^Call to an undefined method DBFilterColumn\\:\\:get_items\\(\\)\\.$#"
+			count: 1
+			path: contributions/usermanagement/controller/tools/filterusername.cls.php
+
+		-
+			message: "#^Access to constant COPY_NO_REPLACE on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/usermanagement/install/install.php
+
+		-
+			message: "#^Call to static method copy_file_to_app\\(\\) on an unknown class SystemUpdateInstaller\\.$#"
+			count: 1
+			path: contributions/usermanagement/install/install.php
+
+		-
+			message: "#^Class DAOUserroles referenced with incorrect case\\: DAOUserRoles\\.$#"
+			count: 1
+			path: contributions/usermanagement/model/classes/userroles.facade.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/de/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$new_status might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/de/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/de/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/de/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$postfix might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/blocks/menu.tpl.php
+
+		-
+			message: "#^Variable \\$prefix might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/blocks/menu.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$do_tos might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 4
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm_mail.tpl.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/confirm_mail.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/create.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/create.tpl.php
+
+		-
+			message: "#^Variable \\$url_self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/create.tpl.php
+
+		-
+			message: "#^Variable \\$current_user might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/dashboard.tpl.php
+
+		-
+			message: "#^Variable \\$dashboards might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/dashboard.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 4
+			path: contributions/usermanagement/view/templates/default/users/dashboard.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/delete_account.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/delete_account.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/edit.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/edit.tpl.php
+
+		-
+			message: "#^Variable \\$url_self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/edit.tpl.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/edit.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/edit_self.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/edit_self.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/edit_self.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 4
+			path: contributions/usermanagement/view/templates/default/users/inc/editselfwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$context might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/editwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 6
+			path: contributions/usermanagement/view/templates/default/users/inc/editwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/editwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$role_options might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/editwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$filter_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$filtertext_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$pager_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$sorter_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$users might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/list.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/inc/loginwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/loginwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$goto might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/loginwidgets.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/signupwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$feature_resend might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/signupwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$feature_tos might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/signupwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 4
+			path: contributions/usermanagement/view/templates/default/users/inc/signupwidgets.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/inc/signupwidgets.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/list.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/list.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/login.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/login.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/lost_password.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/lost_password.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/lost_password.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/lost_password_reenter.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/lost_password_reenter.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/lost_password_reenter.tpl.php
+
+		-
+			message: "#^Variable \\$token might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/lost_password_reenter.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/changeemail.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/changepwd.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/onetimelogin.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$user might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/register.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$new_status might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/statuschange.tpl.php
+
+		-
+			message: "#^Variable \\$appname might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$confirmation might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$mailcmd might not be defined\\.$#"
+			count: 2
+			path: contributions/usermanagement/view/templates/default/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/mail/validateemail.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/register.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/register.tpl.php
+
+		-
+			message: "#^Variable \\$form_data might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/resend_registration_mail.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/resend_registration_mail.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: contributions/usermanagement/view/templates/default/users/resend_registration_mail.tpl.php
+
+		-
+			message: "#^Variable \\$url_self might not be defined\\.$#"
+			count: 1
+			path: contributions/usermanagement/view/templates/default/users/resend_registration_mail.tpl.php
+
+		-
+			message: "#^Array has 2 duplicate keys with value 'de' \\('de', 'de'\\)\\.$#"
+			count: 4
+			path: contributions/usermanagement/view/translations/users.translations.php
+
+		-
+			message: "#^Variable \\$instance in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: contributions/voting/controller/voting.controller.php
+
+		-
+			message: "#^Call to an undefined method DAOVotes\\:\\:find_all\\(\\)\\.$#"
+			count: 1
+			path: contributions/voting/model/classes/votes.facade.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 1
+			path: contributions/voting/view/templates/default/widgets/votingform.tpl.php
+
+		-
+			message: "#^Variable \\$average might not be defined\\.$#"
+			count: 1
+			path: contributions/voting/view/templates/default/widgets/votingresult.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetVotingForm\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/voting/view/widgets/votingform.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetVotingResult\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/voting/view/widgets/votingresult.widget.php
+
+		-
+			message: "#^Access to constant LINK_TO_SUBPAGE_BELOW_SECTION on an unknown class WidgetAlphabeticalList\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$self ContentViewBase\\)\\: Unexpected token \"\\$self\", expected type at offset 13$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$data might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$params might not be defined\\.$#"
+			count: 2
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 3
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist/empty.tpl.php
+
+		-
+			message: "#^Variable \\$params might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist/empty.tpl.php
+
+		-
+			message: "#^Variable \\$item might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist/item.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist/item.tpl.php
+
+		-
+			message: "#^Variable \\$list might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphalist/list.tpl.php
+
+		-
+			message: "#^Access to constant LINK_TO_SUBPAGES on an unknown class WidgetAlphabeticalList\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphapager.tpl.php
+
+		-
+			message: "#^Variable \\$base_url might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphapager.tpl.php
+
+		-
+			message: "#^Variable \\$letters might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphapager.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphapager.tpl.php
+
+		-
+			message: "#^Variable \\$selected might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/templates/default/widgets/alphapager.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetAlphaList\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/widgets/alphalist.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetAlphaPager\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/widgets.alphalist/view/widgets/alphapager.widget.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree.tpl.php
+
+		-
+			message: "#^Variable \\$params might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree.tpl.php
+
+		-
+			message: "#^Variable \\$tree might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/node.tpl.php
+
+		-
+			message: "#^Variable \\$node might not be defined\\.$#"
+			count: 2
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/node.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/nodes.tpl.php
+
+		-
+			message: "#^Variable \\$level might not be defined\\.$#"
+			count: 3
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/nodes.tpl.php
+
+		-
+			message: "#^Variable \\$nodes might not be defined\\.$#"
+			count: 2
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/nodes.tpl.php
+
+		-
+			message: "#^Variable \\$self might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/templates/default/widgets/tree/nodes.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetTree\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/widgets/tree.widget.php
+
+		-
+			message: "#^Variable \\$childs might not be defined\\.$#"
+			count: 1
+			path: contributions/widgets.tree/view/widgets/tree.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$item_types \\(false\\) of method AccessControlBase\\:\\:__construct\\(\\) is incompatible with type array\\|string\\.$#"
+			count: 1
+			path: gyro/core/behaviour/base/accesscontrolbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 55$#"
+			count: 1
+			path: gyro/core/behaviour/base/commandbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(ICommand Command to adapt\\)\\: Unexpected token \"Command\", expected variable at offset 48$#"
+			count: 1
+			path: gyro/core/behaviour/base/commandchain.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array Associative array of template arguments\\)\\: Unexpected token \"Associative\", expected variable at offset 144$#"
+			count: 1
+			path: gyro/core/behaviour/commands/base/mail.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Mail address\\)\\: Unexpected token \"Mail\", expected variable at offset 80$#"
+			count: 1
+			path: gyro/core/behaviour/commands/base/mail.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Subject of Mail\\)\\: Unexpected token \"Subject\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/behaviour/commands/base/mail.cmd.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Template name\\)\\: Unexpected token \"Template\", expected variable at offset 112$#"
+			count: 1
+			path: gyro/core/behaviour/commands/base/mail.cmd.php
+
+		-
+			message: "#^Constant APP_INCLUDE_ABSPATH not found\\.$#"
+			count: 2
+			path: gyro/core/constants.inc.php
+
+		-
+			message: "#^Constant APP_MAIL_ADMIN not found\\.$#"
+			count: 1
+			path: gyro/core/constants.inc.php
+
+		-
+			message: "#^Constant APP_MAIL_SENDER not found\\.$#"
+			count: 1
+			path: gyro/core/constants.inc.php
+
+		-
+			message: "#^Constant APP_MAIL_SUPPORT not found\\.$#"
+			count: 1
+			path: gyro/core/constants.inc.php
+
+		-
+			message: "#^Constant APP_URL_DOMAIN not found\\.$#"
+			count: 1
+			path: gyro/core/constants.inc.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method BlockBase\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum Where the block is to be dispalyed\\.\\)\\: Unexpected token \"Where\", expected variable at offset 304$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(integer The block's index\\. A block with lowest index will be displayed first\\)\\: Unexpected token \"The\", expected variable at offset 218$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(integer\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 58$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The block's content\\)\\: Unexpected token \"The\", expected variable at offset 178$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The name of this block\\. Used as class, too\\)\\: Unexpected token \"The\", expected variable at offset 46$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The title of the block\\. Displayed as heading, e\\.g\\.\\)\\: Unexpected token \"The\", expected variable at offset 108$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 60$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 61$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 62$#"
+			count: 1
+			path: gyro/core/controller/base/blockbase.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$header_manager \\(false\\) of method ConstantCacheManager\\:\\:__construct\\(\\) is incompatible with type ICacheHeaderManager\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Method ConstantCacheManager\\:\\:get_creation_datetime\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Method ConstantCacheManager\\:\\:get_expiration_datetime\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Parameter \\$datetime of method ConstantCacheManager\\:\\:set_creation_datetime\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Parameter \\$datetime of method ConstantCacheManager\\:\\:set_expiration_datetime\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Property ConstantCacheManager\\:\\:\\$creation has unknown class timestamp as its type\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Property ConstantCacheManager\\:\\:\\$expiration has unknown class timestamp as its type\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Variable \\$header_manager in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/constantcachemanager.cls.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method BaseCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/base.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method NoCacheCacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/nocache.cacheheader.php
+
+		-
+			message: "#^Parameter \\$lastmodifieddate of method NoCacheCacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/nocache.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PrivateLazyCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/privatelazy.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PrivateNoRevalidateCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/privatenorevalidate.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PrivateRigidCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/privaterigid.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PublicLazyCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/publiclazy.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PublicNoRevalidateCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/publicnorevalidate.cacheheader.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method PublicRigidCacheHeaderManager\\:\\:get_cache_control\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/headermanager/publicrigid.cacheheader.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$header_manager \\(false\\) of method NoCacheCacheManager\\:\\:__construct\\(\\) is incompatible with type ICacheHeaderManager\\.$#"
+			count: 1
+			path: gyro/core/controller/base/cachemanager/nocachecachemanager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array CSS files\\)\\: Unexpected token \"CSS\", expected variable at offset 49$#"
+			count: 2
+			path: gyro/core/controller/base/headdata.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 42$#"
+			count: 1
+			path: gyro/core/controller/base/headdata.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 46$#"
+			count: 1
+			path: gyro/core/controller/base/headdata.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 56$#"
+			count: 1
+			path: gyro/core/controller/base/headdata.cls.php
+
+		-
+			message: "#^Class PathStack referenced with incorrect case\\: Pathstack\\.$#"
+			count: 1
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$position \\(false\\) of method PageData\\:\\:get_blocks\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IDispatcher Dispatcher\\)\\: Unexpected token \"Dispatcher\", expected variable at offset 107$#"
+			count: 1
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^Parameter \\$arr of method PageData\\:\\:merge_uploaded_files\\(\\) has invalid type unknown_type\\.$#"
+			count: 1
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^Parameter \\$path of method PageData\\:\\:set_path\\(\\) has invalid type strin\\.$#"
+			count: 1
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^Variable \\$cache_manager in empty\\(\\) always exists and is not falsy\\.$#"
+			count: 2
+			path: gyro/core/controller/base/pagedata.cls.php
+
+		-
+			message: "#^Access to an undefined property CacheRenderDecorator\\:\\:\\$cache_manager\\.$#"
+			count: 2
+			path: gyro/core/controller/base/renderdecorators/cacherenderdecorator.cls.php
+
+		-
+			message: "#^Call to an undefined method IView\\:\\:is_cached\\(\\)\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/dispatcherinvokerenderdecorator.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$policy \\(false\\) of method DispatcherInvokeRenderDecorator\\:\\:render_page\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/dispatcherinvokerenderdecorator.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IRenderDecorator Decorator to invoke render_content upon\\)\\: Unexpected token \"Decorator\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/dispatcherinvokerenderdecorator.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(object Page data object\\)\\: Unexpected token \"Page\", expected variable at offset 65$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/dispatcherinvokerenderdecorator.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$policy \\(false\\) of method ETagRenderDecorator\\:\\:render_page\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/etagrenderdecorator.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IRenderDecorator Decorator to invoke render_content upon\\)\\: Unexpected token \"Decorator\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/etagrenderdecorator.cls.php
+
+		-
+			message: "#^Result of method RenderDecoratorBase\\:\\:render_page\\(\\) \\(void\\) is used\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/etagrenderdecorator.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$cache_manager$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/redirectrenderdecorator.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$policy \\(false\\) of method RenderDecoratorBase\\:\\:render_page\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/renderdecoratorbase.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$policy \\(false\\) of method RenderDecoratorBase\\:\\:render_page_next\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/renderdecoratorbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IRenderDecorator Decorator to invoke render_content upon\\)\\: Unexpected token \"Decorator\", expected variable at offset 112$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/renderdecoratorbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IRenderDecorator Decorator to invoke render_content upon\\)\\: Unexpected token \"Decorator\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/controller/base/renderdecorators/renderdecoratorbase.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method RendererChain\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/controller/base/renderer/rendererchain.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Data of current page\\)\\: Unexpected token \"Data\", expected variable at offset 58$#"
+			count: 1
+			path: gyro/core/controller/base/routerbase.cls.php
+
+		-
+			message: "#^Access to an undefined property CatchAllRoute\\:\\:\\$path_further\\.$#"
+			count: 1
+			path: gyro/core/controller/base/routes/catchallroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Array or single instance of IRouteDecorator\\)\\: Unexpected token \"Array\", expected variable at offset 201$#"
+			count: 1
+			path: gyro/core/controller/base/routes/commandsroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(object The controller to invoke\\)\\: Unexpected token \"The\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/controller/base/routes/commandsroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The URL this Token is responsible for\\)\\: Unexpected token \"The\", expected variable at offset 145$#"
+			count: 1
+			path: gyro/core/controller/base/routes/commandsroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The function to invoke on controller\\)\\: Unexpected token \"The\", expected variable at offset 89$#"
+			count: 1
+			path: gyro/core/controller/base/routes/commandsroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(object Page data object\\)\\: Unexpected token \"Page\", expected variable at offset 65$#"
+			count: 1
+			path: gyro/core/controller/base/routes/notfoundroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Array or single instance of IRouteDecorator\\)\\: Unexpected token \"Array\", expected variable at offset 232$#"
+			count: 1
+			path: gyro/core/controller/base/routes/routebase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Name of action\\)\\: Unexpected token \"Name\", expected variable at offset 77$#"
+			count: 1
+			path: gyro/core/controller/base/routes/routebase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Url Instance of URL class\\. This instance is changed\\.\\)\\: Unexpected token \"Instance\", expected variable at offset 63$#"
+			count: 1
+			path: gyro/core/controller/tools/filter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Filter to append\\)\\: Unexpected token \"Filter\", expected variable at offset 130$#"
+			count: 1
+			path: gyro/core/controller/tools/filter.cls.php
+
+		-
+			message: "#^Method FilterText\\:\\:get_filter_title\\(\\) has invalid return type unknown_type\\.$#"
+			count: 1
+			path: gyro/core/controller/tools/filtertext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array Array with filter names as keys and descriptions to display as values\\)\\: Unexpected token \"Array\", expected variable at offset 67$#"
+			count: 1
+			path: gyro/core/controller/tools/filtertext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(PathStack\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \\* \", expected variable at offset 48$#"
+			count: 1
+			path: gyro/core/controller/tools/filtertext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Url Instance of URL class\\. This instance is changed\\.\\)\\: Unexpected token \"Instance\", expected variable at offset 66$#"
+			count: 1
+			path: gyro/core/controller/tools/filtertext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Filter to append\\)\\: Unexpected token \"Filter\", expected variable at offset 134$#"
+			count: 1
+			path: gyro/core/controller/tools/filtertext.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$create_token$#"
+			count: 1
+			path: gyro/core/controller/tools/formhandler.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IPagerAdapter Adapter\\. For compatability reasons, this is also interpreted as a policy, if you pass an integer\\)\\: Unexpected token \"Adapter\", expected variable at offset 292$#"
+			count: 1
+			path: gyro/core/controller/tools/pager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Url Instance of URL class\\. This instance is changed\\.\\)\\: Unexpected token \"Instance\", expected variable at offset 66$#"
+			count: 2
+			path: gyro/core/controller/tools/pager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of items per page\\)\\: Unexpected token \"Number\", expected variable at offset 240$#"
+			count: 1
+			path: gyro/core/controller/tools/pager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Filter to append\\)\\: Unexpected token \"Filter\", expected variable at offset 134$#"
+			count: 2
+			path: gyro/core/controller/tools/pager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$page_data$#"
+			count: 1
+			path: gyro/core/controller/tools/pager.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#4 \\$adapter \\(false\\) of method Sorter\\:\\:__construct\\(\\) is incompatible with type ISorterAdapter\\.$#"
+			count: 1
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DataObjectBase The current query to  be modified\\)\\: Unexpected token \"The\", expected variable at offset 65$#"
+			count: 1
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Url Instance of URL class\\. This instance is changed\\.\\)\\: Unexpected token \"Instance\", expected variable at offset 66$#"
+			count: 2
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Filter to append\\)\\: Unexpected token \"Filter\", expected variable at offset 134$#"
+			count: 2
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$default_column$#"
+			count: 1
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^Result of static method SorterDefaultAdapter\\:\\:apply_to_url\\(\\) \\(void\\) is used\\.$#"
+			count: 1
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^Variable \\$current_column might not be defined\\.$#"
+			count: 1
+			path: gyro/core/controller/tools/sorter.cls.php
+
+		-
+			message: "#^Binary operation \"\\*\" between string and 1024 results in an error\\.$#"
+			count: 1
+			path: gyro/core/lib/compatability.inc.php
+
+		-
+			message: "#^Binary operation \"\\*\" between string\\|null and 1024 results in an error\\.$#"
+			count: 1
+			path: gyro/core/lib/compatability.inc.php
+
+		-
+			message: "#^Variable \\$version might not be defined\\.$#"
+			count: 3
+			path: gyro/core/lib/compatability.inc.php
+
+		-
+			message: "#^Constant APP_INCLUDE_ABSPATH not found\\.$#"
+			count: 2
+			path: gyro/core/lib/compatability/defines.0.3.inc.php
+
+		-
+			message: "#^Constant APP_TITLE not found\\.$#"
+			count: 1
+			path: gyro/core/lib/compatability/defines.0.3.inc.php
+
+		-
+			message: "#^Constant APP_URL_DOMAIN not found\\.$#"
+			count: 2
+			path: gyro/core/lib/compatability/defines.0.3.inc.php
+
+		-
+			message: "#^PHPDoc tag @var does not specify variable name\\.$#"
+			count: 1
+			path: gyro/core/lib/compatability/defines.0.3.inc.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 201$#"
+			count: 1
+			path: gyro/core/lib/components/eventsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 172$#"
+			count: 1
+			path: gyro/core/lib/components/eventsource.cls.php
+
+		-
+			message: "#^Constant CONVERTER_JSON not found\\.$#"
+			count: 1
+			path: gyro/core/lib/components/httprequestconfig.cls.php
+
+		-
+			message: "#^Method Status\\:\\:append\\(\\) invoked with 3 parameters, 1 required\\.$#"
+			count: 1
+			path: gyro/core/lib/components/mailmessage.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(\\$headers Associative array with header name as key\\)\\: Unexpected token \"\\$headers\", expected type at offset 118$#"
+			count: 1
+			path: gyro/core/lib/components/mailmessagebuilder/imailmessagebuilder.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(\\$headers Associative array with header name as key\\)\\: Unexpected token \"\\$headers\", expected type at offset 118$#"
+			count: 1
+			path: gyro/core/lib/components/mailmessagebuilder/singlemessage.builder.php
+
+		-
+			message: "#^Result of static method Load\\:\\:classes_in_directory\\(\\) \\(void\\) is used\\.$#"
+			count: 1
+			path: gyro/core/lib/components/translator.cls.php
+
+		-
+			message: "#^Call to an undefined method IView\\:\\:is_cached\\(\\)\\.$#"
+			count: 1
+			path: gyro/core/lib/components/upfrontcache.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array The array to read from\\)\\: Unexpected token \"The\", expected variable at offset 359$#"
+			count: 1
+			path: gyro/core/lib/helpers/array.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array The clean array\\)\\: Unexpected token \"The\", expected variable at offset 325$#"
+			count: 1
+			path: gyro/core/lib/helpers/array.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array The array to implode\\)\\: Unexpected token \"The\", expected variable at offset 116$#"
+			count: 1
+			path: gyro/core/lib/helpers/array.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string String to put between array key and value\\. If empty, function will fall back to normal implode\\)\\: Unexpected token \"String\", expected variable at offset 156$#"
+			count: 1
+			path: gyro/core/lib/helpers/array.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string String to put between elements of array\\)\\: Unexpected token \"String\", expected variable at offset 58$#"
+			count: 1
+			path: gyro/core/lib/helpers/array.cls.php
+
+		-
+			message: "#^Class Date referenced with incorrect case\\: date\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/cast.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Anything that possible can be interpreted as a date\\)\\: Unexpected token \"Anything\", expected variable at offset 84$#"
+			count: 1
+			path: gyro/core/lib/helpers/cast.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(bool True, if languange specific seperators should be acknowledged\\)\\: Unexpected token \"True\", expected variable at offset 115$#"
+			count: 1
+			path: gyro/core/lib/helpers/cast.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed The value to convert\\)\\: Unexpected token \"The\", expected variable at offset 77$#"
+			count: 1
+			path: gyro/core/lib/helpers/cast.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixes\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \\* \", expected variable at offset 78$#"
+			count: 1
+			path: gyro/core/lib/helpers/cast.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$value \\(false\\) of method Common\\:\\:header\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/common.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(bool If FALSE, header will not be send, if header with same name was already sent\\)\\: Unexpected token \"If\", expected variable at offset 185$#"
+			count: 1
+			path: gyro/core/lib/helpers/common.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$params \\(false\\) of method ConverterHtmlEx\\:\\:decode\\(\\) is incompatible with type array\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/converters/htmlex.converter.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of seconds the cookie will be valid\\)\\: Unexpected token \"Number\", expected variable at offset 111$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Cotent of Cookuie\\)\\: Unexpected token \"Cotent\", expected variable at offset 77$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Cotent of Cookuie\\)\\: Unexpected token \"Cotent\", expected variable at offset 78$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Name of Cookie\\)\\: Unexpected token \"Name\", expected variable at offset 44$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Name of Cookie\\)\\: Unexpected token \"Name\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Name of cookie to delete\\)\\: Unexpected token \"Name\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Name of cookie\\)\\: Unexpected token \"Name\", expected variable at offset 78$#"
+			count: 1
+			path: gyro/core/lib/helpers/cookie.cls.php
+
+		-
+			message: "#^Binary operation \"\\-\" between Date and 1 results in an error\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^Class Date referenced with incorrect case\\: date\\.$#"
+			count: 6
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of Days\\)\\: Unexpected token \"Number\", expected variable at offset 104$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of Months\\)\\: Unexpected token \"Number\", expected variable at offset 104$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of Months\\)\\: Unexpected token \"Number\", expected variable at offset 110$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of days\\)\\: Unexpected token \"Number\", expected variable at offset 110$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 71$#"
+			count: 2
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 78$#"
+			count: 2
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 80$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 84$#"
+			count: 2
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 85$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Timestamp\\)\\: Unexpected token \"Timestamp\", expected variable at offset 98$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^Parameter \\$date of method GyroDate\\:\\:http_date\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/date.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$value \\(false\\) of method GyroHeaders\\:\\:append\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/headers.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$value \\(false\\) of method GyroHeaders\\:\\:set\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/headers.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(bool If FALSE, header will not be set, if header with same name was already set\\)\\: Unexpected token \"If\", expected variable at offset 162$#"
+			count: 1
+			path: gyro/core/lib/helpers/headers.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Integer Index of page to go to, 0\\-based\\. Index counts back in time, so 0 is last, 1 is page before last etc\\)\\: Unexpected token \"Index\", expected variable at offset 166$#"
+			count: 1
+			path: gyro/core/lib/helpers/history.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Integer Index of page to retrieve, 0\\-based\\. Index counts back in time, so 0 is last, 1 is page before last etc\\)\\: Unexpected token \"Index\", expected variable at offset 62$#"
+			count: 1
+			path: gyro/core/lib/helpers/history.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed Either Url or String\\: Default page to go to if history is empty\\)\\: Unexpected token \"Either\", expected variable at offset 360$#"
+			count: 1
+			path: gyro/core/lib/helpers/history.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed Either Url or String\\: Default page to return if history is empty\\)\\: Unexpected token \"Either\", expected variable at offset 183$#"
+			count: 1
+			path: gyro/core/lib/helpers/history.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Status\\|String Optional message to display on page redirected to\\)\\: Unexpected token \"Optional\", expected variable at offset 292$#"
+			count: 1
+			path: gyro/core/lib/helpers/history.cls.php
+
+		-
+			message: "#^Method html\\:\\:options\\(\\) has invalid return type unknown\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Boolean True if list should be ordered, that is coantiner shouldbe ol not ul\\)\\: Unexpected token \"True\", expected variable at offset 312$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String A Desctiption, displayed as tool tip\\)\\: Unexpected token \"A\", expected variable at offset 221$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Optional\\. A wider description of the page\\)\\: Unexpected token \"Optional\", expected variable at offset 127$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Other atrributes\\)\\: Unexpected token \"Other\", expected variable at offset 276$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The Error Message\\)\\: Unexpected token \"The\", expected variable at offset 69$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The HREF\\)\\: Unexpected token \"The\", expected variable at offset 194$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The Message\\)\\: Unexpected token \"The\", expected variable at offset 82$#"
+			count: 2
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The Message\\)\\: Unexpected token \"The\", expected variable at offset 86$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The Message\\)\\: Unexpected token \"The\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The Text for the link\\)\\: Unexpected token \"The\", expected variable at offset 154$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The title of the page\\)\\: Unexpected token \"The\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<div class\\=\"\\$cls\\>\\$text\\</div\\>\\)\\: Unexpected token \"class\", expected '\\>' at offset 129$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<em class\\=\"\\$cls\\>\\$text\\</em\\>\\)\\: Unexpected token \"class\", expected '\\>' at offset 128$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<h\\$level class\\=\"\\$cls\\>\\$text\\</h\\$level\\>\\)\\: Unexpected token \"\\$level\", expected '\\>' at offset 214$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<p class\\=\"\\$cls\\>\\$text\\</p\\>\\)\\: Unexpected token \"class\", expected '\\>' at offset 125$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<script type\\=\"text/javascript\" src\\=\"\\$path\"\\>\\</script\\>\\)\\: Unexpected token \"type\", expected '\\>' at offset 99$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<span class\\=\"\\$cls\\>\\$text\\</span\\>\\)\\: Unexpected token \"class\", expected '\\>' at offset 131$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<strong class\\=\"\\$cls\\>\\$text\\</strong\\>\\)\\: Unexpected token \"class\", expected '\\>' at offset 135$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<style type\\=\"text/css\" media\\=\"\\$media\"\\>@import url\\(\\$path\\);\\</style\\>\\)\\: Unexpected token \"type\", expected '\\>' at offset 119$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<tag attrs /\\>\\)\\: Unexpected token \"attrs\", expected '\\>' at offset 169$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^PHPDoc tag @return has invalid value \\(string \\<tag attrs\\>text\\</tag\\>\\)\\: Unexpected token \"attrs\", expected '\\>' at offset 216$#"
+			count: 1
+			path: gyro/core/lib/helpers/html.cls.php
+
+		-
+			message: "#^Method Session\\:\\:cookies_enabled\\(\\) should return bool but return statement is missing\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Name of the value\\)\\: Unexpected token \"of\", expected variable at offset 55$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Name of the value\\)\\: Unexpected token \"of\", expected variable at offset 74$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The from URL\\)\\: Unexpected token \"The\", expected variable at offset 62$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String the name for the value\\)\\: Unexpected token \"the\", expected variable at offset 71$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed The value\\)\\: Unexpected token \"The\", expected variable at offset 112$#"
+			count: 1
+			path: gyro/core/lib/helpers/session.cls.php
+
+		-
+			message: "#^Call to method getMessage\\(\\) on an unknown class PEAR_Error\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/status.cls.php
+
+		-
+			message: "#^Class PEAR_Error not found\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/status.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed If String\\: The error message, else if left blank \\: No error\\)\\: Unexpected token \"If\", expected variable at offset 41$#"
+			count: 1
+			path: gyro/core/lib/helpers/status.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 99$#"
+			count: 1
+			path: gyro/core/lib/helpers/status.cls.php
+
+		-
+			message: "#^Parameter \\$other of method Status\\:\\:merge\\(\\) has invalid type PEAR_Error\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/status.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$encoding \\(false\\) of method GyroString\\:\\:check_encoding\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$from \\(false\\) of method GyroString\\:\\:convert\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$to \\(false\\) of method GyroString\\:\\:convert\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#5 \\$count \\(false\\) of method GyroString\\:\\:preg_replace\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Function _append_u_modifier not found\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Inner named functions are not supported by PHPStan\\. Consider refactoring to an anonymous function, class method, or a top\\-level\\-defined function\\. See issue \\#165 \\(https\\://github\\.com/phpstan/phpstan/issues/165\\) for more details\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Integer Number of chars to convert, 0 for all\\.\\)\\: Unexpected token \"Number\", expected variable at offset 119$#"
+			count: 2
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The text to process\\)\\: Unexpected token \"The\", expected variable at offset 119$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String The text to process\\)\\: Unexpected token \"The\", expected variable at offset 277$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Value to convert into lowercase\\)\\: Unexpected token \"Value\", expected variable at offset 67$#"
+			count: 2
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(bool True to include unit, false to obey\\)\\: Unexpected token \"True\", expected variable at offset 147$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(boolean If true, C formatting is used\\)\\: Unexpected token \"If\", expected variable at offset 178$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(float The numeric value\\)\\: Unexpected token \"The\", expected variable at offset 112$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int Number of decimals\\)\\: Unexpected token \"Number\", expected variable at offset 139$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(int The numeric value\\)\\: Unexpected token \"The\", expected variable at offset 103$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed The numeric value\\)\\: Unexpected token \"The\", expected variable at offset 105$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string if not empty, everything that is not a letter or number is replaced by this\\)\\: Unexpected token \"if\", expected variable at offset 202$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string text to clean\\)\\: Unexpected token \"text\", expected variable at offset 169$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 315$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 406$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Variable \\$decimal_sep in empty\\(\\) is never defined\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$encoding \\(false\\) of method StringMBString\\:\\:check_encoding\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$from \\(false\\) of method StringMBString\\:\\:convert\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$to \\(false\\) of method StringMBString\\:\\:convert\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Integer Number of chars to convert, 0 for all\\.\\)\\: Unexpected token \"Number\", expected variable at offset 119$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Value to convert into lowercase\\)\\: Unexpected token \"Value\", expected variable at offset 67$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Value to convert into upper case\\)\\: Unexpected token \"Value\", expected variable at offset 67$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.mbstring.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$encoding \\(false\\) of method StringPHP\\:\\:check_encoding\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.php.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Value to convert into lowercase\\)\\: Unexpected token \"Value\", expected variable at offset 67$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.php.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Value to convert into upper case\\)\\: Unexpected token \"Value\", expected variable at offset 67$#"
+			count: 1
+			path: gyro/core/lib/helpers/string_impl/string.php.cls.php
+
+		-
+			message: "#^Access to an undefined property Url\\:\\:\\$url\\.$#"
+			count: 2
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^Class Url referenced with incorrect case\\: url\\.$#"
+			count: 1
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Parameter name\\)\\: Unexpected token \"Parameter\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String Paremeter value\\)\\: Unexpected token \"Paremeter\", expected variable at offset 120$#"
+			count: 1
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(bool If true, a permanent, else a temporary redirect is done\\)\\: Unexpected token \"If\", expected variable at offset 49$#"
+			count: 1
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The new path\\)\\: Unexpected token \"The\", expected variable at offset 57$#"
+			count: 1
+			path: gyro/core/lib/helpers/url.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected type at offset 78$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Max value or false to not check for max value\\)\\: Unexpected token \"Max\", expected variable at offset 178$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Max value or false to not check for max value\\)\\: Unexpected token \"Max\", expected variable at offset 181$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Min value or false to not check for min value\\)\\: Unexpected token \"Min\", expected variable at offset 113$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Min value or false to not check for min value\\)\\: Unexpected token \"Min\", expected variable at offset 116$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed The value to check\\)\\: Unexpected token \"The\", expected variable at offset 76$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed The value to check\\)\\: Unexpected token \"The\", expected variable at offset 79$#"
+			count: 1
+			path: gyro/core/lib/helpers/validation.cls.php
+
+		-
+			message: """
+				#^PHPDoc tag @param has invalid value \\(String The context\\. Some actions may not be approbiate in some situations\\. For example, \r
+				              action 'edit' should not be returned when editing\\. THis can be expressed throug a \r
+				              context named 'edit'\\. Default context is 'view'\\.\\)\\: Unexpected token "The", expected variable at offset 120$#
+			"""
+			count: 1
+			path: gyro/core/lib/interfaces/iactionsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(dao_User The current user or false if no user is logged on\\)\\: Unexpected token \"The\", expected variable at offset 51$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iactionsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(integer\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 58$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iblock.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iblock.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 60$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iblock.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 61$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iblock.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\r\\\\n\\\\t \", expected variable at offset 62$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iblock.cls.php
+
+		-
+			message: "#^Parameter \\$expirationdate of method ICacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/icacheheadermanager.cls.php
+
+		-
+			message: "#^Parameter \\$lastmodifieddate of method ICacheHeaderManager\\:\\:send_headers\\(\\) has invalid type timestamp\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/icacheheadermanager.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Cosntraint Column data Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Cosntraint\", expected variable at offset 70$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbconstraint.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Key Column Data Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Key\", expected variable at offset 161$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbconstraint.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string feature\\)\\: Unexpected token \"feature\", expected variable at offset 79$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbdriver.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DataObjectBase The current query to  be modified\\)\\: Unexpected token \"The\", expected variable at offset 65$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbquerymodifier.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Associative\", expected variable at offset 253$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbrelation.cls.php
+
+		-
+			message: "#^Interface IDBSqlBuilder referenced with incorrect case\\: IDBSQLBuilder\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/idbwhere.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 210$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ieventsink.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 181$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ieventsink.cls.php
+
+		-
+			message: "#^Class Status referenced with incorrect case\\: status\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ieventsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed Event parameter\\(s\\)\\)\\: Unexpected token \"Event\", expected variable at offset 201$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ieventsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string Event name\\)\\: Unexpected token \"Event\", expected variable at offset 172$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ieventsource.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$page_data$#"
+			count: 1
+			path: gyro/core/lib/interfaces/ipageradapter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IRenderDecorator Decorator to invoke render_content upon\\)\\: Unexpected token \"Decorator\", expected variable at offset 87$#"
+			count: 1
+			path: gyro/core/lib/interfaces/irenderdecorator.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method IRenderer\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/irenderer.cls.php
+
+		-
+			message: "#^Parameter \\$page_data of method IRoute\\:\\:get_renderer\\(\\) has invalid type PageDate\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/iroute.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Enum 'asc' or 'desc'\\)\\: Unexpected token \"'asc'\", expected variable at offset 134$#"
+			count: 1
+			path: gyro/core/lib/interfaces/isearchadapter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IDBQueryModifier The modifier to be applied\\)\\: Unexpected token \"The\", expected variable at offset 61$#"
+			count: 1
+			path: gyro/core/lib/interfaces/isearchadapter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String column name\\)\\: Unexpected token \"column\", expected variable at offset 105$#"
+			count: 1
+			path: gyro/core/lib/interfaces/isearchadapter.cls.php
+
+		-
+			message: "#^Method ITimeStamped\\:\\:get_creation_date\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/itimestamped.cls.php
+
+		-
+			message: "#^Method ITimeStamped\\:\\:get_modification_date\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/lib/interfaces/itimestamped.cls.php
+
+		-
+			message: "#^Constant APP_INCLUDE_ABSPATH not found\\.$#"
+			count: 2
+			path: gyro/core/load.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$fiels$#"
+			count: 1
+			path: gyro/core/load.cls.php
+
+		-
+			message: "#^Result of static method Load\\:\\:do_load\\(\\) \\(void\\) is used\\.$#"
+			count: 1
+			path: gyro/core/load.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Associative\", expected variable at offset 70$#"
+			count: 1
+			path: gyro/core/model/base/constraints/dbconstraint.unique.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#3 \\$type \\(int\\) of method DataObjectBase\\:\\:join\\(\\) is incompatible with type string\\.$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Enum 'asc' or 'desc'\\)\\: Unexpected token \"'asc'\", expected variable at offset 80$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IDBQueryModifier The modifier to be applied\\)\\: Unexpected token \"The\", expected variable at offset 58$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: """
+				#^PHPDoc tag @param has invalid value \\(String The context\\. Some actions may not be approbiate in some situations\\. For example, 
+				              action 'edit' should not be returned when editing\\. This can be expressed through a 
+				              context named 'edit'\\. Default context is 'view'\\.\\)\\: Unexpected token "The", expected variable at offset 820$#
+			"""
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(String column name\\)\\: Unexpected token \"column\", expected variable at offset 52$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed  Any params\\)\\: Unexpected token \"Any\", expected variable at offset 1089$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(mixed \"Access Request Object\", e\\.g\\. a user\\)\\: Unexpected token \"\\\\\"Access Request Object\\\\\"\", expected variable at offset 764$#"
+			count: 1
+			path: gyro/core/model/base/dataobjectbase.cls.php
+
+		-
+			message: "#^Method DataObjectTimestampedCached\\:\\:get_creation_date\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/model/base/dataobjecttimestampedcached.cls.php
+
+		-
+			message: "#^Method DataObjectTimestampedCached\\:\\:get_modification_date\\(\\) has invalid return type timestamp\\.$#"
+			count: 1
+			path: gyro/core/model/base/dataobjecttimestampedcached.cls.php
+
+		-
+			message: "#^Constant APP_DB_NAME not found\\.$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^Constant APP_DB_PWD not found\\.$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^Constant APP_DB_USER not found\\.$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#4 \\$conn \\(string\\) of method DB\\:\\:log_query\\(\\) is incompatible with type IDBDriver\\.$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$name$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$values$#"
+			count: 1
+			path: gyro/core/model/base/db.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Cosntraint Column data Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Cosntraint\", expected variable at offset 70$#"
+			count: 1
+			path: gyro/core/model/base/dbconstraint.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Key Column Data Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Key\", expected variable at offset 161$#"
+			count: 1
+			path: gyro/core/model/base/dbconstraint.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$value$#"
+			count: 1
+			path: gyro/core/model/base/dbexpression.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string key\\)\\: Unexpected token \"key\", expected variable at offset 66$#"
+			count: 1
+			path: gyro/core/model/base/dbfilter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string title\\)\\: Unexpected token \"title\", expected variable at offset 42$#"
+			count: 1
+			path: gyro/core/model/base/dbfilter.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum type of column\\)\\: Unexpected token \"type\", expected variable at offset 94$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltercolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string column\\)\\: Unexpected token \"column\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltercolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string title\\)\\: Unexpected token \"title\", expected variable at offset 71$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltercolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(DBFilter DBFilter instance\\)\\: Unexpected token \"DBFilter\", expected variable at offset 92$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltergroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Associative array of DBFilter instances\\)\\: Unexpected token \"Associative\", expected variable at offset 42$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltergroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The key for this filter\\)\\: Unexpected token \"The\", expected variable at offset 48$#"
+			count: 1
+			path: gyro/core/model/base/dbfiltergroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(array Associative array of form fieldname \\=\\> fieldvalue\\)\\: Unexpected token \"Associative\", expected variable at offset 253$#"
+			count: 1
+			path: gyro/core/model/base/dbrelation.cls.php
+
+		-
+			message: "#^Method DBSortColumn\\:\\:get_db_column\\(\\) has invalid return type unknown\\.$#"
+			count: 1
+			path: gyro/core/model/base/dbsortcolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(enum type of column\\)\\: Unexpected token \"type\", expected variable at offset 94$#"
+			count: 1
+			path: gyro/core/model/base/dbsortcolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string column\\)\\: Unexpected token \"column\", expected variable at offset 45$#"
+			count: 1
+			path: gyro/core/model/base/dbsortcolumn.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string title\\)\\: Unexpected token \"title\", expected variable at offset 71$#"
+			count: 1
+			path: gyro/core/model/base/dbsortcolumn.cls.php
+
+		-
+			message: "#^Method DBWhereGroup\\:\\:get_column\\(\\) should return string but return statement is missing\\.$#"
+			count: 1
+			path: gyro/core/model/base/dbwheregroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$column$#"
+			count: 1
+			path: gyro/core/model/base/dbwheregroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$operator$#"
+			count: 1
+			path: gyro/core/model/base/dbwheregroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$value$#"
+			count: 1
+			path: gyro/core/model/base/dbwheregroup.cls.php
+
+		-
+			message: "#^Static method GyroDate\\:\\:mysql_time\\(\\) invoked with 2 parameters, 1 required\\.$#"
+			count: 1
+			path: gyro/core/model/base/fields/dbfield.time.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(IDBTable One table in join\\)\\: Unexpected token \"One\", expected variable at offset 48$#"
+			count: 1
+			path: gyro/core/model/base/queries/dbjoincondition.cls.php
+
+		-
+			message: "#^Call to an undefined method DBQuery\\:\\:get_havings\\(\\)\\.$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.count.cls.php
+
+		-
+			message: "#^Call to an undefined method DBQuery\\:\\:get_subqueries\\(\\)\\.$#"
+			count: 2
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.count.cls.php
+
+		-
+			message: "#^Call to an undefined method DBQuery\\:\\:get_havings\\(\\)\\.$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.select.cls.php
+
+		-
+			message: "#^Call to an undefined method DBQuery\\:\\:get_subqueries\\(\\)\\.$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.select.cls.php
+
+		-
+			message: "#^Constructor of class DBSqlBuilderWhere has an unused parameter \\$params\\.$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.where.cls.php
+
+		-
+			message: "#^Constructor of class DBSqlBuilderWhereGroup has an unused parameter \\$params\\.$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.wheregroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$where$#"
+			count: 1
+			path: gyro/core/model/base/sqlbuilder/dbsqlbuilder.wheregroup.cls.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: gyro/core/model/classes/cache.db.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 56$#"
+			count: 1
+			path: gyro/core/model/classes/cache.db.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 81$#"
+			count: 1
+			path: gyro/core/model/classes/cache.db.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\. If NULL, all is cleared\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: gyro/core/model/classes/cache.db.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string The cache\\)\\: Unexpected token \"The\", expected variable at offset 124$#"
+			count: 1
+			path: gyro/core/model/classes/cache.db.impl.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: gyro/core/model/classes/cache.facade.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Mixed A set of key params, may be an array or a string, or an ICachable instance\\. If NULL, all is cleared\\)\\: Unexpected token \"A\", expected variable at offset 49$#"
+			count: 1
+			path: gyro/core/model/classes/cache.facade.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array Array of keys that are set as key0, key1 etc\\)\\: Unexpected token \"Array\", expected variable at offset 48$#"
+			count: 1
+			path: gyro/core/model/classes/cache.model.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Boolean If TRUE a phrase keyX like 'valueX%%' etc is added to where clause for each key\\)\\: Unexpected token \"If\", expected variable at offset 113$#"
+			count: 1
+			path: gyro/core/model/classes/cache.model.php
+
+		-
+			message: "#^Default value of the parameter \\#5 \\$params \\(false\\) of method DBDriverMysql\\:\\:initialize\\(\\) is incompatible with type array\\.$#"
+			count: 1
+			path: gyro/core/model/drivers/mysql/dbdriver.mysql.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(string feature\\)\\: Unexpected token \"feature\", expected variable at offset 80$#"
+			count: 1
+			path: gyro/core/model/drivers/mysql/dbdriver.mysql.php
+
+		-
+			message: "#^Parameter \\$mode of method DBWhereFulltext\\:\\:build_fulltext_match\\(\\) has invalid type enum\\.$#"
+			count: 1
+			path: gyro/core/model/drivers/mysql/dbwherefulltext.cls.php
+
+		-
+			message: "#^Constant APP_INCLUDE_ABSPATH not found\\.$#"
+			count: 4
+			path: gyro/core/start.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method ContentViewBase\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/base/contentviewbase.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method PageViewBase\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/base/pageviewbase.cls.php
+
+		-
+			message: "#^Variable \\$ret might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/base/templatepathresolver.cls.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method ViewBase\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/base/viewbase.cls.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/emptypage.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/errors/denied.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/errors/internal_error.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/errors/not_found.tpl.php
+
+		-
+			message: "#^Variable \\$breadcrumb might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/page.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/page.tpl.php
+
+		-
+			message: "#^Variable \\$status might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/page.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$id might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/alert.tpl.php
+
+		-
+			message: "#^Variable \\$blocks might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/blocks.tpl.php
+
+		-
+			message: "#^Variable \\$filter_group might not be defined\\.$#"
+			count: 3
+			path: gyro/core/view/templates/default/widgets/filter.meta.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/filter.meta.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/filter.meta.tpl.php
+
+		-
+			message: "#^Variable \\$filter_group might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/filter.tpl.php
+
+		-
+			message: "#^Variable \\$filter_url_builder might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filter.tpl.php
+
+		-
+			message: "#^Variable \\$content might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filter.wrapper.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/filtertext.meta.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/filtertext.meta.tpl.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/filtertext.meta.tpl.php
+
+		-
+			message: "#^Variable \\$value might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filtertext.meta.tpl.php
+
+		-
+			message: "#^Variable \\$adapter might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/filtertext.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filtertext.tpl.php
+
+		-
+			message: "#^Variable \\$title might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filtertext.tpl.php
+
+		-
+			message: "#^Variable \\$url_self might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filtertext.tpl.php
+
+		-
+			message: "#^Variable \\$value might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/filtertext.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/list.simple.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/list.simple.tpl.php
+
+		-
+			message: "#^Function gyro_include_template not found\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/list.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/list.tpl.php
+
+		-
+			message: "#^Variable \\$empty_message might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/list/empty.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/list/items.tpl.php
+
+		-
+			message: "#^Variable \\$parent_view might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/list/nav.bottom.tpl.php
+
+		-
+			message: "#^Variable \\$parent_view might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/list/nav.top.tpl.php
+
+		-
+			message: "#^Variable \\$item might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/listitem.tpl.php
+
+		-
+			message: "#^Variable \\$actions might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/menu.tpl.php
+
+		-
+			message: "#^Variable \\$commands might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/menu.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/menu/action.tpl.php
+
+		-
+			message: "#^Variable \\$action might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/menu/command.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/command.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$class string additional CSS class name\\)\\: Unexpected token \"\\$class\", expected type at offset 107$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$items array Array of items as map of name \\=\\> html\\)\\: Unexpected token \"\\$items\", expected type at offset 48$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^Variable \\$class might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^Variable \\$items might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/menu/item.list.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$action IActionBase\\)\\: Unexpected token \"\\$action\", expected type at offset 13$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/items.tpl.php
+
+		-
+			message: "#^Variable \\$actions might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/items.tpl.php
+
+		-
+			message: "#^Variable \\$class might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/items.tpl.php
+
+		-
+			message: "#^Variable \\$form_validation might not be defined\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/menu/items.tpl.php
+
+		-
+			message: "#^PHPDoc tag @var has invalid value \\(\\$page_data PageData\\)\\: Unexpected token \"\\$page_data\", expected type at offset 9$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/pager.breadcrumb.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 3
+			path: gyro/core/view/templates/default/widgets/pager.breadcrumb.tpl.php
+
+		-
+			message: "#^Variable \\$pager_calculator might not be defined\\.$#"
+			count: 3
+			path: gyro/core/view/templates/default/widgets/pager.breadcrumb.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/pager.meta.tpl.php
+
+		-
+			message: "#^Variable \\$pager_calculator might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/pager.meta.tpl.php
+
+		-
+			message: "#^Variable \\$pager_calculator might not be defined\\.$#"
+			count: 4
+			path: gyro/core/view/templates/default/widgets/pager.tpl.php
+
+		-
+			message: "#^Variable \\$page_data might not be defined\\.$#"
+			count: 5
+			path: gyro/core/view/templates/default/widgets/sorter.meta.tpl.php
+
+		-
+			message: "#^Variable \\$policy might not be defined\\.$#"
+			count: 2
+			path: gyro/core/view/templates/default/widgets/sorter.meta.tpl.php
+
+		-
+			message: "#^Variable \\$sorter_data might not be defined\\.$#"
+			count: 3
+			path: gyro/core/view/templates/default/widgets/sorter.meta.tpl.php
+
+		-
+			message: "#^File ends with a trailing whitespace\\. This may cause problems when running the code in the web browser\\. Remove the closing \\?\\> mark or remove the whitespace\\.$#"
+			count: 1
+			path: gyro/core/view/templates/default/widgets/sorter.tpl.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetActionLink\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/actionlink.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetAlert\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/alert.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetBlock\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/block.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetBreadcrumb\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/breadcrumb.widget.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$source$#"
+			count: 1
+			path: gyro/core/view/widgets/breadcrumb.widget.php
+
+		-
+			message: "#^Constant APP_START_MICROTIME not found\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/debugblock.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetDebugBlock\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/debugblock.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetFilter\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/filter.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetFilterText\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/filtertext.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetInput\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/input.widget.php
+
+		-
+			message: "#^Class Arr referenced with incorrect case\\: arr\\.$#"
+			count: 2
+			path: gyro/core/view/widgets/input/base/base.input.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method InputWidgetBaseBase\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/input/base/base.input.widget.php
+
+		-
+			message: "#^PHPDoc tag @param has invalid value \\(Array of params \\$params\\)\\: Unexpected token \"of\", expected variable at offset 53$#"
+			count: 1
+			path: gyro/core/view/widgets/input/base/base.input.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetListSimple\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/list.simple.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetList\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/list.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetListItem\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/listitem.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetItemMenu\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/menu.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetItemMenuItem\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/menuitem.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetPager\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetPagerCalculator\\:\\:get_next_link\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetPagerCalculator\\:\\:get_page_x_of_n\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetPagerCalculator\\:\\:get_previous_link\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$policy \\(false\\) of method WidgetPagerCalculator\\:\\:get_page_links_array\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^PHPDoc tag @param references unknown parameter\\: \\$pages_in$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^PHPDoc tag @var above a method has no effect\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^PHPDoc tag @var does not specify variable name\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/pager.widget.php
+
+		-
+			message: "#^Default value of the parameter \\#1 \\$policy \\(false\\) of method WidgetSorter\\:\\:render\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: gyro/core/view/widgets/sorter.widget.php

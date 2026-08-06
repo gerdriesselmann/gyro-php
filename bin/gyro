@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Gyro CLI - Command-line tool for the Gyro-PHP Framework.
+ *
+ * Usage: gyro <command> [options]
+ *
+ * @since 0.8
+ * @ingroup CLI
+ */
+
+// Find project root (bin/ is one level below root)
+$root_dir = dirname(__DIR__) . '/';
+
+// Bootstrap the CLI kernel
+require_once $root_dir . 'gyro/core/cli/bootstrap.cli.php';
+require_once $root_dir . 'gyro/core/cli/clikernel.cls.php';
+require_once $root_dir . 'gyro/core/cli/clicommand.cls.php';
+require_once $root_dir . 'gyro/core/cli/clitable.cls.php';
+
+// Load commands
+require_once $root_dir . 'gyro/core/cli/commands/helpcommand.cli.php';
+require_once $root_dir . 'gyro/core/cli/commands/modellistcommand.cli.php';
+require_once $root_dir . 'gyro/core/cli/commands/modelshowcommand.cli.php';
+require_once $root_dir . 'gyro/core/cli/commands/dbsynccommand.cli.php';
+
+// Run
+$kernel = new CLIKernel();
+$kernel->register(new HelpCommand($kernel));
+$kernel->register(new ModelListCommand());
+$kernel->register(new ModelShowCommand());
+$kernel->register(new DBSyncCommand());
+
+$exit_code = $kernel->run($argv);
+exit($exit_code);

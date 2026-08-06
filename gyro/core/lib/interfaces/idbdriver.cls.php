@@ -128,9 +128,29 @@ interface IDBDriver {
 	
 	/**
 	 * Returns true, if a given feature is supported
-	 * 
+	 *
 	 * @param string feature
-	 * @return bool 
+	 * @return bool
 	 */
 	public function has_feature($feature);
+
+	/**
+	 * Execute a prepared statement (INSERT, UPDATE, DELETE)
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Bind parameters (values for ? placeholders)
+	 * @param string $types Type string for bind_param (e.g. 'ssi' for string, string, int)
+	 * @return Status
+	 */
+	public function execute_prepared($sql, $params = array(), $types = '');
+
+	/**
+	 * Execute a prepared SELECT statement
+	 *
+	 * @param string $sql SQL with ? placeholders
+	 * @param array $params Bind parameters
+	 * @param string $types Type string for bind_param
+	 * @return IDBResultSet
+	 */
+	public function query_prepared($sql, $params = array(), $types = '');
 }

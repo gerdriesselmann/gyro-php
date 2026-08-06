@@ -140,7 +140,7 @@ class DAONotificationssettings extends DataObjectCached {
 	 */
 	protected function create_feed_token() {
 		$user = Users::get($this->id_user);
-		$seed = rand(1000000, 9999999);
+		$seed = random_int(1000000, 9999999);
 		if ($user) {
 			$seed .= $user->password . $user->creationdate;
 		}

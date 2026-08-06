@@ -40,7 +40,7 @@ class DBFieldSerialized extends DBFieldText {
 	 * @return mixed    
 	 */
 	public function convert_result($value) {
-		return is_null($value) ? null : unserialize($value);
+		return is_null($value) ? null : unserialize($value, ['allowed_classes' => false]);
 	}
 	
 	/**
@@ -51,7 +51,7 @@ class DBFieldSerialized extends DBFieldText {
 	public function get_field_default() {
 		$ret = parent::get_field_default();
 		if ($ret) {
-			$ret = unserialize($ret);
+			$ret = unserialize($ret, ['allowed_classes' => false]);
 		}
 		return $ret;
 	}	

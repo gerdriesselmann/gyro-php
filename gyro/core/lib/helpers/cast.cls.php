@@ -48,7 +48,7 @@ class Cast {
 			return '';
 		}
 		else if (is_object($value)) {
-			if (isset($value->__toString)) {
+			if (method_exists($value, '__toString')) {
 				return $value->__toString();
 			}
 			else {

@@ -12,7 +12,7 @@
  * @ingroup Tidy
  */
 class ConverterHtmlTidy implements IConverter {
-	private $predefined_params;
+	private array $predefined_params;
 
 	public function __construct($global_params = array()) {
 		$predefined_params = array(
@@ -51,7 +51,7 @@ class ConverterHtmlTidy implements IConverter {
 	 * @param $params Associative array containing tidy config parameters  
 	 * @return string
 	 */
-	public function encode($value, $params = false) {
+	public function encode(mixed $value, mixed $params = false): mixed {
 		//TODO this is a hotfix to keep tidy from striping <script>-Only-Content
 		if (GyroString::starts_with(trim(GyroString::to_lower($value)), '<script')) {
 			return $value;
@@ -76,7 +76,7 @@ class ConverterHtmlTidy implements IConverter {
 	/**
  	 * Implemented for compatability, just returns the value passed in
 	 */
-	public function decode($value, $params = false) {
+	public function decode(mixed $value, mixed $params = false): mixed {
 		return $value;		
 	} 	
 } 
