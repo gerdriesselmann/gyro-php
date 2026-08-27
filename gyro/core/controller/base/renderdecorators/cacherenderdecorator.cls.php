@@ -13,7 +13,7 @@ class CacheRenderDecorator extends RenderDecoratorBase {
 	 *
 	 * @var ICacheManager
 	 */
-	private $chache_manager = null;
+	private $cache_manager = null;
 
 	/**
 	 * Constructor
