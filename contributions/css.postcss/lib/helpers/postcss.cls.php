@@ -46,7 +46,7 @@ class PostCSS {
 	 */
 	public static function process_directory($in, $out) {
 		$err = new Status();
-		foreach(glob($in . '/*.css') as $css_file) {
+		foreach(gyro_glob($in . '/*.css') as $css_file) {
 			$err->merge(
 				self::run_cli_with(array('--dir', $out, $css_file))
 			);
