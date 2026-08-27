@@ -56,6 +56,11 @@ class Url {
 	 */
 	private $has_empty_query = false;
 
+    /**
+     * @var string Store the URL when sleep() is invcked
+     */
+    private $url = '';
+
 	/**
 	 * Constructor
 	 *
@@ -211,7 +216,9 @@ class Url {
 	 * Called to unserialize
 	 */
 	public function __wakeup() {
-		$this->parse($this->url); 
+        if ($this->url) {
+            $this->parse($this->url);
+        }
 	}
 	
 	/**
