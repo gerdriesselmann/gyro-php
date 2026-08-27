@@ -183,6 +183,7 @@ class TreemapRecorder extends SimpleReporter
  *  @package        SimpleTest
  *  @subpackage     Extensions
  */
+#[AllowDynamicProperties]
 class TreemapNode
 {
     public $_name;

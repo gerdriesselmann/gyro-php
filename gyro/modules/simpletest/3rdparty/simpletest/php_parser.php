@@ -24,6 +24,7 @@ foreach (array('LEXER_ENTER', 'LEXER_MATCHED',
  *    @package SimpleTest
  *    @subpackage WebTester
  */
+#[AllowDynamicProperties]
 class ParallelRegex
 {
     private $patterns;
@@ -728,6 +729,7 @@ class SimpleHtmlSaxParser
  *    @package SimpleTest
  *    @subpackage WebTester
  */
+#[AllowDynamicProperties]
 class SimplePhpPageBuilder
 {
     private $tags;

@@ -16,6 +16,7 @@ require_once 'DB/sqlite.php';
  * @package        SimpleTest
  * @subpackage     Extensions
  */
+#[AllowDynamicProperties]
 class CoverageDataHandler
 {
     public $db;

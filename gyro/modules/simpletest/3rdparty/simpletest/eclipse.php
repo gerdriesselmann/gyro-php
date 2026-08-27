@@ -20,6 +20,7 @@ include_once 'mock_objects.php';
  *  @package    SimpleTest
  *  @subpackage Eclipse
  */
+#[AllowDynamicProperties]
 class EclipseReporter extends SimpleScorer
 {
 

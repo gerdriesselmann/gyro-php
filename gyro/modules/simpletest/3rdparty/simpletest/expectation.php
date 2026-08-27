@@ -478,6 +478,7 @@ class OutsideMarginExpectation extends WithinMarginExpectation
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
+#[AllowDynamicProperties]
 class ReferenceExpectation
 {
     private $value;

@@ -187,7 +187,7 @@ class SimpleSocket extends SimpleStickyError
     private $handle;
     private $is_open = false;
     private $sent = '';
-    private $lock_size;
+    private $block_size;
 
     /**
      *    Opens a socket for reading and writing.

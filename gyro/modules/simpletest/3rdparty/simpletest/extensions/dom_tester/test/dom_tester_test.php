@@ -22,6 +22,7 @@ class TestOfLiveCssSelectors extends DomTestCase
     }
 }
 
+#[AllowDynamicProperties]
 class TestOfCssSelectors extends UnitTestCase
 {
     public function TestOfCssSelectors()

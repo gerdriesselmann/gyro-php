@@ -7,6 +7,7 @@ require_once dirname(__FILE__) . '/dbquery.ordered.cls.php';
  * @author Gerd Riesselmann
  * @ingroup Model
  */
+#[AllowDynamicProperties]
 class DBQuerySelect extends DBQueryOrdered {
 	const DISTINCT = 1;
 	const FOR_UPDATE = 2;

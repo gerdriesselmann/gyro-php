@@ -19,6 +19,7 @@ require_once dirname(__FILE__).'/../reporter.php';
  * @package	SimpleTest
  * @subpackage	Extensions
  */
+#[AllowDynamicProperties]
 class JUnitXMLReporter extends SimpleReporter
 {
     public function __construct()

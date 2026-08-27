@@ -5,6 +5,7 @@
  * @author Gerd Riesselmann
  * @ingroup Simpletest
  */
+#[AllowDynamicProperties]
 class DAOStudentsTest extends DataObjectBase {
 	public $id;
 	public $name;

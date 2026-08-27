@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../../../autorun.php');
 
+#[AllowDynamicProperties]
 class CoverageCalculatorTest extends UnitTestCase
 {
     public function skip()
