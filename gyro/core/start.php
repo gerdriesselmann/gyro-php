@@ -23,7 +23,12 @@ require_once GYRO_CORE_DIR . 'constants.inc.php';
 if (Config::has_feature(Config::TESTMODE)) {
 	ini_set('display_errors', 1);
 	ini_set('log_errors', 1);
-	error_reporting(E_ALL | E_STRICT);
+    if (PHP_VERSION_ID < 80400) {
+        // E_STRICT is deprecated since PHP 8.4
+        error_reporting(E_ALL | E_STRICT);
+    } else {
+        error_reporting(E_ALL);
+    }
 } else {
 	ini_set('display_errors', 0);
 	ini_set('log_errors', 1);
