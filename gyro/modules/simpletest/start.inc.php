@@ -15,6 +15,6 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 if (!defined('APP_SIMPLETEST_DIR')) {
-	define('APP_SIMPLETEST_DIR', dirname(__FILE__) . '/3rdparty/simpletest/'); 
+	define('APP_SIMPLETEST_DIR', dirname(__FILE__) . '/3rdparty/simpletest/src/');
 }
 
