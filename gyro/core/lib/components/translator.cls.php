@@ -139,6 +139,10 @@ class Translator {
 	 * Return translation from group for given text and language
 	 */
 	protected function get_translation($group, $key, $lang) {
+		if (is_null($key)) {
+			return false;
+		}
+
 		if (isset($group[$key])) {
 			return Arr::get_item($group[$key], $lang, false);
 		}
