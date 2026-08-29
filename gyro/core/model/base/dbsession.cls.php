@@ -10,15 +10,17 @@ Load::models(array('sessions'));
 class DBSession implements ISessionHandler {
 	/**
 	 * Open a session
-	 */ 
-	public function open($save_path, $session_name) {
+	 */
+    #[ReturnTypeWillChange]
+    public function open(string $save_path, string $session_name) {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	public function close() {
+    #[ReturnTypeWillChange]
+    public function close() {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
@@ -33,7 +35,8 @@ class DBSession implements ISessionHandler {
 	/**
 	 * Load session data from database
 	 */
-	public function read($key) {
+    #[ReturnTypeWillChange]
+    public function read(string $key) {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
@@ -48,7 +51,8 @@ class DBSession implements ISessionHandler {
 	/**
 	 * Write session data to DB
 	 */
-	public function write($key, $value) {
+    #[ReturnTypeWillChange]
+    public function write(string $key, string $value) {
 		try {
 			// Rollback any open transactions, if there are any
 			//DB::rollback();
@@ -74,7 +78,8 @@ class DBSession implements ISessionHandler {
 	/**
 	 * Delete a session
 	 */
-	public function destroy($key) {
+    #[ReturnTypeWillChange]
+    public function destroy(string $key) {
 		try {
 			$sess = new DAOSessions();
 			$sess->id = $key;
@@ -89,7 +94,8 @@ class DBSession implements ISessionHandler {
 	/**
 	 * Delete outdated sessions
 	 */
-	public function gc($lifetime) {
+    #[ReturnTypeWillChange]
+    public function gc(int $lifetime) {
 		if (Session::is_started()) {
 			try {
 				$sess = new DAOSessions();
