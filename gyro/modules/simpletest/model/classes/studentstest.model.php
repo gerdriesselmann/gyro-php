@@ -9,6 +9,7 @@
 class DAOStudentsTest extends DataObjectBase {
 	public $id;
 	public $name;
+    public $modificationdate;
 	
 	protected function create_table_object() {
 	    return new DBTable(

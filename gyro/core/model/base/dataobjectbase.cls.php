@@ -91,14 +91,39 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
     }
     
     protected function get_properties_to_exclude_for_sleep() {
-    	return array('table', 'where', 'limit', 'order_by', 'resultset', 'joins');
+    	return array('table', 'where', 'limit', 'order_by', 'resultset', 'joins', 'queryhooks');
     }
 
     public function __wakeup() {
  		$this->table = $this->create_table_object();
  		$this->where = new DBWhereGroup($this);
-    } 	
-    
+    }
+
+    public function __serialize() {
+        $properties = get_object_vars($this);
+        foreach($this->get_properties_to_exclude_for_sleep() as $prop) {
+            unset($properties[$prop]);
+        }
+        return $properties;
+    }
+
+    public function __unserialize(array $data) {
+        $properties = get_object_vars($this);
+        foreach($this->get_properties_to_exclude_for_sleep() as $prop) {
+            unset($properties[$prop]);
+        }
+        $known = array_keys($properties);
+        foreach($data as $source_prop => $value) {
+            // Preprocess older __sleep data (\0Name\0Prop)
+            $prop = ($pos = strrpos($source_prop, "\0")) !== false ? substr($source_prop, $pos + 1) : $source_prop;
+            if (in_array($prop, $known)) {
+                $this->$prop = $value;
+            }
+        }
+        $this->table = $this->create_table_object();
+        $this->where = new DBWhereGroup($this);
+    }
+
     public function __toString() {
     	return $this->to_string();
     }

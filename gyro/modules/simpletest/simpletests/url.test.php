@@ -326,5 +326,28 @@ class UrlTest extends GyroUnitTestCase {
 		$this->assertEqual(array('a', 'b'), $this->url->get_query_param('q[]'));
 	}
 
+	public function test_serialize() {
+		$serialized = serialize($this->url);
+		/** @var Url $unserialized */
+		$unserialized = unserialize($serialized);
+		$this->assertTrue($unserialized instanceof Url);
+		$this->assertEqual($this->url->build(), $unserialized->build());
+		$this->assertEqual($this->url->get_host(), $unserialized->get_host());
+		$this->assertEqual($this->url->get_path(), $unserialized->get_path());
+		$this->assertEqual($this->url->get_query(), $unserialized->get_query());
+		$this->assertEqual($this->url->get_fragment(), $unserialized->get_fragment());
+
+		// Legacy serialization format from PHP 8.2 (__sleep with private $url property)
+		$legacy_url = 'https://www.host.org/dir/file.ext?arg=value#anchor';
+		$legacy_data = 'O:3:"Url":1:{s:8:"' . "\0Url\0url" . '";s:' . strlen($legacy_url) . ':"' . $legacy_url . '";}';
+		/** @var Url $unserialized_legacy */
+		$unserialized_legacy = unserialize($legacy_data);
+		$this->assertTrue($unserialized_legacy instanceof Url);
+		$this->assertEqual($legacy_url, $unserialized_legacy->build());
+		$this->assertEqual('www.host.org', $unserialized_legacy->get_host());
+		$this->assertEqual('dir/file.ext', $unserialized_legacy->get_path());
+		$this->assertEqual('arg=value', $unserialized_legacy->get_query());
+		$this->assertEqual('anchor', $unserialized_legacy->get_fragment());
+	}
 }
 
