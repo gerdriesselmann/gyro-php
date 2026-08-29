@@ -122,6 +122,7 @@ class SimpleDumper
      */
     public function clipString($string, $size, $position = 0)
     {
+		$string = $string ?? '';
         $utf8 = false;
         if (function_exists('mb_detect_encoding') && 'UTF-8' == mb_detect_encoding($string)) {
             $utf8 = true;
@@ -376,7 +377,7 @@ class SimpleDumper
         $reflection = new ReflectionObject($object);
         $members = [];
         foreach ($reflection->getProperties() as $property) {
-            if (method_exists($property, 'setAccessible')) {
+            if (version_compare(phpversion(), '8.5') < 0 && method_exists($property, 'setAccessible')) {
                 $property->setAccessible(true);
             }
             try {
