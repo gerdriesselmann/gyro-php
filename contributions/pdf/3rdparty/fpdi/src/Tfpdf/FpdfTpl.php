@@ -18,6 +18,7 @@ use setasign\Fpdi\FpdfTplTrait;
  *
  * @package setasign\Fpdi\Tfpdf
  */
+#[AllowDynamicProperties]
 class FpdfTpl extends \tFPDF
 {
     use FpdfTplTrait {

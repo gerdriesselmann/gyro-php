@@ -50,7 +50,6 @@ class SystemUpdates {
 		
 		$ret = DB::execute($query->get_sql(), $connection);
 		if ($ret->is_ok()) {
-			$dao->id = DB::last_insert_id($connection);
 			$result = $dao;
 		}
 

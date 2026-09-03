@@ -406,30 +406,32 @@ class ParameterizedRoute extends RouteBase {
 	protected function build_url_path($params) {
 		$path = $this->path;
 		$variables = $this->extract_path_variables($path);
+		$substitutes = $this->extract_path_substitutes($params);
+
 		if (is_object($params)) {
+			// Objects have some special substitutes
 			$path = $this->replace_path_variable($path, '_class_', get_class($params));
 			if ($params instanceof IDBTable) {
 				$path = $this->replace_path_variable($path, '_model_', $params->get_table_name());
 			}
 			unset($variables['_class_']);
 			unset($variables['_model_']);
+
+			// On objects we also may call functions
 			foreach($variables as $v) {
 				if (substr($v, -2) == '()') {
 					$func_name = substr($v, 0, -2);
 					if (method_exists($params, $func_name)) {
 						$path = $this->replace_path_variable($path, $v, $params->$func_name());
 					}
-				} else {
-					if (isset($params->$v)) {
-						$path = $this->replace_path_variable($path, $v, $params->$v);
-					}
 				}
 			}
-		} else if (is_array($params)) {
-			foreach($variables as $v) {
-				if (array_key_exists($v, $params)) {
-					$path = $this->replace_path_variable($path, $v, $params[$v]);
-				}
+		}
+
+		// Now handle values
+		foreach($variables as $v) {
+			if (array_key_exists($v, $substitutes)) {
+				$path = $this->replace_path_variable($path, $v, $substitutes[$v]);
 			}
 		}
 
@@ -440,6 +442,23 @@ class ParameterizedRoute extends RouteBase {
 		$path = preg_replace($reg_optional_exklamation, '', $path);
 		
 		return $path;
+	}
+
+	/**
+	 * Create an array of all known substitues
+	 *
+	 * @param $params
+	 * @return array
+	 */
+	protected function extract_path_substitutes($params) {
+		$ret = array();
+		if (is_object($params)) {
+			$ret = (array)$params;
+		} else if (is_array($params)) {
+			$ret = $params;
+		}
+
+		return $ret;
 	}
 
 	/**

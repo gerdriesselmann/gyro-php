@@ -36,7 +36,7 @@ class PdfStream extends PdfType
      * @return self
      * @throws PdfTypeException
      */
-    public static function parse(PdfDictionary $dictionary, StreamReader $reader, PdfParser $parser = null)
+    public static function parse(PdfDictionary $dictionary, StreamReader $reader, PdfParser|null $parser = null)
     {
         $v = new self;
         $v->value = $dictionary;

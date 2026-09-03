@@ -379,6 +379,7 @@ function sphFixUint ( $value )
 
 
 /// sphinx searchd client class
+#[AllowDynamicProperties]
 class SphinxClient
 {
 	var $_host;			///< searchd host (default is "localhost")

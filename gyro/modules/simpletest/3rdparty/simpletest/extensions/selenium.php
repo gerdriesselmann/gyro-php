@@ -1,36 +1,23 @@
 <?php
-/**
- *	base include file for SimpleTest
- *	@package	SimpleTest
- *	@subpackage	Extensions
- *	@version	$Id$
- */
-/**#@+
- *  include other SimpleTest class files
- */
-require_once dirname(__FILE__) . '/../unit_tester.php';
-require_once dirname(__FILE__) . '/selenium/remote-control.php';
-/**#@-*/
+
+require_once __DIR__ . '/../src/unit_tester.php';
+require_once __DIR__ . '/selenium/remote-control.php';
 
 /**
- * Provides test case wrapper to a Selenium remote
- * control instance.
- *	@package	SimpleTest
- *	@subpackage	Extensions
+ * Provides test case wrapper to a Selenium remote control instance.
  */
 class SeleniumTestCase extends UnitTestCase
 {
-    /**#@+
+    /**
      * Selenium instantiation variables
      */
-    protected $browser = '';
+    protected $browser    = '';
     protected $browserUrl = '';
-    protected $host = 'localhost';
-    protected $port = '4444';
-    protected $timeout = 30000;
-    /**#@-*/
+    protected $host       = 'localhost';
+    protected $port       = '4444';
+    protected $timeout    = 30000;
 
-    protected $selenium = null;
+    protected $selenium;
     protected $newInstanceEachTest = true;
 
     public function __construct($name = 'Selenium Test Case')
@@ -38,12 +25,12 @@ class SeleniumTestCase extends UnitTestCase
         parent::__construct($name);
 
         if (empty($this->browser)) {
-            trigger_error('browser property must be set in ' . get_class($this));
+            simpletest_trigger_error('browser property must be set in ' . get_class($this));
             exit;
         }
 
         if (empty($this->browserUrl)) {
-            trigger_error('browserUrl property must be set in ' . get_class($this));
+            simpletest_trigger_error('browserUrl property must be set in ' . get_class($this));
             exit;
         }
     }
@@ -85,7 +72,7 @@ class SeleniumTestCase extends UnitTestCase
                 sprintf('%s failed', $method)
             );
         }
-                    
+
         return call_user_func_array(
             array($this->selenium, $method),
             $arguments

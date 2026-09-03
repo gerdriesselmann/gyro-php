@@ -9,6 +9,7 @@
  * @author Gerd Riesselmann
  * @ingroup Controller
  */
+#[AllowDynamicProperties]
 class PageData {
 	/**
 	 * Page content (HTML body)

@@ -56,6 +56,11 @@ class Url {
 	 */
 	private $has_empty_query = false;
 
+    /**
+     * @var string Store the URL when sleep() is invcked
+     */
+    private $url = '';
+
 	/**
 	 * Constructor
 	 *
@@ -211,8 +216,26 @@ class Url {
 	 * Called to unserialize
 	 */
 	public function __wakeup() {
-		$this->parse($this->url); 
+        if ($this->url) {
+            $this->parse($this->url);
+        }
 	}
+
+    public function __serialize() {
+        $ret = array(
+            'url' => $this->build()
+        );
+        return $ret;
+    }
+
+    public function __unserialize(array $data) {
+        // Fallback to __sleepp() format if not in __serialize() format in case
+        // data was stored with PHP 8.4 or earlier and is read with PHP 8.5+
+        $url = $data['url'] ?? $data["\0Url\0url"] ?? '';
+        if ($url) {
+            $this->parse($url);
+        }
+    }
 	
 	/**
 	 * Compare this URL to an other
@@ -637,7 +660,7 @@ class Url {
 		$ret = !$this->is_empty();
 		
 		$src_host = $this->get_host();
-		if ($this->support_unicode_domains) {
+		if ($this->support_unicode_domains && $src_host) {
 			$src_host = idn_to_ascii($src_host,0, INTL_IDNA_VARIANT_UTS46);
 		}
 		if ($ret && !Validation::is_ip($src_host)) {

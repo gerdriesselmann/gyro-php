@@ -2,7 +2,7 @@
 require_once GYRO_CORE_DIR . 'view/widgets/input/base/email.input.widget.php';
 
 /**
- * A date widget
+ * An email input widget
  * 
  * @author Gerd Riesselmann
  * @ingroup View

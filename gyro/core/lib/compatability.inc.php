@@ -57,6 +57,7 @@ if (!function_exists('memory_get_peak_usage')) {
  * @param int $flags
  */
 function gyro_glob($path, $flags = 0) {
+    // Since PHP 8.2 glob returns empty array on empty directories, but before it did not
 	$ret = glob($path, $flags);
 	if ($ret === false) {
 		$ret = array();

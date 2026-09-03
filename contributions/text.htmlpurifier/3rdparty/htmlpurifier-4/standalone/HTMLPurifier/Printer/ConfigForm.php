@@ -3,6 +3,7 @@
 /**
  * @todo Rewrite to use Interchange objects
  */
+#[AllowDynamicProperties]
 class HTMLPurifier_Printer_ConfigForm extends HTMLPurifier_Printer
 {
 

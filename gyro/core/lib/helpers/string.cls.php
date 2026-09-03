@@ -522,24 +522,29 @@ class GyroString {
 	 * @attention If needle is en empty string, this function returns false! 
 	 */
 	public static function starts_with($haystack, $needle) {
-		if ($needle !== '') {
-			return (strncmp($haystack, $needle, strlen($needle)) == 0);
-		}
-		return false;
-		/*
-		if ($needle !== '') {
-			return self::substr($haystack, 0, self::length($needle)) == $needle;
-		}
-		else {
-			return false;
-		}
-		*/
+        // Catches NULL values
+        if (empty($haystack)) {
+            return false;
+        }
+        if (empty($needle)) {
+            return false;
+        }
+
+		return (strncmp($haystack, $needle, strlen($needle)) == 0);
 	}
 
 	/**
 	 * Returns true if haystack starts with needlse
 	 */
 	public static function ends_with($haystack, $needle) {
+        // Catches NULL values
+        if (empty($haystack)) {
+            return false;
+        }
+        if (empty($needle)) {
+            return false;
+        }
+
 		$lenght_needle = self::length($needle);
 		if ($lenght_needle > 0) {
 			return self::substr($haystack, -$lenght_needle, $lenght_needle) == $needle;
