@@ -8,15 +8,17 @@
 class XCacheSession implements ISessionHandler {
 	/**
 	 * Open a session
-	 */ 
-	public function open($save_path, $session_name) {
+	 */
+    #[ReturnTypeWillChange]
+    public function open(string $save_path, string $session_name) {
 		return true;
 	}
 	
 	/**
 	 * Close a session
 	 */
-	public function close() {
+    #[ReturnTypeWillChange]
+    public function close() {
 		//Note that for security reasons the Debian and Ubuntu distributions of 
 		//php do not call _gc to remove old sessions, but instead run /etc/cron.d/php*, 
 		//which check the value of session.gc_maxlifetime in php.ini and delete the session 
@@ -32,7 +34,8 @@ class XCacheSession implements ISessionHandler {
 	/**
 	 * Load session data from xcache
 	 */
-	public function read($key) {
+    #[ReturnTypeWillChange]
+    public function read(string $key) {
 		// Write and Close handlers are called after destructing objects since PHP 5.0.5
 		// Thus destructors can use sessions but session handler can't use objects.
 		// So we are moving session closure before destructing objects.
@@ -47,7 +50,8 @@ class XCacheSession implements ISessionHandler {
 	/**
 	 * Write session data to XCache
 	 */
-	public function write($key, $value) {
+    #[ReturnTypeWillChange]
+    public function write(string $key, string $value) {
 		try {
 			xcache_set($this->create_key($key), $value, ini_get('session.gc_maxlifetime'));
 			return true;
@@ -60,7 +64,8 @@ class XCacheSession implements ISessionHandler {
 	/**
 	 * Delete a session
 	 */
-	public function destroy($key) {
+    #[ReturnTypeWillChange]
+    public function destroy(string $key) {
 		xcache_unset($this->create_key($key));
 		return true;
 	}
@@ -68,12 +73,13 @@ class XCacheSession implements ISessionHandler {
 	/**
 	 * Delete outdated sessions
 	 */
-	public function gc($lifetime) {
+    #[ReturnTypeWillChange]
+    public function gc(int $lifetime) {
 		// XCache does this for us
 		return true;
 	}
 	
-	protected function create_key($key) {
+	protected function create_key(string $key) {
 		return 'g$s' . Config::get_url(Config::URL_DOMAIN) . '_' . $key;
 	} 
 }

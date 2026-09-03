@@ -1,6 +1,6 @@
 <?php
 /**
- * A date widget
+ * An email input  widget
  * 
  * @author Gerd Riesselmann
  * @ingroup View

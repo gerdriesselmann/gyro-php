@@ -99,6 +99,31 @@ class DataObjectTest extends GyroUnitTestCase {
 			"UPDATE `db`.`studentstest` AS `studentstest` SET `studentstest`.`name` = 'Heinz' WHERE ((((`studentstest`.`modificationdate` < '2008-08-08 08:08:08'))))",
 			$query->get_sql()
 		);
-		
 	}
+
+    public function test_serialize() {
+        $time = time();
+
+        /* @var DAOStudentsTest $student */
+        $student = DB::create('studentstest');
+        $student->id = 10;
+        $student->name = 'Heinz';
+        $student->modificationdate = $time;
+        $student->add_where('modificationdate', '<', '2008-08-08 08:08:08');
+
+        $serialized = serialize($student);
+        /** @var DAOStudentsTest $unserialized */
+        $unserialized = unserialize($serialized);
+        $this->assertTrue($unserialized instanceof DAOStudentsTest);
+        $this->assertEqual($student->id, $unserialized->id);
+        $this->assertEqual($student->name, $unserialized->name);
+        $this->assertEqual($student->get_table_name(), $unserialized->get_table_name());
+
+        // Legacy serialization format from PHP 8.2 (__sleep)
+        $legacy_data = "O:15:\"DAOStudentsTest\":3:{s:19:\"\0DAOStudentsTest\0id\";i:10;s:21:\"\0DAOStudentsTest\0name\";s:5:\"Heinz\";s:33:\"\0DAOStudentsTest\0modificationdate\";i:" . $time . ";}";
+        $unserialized = unserialize($legacy_data);
+        assert($unserialized->id === 10);
+        assert($unserialized->name === "Heinz");
+        assert($unserialized->modificationdate === $time);
+    }
 }

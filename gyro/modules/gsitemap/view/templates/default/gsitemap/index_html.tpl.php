@@ -1,7 +1,7 @@
 <?php 
 $title = tr('Sitemap Index', 'gsitemap');
 $page_data->head->title = $title;
-$page_data->head->robots = ROBOTS_NOINDEX_FOLLOW;
+$page_data->head->robots_index = ROBOTS_NOINDEX_FOLLOW;
 ?>
 
 <h1><?=$title?></h1>

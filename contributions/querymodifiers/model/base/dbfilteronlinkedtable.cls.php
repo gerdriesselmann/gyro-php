@@ -59,7 +59,7 @@ class DBFilterOnLinkedTable extends DBFilter {
 	public function __construct($title, $filter, $table, $join_condition = false, $join_type = DBQueryJoined::INNER) {
 		$this->filter = $filter;
 		$this->linked_table = $table;
-		$this->join_condition = $join_condition;
+		$this->join_conditions = $join_condition;
 		$this->join_type = $join_type;
 		parent::__construct($title);
 	}

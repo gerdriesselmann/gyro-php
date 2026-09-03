@@ -130,7 +130,11 @@ class MimeView extends ContentViewBase {
 		if (function_exists('finfo_open')) {
 			$handle = finfo_open(FILEINFO_MIME); // return mime type ala mimetype extension
 			$mime_type = finfo_file($handle, $file);
-			finfo_close($handle);
+
+            if (version_compare(PHP_VERSION, '8.5') < 0) {
+                // Since PHP 8.5, finfo_close() is deprecated
+			    finfo_close($handle);
+			}
 		}
 		else if (function_exists('mime_content_type')) {
 			$mime_type = mime_content_type($file);

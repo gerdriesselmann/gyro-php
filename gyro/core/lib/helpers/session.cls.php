@@ -33,14 +33,7 @@ class Session {
 	 */
 	private static function init_handler() {
 		if (self::$handler) {
-			session_set_save_handler(
-				array(self::$handler, 'open'), 
-				array(self::$handler, 'close'), 
-				array(self::$handler, 'read'), 
-				array(self::$handler, 'write'), 
-				array(self::$handler, 'destroy'), 
-				array(self::$handler, 'gc')
-			);					
+			session_set_save_handler(self::$handler);
 		}
 	}
 	

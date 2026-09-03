@@ -71,6 +71,7 @@
  * @todo We need an easier way to inject strategies using the configuration
  *       object.
  */
+#[AllowDynamicProperties]
 class HTMLPurifier
 {
 
