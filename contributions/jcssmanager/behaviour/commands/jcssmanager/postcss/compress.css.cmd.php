@@ -65,9 +65,14 @@ class JCSSManagerCompressCSSPostcssCommand extends JCSSManagerCompressBaseComman
 			$webpack_options['--config'] = $possible_config;
 		}
 
+		$escaped_options = array();
+		foreach ($webpack_options as $key => $value) {
+			$escaped_options[] = $value === '' ? escapeshellarg($key) : escapeshellarg($key) . ' ' . escapeshellarg($value);
+		}
+
 		$bin_cmd =
-			$bin_cmd . ' ' . $in_file . ' ' .
- 			Arr::implode(' ', $webpack_options, ' ');
+			escapeshellarg($bin_cmd) . ' ' . escapeshellarg($in_file) . ' ' .
+			implode(' ', $escaped_options);
 
 		$output = array();
 		$return = 0;

@@ -112,12 +112,13 @@ class RequestInfo {
 		}		
 		if ($type == self::ABSOLUTE) {
 			$prefix = $this->is_ssl() ? 'https://' : 'http://';
-			// Check proxy forwarded stuff
-			$prefix .= Arr::get_item(
-				$_SERVER, 'HTTP_X_FORWARDED_HOST', Arr::get_item(
-					$_SERVER, 'HTTP_HOST', Config::get_value(Config::URL_DOMAIN)
-				)
-			);
+			$configured_domain = Config::get_value(Config::URL_DOMAIN);
+			$host = Arr::get_item($_SERVER, 'HTTP_HOST', $configured_domain);
+			// Validate host against configured domain to prevent host header injection
+			if (!empty($configured_domain) && $host !== $configured_domain) {
+				$host = $configured_domain;
+			}
+			$prefix .= $host;
 			$ret = $prefix . $ret;
 		}
 		return $ret;

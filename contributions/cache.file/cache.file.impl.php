@@ -196,7 +196,7 @@ class FileCacheItem implements ICacheItem {
 	 */
 	public function __construct($item_data) {
 		if (is_string($item_data)) {
-			$item_data = unserialize($item_data);
+			$item_data = unserialize($item_data, ['allowed_classes' => false]);
 		}
 		$this->item_data = $item_data;
 	}

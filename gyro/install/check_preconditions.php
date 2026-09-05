@@ -12,16 +12,12 @@ function core_check_preconditions() {
 	foreach($subdirs as $subdir) {
 		$dir = rtrim($tempdir . $subdir, '/');
 		if (!file_exists($dir)) {
-			$cmd = 'mkdir -p ' . $dir;
-			if (shell_exec($cmd)) { 
-				$ret->append('Could not create temporary directory ' . $dir);			
-			}
-			else {
-				chmod($dir, 0777);
+			if (!@mkdir($dir, 0755, true)) {
+				$ret->append('Could not create temporary directory ' . $dir);
 			}
 		}
 		// Try to place file into temp dir
-		$file = $dir . '/test' . md5(uniqid());
+		$file = $dir . '/test' . bin2hex(random_bytes(16));
 		if (touch($file)) {
 			unlink($file);
 		}
