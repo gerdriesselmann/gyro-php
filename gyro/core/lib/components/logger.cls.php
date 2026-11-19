@@ -20,7 +20,7 @@ class Logger {
 		$handle = @fopen($file_path, 'a');
 		if ($handle) 	{
 			$log = array_merge(array(date('Y/m/d, H:i:s', time()),	Url::current()->build()), Arr::force($data));
-			@fputcsv($handle, $log, ';');
+			@fputcsv($handle, $log, ';', '"',"\\");
 			@fclose($handle);
 		}		
 	}

@@ -674,9 +674,9 @@ class DataObjectBase implements IDataObject, ISelfDescribingType, IActionSource 
 	public function sort($column, $order = self::ASC) {
 		if ($column == self::CLEAR) {
 			$this->order_by = array();
-		}
-		else {
-			$this->order_by[] = array($column => $order);
+		} else {
+			$key = is_null($column) ? '' : $column;
+			$this->order_by[] = array($key => $order);
 		}
 	} 
 
