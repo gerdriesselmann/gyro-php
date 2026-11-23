@@ -14,6 +14,7 @@ class SimpleTestController extends ControllerBase {
 	public function get_routes() {
 		return array(
 			new ExactMatchRoute('simpletest/run', $this, 'run_tests', new NoCacheCacheManager()),
+			new ParameterizedRoute('simpletest/run/{filter:s}', $this, 'run_tests_filtered', new NoCacheCacheManager()),
 			new ExactMatchRoute('simpletest/send_test_mail', $this, 'simpletest_send_test_mail', new NoCacheCacheManager())
 		);
 	}
@@ -24,25 +25,47 @@ class SimpleTestController extends ControllerBase {
 	 * @param PageData $page_data
 	 */
  	public function action_run_tests($page_data) {
- 		ob_start();
-		Load::components('GyroUnitTestCase');
-		
-		// load all test classes
-		$suite = new TestSuite('Gyro Tests');
-		$base_dirs = Load::get_base_directories();
-		foreach($base_dirs as $dir) {
-			foreach (gyro_glob($dir . 'simpletests/*.test.php') as $inc) {
-				$suite->addFile($inc);
-			}
-		}
-		
-		Load::directories('simpletests/mocks');
-		// Simpletest as of 1.1 runs tests automagically. Invoking run() executes everything twices
-		//$suite->run(new DefaultReporter());
-		ob_flush();
-		exit();
- 	} 		 	 			 	
- 	
+         $this->do_run_tests('');
+ 	}
+
+    /**
+     * Run Tests
+     *
+     * @param PageData $page_data
+     */
+    public function action_run_tests_filtered($page_data, $filter) {
+        $this->do_run_tests($filter);
+    }
+
+    private function do_run_tests($filter) {
+        ob_start();
+        Load::components('GyroUnitTestCase');
+
+        // load all test classes
+        $suite = new TestSuite('Gyro Tests');
+        $base_dirs = Load::get_base_directories();
+        foreach($base_dirs as $dir) {
+            foreach (gyro_glob($dir . 'simpletests/*.test.php') as $inc) {
+                $passes_filter = true;
+                if ($filter) {
+                    $passes_filter = false;
+                    $passes_filter = $passes_filter || GyroString::contains($inc, $filter);
+                    $passes_filter = $passes_filter || GyroString::preg_match_all("@$filter@", $inc);
+                }
+                if ($passes_filter) {
+                    $suite->addFile($inc);
+                }
+            }
+        }
+
+        Load::directories('simpletests/mocks');
+        // Simpletest as of 1.1 runs tests automagically. Invoking run() executes everything twices
+        //$suite->run(new DefaultReporter());
+        ob_flush();
+        exit();
+
+    }
+
  	/**
  	 * Sends two test mails to the mail admin, one containing plain text, and the other
  	 * one containing HTML.
