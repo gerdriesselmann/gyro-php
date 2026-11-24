@@ -7,7 +7,7 @@ require_once APP_SIMPLETEST_DIR . 'autorun.php';
  * @author Gerd Riesselmann
  * @ingroup Simpletest
  */
-class GyroUnitTestCase extends UnitTestCase {
+abstract class GyroUnitTestCase extends UnitTestCase {
 	protected $is_console = false;
 	
 	public function __construct() {

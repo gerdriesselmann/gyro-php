@@ -11,8 +11,20 @@ Wraps simpletest unit test library
 Place your tests in a directory "simpletests" directly beneath the module or application root.
 They will be automatically run when simpletest/run is invoked.
 
-simpletest/run can be invokes through the console or through the browser. In the later case 
-you must define   
+There are two test runners available:
+
+* simpletest/run - Run all tests
+* simpletest/run/{filter} - Run tests whose file paths match the filter as a substring or regular expression.
+
+Additionally, there is a test runner for sending test emails:
+
+* simpletest/send_test_mail - Send test emails to the configured mail administrator.
+
+All test runners can be invoked via browser or command line, e.g.
+
+```
+php app/run_console.php simpletest/run
+```
 
 == Additional notes ==
 

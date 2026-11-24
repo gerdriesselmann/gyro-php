@@ -327,7 +327,9 @@ class GyroHttpRequest {
 			$ret = false;
 		}
 		if ($ch) {
-			@curl_close ($ch);
+			if (version_compare(phpversion(), '8.5') < 0) {
+				@curl_close($ch);
+			}
 		}
 		if (Config::has_feature(Config::LOG_HTTPREQUESTS)) {
 			$log = array($address, $err_no, $status->to_string(Status::OUTPUT_PLAIN));
